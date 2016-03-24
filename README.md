@@ -1,106 +1,71 @@
-# Discovery
-Discover nearby devices using BLE.
-
-React native implementation of https://github.com/omergul123/Discovery
-
-(Android uses https://github.com/joshblour/discovery-android)
+# React Native Permissions
+Check user permissions (iOS only)
 
 ##What
-Discovery is a very simple but useful library for discovering nearby devices with BLE(Bluetooth Low Energy) and for exchanging a value (kind of ID or username determined by you on the running app on peer device) regardless of whether the app on peer device works at foreground or background state.
+Some iOS features require the user grant permission before you can access them.
 
+This library lets you check the current status of those permissions. (Note: it _doesn't_ prompt the user, just silently checks the permission status)
+
+The current supported permissions are:
+- Location
+- Camera
+- Microhone
+- Photos
+- Contacts
+- Event
+- Bluetooth
+- RemoteNotifications (Push Notifications)
 
 ####Example
 ```java
-const {DeviceEventEmitter} = require('react-native');
-const Discovery = require('react-native-discovery');
+const Permissions = require('react-native-permissions');
 
-Discovery.initialize(
-  "3E1180E5-222E-43E9-98B4-E6C0DD18E728",
-  "SpacemanSpiff"
-);
-Discovery.setShouldAdvertise(true);
-Discovery.setShouldDiscover(true);
-
-// Listen for discovery changes
-DeviceEventEmitter.addListener(
-  'discoveredUsers',
-  (data) => {
-    if (data.didChange || data.usersChanged) //slight callback discrepancy between the iOS and Android libraries
-      console.log(data.users)
+//....
+  componentDidMount() {
+    Permissions.locationPermissionStatus()
+    .then(response => {
+      if (response == Permissions.StatusUndetermined) {
+        alert("Undetermined");
+      } else if (response == Permissions.StatusDenied) {
+        alert("Denied");
+      } else if (response == Permissions.StatusAuthorized) {
+        alert("Authorized");
+      } else if (response == Permissions.StatusRestricted) {
+        alert("Restricted");
+      }
+    });
   }
-);
-
+//...
 ```
 
 
 ####API
 
-`initialize(uuidString, username)` - Initialize the Discovery object with a UUID specific to your app, and a username specific to your device.
+As shown in the example, methods return a promise with the authorization status as an `int`. You can compare them to the following statuses: `StatusUndetermined`, `StatusDenied`, `StatusAuthorized`, `StatusRestricted`
 
-`setPaused(isPaused)` - bool. pauses advertising and detection
+`locationPermissionStatus()` - checks for access to the user's current location. Note: `AuthorizedAlways` and `AuthorizedWhenInUse` both return `StatusAuthorized`
 
-`setShouldDiscover(shouldDiscover)` - bool. starts and stops discovery only
+`cameraPermissionStatus()` - checks for access to the phone's camera
 
-`setShouldAdvertise(shouldAdvertise)` - bool. starts and stops advertising only
+`microphonePermissionStatus()` - checks for access to the phone's microphone
 
-`setUserTimeoutInterval(userTimeoutInterval)` - integer in seconds, default is 5. After not seeing a user for x seconds, we remove him from the users list in our callback.
-  
-  
-*The following two methods are specific to the Android version, since the Android docs advise against continuous scanning. Instead, we cycle scanning on and off. This also allows us to modify the scan behaviour when the app moves to the background.*
+`photoPermissionStatus()` - checks for access to the user's photo album
 
-`setScanForSeconds(scanForSeconds)` - integer in seconds, default is 5. This parameter specifies the duration of the ON part of the scan cycle.
-    
-`setWaitForSeconds(waitForSeconds)` - integer in seconds default is 5. This parameter specifies the duration of the OFF part of the scan cycle.
+`contactsPermissionStatus()` - checks for access to the user's address book
 
+`eventPermissionStatus(eventType)` - requires param `eventType`; either `reminder` or `event`. Checks for access to the users calendar events and reminders
+
+`bluetoothPermissionStatus()` - checks the authorization status of the `CBPeripheralManager` (for sharing data while backgrounded)
+
+`notificationPermissionStatus()` - checks if the user has authorized remote push notifications. Note: Apple only tells us if notifications are authorized or not, not the exact status. So this promise only returns `StatusUndetermined` or `StatusAuthorized`. You can determine if `StatusUndetermined` is actually `StatusRejected` by keeping track of whether or not you've already asked the user for permission.
 
 ##Setup
 
 ````
-npm install --save react-native-discovery
+npm install --save react-native-permissions
 ````
 
 ###iOS
-* Run open node_modules/react-native-discovery
-* Drag ReactNativeDiscovery.xcodeproj into your Libraries group
-
-###Android
-#####Step 1 - Update Gradle Settings
-
-```
-// file: android/settings.gradle
-...
-
-include ':react-native-discovery'
-project(':react-native-discovery').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-discovery/android')
-```
-#####Step 2 - Update Gradle Build
-
-```
-// file: android/app/build.gradle
-...
-
-dependencies {
-    ...
-    compile project(':react-native-discovery')
-}
-```
-#####Step 3 - Register React Package
-```
-...
-import com.joshblour.reactnativediscovery.ReactNativeDiscoveryPackage; // <--- import
-
-public class MainActivity extends ReactActivity {
-
-    ...
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-        return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new ReactNativeDiscoveryPackage(this) // <------ add the package
-        );
-    }
-
-    ...
-}
-```
+* Run open node_modules/react-native-permissions
+* Drag ReactNativePermissions.xcodeproj into the Libraries group of your app's Xcode project
+* Add libReactNativePermissions.a to `Build Phases -> Link Binary With Libraries.
