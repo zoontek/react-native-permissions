@@ -2,7 +2,7 @@
 Check user permissions (iOS only)
 
 ##What
-Some iOS features require the user grant permission before you can access them.
+Some iOS features require the user to grant permission before you can access them.
 
 This library lets you check the current status of those permissions. (Note: it _doesn't_ prompt the user, just silently checks the permission status)
 
@@ -13,7 +13,7 @@ The current supported permissions are:
 - Photos
 - Contacts
 - Event
-- Bluetooth
+- Bluetooth (Peripheral role. Don't use for Central only)
 - RemoteNotifications (Push Notifications)
 
 ####Example
@@ -25,13 +25,13 @@ const Permissions = require('react-native-permissions');
     Permissions.locationPermissionStatus()
     .then(response => {
       if (response == Permissions.StatusUndetermined) {
-        alert("Undetermined");
+        console.log("Undetermined");
       } else if (response == Permissions.StatusDenied) {
-        alert("Denied");
+        console.log("Denied");
       } else if (response == Permissions.StatusAuthorized) {
-        alert("Authorized");
+        console.log("Authorized");
       } else if (response == Permissions.StatusRestricted) {
-        alert("Restricted");
+        console.log("Restricted");
       }
     });
   }
@@ -53,9 +53,9 @@ As shown in the example, methods return a promise with the authorization status 
 
 `contactsPermissionStatus()` - checks for access to the user's address book
 
-`eventPermissionStatus(eventType)` - requires param `eventType`; either `reminder` or `event`. Checks for access to the users calendar events and reminders
+`eventPermissionStatus(eventType)` - requires param `eventType`; either `reminder` or `event`. Checks for access to the user's calendar events and reminders
 
-`bluetoothPermissionStatus()` - checks the authorization status of the `CBPeripheralManager` (for sharing data while backgrounded)
+`bluetoothPermissionStatus()` - checks the authorization status of the `CBPeripheralManager` (for sharing data while backgrounded). Note: _Don't_ use this if you're only using `CBCentralManager`
 
 `notificationPermissionStatus()` - checks if the user has authorized remote push notifications. Note: Apple only tells us if notifications are authorized or not, not the exact status. So this promise only returns `StatusUndetermined` or `StatusAuthorized`. You can determine if `StatusUndetermined` is actually `StatusRejected` by keeping track of whether or not you've already asked the user for permission.
 
