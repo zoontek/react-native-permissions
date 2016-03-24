@@ -11,4 +11,5 @@
 
 @interface ReactNativePermissions : NSObject <RCTBridgeModule>
 
+
 @end

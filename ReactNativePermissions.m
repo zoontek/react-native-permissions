@@ -12,6 +12,14 @@
 #import "RCTConvert.h"
 #import "RCTEventDispatcher.h"
 
+#import "RCTConvert+RNPermissionsStatus.h"
+
+#import <AddressBook/AddressBook.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <EventKit/EventKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface ReactNativePermissions()
 @end
@@ -31,35 +39,181 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
-RCT_REMAP_METHOD(start, start:(int)headingFilter resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    // Start heading updates.
-    if ([CLLocationManager headingAvailable]) {
-        if (!headingFilter)
-            headingFilter = 5;
-        
-        self.locManager.headingFilter = headingFilter;
-        [self.locManager startUpdatingHeading];
-        resolve(@YES);
-    } else {
-        resolve(@NO);
+- (NSDictionary *)constantsToExport
+{
+    return @{ @"StatusUndetermined" : @(RNPermissionsStatusUndetermined),
+              @"StatusDenied" : @(RNPermissionsStatusDenied),
+              @"StatusAuthorized" : @(RNPermissionsStatusAuthorized),
+              @"StatusRestricted" : @(RNPermissionsStatusRestricted)};
+};
+
+
+RCT_REMAP_METHOD(locationPermissionStatus, locationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = [CLLocationManager authorizationStatus];
+    switch (status) {
+        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case kCLAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case kCLAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
     }
 }
 
-RCT_EXPORT_METHOD(stop) {
-    [self.locManager stopUpdatingHeading];
+
+RCT_REMAP_METHOD(cameraPermissionStatus, cameraPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    switch (status) {
+        case AVAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case AVAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case AVAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
-    if (newHeading.headingAccuracy < 0)
-        return;
-    
-    // Use the true heading if it is valid.
-    CLLocationDirection heading = ((newHeading.trueHeading > 0) ?
-                                   newHeading.trueHeading : newHeading.magneticHeading);
-    
-    NSDictionary *headingEvent = @{@"heading": @(heading)};
-    
-    [self.bridge.eventDispatcher sendDeviceEventWithName:@"headingUpdated" body:headingEvent];
+RCT_REMAP_METHOD(microphonePermissionStatus, microphonePermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    switch (status) {
+        case AVAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case AVAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case AVAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+
 }
+
+RCT_REMAP_METHOD(photoPermissionStatus, photoPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
+{
+    int status = [ALAssetsLibrary authorizationStatus];
+    switch (status) {
+        case ALAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case ALAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case ALAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+}
+
+RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = ABAddressBookGetAuthorizationStatus();
+    switch (status) {
+        case kABAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case kABAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case kABAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+}
+
+
+RCT_REMAP_METHOD(eventPermissionStatus, eventPermission:(NSString *)eventString resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status;
+    if ([eventString isEqualToString:@"reminder"]) {
+        status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
+    } else if ([eventString isEqualToString:@"event"]) {
+        status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    } else {
+        NSError *error = [NSError errorWithDomain:@"invalidOption" code:-1 userInfo:NULL];
+        return reject(@"-1", @"Type must be 'reminder' or 'event'", error);
+    }
+    
+    switch (status) {
+        case EKAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case EKAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case EKAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+}
+
+
+
+RCT_REMAP_METHOD(bluetoothPermissionStatus, bluetoothPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = [CBPeripheralManager authorizationStatus];
+    
+    switch (status) {
+        case CBPeripheralManagerAuthorizationStatusAuthorized:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case CBPeripheralManagerAuthorizationStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case CBPeripheralManagerAuthorizationStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+    
+}
+
+//problem here is that we can only return Authorized or Undetermined
+RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+        // iOS8+
+        if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
+            return resolve(@(RNPermissionsStatusAuthorized));
+        }
+        else {
+            return resolve(@(RNPermissionsStatusUndetermined));
+        }
+    } else {
+        if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
+            return resolve(@(RNPermissionsStatusUndetermined));
+        }
+        else {
+            return resolve(@(RNPermissionsStatusAuthorized));
+        }
+    }
+
+}
+
 
 @end

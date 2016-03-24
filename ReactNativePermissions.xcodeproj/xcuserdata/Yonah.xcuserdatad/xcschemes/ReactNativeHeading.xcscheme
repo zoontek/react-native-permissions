@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9D23B34E1C767B80008B4819"
-               BuildableName = "libReactNativeHeading.a"
-               BlueprintName = "ReactNativeHeading"
-               ReferencedContainer = "container:ReactNativeHeading.xcodeproj">
+               BuildableName = "libReactNativePermissions.a"
+               BlueprintName = "ReactNativePermissions"
+               ReferencedContainer = "container:ReactNativePermissions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D23B34E1C767B80008B4819"
-            BuildableName = "libReactNativeHeading.a"
-            BlueprintName = "ReactNativeHeading"
-            ReferencedContainer = "container:ReactNativeHeading.xcodeproj">
+            BuildableName = "libReactNativePermissions.a"
+            BlueprintName = "ReactNativePermissions"
+            ReferencedContainer = "container:ReactNativePermissions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D23B34E1C767B80008B4819"
-            BuildableName = "libReactNativeHeading.a"
-            BlueprintName = "ReactNativeHeading"
-            ReferencedContainer = "container:ReactNativeHeading.xcodeproj">
+            BuildableName = "libReactNativePermissions.a"
+            BlueprintName = "ReactNativePermissions"
+            ReferencedContainer = "container:ReactNativePermissions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
