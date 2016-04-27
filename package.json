@@ -8,5 +8,7 @@
   "license": "MIT",
   "keywords": ["react-native", "react-component"],
   "main": "ReactNativePermissions",
-  "author": "Yonah Forst <yonaforst@hotmail.com>"
+  "author": "Yonah Forst <yonaforst@hotmail.com>",
+  "homepage": "https://github.com/joshblour/react-native-permissions",
+  "description": "Check user permissions in React Native"
 }
