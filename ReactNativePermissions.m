@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+@import Contacts;
+
 #import "ReactNativePermissions.h"
 
 #import "RCTBridge.h"
@@ -25,6 +27,11 @@
 @end
 
 @implementation ReactNativePermissions
+
++ (BOOL)useContactsFramework
+{
+    return [[CNContactStore alloc] init] != nil;
+}
 
 RCT_EXPORT_MODULE();
 @synthesize bridge = _bridge;
@@ -127,19 +134,38 @@ RCT_REMAP_METHOD(photoPermissionStatus, photoPermission:(RCTPromiseResolveBlock)
 
 RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    int status = ABAddressBookGetAuthorizationStatus();
-    switch (status) {
-        case kABAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case kABAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case kABAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
+    if ([ReactNativePermissions useContactsFramework])
+    {
+        int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+        switch (status) {
+            case CNAuthorizationStatusAuthorized:
+                return resolve(@(RNPermissionsStatusAuthorized));
+                
+            case CNAuthorizationStatusDenied:
+                return resolve(@(RNPermissionsStatusDenied));
+                
+            case CNAuthorizationStatusRestricted:
+                return resolve(@(RNPermissionsStatusRestricted));
+                
+            default:
+                return resolve(@(RNPermissionsStatusUndetermined));
+        }
+    }
+    else {
+        int status = ABAddressBookGetAuthorizationStatus();
+        switch (status) {
+            case kABAuthorizationStatusAuthorized:
+                return resolve(@(RNPermissionsStatusAuthorized));
+                
+            case kABAuthorizationStatusDenied:
+                return resolve(@(RNPermissionsStatusDenied));
+                
+            case kABAuthorizationStatusRestricted:
+                return resolve(@(RNPermissionsStatusRestricted));
+                
+            default:
+                return resolve(@(RNPermissionsStatusUndetermined));
+        }
     }
 }
 
