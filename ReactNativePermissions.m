@@ -47,6 +47,15 @@ RCT_EXPORT_MODULE();
               @"StatusRestricted" : @(RNPermissionsStatusRestricted)};
 };
 
+RCT_EXPORT_METHOD(openSettings)
+{
+    BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
+    if (canOpenSettings) {
+        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
 
 RCT_REMAP_METHOD(locationPermissionStatus, locationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
