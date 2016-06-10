@@ -59,6 +59,10 @@ As shown in the example, methods return a promise with the authorization status 
 
 `notificationPermissionStatus()` - checks if the user has authorized remote push notifications. Note: Apple only tells us if notifications are authorized or not, not the exact status. So this promise only returns `StatusUndetermined` or `StatusAuthorized`. You can determine if `StatusUndetermined` is actually `StatusRejected` by keeping track of whether or not you've already asked the user for permission.
 
+
+You also can open the Settings app.
+`openSettings()` - open the Settings app
+
 ##Setup
 
 ````
