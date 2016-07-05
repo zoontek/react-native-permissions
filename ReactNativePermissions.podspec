@@ -12,7 +12,8 @@ Pod::Spec.new do |s|
   s.author              = package['author']
   s.source              = { :git => 'https://github.com/yonahforst/react-native-permissions.git', :tag => s.version }
 
-  s.platform            = :ios, '8.0'
+  s.platform              = :ios, '9.0'
+  s.ios.deployment_target = '8.0'
 
   s.dependency 'React'
 
