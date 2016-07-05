@@ -23,15 +23,17 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
+@import Contacts;
+@import Photos;
+#endif
+
+
 @interface ReactNativePermissions()
 @end
 
 @implementation ReactNativePermissions
 
-+ (BOOL)useContactsFramework
-{
-    return [[CNContactStore alloc] init] != nil;
-}
 
 RCT_EXPORT_MODULE();
 @synthesize bridge = _bridge;
@@ -54,10 +56,19 @@ RCT_EXPORT_MODULE();
               @"StatusRestricted" : @(RNPermissionsStatusRestricted)};
 };
 
+
+- (BOOL)canOpenSettings {
+    return UIApplicationOpenSettingsURLString != nil;
+}
+
+RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve(@([self canOpenSettings]));
+}
+
 RCT_EXPORT_METHOD(openSettings)
 {
-    BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
-    if (canOpenSettings) {
+    if ([self canOpenSettings]) {
         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
         [[UIApplication sharedApplication] openURL:url];
     }
@@ -125,42 +136,22 @@ RCT_REMAP_METHOD(microphonePermissionStatus, microphonePermission:(RCTPromiseRes
 RCT_REMAP_METHOD(photoPermissionStatus, photoPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 {
-    int status = [ALAssetsLibrary authorizationStatus];
-    switch (status) {
-        case ALAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case ALAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case ALAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-}
-
-RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    if ([ReactNativePermissions useContactsFramework])
-    {
-        int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
+        int status = [PHPhotoLibrary authorizationStatus];
         switch (status) {
-            case CNAuthorizationStatusAuthorized:
+            case PHAuthorizationStatusAuthorized:
                 return resolve(@(RNPermissionsStatusAuthorized));
                 
-            case CNAuthorizationStatusDenied:
+            case PHAuthorizationStatusDenied:
                 return resolve(@(RNPermissionsStatusDenied));
                 
-            case CNAuthorizationStatusRestricted:
+            case PHAuthorizationStatusRestricted:
                 return resolve(@(RNPermissionsStatusRestricted));
                 
             default:
                 return resolve(@(RNPermissionsStatusUndetermined));
         }
-    }
-    else {
+    #else
         int status = ABAddressBookGetAuthorizationStatus();
         switch (status) {
             case kABAuthorizationStatusAuthorized:
@@ -175,7 +166,43 @@ RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolve
             default:
                 return resolve(@(RNPermissionsStatusUndetermined));
         }
-    }
+    #endif
+
+}
+
+RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
+        int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+        switch (status) {
+            case CNAuthorizationStatusAuthorized:
+                return resolve(@(RNPermissionsStatusAuthorized));
+                
+            case CNAuthorizationStatusDenied:
+                return resolve(@(RNPermissionsStatusDenied));
+                
+            case CNAuthorizationStatusRestricted:
+                return resolve(@(RNPermissionsStatusRestricted));
+                
+            default:
+                return resolve(@(RNPermissionsStatusUndetermined));
+        }
+    #else
+        int status = ABAddressBookGetAuthorizationStatus();
+        switch (status) {
+            case kABAuthorizationStatusAuthorized:
+                return resolve(@(RNPermissionsStatusAuthorized));
+                
+            case kABAuthorizationStatusDenied:
+                return resolve(@(RNPermissionsStatusDenied));
+                
+            case kABAuthorizationStatusRestricted:
+                return resolve(@(RNPermissionsStatusRestricted));
+                
+            default:
+                return resolve(@(RNPermissionsStatusUndetermined));
+        }
+    #endif
 }
 
 
@@ -240,14 +267,18 @@ RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromis
             return resolve(@(RNPermissionsStatusUndetermined));
         }
     } else {
-        if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
+        #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+            if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
+                return resolve(@(RNPermissionsStatusUndetermined));
+            }
+            else {
+                return resolve(@(RNPermissionsStatusAuthorized));
+            }
+        #else
             return resolve(@(RNPermissionsStatusUndetermined));
-        }
-        else {
-            return resolve(@(RNPermissionsStatusAuthorized));
-        }
-    }
+        #endif
 
+    }
 }
 
 
