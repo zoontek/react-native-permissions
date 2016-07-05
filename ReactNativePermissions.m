@@ -281,5 +281,24 @@ RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromis
     }
 }
 
+RCT_REMAP_METHOD(backgroundRefreshStatus, backgroundRefresh:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    int status = [[UIApplication sharedApplication] backgroundRefreshStatus];
+    
+    switch (status) {
+        case UIBackgroundRefreshStatusAvailable:
+            return resolve(@(RNPermissionsStatusAuthorized));
+            
+        case UIBackgroundRefreshStatusDenied:
+            return resolve(@(RNPermissionsStatusDenied));
+            
+        case UIBackgroundRefreshStatusRestricted:
+            return resolve(@(RNPermissionsStatusRestricted));
+            
+        default:
+            return resolve(@(RNPermissionsStatusUndetermined));
+    }
+    
+}
 
 @end
