@@ -57,7 +57,7 @@ As shown in the example, methods return a promise with the authorization status 
 
 `bluetoothPermissionStatus()` - checks the authorization status of the `CBPeripheralManager` (for sharing data while backgrounded). Note: _Don't_ use this if you're only using `CBCentralManager`
 
-`notificationPermissionStatus()` - checks if the user has authorized remote push notifications. Note: Apple only tells us if notifications are authorized or not, not the exact status. So this promise only returns `StatusUndetermined` or `StatusAuthorized`. You can determine if `StatusUndetermined` is actually `StatusRejected` by keeping track of whether or not you've already asked the user for permission.
+`notificationPermissionStatus()` - checks if the user has authorized remote push notifications. Note: iOS only tells us if the user has ever registered for notification, and which notifications are enabled. Therefore we cannot tell the difference between a user who has never been prompted for notification and a user who denied permission; both will return `StatusUndetermined`. You can determine if `StatusUndetermined` is actually `StatusDenied` by keeping track of whether or not you've already asked the user for permission. This promise *can* return `StatusDenied` if the user switched notifications off from the settings menu. Confusing, I know...
 
 `backgroundRefreshStatus()` - checks the authorization status of background refresh
 

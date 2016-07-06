@@ -255,13 +255,15 @@ RCT_REMAP_METHOD(bluetoothPermissionStatus, bluetoothPermission:(RCTPromiseResol
     
 }
 
-//problem here is that we can only return Authorized or Undetermined
+//problem here is that we can we can't know if the user was never prompted for permission, or if they were prompted and deneied
 RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
         // iOS8+
-        if ([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
-            return resolve(@(RNPermissionsStatusAuthorized));
+        BOOL isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+        BOOL isEnabled = [[[UIApplication sharedApplication] currentUserNotificationSettings] types] != UIUserNotificationTypeNone;
+        if (isRegistered || isEnabled) {
+            return resolve(@(isEnabled ? RNPermissionsStatusAuthorized : RNPermissionsStatusDenied));
         }
         else {
             return resolve(@(RNPermissionsStatusUndetermined));
@@ -277,7 +279,6 @@ RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromis
         #else
             return resolve(@(RNPermissionsStatusUndetermined));
         #endif
-
     }
 }
 
