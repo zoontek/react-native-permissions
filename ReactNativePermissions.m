@@ -16,18 +16,7 @@
 
 #import "RCTConvert+RNPermissionsStatus.h"
 
-#import <AddressBook/AddressBook.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <EventKit/EventKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <AVFoundation/AVFoundation.h>
-#import <CoreBluetooth/CoreBluetooth.h>
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
-@import Contacts;
-@import Photos;
-#endif
-
+#import "PermissionsChecker.h"
 
 @interface ReactNativePermissions()
 @end
@@ -57,249 +46,30 @@ RCT_EXPORT_MODULE();
 };
 
 
-- (BOOL)canOpenSettings {
-    return UIApplicationOpenSettingsURLString != nil;
+RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(@([PermissionsChecker canOpenSettings]));
+}
+RCT_EXPORT_METHOD(openSettings) {
+    [PermissionsChecker openSettings];
+}
+RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    SEL s = NSSelectorFromString([NSString stringWithFormat:@"%@PermissionStatus", permission]);
+    RNPermissionsStatus status = (RNPermissionsStatus)[PermissionsChecker performSelector:s];
+    resolve([self stringForStatus:status]);
 }
 
-RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    resolve(@([self canOpenSettings]));
-}
-
-RCT_EXPORT_METHOD(openSettings)
-{
-    if ([self canOpenSettings]) {
-        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-        [[UIApplication sharedApplication] openURL:url];
-    }
-}
-
-
-RCT_REMAP_METHOD(locationPermissionStatus, locationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status = [CLLocationManager authorizationStatus];
+- (NSString *)stringForStatus:(RNPermissionsStatus) status{
     switch (status) {
-        case kCLAuthorizationStatusAuthorizedAlways:
-        case kCLAuthorizationStatusAuthorizedWhenInUse:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case kCLAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case kCLAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
+        case RNPermissionsStatusAuthorized:
+            return @"authorized";
+        case RNPermissionsStatusDenied:
+            return @"denied";
+        case RNPermissionsStatusRestricted:
+            return @"restricted";
+        case RNPermissionsStatusUndetermined:
         default:
-            return resolve(@(RNPermissionsStatusUndetermined));
+            return @"undetermined";
     }
-}
-
-
-RCT_REMAP_METHOD(cameraPermissionStatus, cameraPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    switch (status) {
-        case AVAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case AVAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case AVAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-
-}
-
-RCT_REMAP_METHOD(microphonePermissionStatus, microphonePermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
-    switch (status) {
-        case AVAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case AVAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case AVAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-
-}
-
-RCT_REMAP_METHOD(photoPermissionStatus, photoPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-
-{
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
-        int status = [PHPhotoLibrary authorizationStatus];
-        switch (status) {
-            case PHAuthorizationStatusAuthorized:
-                return resolve(@(RNPermissionsStatusAuthorized));
-                
-            case PHAuthorizationStatusDenied:
-                return resolve(@(RNPermissionsStatusDenied));
-                
-            case PHAuthorizationStatusRestricted:
-                return resolve(@(RNPermissionsStatusRestricted));
-                
-            default:
-                return resolve(@(RNPermissionsStatusUndetermined));
-        }
-    #else
-        int status = ABAddressBookGetAuthorizationStatus();
-        switch (status) {
-            case kABAuthorizationStatusAuthorized:
-                return resolve(@(RNPermissionsStatusAuthorized));
-                
-            case kABAuthorizationStatusDenied:
-                return resolve(@(RNPermissionsStatusDenied));
-                
-            case kABAuthorizationStatusRestricted:
-                return resolve(@(RNPermissionsStatusRestricted));
-                
-            default:
-                return resolve(@(RNPermissionsStatusUndetermined));
-        }
-    #endif
-
-}
-
-RCT_REMAP_METHOD(contactsPermissionStatus, contactsPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
-        int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
-        switch (status) {
-            case CNAuthorizationStatusAuthorized:
-                return resolve(@(RNPermissionsStatusAuthorized));
-                
-            case CNAuthorizationStatusDenied:
-                return resolve(@(RNPermissionsStatusDenied));
-                
-            case CNAuthorizationStatusRestricted:
-                return resolve(@(RNPermissionsStatusRestricted));
-                
-            default:
-                return resolve(@(RNPermissionsStatusUndetermined));
-        }
-    #else
-        int status = ABAddressBookGetAuthorizationStatus();
-        switch (status) {
-            case kABAuthorizationStatusAuthorized:
-                return resolve(@(RNPermissionsStatusAuthorized));
-                
-            case kABAuthorizationStatusDenied:
-                return resolve(@(RNPermissionsStatusDenied));
-                
-            case kABAuthorizationStatusRestricted:
-                return resolve(@(RNPermissionsStatusRestricted));
-                
-            default:
-                return resolve(@(RNPermissionsStatusUndetermined));
-        }
-    #endif
-}
-
-
-RCT_REMAP_METHOD(eventPermissionStatus, eventPermission:(NSString *)eventString resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status;
-    if ([eventString isEqualToString:@"reminder"]) {
-        status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
-    } else if ([eventString isEqualToString:@"event"]) {
-        status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-    } else {
-        NSError *error = [NSError errorWithDomain:@"invalidOption" code:-1 userInfo:NULL];
-        return reject(@"-1", @"Type must be 'reminder' or 'event'", error);
-    }
-    
-    switch (status) {
-        case EKAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case EKAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case EKAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-}
-
-
-
-RCT_REMAP_METHOD(bluetoothPermissionStatus, bluetoothPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status = [CBPeripheralManager authorizationStatus];
-    
-    switch (status) {
-        case CBPeripheralManagerAuthorizationStatusAuthorized:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case CBPeripheralManagerAuthorizationStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case CBPeripheralManagerAuthorizationStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-    
-}
-
-//problem here is that we can we can't know if the user was never prompted for permission, or if they were prompted and deneied
-RCT_REMAP_METHOD(notificationPermissionStatus, notificationPermission:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-        // iOS8+
-        BOOL isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-        BOOL isEnabled = [[[UIApplication sharedApplication] currentUserNotificationSettings] types] != UIUserNotificationTypeNone;
-        if (isRegistered || isEnabled) {
-            return resolve(@(isEnabled ? RNPermissionsStatusAuthorized : RNPermissionsStatusDenied));
-        }
-        else {
-            return resolve(@(RNPermissionsStatusUndetermined));
-        }
-    } else {
-        #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
-            if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
-                return resolve(@(RNPermissionsStatusUndetermined));
-            }
-            else {
-                return resolve(@(RNPermissionsStatusAuthorized));
-            }
-        #else
-            return resolve(@(RNPermissionsStatusUndetermined));
-        #endif
-    }
-}
-
-RCT_REMAP_METHOD(backgroundRefreshStatus, backgroundRefresh:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    int status = [[UIApplication sharedApplication] backgroundRefreshStatus];
-    
-    switch (status) {
-        case UIBackgroundRefreshStatusAvailable:
-            return resolve(@(RNPermissionsStatusAuthorized));
-            
-        case UIBackgroundRefreshStatusDenied:
-            return resolve(@(RNPermissionsStatusDenied));
-            
-        case UIBackgroundRefreshStatusRestricted:
-            return resolve(@(RNPermissionsStatusRestricted));
-            
-        default:
-            return resolve(@(RNPermissionsStatusUndetermined));
-    }
-    
 }
 
 @end
