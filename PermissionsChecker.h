@@ -11,15 +11,15 @@
 
 + (BOOL)canOpenSettings;
 + (void)openSettings;
-+ (RNPermissionsStatus)locationPermissionStatus;
-+ (RNPermissionsStatus)cameraPermissionStatus;
-+ (RNPermissionsStatus)microphonePermissionStatus;
-+ (RNPermissionsStatus)photoPermissionStatus;
-+ (RNPermissionsStatus)contactsPermissionStatus;
-+ (RNPermissionsStatus)eventPermissionStatus;
-+ (RNPermissionsStatus)reminderPermissionStatus;
-+ (RNPermissionsStatus)bluetoothPermissionStatus;
-+ (RNPermissionsStatus)notificationPermissionStatus;
-+ (RNPermissionsStatus)backgroundRefreshPermissionStatus;
++ (RNPermissionsStatus)location;
++ (RNPermissionsStatus)camera;
++ (RNPermissionsStatus)microphone;
++ (RNPermissionsStatus)photo;
++ (RNPermissionsStatus)contacts;
++ (RNPermissionsStatus)event;
++ (RNPermissionsStatus)reminder;
++ (RNPermissionsStatus)bluetooth;
++ (RNPermissionsStatus)notification;
++ (RNPermissionsStatus)backgroundRefresh;
 
 @end

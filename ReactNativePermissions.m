@@ -17,6 +17,7 @@
 #import "RCTConvert+RNPermissionsStatus.h"
 
 #import "PermissionsChecker.h"
+#import "PermissionsAsker.h"
 
 @interface ReactNativePermissions()
 @end
@@ -39,23 +40,64 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport
 {
-    return @{ @"StatusUndetermined" : @(RNPermissionsStatusUndetermined),
-              @"StatusDenied" : @(RNPermissionsStatusDenied),
-              @"StatusAuthorized" : @(RNPermissionsStatusAuthorized),
-              @"StatusRestricted" : @(RNPermissionsStatusRestricted)};
+    return @{ @"PermissionTypes" : @[
+                      @"location",
+                      @"camera",
+                      @"microphone",
+                      @"photo",
+                      @"contacts",
+                      @"event",
+                      @"reminder",
+                      @"bluetooth",
+                      @"notification",
+                      @"backgroundRefresh",
+                      ]};
 };
 
 
-RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
     resolve(@([PermissionsChecker canOpenSettings]));
 }
-RCT_EXPORT_METHOD(openSettings) {
+
+RCT_EXPORT_METHOD(openSettings)
+{
     [PermissionsChecker openSettings];
 }
-RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    SEL s = NSSelectorFromString([NSString stringWithFormat:@"%@PermissionStatus", permission]);
+
+RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    SEL s = NSSelectorFromString(permission);
     RNPermissionsStatus status = (RNPermissionsStatus)[PermissionsChecker performSelector:s];
     resolve([self stringForStatus:status]);
+}
+
+RCT_EXPORT_METHOD(requestLocation:(NSString *)type)
+{
+    [[PermissionsAsker sharedInstance] location:type];
+}
+
+RCT_REMAP_METHOD(requestNotification, requestNotification:(NSArray *)typeStrings resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    UIUserNotificationType types;
+    if ([typeStrings containsObject:@"alert"])
+        types = types | UIUserNotificationTypeAlert;
+    
+    if ([typeStrings containsObject:@"badge"])
+        types = types | UIUserNotificationTypeBadge;
+    
+    if ([typeStrings containsObject:@"sound"])
+        types = types | UIUserNotificationTypeSound;
+
+    [[PermissionsAsker sharedInstance] notification:types completionHandler:^(RNPermissionsStatus status) {
+        resolve([self stringForStatus:status]);
+    }];
+}
+
+
+
+RCT_EXPORT_METHOD(requestBluetooth) {
+    [[PermissionsAsker sharedInstance] bluetooth];
 }
 
 - (NSString *)stringForStatus:(RNPermissionsStatus) status{

@@ -40,6 +40,17 @@ class ReactNativePermissions {
 		}
 	}
 
+	requestPermission(permission, type) {
+		switch (permission) {
+			case 'location':
+				return RNPermissions.requestLocation(type)
+			case 'notification':
+				return RNPermissions.requestNotification(type)
+			case 'bluetooth':
+				return RNPermissions.requestBluetooth();
+		}
+	}
+
 	//recursive funciton to chain a promises for a list of permissions
 	checkMultiplePermissions(permissions) {
 		let i = permissions.length

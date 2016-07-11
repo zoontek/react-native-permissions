@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D6F44381D2E604500BF17F4 /* PermissionsAsker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6F44371D2E604500BF17F4 /* PermissionsAsker.m */; };
 		9D8FB2701D2D68C500AAFC55 /* PermissionsChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8FB26F1D2D68C500AAFC55 /* PermissionsChecker.m */; };
 		9DE8D2821CA3188D009CE8CC /* ReactNativePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE8D2811CA3188D009CE8CC /* ReactNativePermissions.m */; };
 		9DE8D28B1CA31E95009CE8CC /* RCTConvert+RNPermissionsStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DE8D28A1CA31E95009CE8CC /* RCTConvert+RNPermissionsStatus.m */; };
@@ -26,6 +27,8 @@
 
 /* Begin PBXFileReference section */
 		9D23B34F1C767B80008B4819 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativePermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D6F44361D2E604500BF17F4 /* PermissionsAsker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionsAsker.h; sourceTree = SOURCE_ROOT; };
+		9D6F44371D2E604500BF17F4 /* PermissionsAsker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionsAsker.m; sourceTree = SOURCE_ROOT; };
 		9D8FB26E1D2D68C500AAFC55 /* PermissionsChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionsChecker.h; sourceTree = SOURCE_ROOT; };
 		9D8FB26F1D2D68C500AAFC55 /* PermissionsChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionsChecker.m; sourceTree = SOURCE_ROOT; };
 		9DE8D2801CA31888009CE8CC /* ReactNativePermissions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactNativePermissions.h; sourceTree = SOURCE_ROOT; };
@@ -68,6 +71,8 @@
 				9DE8D28A1CA31E95009CE8CC /* RCTConvert+RNPermissionsStatus.m */,
 				9D8FB26E1D2D68C500AAFC55 /* PermissionsChecker.h */,
 				9D8FB26F1D2D68C500AAFC55 /* PermissionsChecker.m */,
+				9D6F44361D2E604500BF17F4 /* PermissionsAsker.h */,
+				9D6F44371D2E604500BF17F4 /* PermissionsAsker.m */,
 				9DE8D2801CA31888009CE8CC /* ReactNativePermissions.h */,
 				9DE8D2811CA3188D009CE8CC /* ReactNativePermissions.m */,
 			);
@@ -133,6 +138,7 @@
 				9DE8D28B1CA31E95009CE8CC /* RCTConvert+RNPermissionsStatus.m in Sources */,
 				9D8FB2701D2D68C500AAFC55 /* PermissionsChecker.m in Sources */,
 				9DE8D2821CA3188D009CE8CC /* ReactNativePermissions.m in Sources */,
+				9D6F44381D2E604500BF17F4 /* PermissionsAsker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,7 +42,7 @@
 }
 
 
-+ (RNPermissionsStatus)locationPermissionStatus
++ (RNPermissionsStatus)location
 {
     int status = [CLLocationManager authorizationStatus];
     switch (status) {
@@ -61,7 +61,7 @@
 
 
 
-+ (RNPermissionsStatus)cameraPermissionStatus
++ (RNPermissionsStatus)camera
 {
     int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     switch (status) {
@@ -76,7 +76,7 @@
     }
 }
 
-+ (RNPermissionsStatus)microphonePermissionStatus
++ (RNPermissionsStatus)microphone
 {
     int status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     switch (status) {
@@ -91,7 +91,7 @@
     }
 }
 
-+ (RNPermissionsStatus)photoPermissionStatus
++ (RNPermissionsStatus)photo
 {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
     int status = [PHPhotoLibrary authorizationStatus];
@@ -121,7 +121,7 @@
 }
 
 
-+ (RNPermissionsStatus)contactsPermissionStatus
++ (RNPermissionsStatus)contacts
 {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
     int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
@@ -151,7 +151,7 @@
 }
 
 
-+ (RNPermissionsStatus)eventPermissionStatus
++ (RNPermissionsStatus)event
 {
     int status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
     switch (status) {
@@ -166,7 +166,7 @@
     }
 }
 
-+ (RNPermissionsStatus)reminderPermissionStatus
++ (RNPermissionsStatus)reminder
 {
     int status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder];
     switch (status) {
@@ -182,7 +182,7 @@
 }
 
 
-+ (RNPermissionsStatus)bluetoothPermissionStatus
++ (RNPermissionsStatus)bluetooth
 {
     int status = [CBPeripheralManager authorizationStatus];
     switch (status) {
@@ -198,34 +198,35 @@
 }
 
 //problem here is that we can only return Authorized or Undetermined
-+ (RNPermissionsStatus)notificationPermissionStatus
++ (RNPermissionsStatus)notification
 {
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-        // iOS8+
-        BOOL isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-        BOOL isEnabled = [[[UIApplication sharedApplication] currentUserNotificationSettings] types] != UIUserNotificationTypeNone;
-        if (isRegistered || isEnabled) {
-            return isEnabled ? RNPermissionsStatusAuthorized : RNPermissionsStatusDenied;
-        }
-        else {
-            return RNPermissionsStatusUndetermined;
+    BOOL didAskForPermission = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidAskForNotifications"];
+
+    if (didAskForPermission) {
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+            // iOS8+
+            BOOL isRegistered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+            BOOL isEnabled = [[[UIApplication sharedApplication] currentUserNotificationSettings] types] != UIUserNotificationTypeNone;
+            if (isRegistered || isEnabled) {
+                return isEnabled ? RNPermissionsStatusAuthorized : RNPermissionsStatusDenied;
+            }
+            else {
+                return RNPermissionsStatusDenied;
+            }
+        } else {
+            if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
+                return RNPermissionsStatusDenied;
+            }
+            else {
+                return RNPermissionsStatusAuthorized;
+            }
         }
     } else {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
-        if ([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
-            return RNPermissionsStatusUndetermined;
-        }
-        else {
-            return RNPermissionsStatusAuthorized;
-        }
-#else
         return RNPermissionsStatusUndetermined;
-#endif
-        
     }
 }
 
-+ (RNPermissionsStatus)backgroundRefreshPermissionStatus
++ (RNPermissionsStatus)backgroundRefresh
 {
     int status = [[UIApplication sharedApplication] backgroundRefreshStatus];
     switch (status) {
