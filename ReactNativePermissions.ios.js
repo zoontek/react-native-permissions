@@ -3,8 +3,36 @@
 var React = require('react-native');
 var RNPermissions = React.NativeModules.ReactNativePermissions;
 
+const RNPTypes = [
+	'location',
+	'camera',
+	'microphone',
+	'photo',
+	'contacts',
+	'event',
+	'reminder',
+	'bluetooth',
+	'notification',
+	'backgroundRefresh', 
+]
 
 class ReactNativePermissions {
+	constructor() {
+		//legacy support
+		this.StatusUndetermined = 'undetermined'
+		this.StatusDenied = 'denied'
+		this.StatusAuthorized = 'authorized'
+		this.StatusRestricted = 'restricted'
+
+		RNPTypes.forEach(type => {
+			let methodName = `${type}PermissionStatus`
+			this[methodName] = p => {
+				console.warn(`ReactNativePermissions: ${methodName} is depricated. Use getPermissionStatus('${type}') instead.`)
+				return this.getPermissionStatus(p == 'reminder' ? p : type)
+			}
+		})
+	}
+
 	canOpenSettings() {
 		return RNPermissions.canOpenSettings()
 	}
@@ -14,11 +42,11 @@ class ReactNativePermissions {
 	}
 
 	getPermissionTypes() {
-		return RNPermissions.PermissionTypes;
+		return RNPTypes;
 	}
 
 	getPermissionStatus(permission) {
-		if (RNPermissions.PermissionTypes.includes(permission)) {
+		if (RNPTypes.includes(permission)) {
 			return RNPermissions.getPermissionStatus(permission)
 		} else {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type`)
@@ -28,7 +56,7 @@ class ReactNativePermissions {
 	requestPermission(permission, type) {
 		switch (permission) {
 			case "location":
-				return RNPermissions.requestLocation(type)
+				return RNPermissions.requestLocation(type || 'always')
 			case "camera":
 				return RNPermissions.requestCamera();
 			case "microphone":
@@ -44,7 +72,7 @@ class ReactNativePermissions {
 			case "bluetooth":
 				return RNPermissions.requestBluetooth();
 			case "notification":
-				return RNPermissions.requestNotification(type)
+				return RNPermissions.requestNotification(type || ['alert', 'badge', 'sound'])
 			case "backgroundRefresh":
 				return Promise.reject('You cannot request backgroundRefresh')
 			default:
@@ -78,4 +106,4 @@ class ReactNativePermissions {
 	}
 }
 
-export default new ReactNativePermissions();
+export default new ReactNativePermissions()
