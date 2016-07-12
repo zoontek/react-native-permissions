@@ -13,7 +13,7 @@ The current supported permissions are:
 - Bluetooth (Peripheral role. Don't use for Central only)
 - Background Refresh
 
-####General Usage
+##General Usage
 ```js
 const Permissions = require('react-native-permissions');
 
@@ -70,7 +70,7 @@ const Permissions = require('react-native-permissions');
 //...
 ```
 
-####API
+##API
 
 _Permission statuses_ - `authorized`, `denied`, `restricted`, or `undetermined`
 
@@ -112,7 +112,7 @@ Note: Permission type `bluetooth` represents the status of the `CBPeripheralMana
 npm install --save react-native-permissions
 ````
 
-###iOS
+##iOS
 * Run open node_modules/react-native-permissions
 * Drag ReactNativePermissions.xcodeproj into the Libraries group of your app's Xcode project
 * Add libReactNativePermissions.a to `Build Phases -> Link Binary With Libraries.
