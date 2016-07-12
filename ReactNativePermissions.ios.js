@@ -3,25 +3,6 @@
 var React = require('react-native');
 var RNPermissions = React.NativeModules.ReactNativePermissions;
 
-const permissionTypes = [
-	'location',
-	'camera',
-	'microphone',
-	'photo',
-	'contacts',
-	'event',
-	'reminder',
-	'bluetooth',
-	'notification',
-	'backgroundRefresh',
-]
-
-const permissionStatus = [
-	'undetermined',
-	'denied',
-	'authorized',
-	'restricted'
-]
 
 class ReactNativePermissions {
 	canOpenSettings() {
@@ -32,8 +13,12 @@ class ReactNativePermissions {
 		return RNPermissions.openSettings()
 	}
 
+	getPermissionTypes() {
+		return RNPermissions.PermissionTypes;
+	}
+
 	getPermissionStatus(permission) {
-		if (permissionTypes.includes(permission)) {
+		if (RNPermissions.PermissionTypes.includes(permission)) {
 			return RNPermissions.getPermissionStatus(permission)
 		} else {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type`)
@@ -42,12 +27,28 @@ class ReactNativePermissions {
 
 	requestPermission(permission, type) {
 		switch (permission) {
-			case 'location':
+			case "location":
 				return RNPermissions.requestLocation(type)
-			case 'notification':
-				return RNPermissions.requestNotification(type)
-			case 'bluetooth':
+			case "camera":
+				return RNPermissions.requestCamera();
+			case "microphone":
+				return RNPermissions.requestMicrophone();
+			case "photo":
+				return RNPermissions.requestPhoto();
+			case "contacts":
+				return RNPermissions.requestContacts();
+			case "event":
+				return RNPermissions.requestEvent();
+			case "reminder":
+				return RNPermissions.requestReminder();
+			case "bluetooth":
 				return RNPermissions.requestBluetooth();
+			case "notification":
+				return RNPermissions.requestNotification(type)
+			case "backgroundRefresh":
+				return Promise.reject('You cannot request backgroundRefresh')
+			default:
+				return Promise.reject('invalid type: ' + type)
 		}
 	}
 
