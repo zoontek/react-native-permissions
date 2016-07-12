@@ -1,12 +1,12 @@
 {
   "name": "react-native-permissions",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/joshblour/react-native-permissions.git"
   },
   "license": "MIT",
-  "keywords": ["react-native", "react-component"],
+  "keywords": ["react-native", "react-permissions", "permissions" ],
   "main": "ReactNativePermissions",
   "author": "Yonah Forst <yonaforst@hotmail.com>",
   "homepage": "https://github.com/joshblour/react-native-permissions",
