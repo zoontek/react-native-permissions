@@ -106,4 +106,4 @@ class ReactNativePermissions {
 	}
 }
 
-export default new ReactNativePermissions()
+module.exports = new ReactNativePermissions()
