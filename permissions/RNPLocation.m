@@ -41,6 +41,7 @@
         
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
+            
         if ([type isEqualToString:@"always"]) {
             [self.locationManager requestAlwaysAuthorization];
         } else {
@@ -51,18 +52,22 @@
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (self.locationManager) {
-        self.locationManager.delegate = nil;
-        self.locationManager = nil;
-    }
-    
-    if (self.completionHandler) {
-        //for some reason, checking permission right away returns denied. need to wait a tiny bit
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            self.completionHandler([RNPLocation getStatus]);
-            self.completionHandler = nil;
-        });
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status != kCLAuthorizationStatusNotDetermined) {
+        if (self.locationManager) {
+            self.locationManager.delegate = nil;
+            self.locationManager = nil;
+        }
+
+        if (self.completionHandler) {
+            //for some reason, checking permission right away returns denied. need to wait a tiny bit
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                self.completionHandler([RNPLocation getStatus]);
+                self.completionHandler = nil;
+            });
+        }
     }
 }
+
 @end
