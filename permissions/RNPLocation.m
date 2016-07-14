@@ -37,18 +37,16 @@
 {
     NSString *status = [RNPLocation getStatus];
     if (status == RNPStatusUndetermined) {
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            self.completionHandler = completionHandler;
+        self.completionHandler = completionHandler;
+        
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
             
-            self.locationManager = [[CLLocationManager alloc] init];
-            self.locationManager.delegate = self;
-                
-            if ([type isEqualToString:@"always"]) {
-                [self.locationManager requestAlwaysAuthorization];
-            } else {
-                [self.locationManager requestWhenInUseAuthorization];
-            }
-        });
+        if ([type isEqualToString:@"always"]) {
+            [self.locationManager requestAlwaysAuthorization];
+        } else {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     } else {
         completionHandler(status);
     }
