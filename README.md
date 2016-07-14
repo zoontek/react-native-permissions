@@ -85,15 +85,15 @@ _Permission types_ - `location`, `camera`, `microphone`, `photo`, `contacts`, `e
 | `openSettings` | *none* | - Switches the user to the settings page of your app (iOS 8.0 and later)  |
 | `canOpenSettings` | *none* | - Returns a boolean indicating if the device supports switching to the settings page |
 
-Note: Permission type `bluetooth` represents the status of the `CBPeripheralManager` . Note: Don't use this if you're only using `CBCentralManager`
+Note: Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if you're only using `CBCentralManager`
 
-#####Special cases
+###Special cases
 
 `requestPermission` also accepts a second parameter for types `location` and `notification`.
 - `location`: the second parameter is a string, either `always` or `whenInUse`(default).
 - `notification`: the second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three)
-*_example_*
 ```js
+///example
     Permissions.requestPermission('location', 'always')
       .then(response => {
         this.setState({ locationPermission: response })
