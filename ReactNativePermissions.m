@@ -45,20 +45,12 @@ RCT_EXPORT_MODULE();
     return self;
 }
 
-- (NSDictionary *)constantsToExport
-{
-    return @{ @"PermissionTypes" : @[ @"location",
-                                      @"camera",
-                                      @"microphone",
-                                      @"photo",
-                                      @"contacts",
-                                      @"event",
-                                      @"reminder",
-                                      @"bluetooth",
-                                      @"notification",
-                                      @"backgroundRefresh" ]
-              };
-};
+/**
+ * run on the main queue.
+ */
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
 
 
 RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
