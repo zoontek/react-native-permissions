@@ -13,7 +13,7 @@ const RNPTypes = [
 	'reminder',
 	'bluetooth',
 	'notification',
-	'backgroundRefresh', 
+	'backgroundRefresh',
 ]
 
 class ReactNativePermissions {
@@ -45,8 +45,8 @@ class ReactNativePermissions {
 		return RNPTypes;
 	}
 
-	getPermissionStatus(permission) {
-		if (RNPTypes.includes(permission)) {
+        getPermissionStatus(permission) {
+		if (permission in RNPTypes) {
 			return RNPermissions.getPermissionStatus(permission)
 		} else {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type`)
@@ -88,7 +88,7 @@ class ReactNativePermissions {
 		function processNext() {
 			i--
 			let p = permissions[i]
-			
+
 			if (!p) {
 				return obj
 			}
