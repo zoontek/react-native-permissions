@@ -109,17 +109,52 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type resolve:
     resolve(status);
 }
 
-RCT_REMAP_METHOD(requestLocation, requestLocation:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    NSString *status;
+    
+    switch (type) {
+        case RNPTypeLocation:
+            return [self requestLocation:json resolve:resolve];
+        case RNPTypeCamera:
+            return [RNPAudioVideo request:@"video" completionHandler:resolve];
+        case RNPTypeMicrophone:
+            return [RNPAudioVideo request:@"audio" completionHandler:resolve];
+        case RNPTypePhoto:
+            return [RNPPhoto request:resolve];
+        case RNPTypeContacts:
+            return [RNPContacts request:resolve];
+        case RNPTypeEvent:
+            return [RNPEvent request:@"event" completionHandler:resolve];
+        case RNPTypeReminder:
+            return [RNPEvent request:@"reminder" completionHandler:resolve];
+        case RNPTypeBluetooth:
+            return [self requestBluetooth:resolve];
+        case RNPTypeNotification:
+            return [self requestNotification:json resolve:resolve];
+        default:
+            break;
+    }
+    
+
+}
+
+
+- (void) requestLocation:(id)json resolve:(RCTPromiseResolveBlock)resolve
 {
     if (self.locationMgr == nil) {
         self.locationMgr = [[RNPLocation alloc] init];
     }
     
+    NSString *type = [RCTConvert NSString:json];
+    
     [self.locationMgr request:type completionHandler:resolve];
 }
 
-RCT_REMAP_METHOD(requestNotification, requestNotification:(NSArray *)typeStrings resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+- (void) requestNotification:(id)json resolve:(RCTPromiseResolveBlock)resolve
 {
+    NSArray *typeStrings = [RCTConvert NSArray:json];
+    
     UIUserNotificationType types;
     if ([typeStrings containsObject:@"alert"])
         types = types | UIUserNotificationTypeAlert;
@@ -140,7 +175,7 @@ RCT_REMAP_METHOD(requestNotification, requestNotification:(NSArray *)typeStrings
 }
 
 
-RCT_REMAP_METHOD(requestBluetooth, requestBluetooth:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+- (void) requestBluetooth:(RCTPromiseResolveBlock)resolve
 {
     if (self.bluetoothMgr == nil) {
         self.bluetoothMgr = [[RNPBluetooth alloc] init];
@@ -148,38 +183,6 @@ RCT_REMAP_METHOD(requestBluetooth, requestBluetooth:(RCTPromiseResolveBlock)reso
     
     [self.bluetoothMgr request:resolve];
 }
-
-RCT_REMAP_METHOD(requestCamera, requestCamera:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPAudioVideo request:@"video" completionHandler:resolve];
-}
-
-RCT_REMAP_METHOD(requestMicrophone, requestMicrophone:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPAudioVideo request:@"audio" completionHandler:resolve];
-}
-
-RCT_REMAP_METHOD(requestEvent, requestEvents:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPEvent request:@"event" completionHandler:resolve];
-}
-
-RCT_REMAP_METHOD(requestReminder, requestReminders:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPEvent request:@"reminder" completionHandler:resolve];
-}
-
-RCT_REMAP_METHOD(requestPhoto, requestPhoto:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPPhoto request:resolve];
-}
-
-RCT_REMAP_METHOD(requestContacts, requestContacts:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    [RNPContacts request:resolve];
-}
-
-
 
 
 

@@ -1,20 +1,31 @@
 'use strict';
 
-var React = require('react-native');
-var RNPermissions = React.NativeModules.ReactNativePermissions;
+var ReactNative = require('react-native')
+var Platform = ReactNative.Platform
+var RNPermissions = ReactNative.NativeModules.ReactNativePermissions;
 
-const RNPTypes = [
-	'location',
-	'camera',
-	'microphone',
-	'photo',
-	'contacts',
-	'event',
-	'reminder',
-	'bluetooth',
-	'notification',
-	'backgroundRefresh', 
-]
+const RNPTypes = {
+	ios: [
+		'location',
+		'camera',
+		'microphone',
+		'photo',
+		'contacts',
+		'event',
+		'reminder',
+		'bluetooth',
+		'notification',
+		'backgroundRefresh', 
+	],
+	android: [
+		'location',
+		'camera',
+		'microphone',
+		'contacts',
+		'event',
+		'photos',
+	]
+}
 
 class ReactNativePermissions {
 	constructor() {
@@ -24,7 +35,7 @@ class ReactNativePermissions {
 		this.StatusAuthorized = 'authorized'
 		this.StatusRestricted = 'restricted'
 
-		RNPTypes.forEach(type => {
+		this.getPermissionTypes().forEach(type => {
 			let methodName = `${type}PermissionStatus`
 			this[methodName] = p => {
 				console.warn(`ReactNativePermissions: ${methodName} is depricated. Use getPermissionStatus('${type}') instead.`)
@@ -42,42 +53,31 @@ class ReactNativePermissions {
 	}
 
 	getPermissionTypes() {
-		return RNPTypes;
+		return RNPTypes[Platform.OS];
 	}
 
 	getPermissionStatus(permission) {
-		if (RNPTypes.includes(permission)) {
+		if (this.getPermissionTypes().includes(permission)) {
 			return RNPermissions.getPermissionStatus(permission)
 		} else {
-			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type`)
+			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		}
 	}
 
 	requestPermission(permission, type) {
-		switch (permission) {
-			case "location":
-				return RNPermissions.requestLocation(type || 'always')
-			case "camera":
-				return RNPermissions.requestCamera();
-			case "microphone":
-				return RNPermissions.requestMicrophone();
-			case "photo":
-				return RNPermissions.requestPhoto();
-			case "contacts":
-				return RNPermissions.requestContacts();
-			case "event":
-				return RNPermissions.requestEvent();
-			case "reminder":
-				return RNPermissions.requestReminder();
-			case "bluetooth":
-				return RNPermissions.requestBluetooth();
-			case "notification":
-				return RNPermissions.requestNotification(type || ['alert', 'badge', 'sound'])
-			case "backgroundRefresh":
-				return Promise.reject('You cannot request backgroundRefresh')
-			default:
-				return Promise.reject('invalid type: ' + type)
+		let options; 
+
+		if (!this.getPermissionTypes().includes(permission)) {
+			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
+		} else if (permission == 'backgroundRefresh'){
+			return Promise.reject('You cannot request backgroundRefresh')
+		} else if (permission == 'location') {
+			options = type || 'always'
+		} else if (permission == 'notification') {
+			options = type || ['alert', 'badge', 'sound']
 		}
+
+		return RNPermissions.requestPermission(permission, options)
 	}
 
 	//recursive funciton to chain a promises for a list of permissions

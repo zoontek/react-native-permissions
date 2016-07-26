@@ -2,16 +2,16 @@
 Request user permissions from React Native (iOS only - android coming soon)
 
 The current supported permissions are:
-- Push Notifications
 - Location
 - Camera
 - Microhone
 - Photos
 - Contacts
 - Events
-- Reminders
-- Bluetooth (Peripheral role. Don't use for Central only)
-- Background Refresh
+- Reminders *(iOS only)*
+- Bluetooth *(iOS only)*
+- Push Notifications *(iOS only)*
+- Background Refresh *(iOS only)*
 
 ##General Usage
 ```js
@@ -72,10 +72,32 @@ const Permissions = require('react-native-permissions');
 
 ##API
 
-_Permission statuses_ - `authorized`, `denied`, `restricted`, or `undetermined`
+###Permission statuses
+Promises resolve into one of these statuses
 
-_Permission types_ - `location`, `camera`, `microphone`, `photo`, `contacts`, `event`, `reminder`, `bluetooth`, `notification`, or `backgroundRefresh`
+| Return value | Notes|
+|---|---|
+|`authorized`| user has authorized this permission |
+|`denied`| user has denied permissions at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
+|`restricted`| iOS only|
+|`undetermined`| user has not yet been prompted with a permission dialog |
 
+###Supported permission types
+
+| Name | iOS | Android |
+|---|---|---|
+|`location`| ✔️ | ✔ |
+|`camera`| ✔️ | ✔ |
+|`microphone`| ✔️ | ✔ |
+|`photo`| ✔️ | ✔ |
+|`contacts`| ✔️ | ✔ |
+|`event`| ✔️ | ✔ |
+|`bluetooth`| ✔️ | ❌ |
+|`reminder`| ✔️ | ❌ |
+|`notification`| ✔️ | ❌ |
+|`backgroundRefresh`| ✔️ | ❌ |
+
+###Methods
 | Method Name | Arguments | Notes
 |---|---|---|
 | `getPermissionStatus` | `type` | - Returns a promise with the permission status. Note: for type `location`, iOS `AuthorizedAlways` and `AuthorizedWhenInUse` both return `authorized` |
@@ -85,9 +107,8 @@ _Permission types_ - `location`, `camera`, `microphone`, `photo`, `contacts`, `e
 | `openSettings` | *none* | - Switches the user to the settings page of your app (iOS 8.0 and later)  |
 | `canOpenSettings` | *none* | - Returns a boolean indicating if the device supports switching to the settings page |
 
-Note: Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if you're only using `CBCentralManager`
-
-###Special cases
+###iOS Notes
+Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if only need `CBCentralManager`
 
 `requestPermission` also accepts a second parameter for types `location` and `notification`.
 - `location`: the second parameter is a string, either `always` or `whenInUse`(default).
@@ -105,14 +126,73 @@ Note: Permission type `bluetooth` represents the status of the `CBPeripheralMana
       })
 ```
 
+###Android Notes
+All required permissions also need to be included in the Manifest before they can be requested. Otherwise `requestPermission` will immediately return `denied`.
+
+Permissions are automatically accepted for targetSdkVersion < 23 but you can still use `getPermissionStatus` to check if the user has disabled them from Settings.
+
+Here's a map of types to Android system permissions names:  
+`location` -> `android.permission.ACCESS_FINE_LOCATION`  
+`camera` -> `android.permission.CAMERA`  
+`microphone` -> `android.permission.RECORD_AUDIO`  
+`photo` -> `android.permission.READ_EXTERNAL_STORAGE`  
+`contacts` -> `android.permission.READ_CONTACTS`  
+`event` -> `android.permission.READ_CALENDAR`  
+
+You can request write access to any of these types by also including the appropriate write permission in the Manifest. Read more here: https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous
 
 ##Setup
 
 ````
 npm install --save react-native-permissions
+rnpm link
 ````
 
-##iOS
+###Or manualy linking   
+
+####iOS
 * Run open node_modules/react-native-permissions
 * Drag ReactNativePermissions.xcodeproj into the Libraries group of your app's Xcode project
 * Add libReactNativePermissions.a to `Build Phases -> Link Binary With Libraries.
+
+####Android
+#####Step 1 - Update Gradle Settings
+
+```
+// file: android/settings.gradle
+...
+
+include ':react-native-permissions'
+project(':react-native-permissions').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-permissions/android')
+```
+#####Step 2 - Update Gradle Build
+
+```
+// file: android/app/build.gradle
+...
+
+dependencies {
+    ...
+    compile project(':react-native-permissions')
+}
+```
+#####Step 3 - Register React Package
+```
+...
+import com.joshblour.reactnativepermissions.ReactNativePermissionsPackage; // <--- import
+
+public class MainActivity extends ReactActivity {
+
+    ...
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+            new ReactNativePermissionsPackage() // <------ add the package
+        );
+    }
+
+    ...
+}
+```
