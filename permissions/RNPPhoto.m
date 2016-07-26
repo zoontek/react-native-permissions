@@ -7,6 +7,7 @@
 //
 
 #import "RNPPhoto.h"
+#import <AddressBook/AddressBook.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
@@ -59,7 +60,7 @@
 #else
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-        handler()
+        handler();
         *stop = YES;
     } failureBlock:^(NSError *error) {
         handler();

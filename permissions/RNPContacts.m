@@ -59,7 +59,10 @@
 #else
     CFErrorRef error = nil;
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, &error);
-    ABAddressBookRequestAccessWithCompletion(addressBook, completionHandler);
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        NSError *err = (__bridge NSError *)error;
+        handler(granted, err);
+    });
 #endif
 }
 
