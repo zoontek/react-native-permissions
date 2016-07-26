@@ -13,6 +13,10 @@ The current supported permissions are:
 - Push Notifications *(iOS only)*
 - Background Refresh *(iOS only)*
 
+
+###New in version 0.2.X
+- Android support 🎉🎉🍾
+
 ##General Usage
 ```js
 const Permissions = require('react-native-permissions');
@@ -181,7 +185,7 @@ dependencies {
 ...
 import com.joshblour.reactnativepermissions.ReactNativePermissionsPackage; // <--- import
 
-public class MainActivity extends ReactActivity {
+public class MainApplication extends Application implements ReactApplication {
 
     ...
 
