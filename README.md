@@ -1,5 +1,5 @@
 # React Native Permissions
-Request user permissions from React Native (iOS only - android coming soon)
+Request user permissions from React Native, iOS + Android
 
 The current supported permissions are:
 - Location
