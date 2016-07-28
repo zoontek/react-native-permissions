@@ -10,15 +10,12 @@
 #import <AddressBook/AddressBook.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
 @import Photos;
-#endif
 
 @implementation RNPPhoto
 
 + (NSString *)getStatus
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
     int status = [PHPhotoLibrary authorizationStatus];
     switch (status) {
         case PHAuthorizationStatusAuthorized:
@@ -30,19 +27,6 @@
         default:
             return RNPStatusUndetermined;
     }
-#else
-    int status = ABAddressBookGetAuthorizationStatus();
-    switch (status) {
-        case kABAuthorizationStatusAuthorized:
-            return RNPStatusAuthorized;
-        case kABAuthorizationStatusDenied:
-            return RNPStatusDenied;
-        case kABAuthorizationStatusRestricted:
-            return RNPStatusRestricted;
-        default:
-            return RNPStatusUndetermined;
-    }
-#endif
 }
 
 + (void)request:(void (^)(NSString *))completionHandler
@@ -52,19 +36,9 @@
             completionHandler([self.class getStatus]);
         });
     };
-    
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
+
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         handler();
     }];
-#else
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-        handler();
-        *stop = YES;
-    } failureBlock:^(NSError *error) {
-        handler();
-    }];
-#endif
 }
 @end
