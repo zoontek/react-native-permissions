@@ -71,9 +71,9 @@ class ReactNativePermissions {
 		if (!this.getPermissionTypes().includes(permission)) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		} else if (permission == 'backgroundRefresh'){
-			return Promise.reject('You cannot request backgroundRefresh')
+			return Promise.reject('ReactNativePermissions: You cannot request backgroundRefresh')
 		} else if (permission == 'location') {
-			options = type || 'always'
+			options = type || 'whenInUse'
 		} else if (permission == 'notification') {
 			options = type || ['alert', 'badge', 'sound']
 		}
@@ -91,7 +91,7 @@ class ReactNativePermissions {
 			let p = permissions[i]
 			
 			if (!p) {
-				return obj
+				return Promise.resolve(obj)
 			}
 
 			return that.getPermissionStatus(p)
