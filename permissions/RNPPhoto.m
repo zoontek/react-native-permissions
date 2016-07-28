@@ -7,7 +7,6 @@
 //
 
 #import "RNPPhoto.h"
-#import <AddressBook/AddressBook.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @import Photos;
