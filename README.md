@@ -16,6 +16,7 @@ The current supported permissions are:
 
 ###New in version 0.2.X
 - Android support 🎉🎉🍾
+- Example app
 
 ##General Usage
 ```js
