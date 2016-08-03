@@ -84,7 +84,7 @@ Promises resolve into one of these statuses
 |---|---|
 |`authorized`| user has authorized this permission |
 |`denied`| user has denied permissions at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
-|`restricted`| iOS only|
+|`restricted`| iOS only, it generally means that the user is not able to grant the indicated permission; either because it its not supported by the device or because it has been blocked by parental controls. |
 |`undetermined`| user has not yet been prompted with a permission dialog |
 
 ###Supported permission types
