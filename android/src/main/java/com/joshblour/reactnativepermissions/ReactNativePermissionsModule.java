@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 
@@ -24,6 +25,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
 
   public enum RNType {
     LOCATION,
+    NOTIFICATION,
     CAMERA,
     MICROPHONE,
     CONTACTS,
@@ -35,6 +37,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     super(reactContext);
     this.reactContext = reactContext;
     mPermissionsModule = new PermissionsModule(this.reactContext);
+    this.notificationManagerCompat = NotificationManagerCompat.from(reactContext);
   }
 
   @Override
@@ -49,6 +52,15 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     // check if permission is valid
     if (permission == null) {
       promise.reject("unknown-permission", "ReactNativePermissions: unknown permission type - " + permissionString);
+      return;
+    }
+
+    if(permission == 'notification') {
+      if (this.notificationManagerCompat.areNotificationsEnabled()) {
+        promise.resolve("authorized");
+      } else {
+        promise.resolve("denied");
+      }
       return;
     }
 
@@ -121,7 +133,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
       case PHOTOS:
         return Manifest.permission.READ_EXTERNAL_STORAGE;
       default:
-        return null;
+        return permission;
     }
   }
 
