@@ -132,6 +132,8 @@ Permission type `bluetooth` represents the status of the `CBPeripheralManager`. 
 ```
 
 ###Android Notes
+
+**IMPORTANT:** You need at least React-Native 0.29 for Android in order to make this plugin work as expected.
 All required permissions also need to be included in the Manifest before they can be requested. Otherwise `requestPermission` will immediately return `denied`.
 
 Permissions are automatically accepted for targetSdkVersion < 23 but you can still use `getPermissionStatus` to check if the user has disabled them from Settings.
