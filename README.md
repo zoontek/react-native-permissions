@@ -83,8 +83,8 @@ Promises resolve into one of these statuses
 | Return value | Notes|
 |---|---|
 |`authorized`| user has authorized this permission |
-|`denied`| user has denied permissions at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
-|`restricted`| iOS only, it generally means that the user is not able to grant the indicated permission; either because it its not supported by the device or because it has been blocked by parental controls. |
+|`denied`| user has denied this permission at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
+|`restricted`| *(iOS only)* user is not able to grant this permission, either because it's not supported by the device or because it has been blocked by parental controls. |
 |`undetermined`| user has not yet been prompted with a permission dialog |
 
 ###Supported permission types
@@ -106,7 +106,7 @@ Promises resolve into one of these statuses
 | Method Name | Arguments | Notes
 |---|---|---|
 | `getPermissionStatus` | `type` | - Returns a promise with the permission status. Note: for type `location`, iOS `AuthorizedAlways` and `AuthorizedWhenInUse` both return `authorized` |
-| `requestPermission` | `type` | - Accepts any permission type except `backgroundRefresh`. If the current status is `undetermined`, shows the permission dialog and returns a promise with the resulting status. Otherwise, immediately return a promise with the current status. Note: see below for special cases|
+| `requestPermission` | `type` | - Accepts any permission type except `backgroundRefresh`. If the current status is `undetermined`, shows the permission dialog and returns a promise with the resulting status. Otherwise, immediately return a promise with the current status. See iOS Notes for special cases|
 | `checkMultiplePermissions` | `[types]` | - Accepts an array of permission types and returns a promise with an object mapping permission types to statuses |
 | `getPermissionTypes` | *none* | - Returns an array of valid permission types  |
 | `openSettings` | *none* | - Switches the user to the settings page of your app (iOS 8.0 and later)  |
@@ -133,7 +133,8 @@ Permission type `bluetooth` represents the status of the `CBPeripheralManager`. 
 
 ###Android Notes
 
-**IMPORTANT:** You need at least React-Native 0.29 for Android in order to make this plugin work as expected.
+Requires RN >= 0.29.0
+
 All required permissions also need to be included in the Manifest before they can be requested. Otherwise `requestPermission` will immediately return `denied`.
 
 Permissions are automatically accepted for targetSdkVersion < 23 but you can still use `getPermissionStatus` to check if the user has disabled them from Settings.
