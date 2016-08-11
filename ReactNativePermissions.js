@@ -15,7 +15,7 @@ const RNPTypes = {
 		'reminder',
 		'bluetooth',
 		'notification',
-		'backgroundRefresh', 
+		'backgroundRefresh',
 	],
 	android: [
 		'location',
@@ -24,6 +24,7 @@ const RNPTypes = {
 		'contacts',
 		'event',
 		'photos',
+		'notification',
 	]
 }
 
@@ -66,7 +67,7 @@ class ReactNativePermissions {
 	}
 
 	requestPermission(permission, type) {
-		let options; 
+		let options;
 
 		if (!this.getPermissionTypes().includes(permission)) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
@@ -89,7 +90,7 @@ class ReactNativePermissions {
 		function processNext() {
 			i--
 			let p = permissions[i]
-			
+
 			if (!p) {
 				return Promise.resolve(obj)
 			}
