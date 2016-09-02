@@ -204,3 +204,8 @@ public class MainApplication extends Application implements ReactApplication {
     ...
 }
 ```
+
+##Troubleshooting
+
+#### Q: Android - `undefined is not a object (evaluating 'RNPermissions.requestPermissions')`
+A: `rnpm` may not have linked correctly. Follow the manual linking steps and make sure the library is linked 
