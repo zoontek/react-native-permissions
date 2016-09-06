@@ -4,7 +4,7 @@ Request user permissions from React Native, iOS + Android
 The current supported permissions are:
 - Location
 - Camera
-- Microhone
+- Microphone
 - Photos
 - Contacts
 - Events
