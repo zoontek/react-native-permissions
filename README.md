@@ -19,6 +19,11 @@ The current supported permissions are:
 - Example app
 
 ##General Usage
+```
+npm install --save react-native-permissions
+rnpm link
+```
+
 ```js
 const Permissions = require('react-native-permissions');
 
