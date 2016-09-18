@@ -16,6 +16,7 @@ const RNPTypes = {
 		'bluetooth',
 		'notification',
 		'backgroundRefresh', 
+		'media'
 	],
 	android: [
 		'location',
