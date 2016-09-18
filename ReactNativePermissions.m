@@ -102,6 +102,9 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type resolve:
         case RNPTypeBackgroundRefresh:
             status = [RNPBackgroundRefresh getStatus];
             break;
+        case RNPTypeMedia:
+            status = [RNPMedia getStatus];
+            break;
         default:
             break;
     }
@@ -132,6 +135,8 @@ RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json r
             return [self requestBluetooth:resolve];
         case RNPTypeNotification:
             return [self requestNotification:json resolve:resolve];
+        case RNPTypeMedia:
+            return [RNPMedia request:resolve];
         default:
             break;
     }
