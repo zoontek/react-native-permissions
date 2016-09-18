@@ -12,7 +12,7 @@ The current supported permissions are:
 - Bluetooth *(iOS only)*
 - Push Notifications *(iOS only)*
 - Background Refresh *(iOS only)*
-- Meida *(iOS only)*
+- Media *(iOS only)*
 
 ###New in 0.2.5
 - Permission for media library *(iOS only)*
