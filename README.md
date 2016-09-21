@@ -24,6 +24,8 @@ npm install --save react-native-permissions
 rnpm link
 ```
 
+Add permissions to manifest for android and info.plist for ios (xcode >=8). See notes below for more details.
+
 ```js
 const Permissions = require('react-native-permissions');
 
@@ -136,6 +138,12 @@ Permission type `bluetooth` represents the status of the `CBPeripheralManager`. 
       })
 ```
 
+With Xcode 8, you now need to add usage descriptions for each permission you will request. Open Xcode > Info.plist > Add a key (starting with "Privacy - ...") with your kit specific permission.
+
+Example:
+If you need Contacts permission you have to add the key "Privacy - Contacts Usage Description".
+<img width="338" alt="3cde3b44-7ffd-11e6-918b-63888e33f983" src="https://cloud.githubusercontent.com/assets/1440796/18713019/271be540-8011-11e6-87fb-c3828c172dfc.png">
+
 ###Android Notes
 
 Requires RN >= 0.29.0
@@ -214,3 +222,6 @@ public class MainApplication extends Application implements ReactApplication {
 
 #### Q: Android - `undefined is not a object (evaluating 'RNPermissions.requestPermissions')`
 A: `rnpm` may not have linked correctly. Follow the manual linking steps and make sure the library is linked 
+
+#### Q: iOS - app crashes as soon as I request permission
+A: starting with xcode 8, you need to add permission descriptions. see iOS notes for more details. Thanks to @jesperlndk for discovering this.
