@@ -21,6 +21,7 @@
 #import "RNPEvent.h"
 #import "RNPPhoto.h"
 #import "RNPContacts.h"
+#import "RNPMedia.h"
 #import "RNPBackgroundRefresh.h"
 
 @interface ReactNativePermissions()
