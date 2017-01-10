@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, RNPType) {
     RNPTypeReminder,
     RNPTypeBluetooth,
     RNPTypeNotification,
-    RNPTypeBackgroundRefresh
+    RNPTypeBackgroundRefresh,
+    RNPTypeSpeechRecognition
 };
 
 @interface RCTConvert (RNPStatus)
