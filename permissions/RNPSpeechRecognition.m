@@ -2,17 +2,16 @@
 //  RNPSpeechRecognition.m
 //  ReactNativePermissions
 //
-//  Created by Tres Trantham on 01/10/17.
-//  Copyright © 2017 Tres Trantham. All rights reserved.
+//  Created by Tres Trantham on 1/11/17.
+//  Copyright © 2017 Yonah Forst. All rights reserved.
 //
 
 #import "RNPSpeechRecognition.h"
-
-#import <AVFoundation/AVFoundation.h>
+#import <Speech/Speech.h>
 
 @implementation RNPSpeechRecognition
 
-+ (NSString *)getStatus:(NSString *)type
++ (NSString *)getStatus
 {
 
   int status = [SFSpeechRecognizer authorizationStatus];
