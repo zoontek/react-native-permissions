@@ -2,8 +2,8 @@
 //  RNPSpeechRecognition.h
 //  ReactNativePermissions
 //
-//  Created by Tres Trantham on 01/10/17.
-//  Copyright © 2017 Tres Trantham. All rights reserved.
+//  Created by Tres Trantham on 1/11/17.
+//  Copyright © 2017 Yonah Forst. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

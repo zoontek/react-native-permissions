@@ -15,8 +15,8 @@ const RNPTypes = {
 		'reminder',
 		'bluetooth',
 		'notification',
-		'backgroundRefresh', 
-		'speechRecognition', 
+		'backgroundRefresh',
+		'speechRecognition',
 	],
 	android: [
 		'location',
