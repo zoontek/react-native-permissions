@@ -10,5 +10,8 @@
   "main": "ReactNativePermissions",
   "author": "Yonah Forst <yonaforst@hotmail.com>",
   "homepage": "https://github.com/joshblour/react-native-permissions",
-  "description": "Check user permissions in React Native"
+  "description": "Check user permissions in React Native",
+  "peerDependencies": {
+    "react-native": "^0.40.0"
+  }
 }

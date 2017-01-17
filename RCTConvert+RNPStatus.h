@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 
 static NSString* RNPStatusUndetermined = @"undetermined";
 static NSString* RNPStatusDenied = @"denied";
