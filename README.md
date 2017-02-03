@@ -138,6 +138,8 @@ Permission type `bluetooth` represents the status of the `CBPeripheralManager`. 
       })
 ```
 
+You cannot request microphone permissions on the simulator.
+
 With Xcode 8, you now need to add usage descriptions for each permission you will request. Open Xcode > Info.plist > Add a key (starting with "Privacy - ...") with your kit specific permission.
 
 Example:
