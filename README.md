@@ -227,3 +227,6 @@ A: `rnpm` may not have linked correctly. Follow the manual linking steps and mak
 
 #### Q: iOS - app crashes as soon as I request permission
 A: starting with xcode 8, you need to add permission descriptions. see iOS notes for more details. Thanks to @jesperlndk for discovering this.
+
+#### Q: iOS - app crashes when I change permissions from settings
+A: This is normal. iOS restarts your app when your privacy settings change. Just google "ios crash permission change"
