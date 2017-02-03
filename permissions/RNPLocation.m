@@ -50,7 +50,11 @@
             [self.locationManager requestWhenInUseAuthorization];
         }
     } else {
-        completionHandler(status);
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse && [type isEqualToString:@"always"]) {
+            completionHandler(RNPStatusDenied);
+        } else {
+            completionHandler(status);
+        }
     }
 }
 
