@@ -11,7 +11,7 @@
 
 @interface RNPLocation : NSObject
 
-+ (NSString *)getStatus;
++ (NSString *)getStatusForType:(NSString *)type;
 - (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler;
 
 @end
