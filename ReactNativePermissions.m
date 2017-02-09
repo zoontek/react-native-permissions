@@ -66,15 +66,17 @@ RCT_EXPORT_METHOD(openSettings)
     }
 }
 
-RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id)json resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSString *status;
     
     switch (type) {
             
-        case RNPTypeLocation:
-            status = [RNPLocation getStatus];
+        case RNPTypeLocation: {
+            NSString *locationPermissionType = [RCTConvert NSString:json];
+            status = [RNPLocation getStatusForType:locationPermissionType];
             break;
+        }
         case RNPTypeCamera:
             status = [RNPAudioVideo getStatus:@"video"];
             break;
@@ -138,7 +140,6 @@ RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json r
     
 
 }
-
 
 - (void) requestLocation:(id)json resolve:(RCTPromiseResolveBlock)resolve
 {
