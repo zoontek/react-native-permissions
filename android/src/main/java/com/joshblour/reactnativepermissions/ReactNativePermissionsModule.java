@@ -85,7 +85,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     Callback resolve = new Callback() {
       @Override
       public void invoke(Object... args) {
-        getPermissionStatus(permissionString, promise);
+        getPermissionStatus(permissionString, "", promise);
       }
     };
     Callback reject = new Callback() {
