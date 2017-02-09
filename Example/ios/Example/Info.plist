@@ -41,6 +41,8 @@
 	<string>test</string>
 	<key>NSContactsUsageDescription</key>
 	<string>test</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>test</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>test</string>
 	<key>NSMicrophoneUsageDescription</key>

@@ -113,7 +113,7 @@ Promises resolve into one of these statuses
 ###Methods
 | Method Name | Arguments | Notes
 |---|---|---|
-| `getPermissionStatus` | `type` | - Returns a promise with the permission status. Note: for type `location`, iOS `AuthorizedAlways` and `AuthorizedWhenInUse` both return `authorized` |
+| `getPermissionStatus` | `type` | - Returns a promise with the permission status. See iOS Notes for special cases |
 | `requestPermission` | `type` | - Accepts any permission type except `backgroundRefresh`. If the current status is `undetermined`, shows the permission dialog and returns a promise with the resulting status. Otherwise, immediately return a promise with the current status. See iOS Notes for special cases|
 | `checkMultiplePermissions` | `[types]` | - Accepts an array of permission types and returns a promise with an object mapping permission types to statuses |
 | `getPermissionTypes` | *none* | - Returns an array of valid permission types  |
@@ -123,11 +123,17 @@ Promises resolve into one of these statuses
 ###iOS Notes
 Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if only need `CBCentralManager`
 
-`requestPermission` also accepts a second parameter for types `location` and `notification`.
-- `location`: the second parameter is a string, either `always` or `whenInUse`(default).
-- `notification`: the second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three)
+Permission type `location` accepts a second parameter for `requestPermission` and `getPermissionStatus`;  the second parameter is a string, either `always` or `whenInUse`(default).
+
+Permission type `notification` accepts a second parameter for `requestPermission`. The second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three)
+
 ```js
 ///example
+    Permissions.getPermissionStatus('location', 'always')
+      .then(response => {
+        this.setState({ locationPermission: response })
+      })
+
     Permissions.requestPermission('location', 'always')
       .then(response => {
         this.setState({ locationPermission: response })
