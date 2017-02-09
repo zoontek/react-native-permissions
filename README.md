@@ -14,9 +14,11 @@ The current supported permissions are:
 - Background Refresh *(iOS only)*
 
 
-###New in version 0.2.X
-- Android support 🎉🎉🍾
-- Example app
+| Version | React Native Support |
+|---|---|
+| 0.2.7 | 0.40.0 - 0.41.0 |
+| 0.2.5 | 0.33.0 - 0.39.0 |
+*Complies with [react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)*
 
 ##General Usage
 ```
