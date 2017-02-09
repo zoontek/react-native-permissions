@@ -1,2 +1,10 @@
 android/react-native-permissions.iml
 android/build
+android/.idea
+npm-debug.log
+gradlew
+gradle-wrapper.properties
+gradle-wrapper.jar
+local.properties
+gradlew.bat
+android.iml
