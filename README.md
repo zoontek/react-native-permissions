@@ -170,6 +170,7 @@ Here's a map of types to Android system permissions names:
 `camera` -> `android.permission.CAMERA`
 `microphone` -> `android.permission.RECORD_AUDIO`
 `photo` -> `android.permission.READ_EXTERNAL_STORAGE`
+`storage` -> `android.permission.READ_EXTERNAL_STORAGE`
 `contacts` -> `android.permission.READ_CONTACTS`
 `event` -> `android.permission.READ_CALENDAR`
 
