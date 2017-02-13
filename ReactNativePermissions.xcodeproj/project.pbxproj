@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281CD5911E26B0C8003A72B2 /* RNPSpeechRecognition.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CD5901E26B0C7003A72B2 /* RNPSpeechRecognition.m */; };
 		9D46283E1D34719100346A5B /* RNPAudioVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D46282F1D34719100346A5B /* RNPAudioVideo.m */; };
 		9D46283F1D34719100346A5B /* RNPBackgroundRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4628311D34719100346A5B /* RNPBackgroundRefresh.m */; };
 		9D4628401D34719100346A5B /* RNPBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4628331D34719100346A5B /* RNPBluetooth.m */; };
@@ -32,6 +33,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		281CD5901E26B0C7003A72B2 /* RNPSpeechRecognition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNPSpeechRecognition.m; path = permissions/RNPSpeechRecognition.m; sourceTree = SOURCE_ROOT; };
+		281CD5921E26B266003A72B2 /* RNPSpeechRecognition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNPSpeechRecognition.h; path = permissions/RNPSpeechRecognition.h; sourceTree = SOURCE_ROOT; };
 		9D23B34F1C767B80008B4819 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativePermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D46282E1D34719100346A5B /* RNPAudioVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNPAudioVideo.h; path = permissions/RNPAudioVideo.h; sourceTree = SOURCE_ROOT; };
 		9D46282F1D34719100346A5B /* RNPAudioVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNPAudioVideo.m; path = permissions/RNPAudioVideo.m; sourceTree = SOURCE_ROOT; };
@@ -113,6 +116,8 @@
 				9D46283B1D34719100346A5B /* RNPNotification.m */,
 				9D46283C1D34719100346A5B /* RNPPhoto.h */,
 				9D46283D1D34719100346A5B /* RNPPhoto.m */,
+				281CD5921E26B266003A72B2 /* RNPSpeechRecognition.h */,
+				281CD5901E26B0C7003A72B2 /* RNPSpeechRecognition.m */,
 			);
 			name = permissions;
 			sourceTree = "<group>";
@@ -143,7 +148,7 @@
 		9D23B3471C767B80008B4819 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Yonah Forst";
 				TargetAttributes = {
 					9D23B34E1C767B80008B4819 = {
@@ -175,6 +180,7 @@
 			files = (
 				9D46283F1D34719100346A5B /* RNPBackgroundRefresh.m in Sources */,
 				9D4628451D34719100346A5B /* RNPPhoto.m in Sources */,
+				281CD5911E26B0C8003A72B2 /* RNPSpeechRecognition.m in Sources */,
 				9D4628431D34719100346A5B /* RNPLocation.m in Sources */,
 				9D46283E1D34719100346A5B /* RNPAudioVideo.m in Sources */,
 				9D4628401D34719100346A5B /* RNPBluetooth.m in Sources */,
