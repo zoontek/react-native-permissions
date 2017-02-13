@@ -30,6 +30,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     MICROPHONE,
     CONTACTS,
     EVENT,
+    STORAGE,
     PHOTO;
   }
 
@@ -45,7 +46,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getPermissionStatus(String permissionString, Promise promise) {
+  public void getPermissionStatus(String permissionString, String nullForiOSCompat, Promise promise) {
     String permission = permissionForString(permissionString);
 
     // check if permission is valid
@@ -84,7 +85,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     Callback resolve = new Callback() {
       @Override
       public void invoke(Object... args) {
-        getPermissionStatus(permissionString, promise);
+        getPermissionStatus(permissionString, "", promise);
       }
     };
     Callback reject = new Callback() {
@@ -93,7 +94,8 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
         // NOOP
       }
     };
-    mPermissionsModule.requestPermission(permission, resolve, reject);
+
+    mPermissionsModule.requestPermission(permission, new PromiseImpl(resolve, reject));
   }
 
 
@@ -126,6 +128,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
         return Manifest.permission.READ_CONTACTS;
       case EVENT:
         return Manifest.permission.READ_CALENDAR;
+      case STORAGE:
       case PHOTO:
         return Manifest.permission.READ_EXTERNAL_STORAGE;
       default:

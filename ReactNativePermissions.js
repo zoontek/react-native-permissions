@@ -25,6 +25,7 @@ const RNPTypes = {
 		'contacts',
 		'event',
 		'photo',
+		'storage'
 	]
 }
 
@@ -58,9 +59,9 @@ class ReactNativePermissions {
 	}
 
 
-	getPermissionStatus(permission) {
+	getPermissionStatus(permission, type) {
   	if (this.getPermissionTypes().indexOf(permission) >= 0) {
-			return RNPermissions.getPermissionStatus(permission)
+			return RNPermissions.getPermissionStatus(permission, type)
 		} else {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		}
@@ -68,7 +69,7 @@ class ReactNativePermissions {
 
 	requestPermission(permission, type) {
 		let options;
-		
+
 		if (this.getPermissionTypes().indexOf(permission) === -1) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		} else if (permission == 'backgroundRefresh'){
@@ -90,7 +91,7 @@ class ReactNativePermissions {
 		function processNext() {
 			i--
 			let p = permissions[i]
-			
+
 			if (!p) {
 				return Promise.resolve(obj)
 			}

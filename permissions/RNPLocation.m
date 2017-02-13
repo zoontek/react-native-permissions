@@ -17,13 +17,14 @@
 
 @implementation RNPLocation
 
-+ (NSString *)getStatus
++ (NSString *)getStatusForType:(NSString *)type
 {
     int status = [CLLocationManager authorizationStatus];
     switch (status) {
         case kCLAuthorizationStatusAuthorizedAlways:
-        case kCLAuthorizationStatusAuthorizedWhenInUse:
             return RNPStatusAuthorized;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            return [type isEqualToString:@"always"] ? RNPStatusDenied : RNPStatusAuthorized;
         case kCLAuthorizationStatusDenied:
             return RNPStatusDenied;
         case kCLAuthorizationStatusRestricted:
@@ -35,22 +36,26 @@
 
 - (void)request:(NSString*)type completionHandler:(void (^)(NSString *))completionHandler
 {
-    NSString *status = [RNPLocation getStatus];
+    NSString *status = [RNPLocation getStatusForType:nil];
     if (status == RNPStatusUndetermined) {
         self.completionHandler = completionHandler;
-        
+
         if (self.locationManager == nil) {
             self.locationManager = [[CLLocationManager alloc] init];
             self.locationManager.delegate = self;
         }
-        
+
         if ([type isEqualToString:@"always"]) {
             [self.locationManager requestAlwaysAuthorization];
         } else {
             [self.locationManager requestWhenInUseAuthorization];
         }
     } else {
-        completionHandler(status);
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse && [type isEqualToString:@"always"]) {
+            completionHandler(RNPStatusDenied);
+        } else {
+            completionHandler(status);
+        }
     }
 }
 
@@ -60,14 +65,14 @@
             self.locationManager.delegate = nil;
             self.locationManager = nil;
         }
-        
+
         if (self.completionHandler) {
             //for some reason, checking permission right away returns denied. need to wait a tiny bit
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                self.completionHandler([RNPLocation getStatus]);
+                self.completionHandler([RNPLocation getStatusForType:nil]);
                 self.completionHandler = nil;
             });
-        }        
+        }
     }
 }
 @end
