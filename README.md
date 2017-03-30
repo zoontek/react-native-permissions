@@ -232,6 +232,32 @@ public class MainApplication extends Application implements ReactApplication {
     ...
 }
 ```
+## AppStore submission disclaimer
+
+If you need to submit you application to the AppStore, you need to add to your `Info.plist` all `*UsageDescription` keys with a string value explaining to the user how the app uses this data. **Even if you don't use them**.
+
+So before submitting your app to the `AppStore`, make sure that in your `Info.plist` you have the following keys:
+
+```
+
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>Some description</string>
+<key>NSCalendarsUsageDescription</key>
+<string>Some description</string>
+<key>NSCameraUsageDescription</key>
+<string>Some description</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Some description</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Some description</string>
+
+```
+
+This is required because during the phase of `processing` in the `AppStore` submission, the system detects that you app contains code to request the permission `X` but don't have the `UsageDescription` key and rejects the build.
+
+> Please note that it will only be shown to the users the usage descriptions of the permissions you really require in your app.
+
+You can find more informations about this issue in #46.
 
 ## Troubleshooting
 
