@@ -12,7 +12,7 @@
 
 #import <RCTBridge.h>
 #import <RCTConvert.h>
-#import <RCTEventDispatcher.h>
+//#import <RCTEventDispatcher.h>
 
 #import "RNPLocation.h"
 #import "RNPBluetooth.h"
