@@ -59,13 +59,25 @@ RCT_REMAP_METHOD(canOpenSettings, canOpenSettings:(RCTPromiseResolveBlock)resolv
     resolve(@(UIApplicationOpenSettingsURLString != nil));
 }
 
-RCT_EXPORT_METHOD(openSettings)
+    
+RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     if (@(UIApplicationOpenSettingsURLString != nil)) {
+        
+        NSNotificationCenter * __weak center = [NSNotificationCenter defaultCenter];
+        id __block token = [center addObserverForName:UIApplicationDidBecomeActiveNotification
+                                               object:nil
+                                                queue:nil
+                                           usingBlock:^(NSNotification *note) {
+                                               [center removeObserver:token];
+                                               resolve(@YES);
+                                           }];
+        
         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
         [[UIApplication sharedApplication] openURL:url];
     }
 }
+
 
 RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id)json resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {

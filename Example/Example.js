@@ -41,6 +41,11 @@ export default class Example extends Component {
     }
   }
 
+  _openSettings() {
+    return Permissions.openSettings()
+      .then(() => alert('back to app!!'))
+  }
+
   _updatePermissions(types) {
     Permissions.checkMultiplePermissions(types)
       .then(status => {
@@ -71,7 +76,7 @@ export default class Example extends Component {
             "There was a problem getting your permission. Please enable it from settings.",
             [
               {text: 'Cancel', style: 'cancel'},
-              {text: 'Open Settings', onPress: Permissions.openSettings },
+              {text: 'Open Settings', onPress: this._openSettings.bind(this) },
             ]
           )
         }
@@ -111,7 +116,7 @@ export default class Example extends Component {
           </TouchableHighlight>
 
           <TouchableHighlight 
-            onPress={Permissions.openSettings}>
+            onPress={this._openSettings.bind(this)}>
             <Text style={styles.text}>Open settings</Text>
           </TouchableHighlight>
         </View>
