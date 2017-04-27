@@ -144,8 +144,10 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
       case STORAGE:
       case PHOTO:
         return Manifest.permission.READ_EXTERNAL_STORAGE;
-      default:
+      case NOTIFICATION:
         return permission;
+      default:
+        return null;
     }
   }
 
