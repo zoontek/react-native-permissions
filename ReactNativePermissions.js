@@ -16,6 +16,7 @@ const RNPTypes = {
 		'bluetooth',
 		'notification',
 		'backgroundRefresh',
+		'speechRecognition',
 	],
 	android: [
 		'location',
@@ -23,8 +24,9 @@ const RNPTypes = {
 		'microphone',
 		'contacts',
 		'event',
-		'photos',
 		'notification',
+		'photo',
+		'storage'
 	]
 }
 
@@ -58,9 +60,9 @@ class ReactNativePermissions {
 	}
 
 
-	getPermissionStatus(permission) {
+	getPermissionStatus(permission, type) {
   	if (this.getPermissionTypes().indexOf(permission) >= 0) {
-			return RNPermissions.getPermissionStatus(permission)
+			return RNPermissions.getPermissionStatus(permission, type)
 		} else {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		}
@@ -69,13 +71,16 @@ class ReactNativePermissions {
 	requestPermission(permission, type) {
 		let options;
 
-		if (!this.getPermissionTypes().includes(permission)) {
+		if (this.getPermissionTypes().indexOf(permission) === -1) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on ${Platform.OS}`)
 		} else if (permission == 'backgroundRefresh'){
 			return Promise.reject('ReactNativePermissions: You cannot request backgroundRefresh')
 		} else if (permission == 'location') {
 			options = type || 'whenInUse'
 		} else if (permission == 'notification') {
+			if (Platform.OS === 'android') {
+				return Promise.reject(`ReactNativePermissions: notification cannot be requested on Android`)
+			}
 			options = type || ['alert', 'badge', 'sound']
 		}
 

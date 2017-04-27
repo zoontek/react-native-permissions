@@ -11,6 +11,7 @@ import android.support.v4.content.PermissionChecker;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.PromiseImpl;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -18,6 +19,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.modules.permissions.PermissionsModule;
 
+import java.util.Locale;
 
 public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
   private final ReactApplicationContext reactContext;
@@ -31,7 +33,8 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
     MICROPHONE,
     CONTACTS,
     EVENT,
-    PHOTOS;
+    STORAGE,
+    PHOTO;
   }
 
   public ReactNativePermissionsModule(ReactApplicationContext reactContext) {
@@ -47,7 +50,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getPermissionStatus(String permissionString, Promise promise) {
+  public void getPermissionStatus(String permissionString, String nullForiOSCompat, Promise promise) {
     String permission = permissionForString(permissionString);
 
     // check if permission is valid
@@ -92,13 +95,20 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void requestPermission(final String permissionString, String nullForiOSCompat, final Promise promise) {
     String permission = permissionForString(permissionString);
-    mPermissionsModule.requestPermission(permission, new Callback() {
+    Callback resolve = new Callback() {
       @Override
       public void invoke(Object... args) {
-        getPermissionStatus(permissionString, promise);
-//        promise.resolve((boolean)args[1] ? "authorized" : "denied");
+        getPermissionStatus(permissionString, "", promise);
       }
-    }, null);
+    };
+    Callback reject = new Callback() {
+      @Override
+      public void invoke(Object... args) {
+        // NOOP
+      }
+    };
+
+    mPermissionsModule.requestPermission(permission, new PromiseImpl(resolve, reject));
   }
 
 
@@ -120,7 +130,7 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
   }
 
   private String permissionForString(String permission) {
-    switch (RNType.valueOf(permission.toUpperCase())) {
+    switch (RNType.valueOf(permission.toUpperCase(Locale.ENGLISH))) {
       case LOCATION:
         return Manifest.permission.ACCESS_FINE_LOCATION;
       case CAMERA:
@@ -131,7 +141,8 @@ public class ReactNativePermissionsModule extends ReactContextBaseJavaModule {
         return Manifest.permission.READ_CONTACTS;
       case EVENT:
         return Manifest.permission.READ_CALENDAR;
-      case PHOTOS:
+      case STORAGE:
+      case PHOTO:
         return Manifest.permission.READ_EXTERNAL_STORAGE;
       default:
         return permission;
