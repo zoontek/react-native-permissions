@@ -78,6 +78,9 @@ class ReactNativePermissions {
 		} else if (permission == 'location') {
 			options = type || 'whenInUse'
 		} else if (permission == 'notification') {
+			if (Platform.OS === 'android') {
+				return Promise.reject(`ReactNativePermissions: notification cannot be requested on Android`)
+			}
 			options = type || ['alert', 'badge', 'sound']
 		}
 
