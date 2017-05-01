@@ -13,18 +13,23 @@
 @implementation RNPAudioVideo
 
 + (NSString *)getStatus:(NSString *)type
-{
-    int status = [AVCaptureDevice authorizationStatusForMediaType:[self typeFromString:type]];
-    switch (status) {
-        case AVAuthorizationStatusAuthorized:
-            return RNPStatusAuthorized;
-        case AVAuthorizationStatusDenied:
-            return RNPStatusDenied;
-        case AVAuthorizationStatusRestricted:
-            return RNPStatusRestricted;
-        default:
-            return RNPStatusUndetermined;
-    }
+{   
+    #if TARGET_IPHONE_SIMULATOR
+        return RNPStatusAuthorized;
+    #else
+        int status = [AVCaptureDevice authorizationStatusForMediaType:[self typeFromString:type]];
+
+        switch (status) {
+            case AVAuthorizationStatusAuthorized:
+                return RNPStatusAuthorized;
+            case AVAuthorizationStatusDenied:
+                return RNPStatusDenied;
+            case AVAuthorizationStatusRestricted:
+                return RNPStatusRestricted;
+            default:
+                return RNPStatusUndetermined;
+        }
+    #endif
 }
 
 + (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler
