@@ -17,7 +17,7 @@ const RNPTypes = {
 		'notification',
 		'backgroundRefresh',
 		'speechRecognition',
-        'mediaLibrary',
+		'mediaLibrary',
 	],
 	android: [
 		'location',
