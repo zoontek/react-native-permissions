@@ -22,6 +22,12 @@ The current supported permissions are:
 | 0.2.5 | 0.33.0 - 0.39.0 |
 *Complies with [react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)*
 
+### Breaking changes in version 1.0.0
+  - Now using React Native's own JS PermissionsAndroid library on Android, which is great because now we no longer have to do any additional linking (on Android)
+  - Updated API to be closer to RN's PermissionsAndroid
+  - Removed `openSettings()` support on Android (to stay linking-free). There are several NPM modules available for this
+  - `restricted` status now supported on Android, although it means something different than iOS
+
 ## General Usage
 ```
 npm install --save react-native-permissions
@@ -36,7 +42,7 @@ const Permissions = require('react-native-permissions');
 //...
   //check the status of a single permission
   componentDidMount() {
-    Permissions.getPermissionStatus('photo')
+    Permissions.check('photo')
       .then(response => {
         //response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
         this.setState({ photoPermission: response })
@@ -45,7 +51,7 @@ const Permissions = require('react-native-permissions');
 
   //request permission to access photos
   _requestPermission() {
-    Permissions.requestPermission('photo')
+    Permissions.request('photo')
       .then(response => {
         //returns once the user has chosen to 'allow' or to 'not allow' access
         //response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
@@ -55,7 +61,7 @@ const Permissions = require('react-native-permissions');
 
   //check the status of multiple permissions
   _checkCameraAndPhotos() {
-    Permissions.checkMultiplePermissions(['camera', 'photo'])
+    Permissions.check(['camera', 'photo'])
       .then(response => {
         //response is an object mapping type to permission
         this.setState({
@@ -118,18 +124,18 @@ Promises resolve into one of these statuses
 ### Methods
 | Method Name | Arguments | Notes
 |---|---|---|
-| `check` | `type` | - Returns a promise with the permission status. See iOS Notes for special cases |
-| `request` | `type` | - Accepts any permission type except `backgroundRefresh`. If the current status is `undetermined`, shows the permission dialog and returns a promise with the resulting status. Otherwise, immediately return a promise with the current status. See iOS Notes for special cases|
-| `checkMultiple` | `[types]` | - Accepts an array of permission types and returns a promise with an object mapping permission types to statuses |
-| `getTypes` | *none* | - Returns an array of valid permission types  |
-| `openSettings` | *none* | - *(iOS only - 8.0 and later)* Switches the user to the settings page of your app |
-| `canOpenSettings` | *none* | - *(iOS only)* Returns a boolean indicating if the device supports switching to the settings page |
+| `check()` | `type` | - Returns a promise with the permission status. See iOS Notes for special cases |
+| `request()` | `type` | - Accepts any permission type except `backgroundRefresh`. If the current status is `undetermined`, shows the permission dialog and returns a promise with the resulting status. Otherwise, immediately return a promise with the current status. See iOS Notes for special cases|
+| `checkMultiple()` | `[types]` | - Accepts an array of permission types and returns a promise with an object mapping permission types to statuses |
+| `getTypes()` | *none* | - Returns an array of valid permission types  |
+| `openSettings()` | *none* | - *(iOS only - 8.0 and later)* Switches the user to the settings page of your app |
+| `canOpenSettings()` | *none* | - *(iOS only)* Returns a boolean indicating if the device supports switching to the settings page |
 
 ### iOS Notes
 - Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if only need `CBCentralManager`
-- Permission type `location` accepts a second parameter for `requestPermission` and `getPermissionStatus`;  the second parameter is a string, either `always` or `whenInUse`(default).
+- Permission type `location` accepts a second parameter for `request()` and `check()`;  the second parameter is a string, either `always` or `whenInUse`(default).
 
-- Permission type `notification` accepts a second parameter for `requestPermission`. The second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three)
+- Permission type `notification` accepts a second parameter for `request()`. The second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three)
 
 ```js
 ///example
@@ -163,9 +169,9 @@ Requires RN >= 0.29.0
 
 Uses RN's own `PermissionsAndroid` JS api (http://facebook.github.io/react-native/releases/0.45/docs/permissionsandroid.html)
 
-All required permissions also need to be included in the Manifest before they can be requested. Otherwise `requestPermission` will immediately return `denied`.
+All required permissions also need to be included in the Manifest before they can be requested. Otherwise `request()` will immediately return `denied`.
 
-Permissions are automatically accepted for targetSdkVersion < 23 but you can still use `getPermissionStatus` to check if the user has disabled them from Settings.
+Permissions are automatically accepted for targetSdkVersion < 23 but you can still use `check()` to check if the user has disabled them from Settings.
 
 You can request write access to any of these types by also including the appropriate write permission in the Manifest. Read more here: https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous
 
@@ -203,6 +209,10 @@ So before submitting your app to the `AppStore`, make sure that in your `Info.pl
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>Some description</string>
 <key>NSPhotoLibraryUsageDescription</key>
+<string>Some description</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Some description</string>
+<key>NSSpeechRecognitionUsageDescription</key>
 <string>Some description</string>
 
 ```
