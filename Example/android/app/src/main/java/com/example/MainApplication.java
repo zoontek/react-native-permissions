@@ -8,7 +8,6 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.joshblour.reactnativepermissions.ReactNativePermissionsPackage;
 import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
@@ -25,8 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new ReactNativePermissionsPackage()
+          new MainReactPackage()
       );
     }
   };

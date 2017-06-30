@@ -24,8 +24,10 @@ export default class Example extends Component {
   }
 
   componentDidMount() {
-    let types = Permissions.getPermissionTypes()
-    this.setState({ types })
+    let types = Permissions.getTypes()
+    let canOpenSettings = Permissions.canOpenSettings()
+
+    this.setState({ types, canOpenSettings })
     this._updatePermissions(types)
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
   }
@@ -47,10 +49,10 @@ export default class Example extends Component {
   }
 
   _updatePermissions(types) {
-    Permissions.checkMultiplePermissions(types)
+    Permissions.checkMultiple(types)
       .then(status => {
         if (this.state.isAlways) {
-          return Permissions.getPermissionStatus('location', 'always')
+          return Permissions.check('location', 'always')
             .then(location => ({...status, location}))
         }
         return status
@@ -65,19 +67,19 @@ export default class Example extends Component {
       options = this.state.isAlways ? 'always' : 'whenInUse'
     }
 
-    Permissions.requestPermission(permission, options)
+    Permissions.request(permission, options)
       .then(res => {
         this.setState({
           status: {...this.state.status, [permission]: res}
         })
         if (res != 'authorized') {
+          var buttons = [{ text: 'Cancel', style: 'cancel' }]
+          if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
+          
           Alert.alert(
             'Whoops!',
             "There was a problem getting your permission. Please enable it from settings.",
-            [
-              {text: 'Cancel', style: 'cancel'},
-              {text: 'Open Settings', onPress: this._openSettings.bind(this) },
-            ]
+            buttons
           )
         }
       }).catch(e => console.warn(e))
@@ -114,11 +116,15 @@ export default class Example extends Component {
             onPress={this._onLocationSwitchChange.bind(this)}>
             <Text style={styles.text}>Toggle location type</Text>
           </TouchableHighlight>
+   
+          {
+            this.state.canOpenSettings &&
+            <TouchableHighlight 
+              onPress={this._openSettings.bind(this)}>
+              <Text style={styles.text}>Open settings</Text>
+            </TouchableHighlight>
+          }
 
-          <TouchableHighlight 
-            onPress={this._openSettings.bind(this)}>
-            <Text style={styles.text}>Open settings</Text>
-          </TouchableHighlight>
         </View>
 
 
@@ -163,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef9a9a',
   },
   restricted: {
-    backgroundColor: '#FFAB91'
+    backgroundColor: '#ef9a9a'
   },
   footer: {
     padding: 10,
