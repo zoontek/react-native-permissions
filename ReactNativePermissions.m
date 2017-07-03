@@ -10,11 +10,14 @@
 
 #import "ReactNativePermissions.h"
 
-#if __has_include("RCTBridge.h")
+#if __has_include(<React/RCTBridge.h>)
+  #import <React/RCTBridge.h>
+#elif __has_include("RCTBridge.h")
   #import "RCTBridge.h"
 #else
-  #import <React/RCTBridge.h>
+  #import "React/RCTBridge.h"
 #endif
+
 
 #if __has_include("RCTConvert.h")
   #import "RCTConvert.h"
