@@ -60,7 +60,7 @@ class ReactNativePermissions {
 	}
 
 
-	request(permission, rationale) {
+	request(permission, { rationale }) {
 		const androidPermission = RNPTypes[permission]
   	if (!androidPermission) return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on Android`);
 

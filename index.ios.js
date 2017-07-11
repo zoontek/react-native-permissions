@@ -43,7 +43,15 @@ class ReactNativePermissions {
 		return RNPermissions.getPermissionStatus(permission, type);
 	}
 
-	request(permission, type) {
+	request(permission, options) {
+		let type = null;
+		if (typeof options === 'string' || options instanceof Array) {
+			console.warn('[react-native-permissions] : You are using a deprecated version of request(). You should use an object as second parameter. Please check the documentation for more information : https://github.com/yonahforst/react-native-permissions');
+			type = options;
+		} else {
+			type = options.type;
+		}
+
 		if (!RNPTypes.includes(permission)) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on iOS`);
 		}
