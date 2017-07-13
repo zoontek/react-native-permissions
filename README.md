@@ -210,8 +210,6 @@ So before submitting your app to the `AppStore`, make sure that in your `Info.pl
 <string>Some description</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Some description</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
 <string>Some description</string>
 
