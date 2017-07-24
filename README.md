@@ -13,6 +13,7 @@ The current supported permissions are:
 - Push Notifications *(iOS only)*
 - Background Refresh *(iOS only)*
 - Speech Recognition *(iOS only)*
+- Read/Receive SMS *(Android only)*
 
 
 | Version | React Native Support |
@@ -120,6 +121,8 @@ Promises resolve into one of these statuses
 |`backgroundRefresh`| ✔️ | ❌ |
 |`speechRecognition`| ✔️ | ❌ |
 |`storage`| ❌️ | ✔ |
+|`readSms`| ❌️ | ✔ |
+|`receiveSms`| ❌️ | ✔ |
 
 ### Methods
 | Method Name | Arguments | Notes

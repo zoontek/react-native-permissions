@@ -12,6 +12,8 @@ const RNPTypes = {
 	event: RNPermissions.PERMISSIONS.READ_CALENDAR,
 	storage: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
 	photo: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
+	readSms: RNPermissions.PERMISSIONS.READ_SMS,
+	receiveSms: RNPermissions.PERMISSIONS.READ_SMS,
 }
 
 const RESULTS = {
@@ -41,7 +43,7 @@ class ReactNativePermissions {
 	check(permission) {
 		const androidPermission = RNPTypes[permission]
   	if (!androidPermission) return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on Android`);
-		
+
 		const shouldShowRationale = ReactNative.NativeModules.PermissionsAndroid.shouldShowRequestPermissionRationale;
 
 		return RNPermissions.check(androidPermission)
