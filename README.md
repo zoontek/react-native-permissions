@@ -31,7 +31,7 @@ The current supported permissions are:
 ## General Usage
 ```
 npm install --save react-native-permissions
-rnpm link
+react-native link
 ```
 
 Add permissions to manifest for android and info.plist for ios (xcode >=8). See notes below for more details.
@@ -179,7 +179,7 @@ You can request write access to any of these types by also including the appropr
 
 ````
 npm install --save react-native-permissions
-rnpm link
+react-native link
 ````
 
 ### Or manualy linking
