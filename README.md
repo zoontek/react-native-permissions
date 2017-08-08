@@ -182,7 +182,7 @@ npm install --save react-native-permissions
 react-native link
 ````
 
-### Or manualy linking
+### Or manually linking
 
 #### iOS
 * Run open node_modules/react-native-permissions
