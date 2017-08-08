@@ -6,10 +6,12 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#if __has_include("RCTBridgeModule.h")
-  #import "RCTBridgeModule.h"
+#if __has_include(<React/RCTBridge.h>)
+  #import <React/RCTBridge.h>
+#elif __has_include("RCTBridge.h")
+  #import "RCTBridge.h"
 #else
-  #import <React/RCTBridgeModule.h>
+  #import "React/RCTBridge.h"
 #endif
 
 @interface ReactNativePermissions : NSObject <RCTBridgeModule>
