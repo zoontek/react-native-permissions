@@ -39,6 +39,8 @@ class ReactNativePermissions {
   	if (!RNPTypes.includes(permission)) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on iOS`);
 		}
+				
+		type = type || DEFAULTS[permission]
 		
 		return RNPermissions.getPermissionStatus(permission, type);
 	}
@@ -58,7 +60,7 @@ class ReactNativePermissions {
 	}
 
 	checkMultiple(permissions) {
-		return Promise.all(permissions.map(this.check.bind(this)))
+		return Promise.all(permissions.map(permission => this.check(permission)))
 			.then(res => res.reduce((pre, cur, i) => {
 				var name = permissions[i]
 				pre[name] = cur
