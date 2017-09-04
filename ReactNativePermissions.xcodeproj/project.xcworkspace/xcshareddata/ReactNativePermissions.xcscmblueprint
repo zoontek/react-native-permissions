@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "064FD9CB8BF19A2D701521B330E768458B279939",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "A013D9B9743D90BC189D58F177BEB8982EEFA33D" : 9223372036854775807,
+    "064FD9CB8BF19A2D701521B330E768458B279939" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1AA2D239-321A-4462-83DC-0F39D45DA1AA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "A013D9B9743D90BC189D58F177BEB8982EEFA33D" : "..",
+    "064FD9CB8BF19A2D701521B330E768458B279939" : "react-native-permissions\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ReactNativePermissions",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ReactNativePermissions.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/unloqer-io\/react-native-permissions",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "064FD9CB8BF19A2D701521B330E768458B279939"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:unloqer-io\/unloq-app.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A013D9B9743D90BC189D58F177BEB8982EEFA33D"
+    }
+  ]
+}
