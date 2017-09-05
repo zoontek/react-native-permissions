@@ -10,10 +10,23 @@
 
 #import "ReactNativePermissions.h"
 
-#import "ReactNativePermissions.h"
+#if __has_include(<React/RCTAssert.h>)
 #import <React/RCTBridge.h>
+#else
+#import "RCTBridge.h"
+#endif
+
+#if __has_include(<React/RCTAssert.h>)
 #import <React/RCTConvert.h>
+#else
+#import "RCTConvert.h"
+#endif
+
+#if __has_include(<React/RCTAssert.h>)
 #import <React/RCTEventDispatcher.h>
+#else
+#import "RCTEventDispatcher.h"
+#endif
 
 #import "RNPLocation.h"
 #import "RNPBluetooth.h"
