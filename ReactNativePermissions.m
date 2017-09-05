@@ -10,25 +10,22 @@
 
 #import "ReactNativePermissions.h"
 
-#if __has_include(<React/RCTBridge.h>)
-  #import <React/RCTBridge.h>
-#elif __has_include("RCTBridge.h")
-  #import "RCTBridge.h"
+#if __has_include(<React/RCTAssert.h>)
+#import <React/RCTBridge.h>
 #else
-  #import "React/RCTBridge.h"
+#import "RCTBridge.h"
 #endif
 
-
-#if __has_include("RCTConvert.h")
-  #import "RCTConvert.h"
+#if __has_include(<React/RCTAssert.h>)
+#import <React/RCTConvert.h>
 #else
-  #import <React/RCTConvert.h>
+#import "RCTConvert.h"
 #endif
 
-#if __has_include("RCTEventDispatcher.h")
-  #import "RCTEventDispatcher.h"
+#if __has_include(<React/RCTAssert.h>)
+#import <React/RCTEventDispatcher.h>
 #else
-  #import <React/RCTEventDispatcher.h>
+#import "RCTEventDispatcher.h"
 #endif
 
 #import "RNPLocation.h"
