@@ -7,6 +7,12 @@
 //
 
 #import <React/RCTConvert.h>
+    
+#if __has_include(<React/RCTAssert.h>)
+#import <React/RCTBridgeModule.h>
+#else
+#import "RCTBridgeModule.h"
+#endif
 
 static NSString* RNPStatusUndetermined = @"undetermined";
 static NSString* RNPStatusDenied = @"denied";
