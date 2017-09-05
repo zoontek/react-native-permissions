@@ -58,7 +58,7 @@ class ReactNativePermissions {
 	}
 
 	checkMultiple(permissions) {
-		return Promise.all(permissions.map(this.check.bind(this)))
+		return Promise.all(permissions.map(permission => this.check(permission)))
 			.then(res => res.reduce((pre, cur, i) => {
 				var name = permissions[i]
 				pre[name] = cur
