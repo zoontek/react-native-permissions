@@ -120,6 +120,7 @@ Promises resolve into one of these statuses
 |`backgroundRefresh`| ✔️ | ❌ |
 |`speechRecognition`| ✔️ | ❌ |
 |`storage`| ❌️ | ✔ |
+|`call_phone`| ❌️ | ✔ |
 
 ### Methods
 | Method Name | Arguments | Notes
