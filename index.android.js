@@ -13,6 +13,8 @@ const RNPTypes = {
 	storage: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
 	photo: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
 	call_phone: RNPermissions.PERMISSIONS.CALL_PHONE,
+	readSms: RNPermissions.PERMISSIONS.READ_SMS,
+	receiveSms: RNPermissions.PERMISSIONS.RECEIVE_SMS,
 }
 
 const RESULTS = {
