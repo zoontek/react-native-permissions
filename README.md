@@ -61,7 +61,7 @@ const Permissions = require('react-native-permissions');
 
   //check the status of multiple permissions
   _checkCameraAndPhotos() {
-    Permissions.check(['camera', 'photo'])
+    Permissions.checkMultiple(['camera', 'photo'])
       .then(response => {
         //response is an object mapping type to permission
         this.setState({
