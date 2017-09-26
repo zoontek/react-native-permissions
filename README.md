@@ -8,6 +8,7 @@ The current supported permissions are:
 - Photos
 - Contacts
 - Events
+- Call Phone *(Android Only)*
 - Reminders *(iOS only)*
 - Bluetooth *(iOS only)*
 - Push Notifications *(iOS only)*
@@ -120,6 +121,7 @@ Promises resolve into one of these statuses
 |`backgroundRefresh`| ✔️ | ❌ |
 |`speechRecognition`| ✔️ | ❌ |
 |`storage`| ❌️ | ✔ |
+|`callPhone`| ❌️ | ✔ |
 
 ### Methods
 | Method Name | Arguments | Notes
