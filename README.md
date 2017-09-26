@@ -8,6 +8,7 @@ The current supported permissions are:
 - Photos
 - Contacts
 - Events
+- Call Phone *(Android Only)*
 - Reminders *(iOS only)*
 - Bluetooth *(iOS only)*
 - Push Notifications *(iOS only)*
