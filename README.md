@@ -8,12 +8,13 @@ The current supported permissions are:
 - Photos
 - Contacts
 - Events
-- Call Phone *(Android Only)*
 - Reminders *(iOS only)*
 - Bluetooth *(iOS only)*
 - Push Notifications *(iOS only)*
 - Background Refresh *(iOS only)*
 - Speech Recognition *(iOS only)*
+- Call Phone *(Android Only)*
+- Read/Receive SMS *(Android only)*
 
 
 | Version | React Native Support |
@@ -122,6 +123,8 @@ Promises resolve into one of these statuses
 |`speechRecognition`| ✔️ | ❌ |
 |`storage`| ❌️ | ✔ |
 |`callPhone`| ❌️ | ✔ |
+|`readSms`| ❌️ | ✔ |
+|`receiveSms`| ❌️ | ✔ |
 
 ### Methods
 | Method Name | Arguments | Notes
