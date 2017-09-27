@@ -39,8 +39,6 @@ class ReactNativePermissions {
   	if (!RNPTypes.includes(permission)) {
 			return Promise.reject(`ReactNativePermissions: ${permission} is not a valid permission type on iOS`);
 		}
-				
-		type = type || DEFAULTS[permission]
 		
 		return RNPermissions.getPermissionStatus(permission, type);
 	}
