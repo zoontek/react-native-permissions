@@ -19,7 +19,7 @@ The current supported permissions are:
 
 | Version | React Native Support |
 |---|---|
-| 1.0.0 | 0.40.0 - 0.45.0 |
+| 1.0.1 | 0.40.0 - 0.48.4 |
 | 0.2.7 | 0.40.0 - 0.41.0 |
 | 0.2.5 | 0.33.0 - 0.39.0 |
 *Complies with [react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)*
