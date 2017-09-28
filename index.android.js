@@ -70,6 +70,8 @@ class ReactNativePermissions {
 
 		return RNPermissions.request(androidPermission)
 			.then(res => {
+				// For OS versions prior to Android M, request to native module resolve to boolean
+				if (typeof res === 'boolean') return res ? 'authorized' : 'denied';
 				return setDidAskOnce(permission)
 					.then(() => RESULTS[res])
 			});
