@@ -111,6 +111,7 @@ Promises resolve into one of these statuses
 | Name | iOS | Android |
 |---|---|---|
 |`location`| ✔️ | ✔ |
+|`coarseLocation`| ❌ | ✔ |
 |`camera`| ✔️ | ✔ |
 |`microphone`| ✔️ | ✔ |
 |`photo`| ✔️ | ✔ |
