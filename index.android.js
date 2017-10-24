@@ -6,6 +6,7 @@ const AsyncStorage = ReactNative.AsyncStorage
 
 const RNPTypes = {
 	location: RNPermissions.PERMISSIONS.ACCESS_FINE_LOCATION,
+	coarseLocation: RNPermissions.PERMISSIONS.ACCESS_COARSE_LOCATION,
 	camera: RNPermissions.PERMISSIONS.CAMERA,
 	microphone: RNPermissions.PERMISSIONS.RECORD_AUDIO,
 	contacts: RNPermissions.PERMISSIONS.READ_CONTACTS,
