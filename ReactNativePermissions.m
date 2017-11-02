@@ -44,6 +44,7 @@
 #import "RNPContacts.h"
 #import "RNPBackgroundRefresh.h"
 #import "RNPSpeechRecognition.h"
+#import "RNPMotion.h"
 
 @interface ReactNativePermissions()
 @property (strong, nonatomic) RNPLocation *locationMgr;
@@ -141,6 +142,9 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id
         case RNPTypeSpeechRecognition:
             status = [RNPSpeechRecognition getStatus];
             break;
+        case RNPTypeMotion:
+            status = [RNPMotion getStatus];
+            break;
         default:
             break;
     }
@@ -173,6 +177,8 @@ RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json r
             return [self requestNotification:json resolve:resolve];
         case RNPTypeSpeechRecognition:
             return [RNPSpeechRecognition request:resolve];
+        case RNPTypeMotion:
+            return [RNPMotion request:resolve];
         default:
             break;
     }
