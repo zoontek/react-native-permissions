@@ -13,6 +13,7 @@ The current supported permissions are:
 - Push Notifications *(iOS only)*
 - Background Refresh *(iOS only)*
 - Speech Recognition *(iOS only)*
+- Core Motion *(iOS only)*
 - Call Phone *(Android Only)*
 - Read/Receive SMS *(Android only)*
 
@@ -121,6 +122,7 @@ Promises resolve into one of these statuses
 |`notification`| ✔️ | ❌ |
 |`backgroundRefresh`| ✔️ | ❌ |
 |`speechRecognition`| ✔️ | ❌ |
+|`motion`| ✔️ | ❌ |
 |`storage`| ❌️ | ✔ |
 |`callPhone`| ❌️ | ✔ |
 |`readSms`| ❌️ | ✔ |
@@ -216,6 +218,8 @@ So before submitting your app to the `AppStore`, make sure that in your `Info.pl
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
+<string>Some description</string>
+<key>NSMotionUsageDescription</key>
 <string>Some description</string>
 
 ```
