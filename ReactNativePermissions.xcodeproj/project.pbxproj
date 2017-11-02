@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		281CD5911E26B0C8003A72B2 /* RNPSpeechRecognition.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CD5901E26B0C7003A72B2 /* RNPSpeechRecognition.m */; };
+		483383101FAB6115005D5777 /* RNPMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4833830E1FAB6114005D5777 /* RNPMotion.m */; };
 		9D46283E1D34719100346A5B /* RNPAudioVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D46282F1D34719100346A5B /* RNPAudioVideo.m */; };
 		9D46283F1D34719100346A5B /* RNPBackgroundRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4628311D34719100346A5B /* RNPBackgroundRefresh.m */; };
 		9D4628401D34719100346A5B /* RNPBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4628331D34719100346A5B /* RNPBluetooth.m */; };
@@ -35,6 +36,8 @@
 /* Begin PBXFileReference section */
 		281CD5901E26B0C7003A72B2 /* RNPSpeechRecognition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNPSpeechRecognition.m; path = permissions/RNPSpeechRecognition.m; sourceTree = SOURCE_ROOT; };
 		281CD5921E26B266003A72B2 /* RNPSpeechRecognition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNPSpeechRecognition.h; path = permissions/RNPSpeechRecognition.h; sourceTree = SOURCE_ROOT; };
+		4833830E1FAB6114005D5777 /* RNPMotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNPMotion.m; path = permissions/RNPMotion.m; sourceTree = SOURCE_ROOT; };
+		4833830F1FAB6115005D5777 /* RNPMotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNPMotion.h; path = permissions/RNPMotion.h; sourceTree = SOURCE_ROOT; };
 		9D23B34F1C767B80008B4819 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativePermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D46282E1D34719100346A5B /* RNPAudioVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNPAudioVideo.h; path = permissions/RNPAudioVideo.h; sourceTree = SOURCE_ROOT; };
 		9D46282F1D34719100346A5B /* RNPAudioVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNPAudioVideo.m; path = permissions/RNPAudioVideo.m; sourceTree = SOURCE_ROOT; };
@@ -100,6 +103,8 @@
 		9D4628091D33C1EC00346A5B /* permissions */ = {
 			isa = PBXGroup;
 			children = (
+				4833830F1FAB6115005D5777 /* RNPMotion.h */,
+				4833830E1FAB6114005D5777 /* RNPMotion.m */,
 				9D46282E1D34719100346A5B /* RNPAudioVideo.h */,
 				9D46282F1D34719100346A5B /* RNPAudioVideo.m */,
 				9D4628301D34719100346A5B /* RNPBackgroundRefresh.h */,
@@ -186,6 +191,7 @@
 				9D4628401D34719100346A5B /* RNPBluetooth.m in Sources */,
 				9DE8D28B1CA31E95009CE8CC /* RCTConvert+RNPStatus.m in Sources */,
 				9D4628421D34719100346A5B /* RNPEvent.m in Sources */,
+				483383101FAB6115005D5777 /* RNPMotion.m in Sources */,
 				9DE8D2821CA3188D009CE8CC /* ReactNativePermissions.m in Sources */,
 				9D4628411D34719100346A5B /* RNPContacts.m in Sources */,
 				9D4628441D34719100346A5B /* RNPNotification.m in Sources */,
