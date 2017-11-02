@@ -6,11 +6,6 @@
 #import "RNPMotion.h"
 #import <CoreMotion/CoreMotion.h>
 
-@interface RNPMotion ()
-@property (nonatomic, strong) CMMotionActivityManager *activityManager;
-@property (nonatomic, strong) NSOperationQueue *motionActivityQueue;
-@end
-
 @implementation RNPMotion
 
 + (NSString *)getStatus
@@ -41,12 +36,12 @@
 
 + (void)request:(void (^)(NSString *))completionHandler
 {
-    __block NSString *status = [self getMotionPermissionStatus];
+    __block NSString *status = [RNPMotion getStatus];
     
     if ([status isEqual: RNPStatusUndetermined]) {
-        self.activityManager = [[CMMotionActivityManager alloc] init];
-        self.motionActivityQueue = [[NSOperationQueue alloc] init];
-        [self.activityManager queryActivityStartingFromDate:[NSDate distantPast] toDate:[NSDate date] toQueue:self.motionActivityQueue withHandler:^(NSArray *activities, NSError *error) {
+        __block CMMotionActivityManager *activityManager = [[CMMotionActivityManager alloc] init];
+        __block NSOperationQueue *motionActivityQueue = [[NSOperationQueue alloc] init];
+        [activityManager queryActivityStartingFromDate:[NSDate distantPast] toDate:[NSDate date] toQueue:motionActivityQueue withHandler:^(NSArray *activities, NSError *error) {
             if (error) {
                 status = RNPStatusDenied;
             } else if (activities || !error) {
@@ -57,8 +52,8 @@
                 completionHandler(status);
             });
             
-            [self setActivityManager:nil];
-            [self setMotionActivityQueue:nil];
+            activityManager = nil;
+            motionActivityQueue = nil;
         }];
     } else {
         completionHandler(status);
