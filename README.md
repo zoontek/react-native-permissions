@@ -11,7 +11,7 @@ Request user permissions from React Native, iOS + Android
 
 ## ⚠️ Breaking changes in version 1.0.0
 - Now using React Native's own JS `PermissionsAndroid` module on Android, which is great because we no longer have to do any additional linking on Android
-- Updated API to be closer to RN's PermissionsAndroid
+- Updated API to be closer to React Native's PermissionsAndroid
 - Removed `openSettings()` support on Android (to stay linking-free). There are several NPM modules available for this
 - `restricted` status now supported on Android, although it means something different than iOS
 
@@ -19,15 +19,11 @@ Request user permissions from React Native, iOS + Android
 
 ```sh
 npm install --save react-native-permissions
-```
-
-**OR**
-
-```sh
+--- or ---
 yarn add react-native-permissions
 ```
 
-*📌  Don't forget to add permissions to `AndroidManifest.xml` for android and `Info.plist` for iOS (Xcode >=8). See notes below for more details.*
+📌  Don't forget to add permissions to `AndroidManifest.xml` for android and `Info.plist` for iOS (Xcode >=8). See notes below for more details.
 
 ### Additional iOS setup
 
@@ -122,10 +118,10 @@ Promises resolve into one of these statuses:
 
 | Return value | Notes|
 |---|---|
-|`authorized`| user has authorized this permission |
-|`denied`| user has denied this permission at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
-|`restricted`| **iOS** - this means user is not able to grant this permission, either because it's not supported by the device or because it has been blocked by parental controls. **Android** - this means that the user has selected 'Never ask me again' while denying permission |
-|`undetermined`| user has not yet been prompted with a permission dialog |
+|`authorized`| User has authorized this permission |
+|`denied`| User has denied this permission at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'|
+|`restricted`| **iOS only** - this means user is not able to grant this permission, either because it's not supported by the device or because it has been blocked by parental controls. **Android** - this means that the user has selected 'Never ask me again' while denying permission |
+|`undetermined`| User has not yet been prompted with a permission dialog |
 
 ### Supported permissions types
 
@@ -187,7 +183,7 @@ Permissions.request("notification", ["alert", "badge"]).then(response => {
 - With Xcode 8, you now need to add usage descriptions for each permission you will request. Open Xcode ➜ `Info.plist` ➜ Add a key (starting with "Privacy - ...") with your kit specific permission.
 
 Example:
-If you need Contacts permission you have to add the key "Privacy - Contacts Usage Description".
+If you need Contacts permission you have to add the key `Privacy - Contacts Usage Description`.
 
 <img width="338" alt="3cde3b44-7ffd-11e6-918b-63888e33f983" src="https://cloud.githubusercontent.com/assets/1440796/18713019/271be540-8011-11e6-87fb-c3828c172dfc.png">
 
@@ -220,18 +216,15 @@ You can find more informations about this issue in #46.
 
 ### Android Notes
 
-Uses RN's own `PermissionsAndroid` JS api (http://facebook.github.io/react-native/releases/0.45/docs/permissionsandroid.html)
-
-All required permissions also need to be included in the `AndroidManifest.xml` file before they can be requested. Otherwise `request()` will immediately return `denied`.
-
-Permissions are automatically accepted for **targetSdkVersion < 23** but you can still use `check()` to check if the user has disabled them from Settings.
-
-You can request write access to any of these types by also including the appropriate write permission in the Manifest. Read more here: https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous
+- Uses React Native's own [`PermissionsAndroid` JS API](http://facebook.github.io/react-native/docs/permissionsandroid.html).
+- All required permissions also need to be included in the `AndroidManifest.xml` file before they can be requested. Otherwise `request()` will immediately return `denied`.
+- Permissions are automatically accepted for **targetSdkVersion < 23** but you can still use `check()` to check if the user has disabled them from Settings.
+- You can request write access to any of these types by also including the appropriate write permission in the `AndroidManifest.xml` file. Read more [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
 
 ## Troubleshooting
 
 #### Q: iOS - App crashes as soon as I request permission
-A: starting with Xcode 8, you need to add permission descriptions. See iOS notes for more details. Thanks to [@jesperlndk](https://github.com/jesperlndk) for discovering this.
+> A: Starting with Xcode 8, you need to add permission descriptions. See iOS notes for more details. Thanks to [@jesperlndk](https://github.com/jesperlndk) for discovering this.
 
 #### Q: iOS - App crashes when I change permission from settings
-A: This is normal. iOS restarts your app when your privacy settings change. Just google "iOS crash permission change"
+> A: This is normal. iOS restarts your app when your privacy settings change. Just google "iOS crash permission change"
