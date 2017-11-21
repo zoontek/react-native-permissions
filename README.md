@@ -10,7 +10,7 @@ Request user permissions from React Native, iOS + Android
 
 ## ⚠️ Breaking changes in version 1.0.0
 - Now using React Native's own JS `PermissionsAndroid` module on Android, which is great because we no longer have to do any additional linking on Android
-- Updated API to be closer to React Native's PermissionsAndroid
+- Updated API to be closer to React Native's `PermissionsAndroid`
 - Removed `openSettings()` support on Android (to stay linking-free). There are several NPM modules available for this
 - `restricted` status now supported on Android, although it means something different than iOS
 
