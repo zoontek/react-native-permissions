@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
 
-  s.preserve_paths      = 'docs', 'CHANGELOG.md', 'LICENSE', 'package.json', 'ReactNativePermissions.ios.js'
+  s.preserve_paths      = 'LICENSE', 'package.json'
   s.source_files        = '**/*.{h,m}'
   s.exclude_files       = 'example/**/*'
 end
