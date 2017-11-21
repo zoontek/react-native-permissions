@@ -187,14 +187,18 @@ npm install --save react-native-permissions
 react-native link
 ````
 
-### Or manually linking
-
-#### iOS
+### iOS
+#### CocoaPods
+Update the following line with your path to `node_modules/` and add it to your podfile
+```ruby
+pod 'ReactNativePermissions', :path => 'your/path/to/node_modules/react-native-permissions'
+```
+#### Or manually linking
 * Run open node_modules/react-native-permissions
 * Drag ReactNativePermissions.xcodeproj into the Libraries group of your app's Xcode project
 * Add libReactNativePermissions.a to `Build Phases -> Link Binary With Libraries.
 
-#### Android
+### Android
   No additional linking required
 
 ## AppStore submission disclaimer
