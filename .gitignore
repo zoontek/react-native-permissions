@@ -1,3 +1,4 @@
+node_modules/
 android/react-native-permissions.iml
 android/build
 android/.idea
