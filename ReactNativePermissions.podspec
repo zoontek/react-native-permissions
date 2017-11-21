@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
 
   s.preserve_paths      = 'docs', 'CHANGELOG.md', 'LICENSE', 'package.json', 'ReactNativePermissions.ios.js'
   s.source_files        = '**/*.{h,m}'
-  s.exclude_files       = 'Example/**/*'
+  s.exclude_files       = 'example/**/*'
 end
