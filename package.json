@@ -15,6 +15,16 @@
     "type": "git",
     "url": "https://github.com/yonahforst/react-native-permissions.git"
   },
+  "scripts": {
+    "precommit": "lint-staged",
+    "prettier": "prettier --write '**/*.js'"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "husky": "^0.14.3",
     "lint-staged": "^5.0.0",

@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   StyleSheet,
   TouchableHighlight,
@@ -13,7 +13,7 @@ import {
   Alert,
   AppState,
   Platform,
-} from 'react-native';
+} from 'react-native'
 
 import Permissions from 'react-native-permissions'
 
@@ -29,11 +29,14 @@ export default class Example extends Component {
 
     this.setState({ types, canOpenSettings })
     this._updatePermissions(types)
-    AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+    AppState.addEventListener('change', this._handleAppStateChange.bind(this))
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
+    AppState.removeEventListener(
+      'change',
+      this._handleAppStateChange.bind(this),
+    )
   }
 
   //update permissions when app comes back from settings
@@ -44,16 +47,17 @@ export default class Example extends Component {
   }
 
   _openSettings() {
-    return Permissions.openSettings()
-      .then(() => alert('back to app!!'))
+    return Permissions.openSettings().then(() => alert('back to app!!'))
   }
 
   _updatePermissions(types) {
     Permissions.checkMultiple(types)
       .then(status => {
         if (this.state.isAlways) {
-          return Permissions.check('location', 'always')
-            .then(location => ({...status, location}))
+          return Permissions.check('location', 'always').then(location => ({
+            ...status,
+            location,
+          }))
         }
         return status
       })
@@ -70,19 +74,24 @@ export default class Example extends Component {
     Permissions.request(permission, options)
       .then(res => {
         this.setState({
-          status: {...this.state.status, [permission]: res}
+          status: { ...this.state.status, [permission]: res },
         })
         if (res != 'authorized') {
           var buttons = [{ text: 'Cancel', style: 'cancel' }]
-          if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
-          
+          if (this.state.canOpenSettings)
+            buttons.push({
+              text: 'Open Settings',
+              onPress: this._openSettings.bind(this),
+            })
+
           Alert.alert(
             'Whoops!',
-            "There was a problem getting your permission. Please enable it from settings.",
-            buttons
+            'There was a problem getting your permission. Please enable it from settings.',
+            buttons,
           )
         }
-      }).catch(e => console.warn(e))
+      })
+      .catch(e => console.warn(e))
   }
 
   _onLocationSwitchChange() {
@@ -93,46 +102,44 @@ export default class Example extends Component {
   render() {
     return (
       <View style={styles.container}>
-
         {this.state.types.map(p => (
-          <TouchableHighlight 
+          <TouchableHighlight
             style={[styles.button, styles[this.state.status[p]]]}
             key={p}
-            onPress={this._requestPermission.bind(this, p)}>
+            onPress={this._requestPermission.bind(this, p)}
+          >
             <View>
               <Text style={styles.text}>
-                {Platform.OS == 'ios' && p == 'location' ? `location ${this.state.isAlways ? 'always' : 'whenInUse'}` : p}
+                {Platform.OS == 'ios' && p == 'location'
+                  ? `location ${this.state.isAlways ? 'always' : 'whenInUse'}`
+                  : p}
               </Text>
-              <Text style={styles.subtext}>
-                {this.state.status[p]}
-              </Text>
+              <Text style={styles.subtext}>{this.state.status[p]}</Text>
             </View>
           </TouchableHighlight>
-          )
-        )}
+        ))}
         <View style={styles.footer}>
-          <TouchableHighlight 
-            style={styles['footer_'+Platform.OS]}
-            onPress={this._onLocationSwitchChange.bind(this)}>
+          <TouchableHighlight
+            style={styles['footer_' + Platform.OS]}
+            onPress={this._onLocationSwitchChange.bind(this)}
+          >
             <Text style={styles.text}>Toggle location type</Text>
           </TouchableHighlight>
-   
-          {
-            this.state.canOpenSettings &&
-            <TouchableHighlight 
-              onPress={this._openSettings.bind(this)}>
+
+          {this.state.canOpenSettings && (
+            <TouchableHighlight onPress={this._openSettings.bind(this)}>
               <Text style={styles.text}>Open settings</Text>
             </TouchableHighlight>
-          }
-
+          )}
         </View>
 
-
-        <Text style={styles['footer_'+Platform.OS]}>
-          Note: microphone permissions may not work on iOS simulator. Also, toggling permissions from the settings menu may cause the app to crash. This is normal on iOS. Google "ios crash permission change"
+        <Text style={styles['footer_' + Platform.OS]}>
+          Note: microphone permissions may not work on iOS simulator. Also,
+          toggling permissions from the settings menu may cause the app to
+          crash. This is normal on iOS. Google "ios crash permission change"
         </Text>
       </View>
-    );
+    )
   }
 }
 
@@ -169,7 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef9a9a',
   },
   restricted: {
-    backgroundColor: '#ef9a9a'
+    backgroundColor: '#ef9a9a',
   },
   footer: {
     padding: 10,
@@ -179,5 +186,5 @@ const styles = StyleSheet.create({
   footer_android: {
     height: 0,
     width: 0,
-  }
+  },
 })
