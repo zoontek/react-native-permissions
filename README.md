@@ -217,8 +217,21 @@ You can find more informations about this issue in #46.
 
 - Uses React Native's own [`PermissionsAndroid` JS API](http://facebook.github.io/react-native/docs/permissionsandroid.html).
 - All required permissions also need to be included in the `AndroidManifest.xml` file before they can be requested. Otherwise `request()` will immediately return `denied`.
-- Permissions are automatically accepted for **targetSdkVersion < 23** but you can still use `check()` to check if the user has disabled them from Settings.
 - You can request write access to any of these types by also including the appropriate write permission in the `AndroidManifest.xml` file. Read more [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
+- Permissions are automatically accepted for **targetSdkVersion < 23** but you can still use `check()` to check if the user has disabled them from Settings.
+
+You might need to elevate the **targetSdkVersion** version in your `build.gradle`:
+
+```groovy
+android {
+  compileSdkVersion 23 // ← set at least 23
+  buildToolsVersion "23.0.1"  // ← set at least 23.0.0
+
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 23 // ← set at least 23
+    // ...
+```
 
 ## Troubleshooting
 
