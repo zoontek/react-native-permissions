@@ -19,7 +19,7 @@ Request user permissions from React Native, iOS + Android
 
 ```sh
 npm install --save react-native-permissions
---- or ---
+# --- or ---
 yarn add react-native-permissions
 ```
 
@@ -187,7 +187,7 @@ If you need Contacts permission you have to add the key `Privacy - Contacts Usag
 
 <img width="338" alt="3cde3b44-7ffd-11e6-918b-63888e33f983" src="https://cloud.githubusercontent.com/assets/1440796/18713019/271be540-8011-11e6-87fb-c3828c172dfc.png">
 
-### App Store submission disclaimer
+#### App Store submission disclaimer
 
 If you need to submit you application to the AppStore, you need to add to your `Info.plist` all `*UsageDescription` keys with a string value explaining to the user how the app uses this data. **Even if you don't use them**.
 
