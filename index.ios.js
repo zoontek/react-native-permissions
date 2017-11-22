@@ -1,9 +1,9 @@
-'use strict'
+// @flow
 
-const ReactNative = require('react-native')
-const RNPermissions = ReactNative.NativeModules.ReactNativePermissions
+import { NativeModules } from 'react-native'
+const PermissionsIOS = NativeModules.ReactNativePermissions
 
-const RNPTypes = [
+const permissionTypes = [
   'location',
   'camera',
   'microphone',
@@ -23,20 +23,12 @@ const DEFAULTS = {
 }
 
 class ReactNativePermissions {
-  canOpenSettings() {
-    return RNPermissions.canOpenSettings()
-  }
+  canOpenSettings = () => PermissionsIOS.canOpenSettings()
+  openSettings = () => PermissionsIOS.openSettings()
+  getTypes = () => permissionTypes
 
-  openSettings() {
-    return RNPermissions.openSettings()
-  }
-
-  getTypes() {
-    return RNPTypes
-  }
-
-  check(permission, type) {
-    if (!RNPTypes.includes(permission)) {
+  check = (permission, type) => {
+    if (!permissionTypes.includes(permission)) {
       return Promise.reject(
         `ReactNativePermissions: ${
           permission
@@ -44,11 +36,11 @@ class ReactNativePermissions {
       )
     }
 
-    return RNPermissions.getPermissionStatus(permission, type)
+    return PermissionsIOS.getPermissionStatus(permission, type)
   }
 
-  request(permission, type) {
-    if (!RNPTypes.includes(permission)) {
+  request = (permission, type) => {
+    if (!permissionTypes.includes(permission)) {
       return Promise.reject(
         `ReactNativePermissions: ${
           permission
@@ -62,22 +54,20 @@ class ReactNativePermissions {
       )
     }
 
-    type = type || DEFAULTS[permission]
-
-    return RNPermissions.requestPermission(permission, type)
-  }
-
-  checkMultiple(permissions) {
-    return Promise.all(
-      permissions.map(permission => this.check(permission)),
-    ).then(res =>
-      res.reduce((pre, cur, i) => {
-        var name = permissions[i]
-        pre[name] = cur
-        return pre
-      }, {}),
+    return PermissionsIOS.requestPermission(
+      permission,
+      type || DEFAULTS[permission],
     )
   }
+
+  checkMultiple = permissions =>
+    Promise.all(permissions.map(this.check)).then(result =>
+      result.reduce((acc, value, index) => {
+        const name = permissions[index]
+        acc[name] = value
+        return acc
+      }, {}),
+    )
 }
 
-module.exports = new ReactNativePermissions()
+export default new ReactNativePermissions()

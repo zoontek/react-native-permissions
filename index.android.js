@@ -1,100 +1,96 @@
-'use strict'
+// @flow
 
-const ReactNative = require('react-native')
-const RNPermissions = ReactNative.PermissionsAndroid
-const AsyncStorage = ReactNative.AsyncStorage
+import { AsyncStorage, PermissionsAndroid } from 'react-native'
 
-const RNPTypes = {
-  location: RNPermissions.PERMISSIONS.ACCESS_FINE_LOCATION,
-  camera: RNPermissions.PERMISSIONS.CAMERA,
-  microphone: RNPermissions.PERMISSIONS.RECORD_AUDIO,
-  contacts: RNPermissions.PERMISSIONS.READ_CONTACTS,
-  event: RNPermissions.PERMISSIONS.READ_CALENDAR,
-  storage: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
-  photo: RNPermissions.PERMISSIONS.READ_EXTERNAL_STORAGE,
-  callPhone: RNPermissions.PERMISSIONS.CALL_PHONE,
-  readSms: RNPermissions.PERMISSIONS.READ_SMS,
-  receiveSms: RNPermissions.PERMISSIONS.RECEIVE_SMS,
+const permissionTypes = {
+  location: PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  camera: PermissionsAndroid.PERMISSIONS.CAMERA,
+  microphone: PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+  contacts: PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+  event: PermissionsAndroid.PERMISSIONS.READ_CALENDAR,
+  storage: PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  photo: PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  callPhone: PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+  readSms: PermissionsAndroid.PERMISSIONS.READ_SMS,
+  receiveSms: PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
 }
 
 const RESULTS = {
-  [RNPermissions.RESULTS.GRANTED]: 'authorized',
-  [RNPermissions.RESULTS.DENIED]: 'denied',
-  [RNPermissions.RESULTS.NEVER_ASK_AGAIN]: 'restricted',
+  [PermissionsAndroid.RESULTS.GRANTED]: 'authorized',
+  [PermissionsAndroid.RESULTS.DENIED]: 'denied',
+  [PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN]: 'restricted',
 }
 
 const STORAGE_KEY = '@RNPermissions:didAskPermission:'
 
-const setDidAskOnce = p => AsyncStorage.setItem(STORAGE_KEY + p, 'true')
-const getDidAskOnce = p =>
-  AsyncStorage.getItem(STORAGE_KEY + p).then(res => !!res)
+const setDidAskOnce = permission =>
+  AsyncStorage.setItem(STORAGE_KEY + permission, 'true')
+
+const getDidAskOnce = permission =>
+  AsyncStorage.getItem(STORAGE_KEY + permission).then(item => !!item)
 
 class ReactNativePermissions {
-  canOpenSettings() {
-    return false
-  }
+  canOpenSettings = () => false
+  openSettings = () => Promise.reject("'openSettings' is deprecated on android")
+  getTypes = () => Object.keys(permissionTypes)
 
-  openSettings() {
-    return Promise.reject("'openSettings' is Depricated on android")
-  }
+  check = permission => {
+    const androidPermission = permissionTypes[permission]
 
-  getTypes() {
-    return Object.keys(RNPTypes)
-  }
-
-  check(permission) {
-    const androidPermission = RNPTypes[permission]
-    if (!androidPermission)
+    if (!androidPermission) {
       return Promise.reject(
         `ReactNativePermissions: ${
           permission
         } is not a valid permission type on Android`,
       )
+    }
 
-    const shouldShowRationale =
-      ReactNative.NativeModules.PermissionsAndroid
-        .shouldShowRequestPermissionRationale
-
-    return RNPermissions.check(androidPermission).then(isAuthorized => {
-      if (isAuthorized) return 'authorized'
+    return PermissionsAndroid.check(androidPermission).then(isAuthorized => {
+      if (isAuthorized) {
+        return 'authorized'
+      }
 
       return getDidAskOnce(permission).then(didAsk => {
         if (didAsk) {
-          return shouldShowRationale(androidPermission).then(
-            shouldShow => (shouldShow ? 'denied' : 'restricted'),
-          )
+          return PermissionsAndroid.shouldShowRequestPermissionRationale(
+            androidPermission,
+          ).then(shouldShow => (shouldShow ? 'denied' : 'restricted'))
         }
         return 'undetermined'
       })
     })
   }
 
-  request(permission) {
-    const androidPermission = RNPTypes[permission]
-    if (!androidPermission)
+  request = permission => {
+    const androidPermission = permissionTypes[permission]
+
+    if (!androidPermission) {
       return Promise.reject(
         `ReactNativePermissions: ${
           permission
         } is not a valid permission type on Android`,
       )
+    }
 
-    return RNPermissions.request(androidPermission).then(res => {
-      // RNPermissions.request() to native module resolves to boolean
+    return PermissionsAndroid.request(androidPermission).then(result => {
+      // PermissionsAndroid.request() to native module resolves to boolean
       // rather than string if running on OS version prior to Android M
-      if (typeof res === 'boolean') return res ? 'authorized' : 'denied'
-      return setDidAskOnce(permission).then(() => RESULTS[res])
+      if (typeof result === 'boolean') {
+        return result ? 'authorized' : 'denied'
+      }
+
+      return setDidAskOnce(permission).then(() => RESULTS[result])
     })
   }
 
-  checkMultiple(permissions) {
-    return Promise.all(permissions.map(this.check.bind(this))).then(res =>
-      res.reduce((pre, cur, i) => {
-        var name = permissions[i]
-        pre[name] = cur
-        return pre
+  checkMultiple = permissions =>
+    Promise.all(permissions.map(this.check)).then(result =>
+      result.reduce((acc, value, index) => {
+        const name = permissions[index]
+        acc[name] = value
+        return acc
       }, {}),
     )
-  }
 }
 
-module.exports = new ReactNativePermissions()
+export default new ReactNativePermissions()
