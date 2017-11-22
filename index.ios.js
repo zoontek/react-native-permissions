@@ -36,7 +36,10 @@ class ReactNativePermissions {
       )
     }
 
-    return PermissionsIOS.getPermissionStatus(permission, type)
+    return PermissionsIOS.getPermissionStatus(
+      permission,
+      type || DEFAULTS[permission],
+    )
   }
 
   request = (permission, type) => {
@@ -61,13 +64,14 @@ class ReactNativePermissions {
   }
 
   checkMultiple = permissions =>
-    Promise.all(permissions.map(this.check)).then(result =>
-      result.reduce((acc, value, index) => {
-        const name = permissions[index]
-        acc[name] = value
-        return acc
-      }, {}),
+    Promise.all(permissions.map(permission => this.check(permission))).then(
+      result =>
+        result.reduce((acc, value, index) => {
+          const name = permissions[index]
+          acc[name] = value
+          return acc
+        }, {}),
     )
 }
 
-export default new ReactNativePermissions()
+module.exports = new ReactNativePermissions()
