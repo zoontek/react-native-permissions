@@ -1,6 +1,6 @@
 // @flow
 
-import { AsyncStorage, PermissionsAndroid } from 'react-native'
+import { AsyncStorage, NativeModules, PermissionsAndroid } from 'react-native'
 
 const permissionTypes = {
   location: PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -52,7 +52,7 @@ class ReactNativePermissions {
 
       return getDidAskOnce(permission).then(didAsk => {
         if (didAsk) {
-          return PermissionsAndroid.shouldShowRequestPermissionRationale(
+          return NativeModules.PermissionsAndroid.shouldShowRequestPermissionRationale(
             androidPermission,
           ).then(shouldShow => (shouldShow ? 'denied' : 'restricted'))
         }
