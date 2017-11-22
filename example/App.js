@@ -1,8 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+// @flow
 
 import React, { Component } from 'react'
 import {
@@ -17,7 +13,7 @@ import {
 
 import Permissions from 'react-native-permissions'
 
-export default class Example extends Component {
+export default class App extends Component {
   state = {
     types: [],
     status: {},
@@ -29,28 +25,24 @@ export default class Example extends Component {
 
     this.setState({ types, canOpenSettings })
     this._updatePermissions(types)
-    AppState.addEventListener('change', this._handleAppStateChange.bind(this))
+    AppState.addEventListener('change', this._handleAppStateChange)
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener(
-      'change',
-      this._handleAppStateChange.bind(this),
-    )
+    AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   //update permissions when app comes back from settings
-  _handleAppStateChange(appState) {
+  _handleAppStateChange = appState => {
     if (appState == 'active') {
       this._updatePermissions(this.state.types)
     }
   }
 
-  _openSettings() {
-    return Permissions.openSettings().then(() => alert('back to app!!'))
-  }
+  _openSettings = () =>
+    Permissions.openSettings().then(() => alert('back to app!!'))
 
-  _updatePermissions(types) {
+  _updatePermissions = types => {
     Permissions.checkMultiple(types)
       .then(status => {
         if (this.state.isAlways) {
@@ -64,7 +56,7 @@ export default class Example extends Component {
       .then(status => this.setState({ status }))
   }
 
-  _requestPermission(permission) {
+  _requestPermission = permission => {
     var options
 
     if (permission == 'location') {
@@ -81,7 +73,7 @@ export default class Example extends Component {
           if (this.state.canOpenSettings)
             buttons.push({
               text: 'Open Settings',
-              onPress: this._openSettings.bind(this),
+              onPress: this._openSettings,
             })
 
           Alert.alert(
@@ -94,7 +86,7 @@ export default class Example extends Component {
       .catch(e => console.warn(e))
   }
 
-  _onLocationSwitchChange() {
+  _onLocationSwitchChange = () => {
     this.setState({ isAlways: !this.state.isAlways })
     this._updatePermissions(this.state.types)
   }
@@ -106,7 +98,7 @@ export default class Example extends Component {
           <TouchableHighlight
             style={[styles.button, styles[this.state.status[p]]]}
             key={p}
-            onPress={this._requestPermission.bind(this, p)}
+            onPress={() => this._requestPermission(p)}
           >
             <View>
               <Text style={styles.text}>
@@ -121,13 +113,13 @@ export default class Example extends Component {
         <View style={styles.footer}>
           <TouchableHighlight
             style={styles['footer_' + Platform.OS]}
-            onPress={this._onLocationSwitchChange.bind(this)}
+            onPress={this._onLocationSwitchChange}
           >
             <Text style={styles.text}>Toggle location type</Text>
           </TouchableHighlight>
 
           {this.state.canOpenSettings && (
-            <TouchableHighlight onPress={this._openSettings.bind(this)}>
+            <TouchableHighlight onPress={this._openSettings}>
               <Text style={styles.text}>Open settings</Text>
             </TouchableHighlight>
           )}
