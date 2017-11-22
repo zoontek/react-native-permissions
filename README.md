@@ -192,7 +192,7 @@ If you need to submit you application to the AppStore, you need to add to your `
 
 So before submitting your app to the App Store, make sure that in your `Info.plist` you have the following keys:
 
-```
+```xml
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>Some description</string>
 <key>NSCalendarsUsageDescription</key>
