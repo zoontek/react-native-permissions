@@ -10,8 +10,8 @@ Request user permissions from React Native, iOS + Android
 
 | Version | React Native Support |
 | ------- | -------------------- |
-| 1.0.2   | 0.40.0 - 0.48.4      |
-| 0.2.5   | 0.33.0 - 0.39.0      |
+| 1.0.2   | 0.40 - 0.50          |
+| 0.2.5   | 0.33 - 0.39          |
 
 _Complies with
 [react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)_
