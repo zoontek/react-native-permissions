@@ -63,6 +63,8 @@ react-native link react-native-permissions
 3. Add `libReactNativePermissions.a` to `Build Phases` -> `Link Binary With
    Libraries`
 
+## Using
+
 ```js
 import Permissions from 'react-native-permissions'
 
