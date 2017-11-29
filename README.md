@@ -195,9 +195,11 @@ Permissions.request('location', { type: 'always' }).then(response => {
   this.setState({ locationPermission: response })
 })
 
-Permissions.request('notification', { type: ['alert', 'badge'] }).then(response => {
-  this.setState({ notificationPermission: response })
-})
+Permissions.request('notification', { type: ['alert', 'badge'] }).then(
+  response => {
+    this.setState({ notificationPermission: response })
+  },
+)
 ```
 
 * You cannot request microphone permissions on the simulator.
@@ -259,16 +261,14 @@ You can find more informations about this issue in #46.
 
 ```js
 // example
-Permissions.request(
-  'camera',
-  {
-    rationale: {
-      'title': 'Cool Photo App Camera Permission',
-      'message': 'Cool Photo App needs access to your camera ' +
-                 'so you can take awesome pictures.'
-    },
+Permissions.request('camera', {
+  rationale: {
+    title: 'Cool Photo App Camera Permission',
+    message:
+      'Cool Photo App needs access to your camera ' +
+      'so you can take awesome pictures.',
   },
-).then(response => {
+}).then(response => {
   this.setState({ cameraPermission: response })
 })
 ```
