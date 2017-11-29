@@ -187,15 +187,15 @@ The current supported permissions are:
 
 ```js
 // example
-Permissions.check('location', 'always').then(response => {
+Permissions.check('location', { type: 'always' }).then(response => {
   this.setState({ locationPermission: response })
 })
 
-Permissions.request('location', 'always').then(response => {
+Permissions.request('location', { type: 'always' }).then(response => {
   this.setState({ locationPermission: response })
 })
 
-Permissions.request('notification', ['alert', 'badge']).then(response => {
+Permissions.request('notification', { type: ['alert', 'badge'] }).then(response => {
   this.setState({ notificationPermission: response })
 })
 ```
@@ -254,6 +254,25 @@ You can find more informations about this issue in #46.
 * You can request write access to any of these types by also including the
   appropriate write permission in the `AndroidManifest.xml` file. Read more
   [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
+
+* The optional rationale argument will show a dialog prompt.
+
+```js
+// example
+Permissions.request(
+  'camera',
+  {
+    rationale: {
+      'title': 'Cool Photo App Camera Permission',
+      'message': 'Cool Photo App needs access to your camera ' +
+                 'so you can take awesome pictures.'
+    },
+  },
+).then(response => {
+  this.setState({ cameraPermission: response })
+})
+```
+
 * Permissions are automatically accepted for **targetSdkVersion < 23** but you
   can still use `check()` to check if the user has disabled them from Settings.
 
