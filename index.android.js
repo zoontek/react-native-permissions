@@ -61,7 +61,7 @@ class ReactNativePermissions {
     })
   }
 
-  request = permission => {
+    request = (permission, { rationale }) => {
     const androidPermission = permissionTypes[permission]
 
     if (!androidPermission) {
@@ -72,7 +72,7 @@ class ReactNativePermissions {
       )
     }
 
-    return PermissionsAndroid.request(androidPermission).then(result => {
+    return PermissionsAndroid.request(androidPermission, rationale).then(result => {
       // PermissionsAndroid.request() to native module resolves to boolean
       // rather than string if running on OS version prior to Android M
       if (typeof result === 'boolean') {

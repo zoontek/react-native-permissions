@@ -42,7 +42,15 @@ class ReactNativePermissions {
     )
   }
 
-  request = (permission, type) => {
+  request = (permission, options) => {
+    let type = null;
+    if (typeof options === 'string' || options instanceof Array) {
+      console.warn('[react-native-permissions] : You are using a deprecated version of request(). You should use an object as second parameter. Please check the documentation for more information : https://github.com/yonahforst/react-native-permissions');
+      type = options;
+    } else if (options != null) {
+      type = options.type;
+    }
+
     if (!permissionTypes.includes(permission)) {
       return Promise.reject(
         `ReactNativePermissions: ${
@@ -56,6 +64,8 @@ class ReactNativePermissions {
         'ReactNativePermissions: You cannot request backgroundRefresh',
       )
     }
+
+    
 
     return PermissionsIOS.requestPermission(
       permission,
