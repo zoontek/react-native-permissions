@@ -61,7 +61,7 @@ class ReactNativePermissions {
     })
   }
 
-  request = permission => {
+  request = (permission, options) => {
     const androidPermission = permissionTypes[permission]
 
     if (!androidPermission) {
@@ -72,15 +72,22 @@ class ReactNativePermissions {
       )
     }
 
-    return PermissionsAndroid.request(androidPermission).then(result => {
-      // PermissionsAndroid.request() to native module resolves to boolean
-      // rather than string if running on OS version prior to Android M
-      if (typeof result === 'boolean') {
-        return result ? 'authorized' : 'denied'
-      }
+    let rationale = null
+    if (options != null) {
+      rationale = options.rationale
+    }
 
-      return setDidAskOnce(permission).then(() => RESULTS[result])
-    })
+    return PermissionsAndroid.request(androidPermission, rationale).then(
+      result => {
+        // PermissionsAndroid.request() to native module resolves to boolean
+        // rather than string if running on OS version prior to Android M
+        if (typeof result === 'boolean') {
+          return result ? 'authorized' : 'denied'
+        }
+
+        return setDidAskOnce(permission).then(() => RESULTS[result])
+      },
+    )
   }
 
   checkMultiple = permissions =>
