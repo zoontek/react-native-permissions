@@ -18,7 +18,6 @@
   #import "RCTBridge.h"
 #endif
 
-
 #if __has_include(<React/RCTConvert.h>)
   #import <React/RCTConvert.h>
 #elif __has_include("React/RCTConvert.h")
