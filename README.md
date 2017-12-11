@@ -230,6 +230,8 @@ So before submitting your app to the App Store, make sure that in your
 <string>Some description</string>
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>Some description</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Some description</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
