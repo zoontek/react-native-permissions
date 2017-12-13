@@ -75,7 +75,7 @@ export default class extends React.Component {
 
   // Check the status of a single permission
   componentDidMount() {
-    Permissions.check('photo').then(response => {
+    Permissions.default.check('photo').then(response => {
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
       this.setState({ photoPermission: response })
     })
@@ -83,7 +83,7 @@ export default class extends React.Component {
 
   // Request permission to access photos
   _requestPermission = () => {
-    Permissions.request('photo').then(response => {
+    Permissions.default.request('photo').then(response => {
       // Returns once the user has chosen to 'allow' or to 'not allow' access
       // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
       this.setState({ photoPermission: response })
@@ -92,7 +92,7 @@ export default class extends React.Component {
 
   // Check the status of multiple permissions
   _checkCameraAndPhotos = () => {
-    Permissions.checkMultiple(['camera', 'photo']).then(response => {
+    Permissions.default.checkMultiple(['camera', 'photo']).then(response => {
       //response is an object mapping type to permission
       this.setState({
         cameraPermission: response.camera,
@@ -119,7 +119,7 @@ export default class extends React.Component {
         },
         this.state.photoPermission == 'undetermined'
           ? { text: 'OK', onPress: this._requestPermission }
-          : { text: 'Open Settings', onPress: Permissions.openSettings },
+          : { text: 'Open Settings', onPress: Permissions.default.openSettings },
       ],
     )
   }
@@ -187,15 +187,15 @@ The current supported permissions are:
 
 ```js
 // example
-Permissions.check('location', { type: 'always' }).then(response => {
+Permissions.default.check('location', { type: 'always' }).then(response => {
   this.setState({ locationPermission: response })
 })
 
-Permissions.request('location', { type: 'always' }).then(response => {
+Permissions.default.request('location', { type: 'always' }).then(response => {
   this.setState({ locationPermission: response })
 })
 
-Permissions.request('notification', { type: ['alert', 'badge'] }).then(
+Permissions.default.request('notification', { type: ['alert', 'badge'] }).then(
   response => {
     this.setState({ notificationPermission: response })
   },
@@ -263,7 +263,7 @@ You can find more informations about this issue in #46.
 
 ```js
 // example
-Permissions.request('camera', {
+Permissions.default.request('camera', {
   rationale: {
     title: 'Cool Photo App Camera Permission',
     message:
