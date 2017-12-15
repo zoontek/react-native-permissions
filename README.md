@@ -67,6 +67,8 @@ react-native link react-native-permissions
 
 ```js
 import Permissions from 'react-native-permissions'
+// OR const Permissions = require('react-native-permissions').default
+// if you use CommonJS module system
 
 //...
 
