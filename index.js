@@ -1,4 +1,4 @@
 // @flow
 
 import Permissions from './lib/permissions'
-export { Permissions as default }
+export default Permissions
