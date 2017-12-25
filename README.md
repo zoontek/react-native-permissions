@@ -139,7 +139,7 @@ Promises resolve into one of these statuses:
 | Return value   | Notes                                                                                                                                                                                                                                                                  |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `authorized`   | User has authorized this permission                                                                                                                                                                                                                                    |
-| `denied`       | User has denied this permission at least once. On iOS this means that the user will not be prompted again. Android users can be promted multiple times until they select 'Never ask me again'                                                                          |
+| `denied`       | User has denied this permission at least once. On iOS this means that the user will not be prompted again. Android users can be prompted multiple times until they select 'Never ask me again'                                                                          |
 | `restricted`   | **iOS** - this means user is not able to grant this permission, either because it's not supported by the device or because it has been blocked by parental controls. **Android** - this means that the user has selected 'Never ask me again' while denying permission |
 | `undetermined` | User has not yet been prompted with a permission dialog                                                                                                                                                                                                                |
 
@@ -248,7 +248,7 @@ build.
 > Please note that it will only be shown to the users the usage descriptions of
 > the permissions you really require in your app.
 
-You can find more informations about this issue in #46.
+You can find more information about this issue in #46.
 
 ### Android Notes
 
