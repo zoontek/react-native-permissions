@@ -35,7 +35,7 @@ yarn add react-native-permissions
 ```
 
 _📌 Don't forget to add permissions to `AndroidManifest.xml` for android and
-`Info.plist` for iOS (Xcode >= 8). See notes below for more details._
+`Info.plist` for iOS (Xcode >= 8). See [iOS Notes](#ios-notes) or [Android Notes](#android-notes) for more details._
 
 ### Additional iOS setup
 
