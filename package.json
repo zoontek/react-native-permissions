@@ -1,18 +1,27 @@
 {
   "name": "react-native-permissions",
-  "version": "1.0.1",
+  "version": "1.0.6",
+  "description": "Check user permissions in React Native",
+  "author": "Yonah Forst <yonaforst@hotmail.com>",
+  "homepage": "https://github.com/yonahforst/react-native-permissions",
+  "keywords": ["react-native", "react-permissions", "permissions"],
+  "main": "index.js",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshblour/react-native-permissions.git"
+    "url": "https://github.com/yonahforst/react-native-permissions.git"
   },
-  "main": "index",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "react-permissions",
-    "permissions"
-  ],
-  "author": "Yonah Forst <yonaforst@hotmail.com>",
-  "homepage": "https://github.com/joshblour/react-native-permissions",
-  "description": "Check user permissions in React Native"
+  "scripts": {
+    "precommit": "lint-staged",
+    "prettier": "prettier --write '**/*.{js,json,md}'"
+  },
+  "lint-staged": {
+    "**/*.{js,json,md}": ["prettier --write", "git add"]
+  },
+  "devDependencies": {
+    "flow-bin": "^0.57.3",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
+    "prettier": "^1.9.2"
+  }
 }
