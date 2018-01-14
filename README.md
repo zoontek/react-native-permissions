@@ -240,6 +240,8 @@ So before submitting your app to the App Store, make sure that in your
 <string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
 <string>Some description</string>
+<key>NSAppleMusicUsageDescription</key>
+<string>Some description</string>
 ```
 
 This is required because during the phase of processing in the App Store
