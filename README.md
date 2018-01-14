@@ -160,6 +160,7 @@ The current supported permissions are:
 | Push Notifications | `notification`      | ✔️  | ❌      |
 | Background Refresh | `backgroundRefresh` | ✔️  | ❌      |
 | Speech Recognition | `speechRecognition` | ✔️  | ❌      |
+| mediaLibrary       | `mediaLibrary`      | ✔️  | ❌      |
 | Storage            | `storage`           | ❌️ | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
 | Read SMS           | `readSms`           | ❌️ | ✔       |
@@ -186,6 +187,7 @@ The current supported permissions are:
 * Permission type `notification` accepts a second parameter for `request()`. The
   second parameter is an array with the desired alert types. Any combination of
   `alert`, `badge` and `sound` (default requests all three).
+* If you are not requesting mediaLibrary then you can remove MediaPlayer.framework from the xcode project
 
 ```js
 // example
