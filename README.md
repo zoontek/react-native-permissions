@@ -160,6 +160,7 @@ The current supported permissions are:
 | Push Notifications | `notification`      | ✔️  | ❌      |
 | Background Refresh | `backgroundRefresh` | ✔️  | ❌      |
 | Speech Recognition | `speechRecognition` | ✔️  | ❌      |
+| Motion Activity    | `motion`            | ✔️  | ❌      |
 | Storage            | `storage`           | ❌️ | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
 | Read SMS           | `readSms`           | ❌️ | ✔       |
@@ -237,6 +238,8 @@ So before submitting your app to the App Store, make sure that in your
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
+<string>Some description</string>
+<key>NSMotionUsageDescription</key>
 <string>Some description</string>
 ```
 
