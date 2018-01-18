@@ -57,6 +57,8 @@
 	<string>test</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>test</string>
+	<key>NSMotionUsageDescription</key>
+	<string>test</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-peripheral</string>
