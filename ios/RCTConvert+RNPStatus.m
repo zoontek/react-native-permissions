@@ -22,6 +22,7 @@ RCT_ENUM_CONVERTER(RNPType, (@{ @"location" : @(RNPTypeLocation),
                                 @"backgroundRefresh": @(RNPTypeBackgroundRefresh),
                                 @"speechRecognition": @(RNPTypeSpeechRecognition),
                                 @"mediaLibrary": @(RNPTypeMediaLibrary)
+                                @"motion": @(RNPTypeMotion)
                                 }),
                                 RNPTypeUnknown, integerValue)
 
