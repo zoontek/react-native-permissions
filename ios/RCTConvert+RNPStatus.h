@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, RNPType) {
     RNPTypeNotification,
     RNPTypeBackgroundRefresh,
     RNPTypeSpeechRecognition,
-    RNPTypeMediaLibrary
+    RNPTypeMediaLibrary,
     RNPTypeMotion
 };
 
