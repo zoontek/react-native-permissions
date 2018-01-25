@@ -160,6 +160,7 @@ The current supported permissions are:
 | Push Notifications | `notification`      | ✔️  | ❌      |
 | Background Refresh | `backgroundRefresh` | ✔️  | ❌      |
 | Speech Recognition | `speechRecognition` | ✔️  | ❌      |
+| mediaLibrary       | `mediaLibrary`      | ✔️  | ❌      |
 | Motion Activity    | `motion`            | ✔️  | ❌      |
 | Storage            | `storage`           | ❌️ | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
@@ -187,6 +188,7 @@ The current supported permissions are:
 * Permission type `notification` accepts a second parameter for `request()`. The
   second parameter is an array with the desired alert types. Any combination of
   `alert`, `badge` and `sound` (default requests all three).
+* If you are not requesting mediaLibrary then you can remove MediaPlayer.framework from the xcode project
 
 ```js
 // example
@@ -239,9 +241,10 @@ So before submitting your app to the App Store, make sure that in your
 <string>Some description</string>
 <key>NSSpeechRecognitionUsageDescription</key>
 <string>Some description</string>
+<key>NSAppleMusicUsageDescription</key>
+<string>Some description</string>
 <key>NSMotionUsageDescription</key>
 <string>Some description</string>
-```
 
 This is required because during the phase of processing in the App Store
 submission, the system detects that you app contains code to request the
