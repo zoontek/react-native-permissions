@@ -1,9 +1,11 @@
+<!--
+
 Hello!
 
 Please read the following carefully before opening a new issue. Your issue may
 be closed if it doesn't provide the informations required.
 
-#### ⚠️ Delete everything above this line
+-->
 
 ### Describe your environment
 
