@@ -150,6 +150,7 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id
             break;
         case RNPTypeMediaLibrary:
             status = [RNPMediaLibrary getStatus];
+            break;
         case RNPTypeMotion:
             status = [RNPMotion getStatus];
             break;
