@@ -224,7 +224,7 @@ user how the app uses this data. **Even if you don't use them**.
 So before submitting your app to the App Store, make sure that in your
 `Info.plist` you have the following keys:
 
-````xml
+```xml
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>Some description</string>
 <key>NSCalendarsUsageDescription</key>
@@ -244,6 +244,7 @@ So before submitting your app to the App Store, make sure that in your
 <key>NSMotionUsageDescription</key>
 <string>Some description</string>
 ```
+
 This is required because during the phase of processing in the App Store
 submission, the system detects that you app contains code to request the
 permission `X` but don't have the `UsageDescription` key and then it rejects the
@@ -279,7 +280,7 @@ Permissions.request('camera', {
 }).then(response => {
   this.setState({ cameraPermission: response })
 })
-````
+```
 
 * Permissions are automatically accepted for **targetSdkVersion < 23** but you
   can still use `check()` to check if the user has disabled them from Settings.
