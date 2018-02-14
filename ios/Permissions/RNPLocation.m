@@ -12,7 +12,7 @@
 @interface RNPLocation() <CLLocationManagerDelegate>
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) NSString * lastTypeRequested;
-@property (strong, nonatomic ) NSNumber * initalAuthCallback;
+@property (strong, nonatomic) NSNumber * escelatedRightsRequested;
 @property (copy) void (^completionHandler)(NSString *);
 @end
 
@@ -21,7 +21,7 @@
 + (NSString *)getStatusForType:(NSString *)type
 {
     int status = [CLLocationManager authorizationStatus];
-    NSString * rnpStatus =  [RNPLocation convert:status for:type];    
+    NSString * rnpStatus =  [RNPLocation convert:status for:type];
     return rnpStatus;
 }
 
@@ -42,46 +42,59 @@
 }
 
 
+
 -(id)init{
     if (self.locationManager == nil) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        self.initalAuthCallback = [NSNumber numberWithBool:YES];
+        
+        // Have we asked for escelated
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString * hasEscalated = [defaults stringForKey:@"escalated"];
+        self.escelatedRightsRequested = [NSNumber numberWithBool: hasEscalated == nil ? NO : YES];
+
     }
     return self;
 }
 
 - (void)request:(NSString*)type completionHandler:(void (^)(NSString *))completionHandler
 {
-    NSString *status = [RNPLocation getStatusForType:type];    
-    if (status != RNPStatusAuthorized) {
+    int status = [CLLocationManager authorizationStatus];
+    NSString * rnpStatus = [RNPLocation convert:status for:type];
+    if (rnpStatus == RNPStatusUndetermined ||
+        (status == kCLAuthorizationStatusAuthorizedWhenInUse && [type isEqualToString:@"always"] && ![self.escelatedRightsRequested boolValue])){
         self.lastTypeRequested = type;
         self.completionHandler = completionHandler;
-      
-        if ([type isEqualToString:@"always"]) {            
+        
+        if ([type isEqualToString:@"always"]) {
+            // Only allowed to ask once. Store so we know
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:@"YES" forKey:@"escalated"];
+            [defaults synchronize];
+            self.escelatedRightsRequested = [NSNumber numberWithBool:YES];
+            
             [self.locationManager requestAlwaysAuthorization];
-        } else {            
+        } else {
             [self.locationManager requestWhenInUseAuthorization];
         }
     } else {
-        completionHandler(status);
+        completionHandler(rnpStatus);
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {    
-    // Function is called once just after the CLLocationManager is created.
-    // This works good in an native app, but since we operating with a callback we needs to skip frist time
-    // didChangeAuthorizationStatus is called.
-    // https://stackoverflow.com/questions/30106341/swift-locationmanager-didchangeauthorizationstatus-always-called/30107511
-    if([self.initalAuthCallback boolValue] == YES){
-        self.initalAuthCallback = [NSNumber numberWithBool:NO];
-        return;
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    
+    NSString * rnpStatus = [RNPLocation convert:status for:nil];
+    if(rnpStatus != RNPStatusUndetermined &&
+       !(status == kCLAuthorizationStatusAuthorizedWhenInUse &&  [self.lastTypeRequested isEqualToString:@"always"]  && ![self.escelatedRightsRequested boolValue])){
+        if (self.completionHandler) {
+            NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];
+            self.completionHandler(rnpStatus);
+            self.completionHandler = nil;
+        }
     }
     
-    if (self.completionHandler) {
-        NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];    
-        self.completionHandler(rnpStatus);
-        self.completionHandler = nil;
-    }
 }
+
 @end
+
