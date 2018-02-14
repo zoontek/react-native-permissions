@@ -12,7 +12,7 @@
 @interface RNPLocation() <CLLocationManagerDelegate>
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) NSString * lastTypeRequested;
-@property (strong, nonatomic ) NSNumber * initallAuthCallback;
+@property (strong, nonatomic ) NSNumber * initalAuthCallback;
 @property (copy) void (^completionHandler)(NSString *);
 @end
 
@@ -46,7 +46,7 @@
     if (self.locationManager == nil) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        self.initallAuthCallback = [NSNumber numberWithBool:YES];
+        self.initalAuthCallback = [NSNumber numberWithBool:YES];
     }
     return self;
 }
@@ -73,8 +73,8 @@
     // This works good in an native app, but since we operating with a callback we needs to skip frist time
     // didChangeAuthorizationStatus is called.
     // https://stackoverflow.com/questions/30106341/swift-locationmanager-didchangeauthorizationstatus-always-called/30107511
-    if([self.initallAuthCallback boolValue] == YES){
-        self.initallAuthCallback = [NSNumber numberWithBool:NO];
+    if([self.initalAuthCallback boolValue] == YES){
+        self.initalAuthCallback = [NSNumber numberWithBool:NO];
         return;
     }
     
