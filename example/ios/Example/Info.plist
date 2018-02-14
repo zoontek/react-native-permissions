@@ -49,6 +49,8 @@
 	<string>test</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>test</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>test</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>6.0</string>
 	<key>NSPhotoLibraryUsageDescription</key>

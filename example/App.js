@@ -9,6 +9,7 @@ import {
   Alert,
   AppState,
   Platform,
+  ScrollView,
 } from 'react-native'
 
 import Permissions from 'react-native-permissions'
@@ -94,42 +95,44 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.types.map(p => (
-          <TouchableHighlight
-            style={[styles.button, styles[this.state.status[p]]]}
-            key={p}
-            onPress={() => this._requestPermission(p)}
-          >
-            <View>
-              <Text style={styles.text}>
-                {Platform.OS == 'ios' && p == 'location'
-                  ? `location ${this.state.isAlways ? 'always' : 'whenInUse'}`
-                  : p}
-              </Text>
-              <Text style={styles.subtext}>{this.state.status[p]}</Text>
-            </View>
-          </TouchableHighlight>
-        ))}
-        <View style={styles.footer}>
-          <TouchableHighlight
-            style={styles['footer_' + Platform.OS]}
-            onPress={this._onLocationSwitchChange}
-          >
-            <Text style={styles.text}>Toggle location type</Text>
-          </TouchableHighlight>
-
-          {this.state.canOpenSettings && (
-            <TouchableHighlight onPress={this._openSettings}>
-              <Text style={styles.text}>Open settings</Text>
+        <ScrollView>
+          {this.state.types.map(p => (
+            <TouchableHighlight
+              style={[styles.button, styles[this.state.status[p]]]}
+              key={p}
+              onPress={() => this._requestPermission(p)}
+            >
+              <View>
+                <Text style={styles.text}>
+                  {Platform.OS == 'ios' && p == 'location'
+                    ? `location ${this.state.isAlways ? 'always' : 'whenInUse'}`
+                    : p}
+                </Text>
+                <Text style={styles.subtext}>{this.state.status[p]}</Text>
+              </View>
             </TouchableHighlight>
-          )}
-        </View>
+          ))}
+          <View style={styles.footer}>
+            <TouchableHighlight
+              style={styles['footer_' + Platform.OS]}
+              onPress={this._onLocationSwitchChange}
+            >
+              <Text style={styles.text}>Toggle location type</Text>
+            </TouchableHighlight>
 
-        <Text style={styles['footer_' + Platform.OS]}>
-          Note: microphone permissions may not work on iOS simulator. Also,
-          toggling permissions from the settings menu may cause the app to
-          crash. This is normal on iOS. Google "ios crash permission change"
-        </Text>
+            {this.state.canOpenSettings && (
+              <TouchableHighlight onPress={this._openSettings}>
+                <Text style={styles.text}>Open settings</Text>
+              </TouchableHighlight>
+            )}
+          </View>
+
+          <Text style={styles['footer_' + Platform.OS]}>
+            Note: microphone permissions may not work on iOS simulator. Also,
+            toggling permissions from the settings menu may cause the app to
+            crash. This is normal on iOS. Google "ios crash permission change"
+          </Text>
+        </ScrollView>
       </View>
     )
   }
