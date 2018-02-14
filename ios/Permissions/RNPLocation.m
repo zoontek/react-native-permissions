@@ -9,7 +9,6 @@
 #import "RNPLocation.h"
 #import <CoreLocation/CoreLocation.h>
 
-
 @interface RNPLocation() <CLLocationManagerDelegate>
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) NSString * lastTypeRequested;
@@ -22,8 +21,7 @@
 + (NSString *)getStatusForType:(NSString *)type
 {
     int status = [CLLocationManager authorizationStatus];
-    NSString * rnpStatus =  [RNPLocation convert:status for:type];
-    NSLog(@"getStatusForType(type=%@)=> %@",type,rnpStatus);
+    NSString * rnpStatus =  [RNPLocation convert:status for:type];    
     return rnpStatus;
 }
 
@@ -53,20 +51,16 @@
     return self;
 }
 
-
 - (void)request:(NSString*)type completionHandler:(void (^)(NSString *))completionHandler
 {
-    NSString *status = [RNPLocation getStatusForType:type];
-    NSLog(@"Requesting location. Current status s:%@", status);
+    NSString *status = [RNPLocation getStatusForType:type];    
     if (status != RNPStatusAuthorized) {
         self.lastTypeRequested = type;
         self.completionHandler = completionHandler;
       
-        if ([type isEqualToString:@"always"]) {
-            NSLog(@"Requestiong requestAlwaysAuthorization");
+        if ([type isEqualToString:@"always"]) {            
             [self.locationManager requestAlwaysAuthorization];
-        } else {
-            NSLog(@"Requestiong requestWhenInUseAuthorization");
+        } else {            
             [self.locationManager requestWhenInUseAuthorization];
         }
     } else {
@@ -74,9 +68,7 @@
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-
-    NSLog(@"didChangeAuthorizationStatus");
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {    
     // Function is called once just after the CLLocationManager is created.
     // This works good in an native app, but since we operating with a callback we needs to skip frist time
     // didChangeAuthorizationStatus is called.
@@ -86,12 +78,8 @@
         return;
     }
     
-    NSLog(@"didChangeAuthorizationStatus: status=%@;  lastRequested:%@ ",
-          [RNPLocation convert:status for:self.lastTypeRequested], self.lastTypeRequested );
-
     if (self.completionHandler) {
-        NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];
-        NSLog(@"DONE - callback with status: %@",rnpStatus);
+        NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];    
         self.completionHandler(rnpStatus);
         self.completionHandler = nil;
     }
