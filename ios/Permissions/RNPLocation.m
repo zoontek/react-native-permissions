@@ -41,14 +41,13 @@
     }
 }
 
-
-
 -(id)init{
     if (self.locationManager == nil) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
-        // Have we asked for escelated
+        // Detect if user already has asked for escalated permission
+        // kCLAuthorizationStatusAuthorizedWhenInUse -> kCLAuthorizationStatusAuthorizedAlways
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString * hasEscalated = [defaults stringForKey:@"escalated"];
         self.escelatedRightsRequested = [NSNumber numberWithBool: hasEscalated == nil ? NO : YES];
@@ -67,13 +66,21 @@
         self.completionHandler = completionHandler;
         
         if ([type isEqualToString:@"always"]) {
-            // Only allowed to ask once. Store so we know
+            // Save the info about the 'always use' request we are about to make
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:@"YES" forKey:@"escalated"];
             [defaults synchronize];
             self.escelatedRightsRequested = [NSNumber numberWithBool:YES];
             
             [self.locationManager requestAlwaysAuthorization];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                if(self.completionHandler){
+                    self.completionHandler(RNPStatusDenied);
+                    self.completionHandler = nil;
+                }
+            });
+            
         } else {
             [self.locationManager requestWhenInUseAuthorization];
         }
@@ -83,17 +90,14 @@
 }
 
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    
-    NSString * rnpStatus = [RNPLocation convert:status for:nil];
-    if(rnpStatus != RNPStatusUndetermined &&
-       !(status == kCLAuthorizationStatusAuthorizedWhenInUse &&  [self.lastTypeRequested isEqualToString:@"always"]  && ![self.escelatedRightsRequested boolValue])){
+    NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];
+    if(rnpStatus != RNPStatusUndetermined){
         if (self.completionHandler) {
             NSString * rnpStatus = [RNPLocation convert:status for:self.lastTypeRequested];
             self.completionHandler(rnpStatus);
             self.completionHandler = nil;
         }
     }
-    
 }
 
 @end
