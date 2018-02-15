@@ -17,6 +17,8 @@
 @end
 
 @implementation RNPLocation
+NSString *const EscalatedServiceRequested = @"RNP_ESCALATED_PERMISSION_REQUESTED";
+
 
 + (NSString *)getStatusForType:(NSString *)type
 {
@@ -49,7 +51,7 @@
         // Detect if user already has asked for escalated permission
         // kCLAuthorizationStatusAuthorizedWhenInUse -> kCLAuthorizationStatusAuthorizedAlways
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString * hasEscalated = [defaults stringForKey:@"escalated"];
+        NSString * hasEscalated = [defaults stringForKey:EscalatedServiceRequested];
         self.escelatedRightsRequested = [NSNumber numberWithBool: hasEscalated == nil ? NO : YES];
 
     }
@@ -68,7 +70,7 @@
         if ([type isEqualToString:@"always"]) {
             // Save the info about the 'always use' request we are about to make
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:@"YES" forKey:@"escalated"];
+            [defaults setObject:@"YES" forKey:EscalatedServiceRequested];
             [defaults synchronize];
             self.escelatedRightsRequested = [NSNumber numberWithBool:YES];
             
