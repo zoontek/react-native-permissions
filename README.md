@@ -149,12 +149,16 @@ The current supported permissions are:
 
 |                    | Type                | iOS | Android |
 | ------------------ | ------------------- | --- | ------- |
+| Coarse Location    | `coarseLocation`    | ❌️  | ✔       |
 | Location           | `location`          | ✔️  | ✔       |
 | Camera             | `camera`            | ✔️  | ✔       |
 | Microphone         | `microphone`        | ✔️  | ✔       |
 | Photos             | `photo`             | ✔️  | ✔       |
 | Contacts           | `contacts`          | ✔️  | ✔       |
+| Write Contacts     | `writeContacts`     | ❌️  | ✔       |
 | Events             | `event`             | ✔️  | ✔       |
+| Write Events       | `writeEvent`        | ❌️  | ✔       |
+| Accounts           | `accounts`          | ❌️  | ✔       |
 | Bluetooth          | `bluetooth`         | ✔️  | ❌      |
 | Reminders          | `reminder`          | ✔️  | ❌      |
 | Push Notifications | `notification`      | ✔️  | ❌      |
@@ -162,10 +166,22 @@ The current supported permissions are:
 | Speech Recognition | `speechRecognition` | ✔️  | ❌      |
 | mediaLibrary       | `mediaLibrary`      | ✔️  | ❌      |
 | Motion Activity    | `motion`            | ✔️  | ❌      |
+| Read Storage       | `readStorage`       | ❌️  | ✔       |
 | Storage            | `storage`           | ❌️ | ✔       |
+| Read Phone State   | `readPhoneState`    | ❌️  | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
+| Read Call Log      | `readCallLog`       | ❌️ | ✔       |
+| Write Call Log     | `writeCallLog`      | ❌️ | ✔       |
+| Outgoing Calls     | `outgoingCalls`     | ❌️ | ✔       |
 | Read SMS           | `readSms`           | ❌️ | ✔       |
 | Receive SMS        | `receiveSms`        | ❌️ | ✔       |
+| Receive MMS        | `receiveMms`        | ❌️ | ✔       |
+| Wap Push           | `receiveWapPush`    | ❌️ | ✔       |
+| VoiceMail          | `addVoiceMail`      | ❌️ | ✔       |
+| SIP                | `sip`               | ❌️ | ✔       |
+| Body Sensors       | `bodySensors`       | ❌️ | ✔       |
+
+
 
 ### Methods
 
