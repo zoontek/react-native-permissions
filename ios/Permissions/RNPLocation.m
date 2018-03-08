@@ -76,7 +76,7 @@ NSString *const EscalatedServiceRequested = @"RNP_ESCALATED_PERMISSION_REQUESTED
             
             [self.locationManager requestAlwaysAuthorization];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 if(self.completionHandler){
                     self.completionHandler(RNPStatusDenied);
                     self.completionHandler = nil;
