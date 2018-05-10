@@ -40,7 +40,7 @@ export default class App extends Component {
   }
 
   _openSettings = () =>
-    Permissions.openSettings().then(() => alert('back to app!!'))
+    Permissions.openSettings().then((msg) => alert(msg))
 
   _updatePermissions = types => {
     Permissions.checkMultiple(types)
