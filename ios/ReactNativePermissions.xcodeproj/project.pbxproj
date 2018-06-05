@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		488FE29C200BC8A100E05AB0 /* RNPMediaLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FE29B200BC8A100E05AB0 /* RNPMediaLibrary.m */; };
 		488FE2A2200BCED100E05AB0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488FE2A1200BCEC900E05AB0 /* MediaPlayer.framework */; };
+		49C08A0820C67C6C00EE4F13 /* RNPAppleMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C08A0720C67C6C00EE4F13 /* RNPAppleMusic.m */; };
 		669581F71FE4416B008596CD /* RCTConvert+RNPStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 669581F41FE4416B008596CD /* RCTConvert+RNPStatus.m */; };
 		669581F81FE4416B008596CD /* ReactNativePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 669581F51FE4416B008596CD /* ReactNativePermissions.m */; };
 		6695820D1FE441A8008596CD /* RNPSpeechRecognition.m in Sources */ = {isa = PBXBuildFile; fileRef = 669581FD1FE441A7008596CD /* RNPSpeechRecognition.m */; };
@@ -39,6 +40,8 @@
 		488FE29B200BC8A100E05AB0 /* RNPMediaLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPMediaLibrary.m; sourceTree = "<group>"; };
 		488FE29D200BC8D200E05AB0 /* RNPMediaLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPMediaLibrary.h; sourceTree = "<group>"; };
 		488FE2A1200BCEC900E05AB0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		49C08A0620C67C6B00EE4F13 /* RNPAppleMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPAppleMusic.h; sourceTree = "<group>"; };
+		49C08A0720C67C6C00EE4F13 /* RNPAppleMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPAppleMusic.m; sourceTree = "<group>"; };
 		669581F31FE4416B008596CD /* ReactNativePermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNativePermissions.h; sourceTree = "<group>"; };
 		669581F41FE4416B008596CD /* RCTConvert+RNPStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+RNPStatus.m"; sourceTree = "<group>"; };
 		669581F51FE4416B008596CD /* ReactNativePermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNativePermissions.m; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		669581FA1FE44191008596CD /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
+				49C08A0620C67C6B00EE4F13 /* RNPAppleMusic.h */,
+				49C08A0720C67C6C00EE4F13 /* RNPAppleMusic.m */,
 				669582041FE441A7008596CD /* RNPAudioVideo.h */,
 				669582071FE441A7008596CD /* RNPAudioVideo.m */,
 				669582051FE441A7008596CD /* RNPBackgroundRefresh.h */,
@@ -193,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				669582111FE441A8008596CD /* RNPNotification.m in Sources */,
+				49C08A0820C67C6C00EE4F13 /* RNPAppleMusic.m in Sources */,
 				488FE29C200BC8A100E05AB0 /* RNPMediaLibrary.m in Sources */,
 				669582151FE441A8008596CD /* RNPEvent.m in Sources */,
 				669582101FE441A8008596CD /* RNPBackgroundRefresh.m in Sources */,

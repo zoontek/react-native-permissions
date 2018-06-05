@@ -13,6 +13,6 @@
 @interface RNPAppleMusic : NSObject
 
 + (NSString *)getStatus;
-+ (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler;
++ (void)request:(void (^)(NSString *))completionHandler;
 
 @end

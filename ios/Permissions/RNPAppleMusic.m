@@ -25,7 +25,7 @@
     }
 }
 
-+ (void)request:completionHandler:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler
 {
     [SKCloudServiceController requestAuthorization:^(SKCloudServiceAuthorizationStatus status) {
         dispatch_async(dispatch_get_main_queue(), ^{
