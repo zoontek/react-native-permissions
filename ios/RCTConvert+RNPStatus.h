@@ -34,7 +34,8 @@ typedef NS_ENUM(NSInteger, RNPType) {
     RNPTypeBackgroundRefresh,
     RNPTypeSpeechRecognition,
     RNPTypeMediaLibrary,
-    RNPTypeMotion
+    RNPTypeMotion,
+    RNPTypeAppleMusic
 };
 
 @interface RCTConvert (RNPStatus)

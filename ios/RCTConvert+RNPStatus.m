@@ -22,7 +22,8 @@ RCT_ENUM_CONVERTER(RNPType, (@{ @"location" : @(RNPTypeLocation),
                                 @"backgroundRefresh": @(RNPTypeBackgroundRefresh),
                                 @"speechRecognition": @(RNPTypeSpeechRecognition),
                                 @"mediaLibrary": @(RNPTypeMediaLibrary),
-                                @"motion": @(RNPTypeMotion)
+                                @"motion": @(RNPTypeMotion),
+                                @"appleMusic": @RNPTypeAppleMusic)
                                 }),
                                 RNPTypeUnknown, integerValue)
 

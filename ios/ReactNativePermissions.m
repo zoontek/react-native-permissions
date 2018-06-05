@@ -45,6 +45,7 @@
 #import "RNPSpeechRecognition.h"
 #import "RNPMediaLibrary.h"
 #import "RNPMotion.h"
+#import "RNPAppleMusic.h"
 
 
 @interface ReactNativePermissions()
@@ -154,6 +155,8 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id
         case RNPTypeMotion:
             status = [RNPMotion getStatus];
             break;
+        case RNPTypeAppleMusic:
+            status = [RNPAppleMusic getStatus];
         default:
             break;
     }
@@ -190,6 +193,8 @@ RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json r
             return [RNPMediaLibrary request:resolve];
         case RNPTypeMotion:
             return [RNPMotion request:resolve];
+        case RNPTypeAppleMusic:
+            status = [RNPAppleMusic request:resolve];
         default:
             break;
     }
