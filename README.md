@@ -160,7 +160,7 @@ The current supported permissions are:
 | Push Notifications | `notification`      | ✔️  | ❌      |
 | Background Refresh | `backgroundRefresh` | ✔️  | ❌      |
 | Speech Recognition | `speechRecognition` | ✔️  | ❌      |
-| mediaLibrary       | `mediaLibrary`      | ✔️  | ❌      |
+| Media Library      | `mediaLibrary`      | ✔️  | ❌      |
 | Motion Activity    | `motion`            | ✔️  | ❌      |
 | Storage            | `storage`           | ❌️ | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
