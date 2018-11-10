@@ -69,7 +69,7 @@ static NSString* RNPDidAskForNotification = @"RNPDidAskForNotification";
     if (status == RNPStatusUndetermined) {
         sharedMgr.completionHandler = completionHandler;
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
+        [[NSNotificationCenter defaultCenter] addObserver:sharedMgr
                                                  selector:@selector(applicationDidBecomeActive)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];

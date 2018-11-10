@@ -10,7 +10,7 @@
 
 #import "RNPPermission.h"
 
-@interface RNPCamera : NSObject <RNPermission>
+@interface RNPCamera : NSObject <RNPPermission>
 
 @end
 
