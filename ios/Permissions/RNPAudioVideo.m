@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MICROPHONE || defined RNP_TYPE_CAMERA
+
 #import "RNPAudioVideo.h"
 #import "RCTConvert+RNPStatus.h"
 
@@ -37,3 +39,5 @@
 }
 
 @end
+
+#endif

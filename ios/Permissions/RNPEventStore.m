@@ -6,6 +6,8 @@
 //  Copyright © 2018 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_EVENT || defined RNP_TYPE_REMINDER
+
 #import "RNPEventStore.h"
 #import "RCTConvert+RNPStatus.h"
 
@@ -38,3 +40,5 @@
 }
 
 @end
+
+#endif
