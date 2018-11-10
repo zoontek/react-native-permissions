@@ -6,12 +6,13 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_LOCATION
 
-@interface RNPLocation : NSObject
+#import "RNPPermission.h"
+#import <CoreLocation/CoreLocation.h>
 
-+ (NSString *)getStatusForType:(NSString *)type;
-- (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler;
+@interface RNPLocation : NSObject <CLLocationManagerDelegate, RNPPermission>
 
 @end
+
+#endif

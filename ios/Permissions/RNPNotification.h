@@ -6,12 +6,14 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_NOTIFICATION
+
 #import <Foundation/Foundation.h>
 #import "RCTConvert+RNPStatus.h"
+#import "RNPPermission.h"
 
-@interface RNPNotification : NSObject
-
-+ (NSString *)getStatus;
-- (void)request:(UIUserNotificationType)types completionHandler:(void (^)(NSString*))completionHandler;
+@interface RNPNotification : NSObject <RNPPermission>
 
 @end
+
+#endif

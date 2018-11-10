@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface RNPAudioVideo : NSObject
 

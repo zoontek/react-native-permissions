@@ -3,12 +3,12 @@
 //  ReactNativePermissions
 //
 
-#import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MOTION
 
-@interface RNPMotion : NSObject
+#import "RNPPermission.h"
 
-+ (NSString *)getStatus;
-+ (void)request:(void (^)(NSString *))completionHandler;
+@interface RNPMotion : NSObject <RNPPermission>
 
 @end
+
+#endif

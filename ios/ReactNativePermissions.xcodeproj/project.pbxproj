@@ -20,6 +20,11 @@
 		669582131FE441A8008596CD /* RNPAudioVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 669582071FE441A7008596CD /* RNPAudioVideo.m */; };
 		669582141FE441A8008596CD /* RNPContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 669582081FE441A8008596CD /* RNPContacts.m */; };
 		669582151FE441A8008596CD /* RNPEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6695820A1FE441A8008596CD /* RNPEvent.m */; };
+		8C1F8BBA21963A0C00165235 /* RNPEventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8BB921963A0C00165235 /* RNPEventStore.m */; };
+		8C1F8BBD21963CE700165235 /* RNPReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8BBC21963CE700165235 /* RNPReminder.m */; };
+		8C1F8BC021963DFA00165235 /* RNPMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8BBF21963DFA00165235 /* RNPMicrophone.m */; };
+		8C1F8BC32196406A00165235 /* RNPCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8BC22196406A00165235 /* RNPCamera.m */; };
+		8C1F8BC82196573700165235 /* RNPPermissionClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8BC72196573700165235 /* RNPPermissionClasses.m */; };
 		D0AD62322000657000D89898 /* RNPMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = D0AD62312000657000D89898 /* RNPMotion.m */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +66,18 @@
 		6695820A1FE441A8008596CD /* RNPEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPEvent.m; sourceTree = "<group>"; };
 		6695820B1FE441A8008596CD /* RNPSpeechRecognition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPSpeechRecognition.h; sourceTree = "<group>"; };
 		6695820C1FE441A8008596CD /* RNPNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPNotification.h; sourceTree = "<group>"; };
+		8C1F8BB72196231700165235 /* RNPConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RNPConfig.xcconfig; sourceTree = "<group>"; };
+		8C1F8BB821963A0C00165235 /* RNPEventStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPEventStore.h; sourceTree = "<group>"; };
+		8C1F8BB921963A0C00165235 /* RNPEventStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPEventStore.m; sourceTree = "<group>"; };
+		8C1F8BBB21963CE700165235 /* RNPReminder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPReminder.h; sourceTree = "<group>"; };
+		8C1F8BBC21963CE700165235 /* RNPReminder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPReminder.m; sourceTree = "<group>"; };
+		8C1F8BBE21963DFA00165235 /* RNPMicrophone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPMicrophone.h; sourceTree = "<group>"; };
+		8C1F8BBF21963DFA00165235 /* RNPMicrophone.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPMicrophone.m; sourceTree = "<group>"; };
+		8C1F8BC12196406A00165235 /* RNPCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPCamera.h; sourceTree = "<group>"; };
+		8C1F8BC22196406A00165235 /* RNPCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPCamera.m; sourceTree = "<group>"; };
+		8C1F8BC42196429100165235 /* RNPPermission.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPPermission.h; sourceTree = "<group>"; };
+		8C1F8BC62196573700165235 /* RNPPermissionClasses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPPermissionClasses.h; sourceTree = "<group>"; };
+		8C1F8BC72196573700165235 /* RNPPermissionClasses.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNPPermissionClasses.m; sourceTree = "<group>"; };
 		9D23B34F1C767B80008B4819 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativePermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AD62302000656F00D89898 /* RNPMotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPMotion.h; sourceTree = "<group>"; };
 		D0AD62312000657000D89898 /* RNPMotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPMotion.m; sourceTree = "<group>"; };
@@ -111,6 +128,17 @@
 				669582031FE441A7008596CD /* RNPPhoto.m */,
 				6695820B1FE441A8008596CD /* RNPSpeechRecognition.h */,
 				669581FD1FE441A7008596CD /* RNPSpeechRecognition.m */,
+				8C1F8BB821963A0C00165235 /* RNPEventStore.h */,
+				8C1F8BB921963A0C00165235 /* RNPEventStore.m */,
+				8C1F8BBB21963CE700165235 /* RNPReminder.h */,
+				8C1F8BBC21963CE700165235 /* RNPReminder.m */,
+				8C1F8BBE21963DFA00165235 /* RNPMicrophone.h */,
+				8C1F8BBF21963DFA00165235 /* RNPMicrophone.m */,
+				8C1F8BC12196406A00165235 /* RNPCamera.h */,
+				8C1F8BC22196406A00165235 /* RNPCamera.m */,
+				8C1F8BC42196429100165235 /* RNPPermission.h */,
+				8C1F8BC62196573700165235 /* RNPPermissionClasses.h */,
+				8C1F8BC72196573700165235 /* RNPPermissionClasses.m */,
 			);
 			path = Permissions;
 			sourceTree = "<group>";
@@ -118,6 +146,7 @@
 		9D23B3461C767B80008B4819 = {
 			isa = PBXGroup;
 			children = (
+				8C1F8BB72196231700165235 /* RNPConfig.xcconfig */,
 				669581FA1FE44191008596CD /* Permissions */,
 				669581F61FE4416B008596CD /* RCTConvert+RNPStatus.h */,
 				669581F41FE4416B008596CD /* RCTConvert+RNPStatus.m */,
@@ -193,17 +222,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				669582111FE441A8008596CD /* RNPNotification.m in Sources */,
+				8C1F8BC32196406A00165235 /* RNPCamera.m in Sources */,
 				488FE29C200BC8A100E05AB0 /* RNPMediaLibrary.m in Sources */,
 				669582151FE441A8008596CD /* RNPEvent.m in Sources */,
 				669582101FE441A8008596CD /* RNPBackgroundRefresh.m in Sources */,
 				669581F71FE4416B008596CD /* RCTConvert+RNPStatus.m in Sources */,
 				6695820E1FE441A8008596CD /* RNPLocation.m in Sources */,
+				8C1F8BC021963DFA00165235 /* RNPMicrophone.m in Sources */,
+				8C1F8BC82196573700165235 /* RNPPermissionClasses.m in Sources */,
 				6695820F1FE441A8008596CD /* RNPBluetooth.m in Sources */,
 				669582141FE441A8008596CD /* RNPContacts.m in Sources */,
 				6695820D1FE441A8008596CD /* RNPSpeechRecognition.m in Sources */,
 				669582131FE441A8008596CD /* RNPAudioVideo.m in Sources */,
 				D0AD62322000657000D89898 /* RNPMotion.m in Sources */,
+				8C1F8BBA21963A0C00165235 /* RNPEventStore.m in Sources */,
 				669581F81FE4416B008596CD /* ReactNativePermissions.m in Sources */,
+				8C1F8BBD21963CE700165235 /* RNPReminder.m in Sources */,
 				669582121FE441A8008596CD /* RNPPhoto.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +247,7 @@
 /* Begin XCBuildConfiguration section */
 		9D23B3561C767B80008B4819 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -237,9 +272,12 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"$(RNP_SELECTIVE)",
+					"$(RNP_PERMISSION_TYPES)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -256,6 +294,7 @@
 		};
 		9D23B3571C767B80008B4819 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -278,6 +317,11 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(RNP_SELECTIVE)",
+					"$(RNP_PERMISSION_TYPES)",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -309,6 +353,7 @@
 		9D23B35A1C767B80008B4819 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "";
 				HEADER_SEARCH_PATHS = (
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",

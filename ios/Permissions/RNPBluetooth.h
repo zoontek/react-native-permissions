@@ -6,12 +6,15 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_BLUETOOTH
+
 #import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface RNPBluetooth : NSObject
+#import "RNPPermission.h"
 
-+ (NSString *)getStatus;
-- (void)request:(void (^)(NSString *))completionHandler;
+@interface RNPBluetooth : NSObject <CBPeripheralManagerDelegate, RNPPermission>
 
 @end
+
+#endif

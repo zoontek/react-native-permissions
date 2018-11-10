@@ -6,12 +6,14 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MEDIA_LIBRARY
+
 #import "RNPMediaLibrary.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @implementation RNPMediaLibrary
 
-+ (NSString *)getStatus
++ (NSString *)getStatus:(id)json
 {
     int status = [MPMediaLibrary authorizationStatus];
     switch (status) {
@@ -26,11 +28,11 @@
     }
 }
 
-+ (void)request:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
     void (^handler)(void) =  ^(void) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler([self.class getStatus]);
+            completionHandler([self.class getStatus:nil]);
         });
     };
     
@@ -39,3 +41,5 @@
     }];
 }
 @end
+
+#endif

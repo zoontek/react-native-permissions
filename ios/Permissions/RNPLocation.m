@@ -6,8 +6,10 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_LOCATION
+
 #import "RNPLocation.h"
-#import <CoreLocation/CoreLocation.h>
+#import "RCTConvert+RNPStatus.h"
 
 
 @interface RNPLocation() <CLLocationManagerDelegate>
@@ -16,6 +18,22 @@
 @end
 
 @implementation RNPLocation
+
++ (RNPLocation *)sharedManager {
+    static RNPLocation *sharedManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager = [[self alloc] init];
+    });
+    return sharedManager;
+}
+
++ (NSString *)getStatus:(id)json
+{
+    NSString *type = [RCTConvert NSString:json];
+    
+    return [self getStatusForType:type];
+}
 
 + (NSString *)getStatusForType:(NSString *)type
 {
@@ -34,21 +52,25 @@
     }
 }
 
-- (void)request:(NSString*)type completionHandler:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
+    NSString *type = [RCTConvert NSString:json];
     NSString *status = [RNPLocation getStatusForType:nil];
-    if (status == RNPStatusUndetermined) {
-        self.completionHandler = completionHandler;
+    
+    RNPLocation *sharedMgr = [self sharedManager];
 
-        if (self.locationManager == nil) {
-            self.locationManager = [[CLLocationManager alloc] init];
-            self.locationManager.delegate = self;
+    if (status == RNPStatusUndetermined) {
+        sharedMgr.completionHandler = completionHandler;
+
+        if (sharedMgr.locationManager == nil) {
+            sharedMgr.locationManager = [[CLLocationManager alloc] init];
+            sharedMgr.locationManager.delegate = sharedMgr;
         }
 
         if ([type isEqualToString:@"always"]) {
-            [self.locationManager requestAlwaysAuthorization];
+            [sharedMgr.locationManager requestAlwaysAuthorization];
         } else {
-            [self.locationManager requestWhenInUseAuthorization];
+            [sharedMgr.locationManager requestWhenInUseAuthorization];
         }
     } else {
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse && [type isEqualToString:@"always"]) {
@@ -59,7 +81,8 @@
     }
 }
 
--(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
     if (status != kCLAuthorizationStatusNotDetermined) {
         if (self.locationManager) {
             self.locationManager.delegate = nil;
@@ -69,10 +92,13 @@
         if (self.completionHandler) {
             //for some reason, checking permission right away returns denied. need to wait a tiny bit
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                self.completionHandler([RNPLocation getStatusForType:nil]);
+                self.completionHandler([self.class getStatusForType:nil]);
                 self.completionHandler = nil;
             });
         }
     }
 }
+
 @end
+
+#endif

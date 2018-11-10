@@ -6,43 +6,23 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_EVENT
+
 #import "RNPEvent.h"
-#import <EventKit/EventKit.h>
+#import "RNPEventStore.h"
 
 @implementation RNPEvent
 
-+ (NSString *)getStatus:(NSString *)type
++ (NSString *)getStatus:(id)json
 {
-    int status = [EKEventStore authorizationStatusForEntityType:[self typeFromString:type]];
-
-    switch (status) {
-        case EKAuthorizationStatusAuthorized:
-            return RNPStatusAuthorized;
-        case EKAuthorizationStatusDenied:
-            return RNPStatusDenied;
-        case EKAuthorizationStatusRestricted:
-            return RNPStatusRestricted;
-        default:
-            return RNPStatusUndetermined;
-    }
+    return [RNPEventStore getStatus:EKEntityTypeEvent];
 }
 
-+ (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
-    EKEventStore *aStore = [[EKEventStore alloc] init];
-    [aStore requestAccessToEntityType:[self typeFromString:type] completion:^(BOOL granted, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler([self getStatus:type]);
-        });
-    }];
-}
-
-+(EKEntityType)typeFromString:(NSString *)string {
-    if ([string isEqualToString:@"reminder"]) {
-        return EKEntityTypeReminder;
-    } else {
-        return EKEntityTypeEvent;
-    }
+    [RNPEventStore request:EKEntityTypeEvent completionHandler:completionHandler];
 }
 
 @end
+
+#endif

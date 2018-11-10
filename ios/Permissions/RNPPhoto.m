@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_PHOTO
+
 #import "RNPPhoto.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -13,7 +15,7 @@
 
 @implementation RNPPhoto
 
-+ (NSString *)getStatus
++ (NSString *)getStatus:(id)json
 {
     int status = [PHPhotoLibrary authorizationStatus];
     switch (status) {
@@ -28,11 +30,11 @@
     }
 }
 
-+ (void)request:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
     void (^handler)(void) =  ^(void) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler([self.class getStatus]);
+            completionHandler([self.class getStatus:nil]);
         });
     };
 
@@ -41,3 +43,5 @@
     }];
 }
 @end
+
+#endif

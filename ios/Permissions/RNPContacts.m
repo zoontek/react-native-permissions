@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_CONTACTS
+
 #import "RNPContacts.h"
 #import <AddressBook/AddressBook.h>
 
@@ -15,7 +17,7 @@
 
 @implementation RNPContacts
 
-+ (NSString *)getStatus
++ (NSString *)getStatus:(id)json
 {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_9_0
     int status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
@@ -44,11 +46,11 @@
 #endif
 }
 
-+ (void)request:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
     void (^handler)(BOOL, NSError * _Nullable) =  ^(BOOL granted, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler([self.class getStatus]);
+            completionHandler([self.class getStatus:nil]);
         });
     };
     
@@ -67,3 +69,5 @@
 }
 
 @end
+
+#endif

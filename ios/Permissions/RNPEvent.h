@@ -6,12 +6,12 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_EVENT
 
-@interface RNPEvent : NSObject
+#import "RNPPermission.h"
 
-+ (NSString *)getStatus:(NSString *)type;
-+ (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler;
+@interface RNPEvent : NSObject <RNPPermission>
 
 @end
+
+#endif

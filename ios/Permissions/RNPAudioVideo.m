@@ -7,14 +7,13 @@
 //
 
 #import "RNPAudioVideo.h"
-
-#import <AVFoundation/AVFoundation.h>
+#import "RCTConvert+RNPStatus.h"
 
 @implementation RNPAudioVideo
 
 + (NSString *)getStatus:(NSString *)type
 {
-    int status = [AVCaptureDevice authorizationStatusForMediaType:[self typeFromString:type]];
+    int status = [AVCaptureDevice authorizationStatusForMediaType:type];
     switch (status) {
         case AVAuthorizationStatusAuthorized:
             return RNPStatusAuthorized;
@@ -29,20 +28,12 @@
 
 + (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler
 {
-    [AVCaptureDevice requestAccessForMediaType:[self typeFromString:type]
+    [AVCaptureDevice requestAccessForMediaType:type
                              completionHandler:^(BOOL granted) {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      completionHandler([RNPAudioVideo getStatus:type]);
                                  });
                              }];
-}
-
-+ (NSString *)typeFromString:(NSString *)string {
-    if ([string isEqualToString:@"audio"]) {
-        return AVMediaTypeAudio;
-    } else {
-        return AVMediaTypeVideo;
-    }
 }
 
 @end

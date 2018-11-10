@@ -6,8 +6,10 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_BLUETOOTH
+
 #import "RNPBluetooth.h"
-#import <CoreBluetooth/CoreBluetooth.h>
+#import "RCTConvert+RNPStatus.h"
 
 @interface RNPBluetooth() <CBPeripheralDelegate>
 @property (strong, nonatomic) CBPeripheralManager* peripheralManager;
@@ -16,7 +18,16 @@
 
 @implementation RNPBluetooth
 
-+ (NSString *)getStatus
++ (RNPBluetooth *)sharedManager {
+    static RNPBluetooth *sharedManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager = [[self alloc] init];
+    });
+    return sharedManager;
+}
+
++ (NSString *)getStatus:(id)json
 {
     int status = [CBPeripheralManager authorizationStatus];
     switch (status) {
@@ -31,15 +42,17 @@
     }
 }
 
-- (void)request:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
-    NSString *status = [RNPBluetooth getStatus];
+    NSString *status = [self.class getStatus:nil];
+    
+    RNPBluetooth *sharedMgr = [self sharedManager];
     
     if (status == RNPStatusUndetermined) {
-        self.completionHandler = completionHandler;
+        sharedMgr.completionHandler = completionHandler;
         
-        self.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
-        [self.peripheralManager startAdvertising:@{}];
+        sharedMgr.peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:sharedMgr queue:nil];
+        [sharedMgr.peripheralManager startAdvertising:@{}];
     } else {
         completionHandler(status);
     }
@@ -56,7 +69,7 @@
     if (self.completionHandler) {
         //for some reason, checking permission right away returns denied. need to wait a tiny bit
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            self.completionHandler([self.class getStatus]);
+            self.completionHandler([self.class getStatus:nil]);
             self.completionHandler = nil;
         });
     }
@@ -64,3 +77,5 @@
 }
 
 @end
+
+#endif

@@ -6,12 +6,12 @@
 //  Copyright © 2017 Yonah Forst. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RCTConvert+RNPStatus.h"
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_SPEECH_RECOGNITION
 
-@interface RNPSpeechRecognition : NSObject
+#import "RNPPermission.h"
 
-+ (NSString *)getStatus;
-+ (void)request:(void (^)(NSString *))completionHandler;
+@interface RNPSpeechRecognition : NSObject <RNPPermission>
 
 @end
+
+#endif

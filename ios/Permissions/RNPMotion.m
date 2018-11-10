@@ -3,12 +3,14 @@
 //  ReactNativePermissions
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MOTION
+
 #import "RNPMotion.h"
 #import <CoreMotion/CoreMotion.h>
 
 @implementation RNPMotion
 
-+ (NSString *)getStatus
++ (NSString *)getStatus:(id)json
 {
     if (![CMMotionActivityManager isActivityAvailable]) {
         return RNPStatusRestricted;
@@ -34,9 +36,9 @@
     }
 }
 
-+ (void)request:(void (^)(NSString *))completionHandler
++ (void)request:(void (^)(NSString *))completionHandler json:(id)json
 {
-    __block NSString *status = [RNPMotion getStatus];
+    __block NSString *status = [self.class getStatus:nil];
     
     if ([status isEqual: RNPStatusUndetermined]) {
         __block CMMotionActivityManager *activityManager = [[CMMotionActivityManager alloc] init];
@@ -60,3 +62,5 @@
     }
 }
 @end
+
+#endif
