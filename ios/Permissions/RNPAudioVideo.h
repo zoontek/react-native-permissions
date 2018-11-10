@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
+#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MICROPHONE || defined RNP_TYPE_CAMERA
+
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -15,3 +17,5 @@
 + (void)request:(NSString *)type completionHandler:(void (^)(NSString *))completionHandler;
 
 @end
+
+#endif
