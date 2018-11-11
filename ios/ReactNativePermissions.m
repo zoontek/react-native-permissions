@@ -6,8 +6,6 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-@import Contacts;
-
 #import "ReactNativePermissions.h"
 
 #if __has_include(<React/RCTBridge.h>)
