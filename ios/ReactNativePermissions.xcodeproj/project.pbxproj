@@ -337,6 +337,7 @@
 		};
 		9D23B3591C767B80008B4819 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -352,6 +353,7 @@
 		};
 		9D23B35A1C767B80008B4819 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "";
 				HEADER_SEARCH_PATHS = (
