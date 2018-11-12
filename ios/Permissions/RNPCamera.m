@@ -6,7 +6,7 @@
 //  Copyright © 2018 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_CAMERA
+#ifdef RNP_TYPE_CAMERA
 
 #import "RNPCamera.h"
 #import "RNPAudioVideo.h"

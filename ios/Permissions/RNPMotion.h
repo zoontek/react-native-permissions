@@ -3,7 +3,7 @@
 //  ReactNativePermissions
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MOTION
+#ifdef RNP_TYPE_MOTION
 
 #import "RNPPermission.h"
 

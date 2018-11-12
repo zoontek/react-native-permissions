@@ -6,7 +6,7 @@
 //  Copyright © 2017 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_SPEECH_RECOGNITION
+#ifdef RNP_TYPE_SPEECH_RECOGNITION
 
 #import "RNPSpeechRecognition.h"
 #import <Speech/Speech.h>

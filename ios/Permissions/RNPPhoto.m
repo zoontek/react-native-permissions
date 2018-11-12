@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_PHOTO
+#ifdef RNP_TYPE_PHOTO
 
 #import "RNPPhoto.h"
 #import <AssetsLibrary/AssetsLibrary.h>

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_BLUETOOTH
+#ifdef RNP_TYPE_BLUETOOTH
 
 #import "RNPBluetooth.h"
 #import "RCTConvert+RNPStatus.h"

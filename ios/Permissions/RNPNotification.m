@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_NOTIFICATION
+#ifdef RNP_TYPE_NOTIFICATION
 
 #import "RNPNotification.h"
 

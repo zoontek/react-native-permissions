@@ -6,7 +6,7 @@
 //  Copyright © 2018 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MICROPHONE
+#ifdef RNP_TYPE_MICROPHONE
 
 #import "RNPPermission.h"
 

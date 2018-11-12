@@ -6,7 +6,7 @@
 //  Copyright © 2016 Yonah Forst. All rights reserved.
 //
 
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_LOCATION
+#ifdef RNP_TYPE_LOCATION
 
 #import "RNPPermission.h"
 #import <CoreLocation/CoreLocation.h>

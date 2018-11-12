@@ -247,7 +247,6 @@
 /* Begin XCBuildConfiguration section */
 		9D23B3561C767B80008B4819 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -276,8 +275,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"$(RNP_SELECTIVE)",
-					"$(RNP_PERMISSION_TYPES)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -294,7 +291,6 @@
 		};
 		9D23B3571C767B80008B4819 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -318,10 +314,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(RNP_SELECTIVE)",
-					"$(RNP_PERMISSION_TYPES)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -339,6 +332,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
+				CLANG_MODULES_AUTOLINK = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(RNP_PERMISSION_TYPES)",
+				);
 				HEADER_SEARCH_PATHS = (
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",
@@ -355,6 +353,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C1F8BB72196231700165235 /* RNPConfig.xcconfig */;
 			buildSettings = {
+				CLANG_MODULES_AUTOLINK = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"${RNP_PERMISSION_TYPES}",
+				);
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "";
 				HEADER_SEARCH_PATHS = (
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

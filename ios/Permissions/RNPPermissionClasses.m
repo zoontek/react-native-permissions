@@ -14,43 +14,43 @@
 + (NSDictionary *)permissionClasses
 {
     return @{
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_LOCATION
+#ifdef RNP_TYPE_LOCATION
              @(RNPTypeLocation) : @"RNPLocation",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_CAMERA
+#ifdef RNP_TYPE_CAMERA
              @(RNPTypeCamera) : @"RNPCamera",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MICROPHONE
+#ifdef RNP_TYPE_MICROPHONE
              @(RNPTypeMicrophone) : @"RNPMicrophone",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_PHOTO
+#ifdef RNP_TYPE_PHOTO
              @(RNPTypePhoto) : @"RNPPhoto",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_CONTACTS
+#ifdef RNP_TYPE_CONTACTS
              @(RNPTypeContacts) : @"RNPContacts",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_EVENT
+#ifdef RNP_TYPE_EVENT
              @(RNPTypeEvent) : @"RNPEvent",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_REMINDER
+#ifdef RNP_TYPE_REMINDER
              @(RNPTypeReminder) : @"RNPReminder",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_BLUETOOTH
+#ifdef RNP_TYPE_BLUETOOTH
              @(RNPTypeBluetooth) : @"RNPBluetooth",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_NOTIFICATION
+#ifdef RNP_TYPE_NOTIFICATION
              @(RNPTypeNotification) : @"RNPNotification",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_BACKGROUND_REFRESH
+#ifdef RNP_TYPE_BACKGROUND_REFRESH
              @(RNPTypeBackgroundRefresh) : @"RNPBackgroundRefresh",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_SPEECH_RECOGNITION
+#ifdef RNP_TYPE_SPEECH_RECOGNITION
              @(RNPTypeSpeechRecognition) : @"RNPSpeechRecognition",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MEDIA_LIBRARY
+#ifdef RNP_TYPE_MEDIA_LIBRARY
              @(RNPTypeMediaLibrary) : @"RNPMediaLibrary",
 #endif
-#if !defined RNP_PERMISSIONS_SELECTIVE || defined RNP_TYPE_MOTION
+#ifdef RNP_TYPE_MOTION
              @(RNPTypeMotion) : @"RNPMotion",
 #endif
              };

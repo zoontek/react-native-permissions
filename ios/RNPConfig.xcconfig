@@ -10,13 +10,12 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 // RNPPermissions.xcconfig contains preprocessor directives to enable selective
-// permission types and there is no need to provide usage descriptions in Info.plist
+// permission types and then there is no need to provide usage descriptions in Info.plist
 
 // File must be placed in <PROJECT_DIR>/ios/RNPPermissions.xcconfig
 
 // Example RNPPermissions.xcconfig content:
 
-// RNP_SELECTIVE = RNP_PERMISSIONS_SELECTIVE
 // RNP_PERMISSION_TYPES = RNP_TYPE_LOCATION RNP_TYPE_NOTIFICATION RNP_TYPE_BLUETOOTH RNP_TYPE_MEDIA_LIBRARY
 
 // Full list of permission types preprocessor directives in
