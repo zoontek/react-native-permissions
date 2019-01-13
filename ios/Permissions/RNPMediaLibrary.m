@@ -13,7 +13,7 @@
 
 + (NSString *)getStatus
 {
-    int status = [MPMediaLibrary authorizationStatus];
+    MPMediaLibraryAuthorizationStatus authorizationStatus = MPMediaLibrary.authorizationStatus;
     switch (status) {
         case MPMediaLibraryAuthorizationStatusAuthorized:
             return RNPStatusAuthorized;
