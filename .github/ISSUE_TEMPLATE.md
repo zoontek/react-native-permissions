@@ -9,13 +9,13 @@ be closed if it doesn't provide the informations required.
 
 ### Describe your environment
 
-* React-Native version
-* Platform: iOS, Android, both?
-* Device (which one?), simulator?
-* OS version
-* react-native-permissions version
-* Devtools: Xcode? Android Studio version?
-* (Android only: buildToolsVersion)
+- react-native-permissions version
+- react-native version
+- Target platform: iOS, Android, both?
+- Device (which one?), simulator?
+- OS version
+- DevTools: Xcode version, Android Studio version
+- (Android only: buildToolsVersion)
 
 ### How to repeat issue and example
 
