@@ -7,3 +7,8 @@
 [lints]
 
 [options]
+munge_underscores=true
+suppress_type=$FlowFixMe
+
+[version]
+^0.91.0
