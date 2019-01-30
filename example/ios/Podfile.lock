@@ -1,0 +1,102 @@
+PODS:
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.6)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - React/Core (0.58.3):
+    - yoga (= 0.58.3.React)
+  - React/CxxBridge (0.58.3):
+    - Folly (= 2018.10.22.00)
+    - React/Core
+    - React/cxxreact
+    - React/jsiexecutor
+  - React/cxxreact (0.58.3):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2018.10.22.00)
+    - React/jsinspector
+  - React/DevSupport (0.58.3):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.58.3)
+  - React/jsi (0.58.3):
+    - Folly (= 2018.10.22.00)
+  - React/jsiexecutor (0.58.3):
+    - Folly (= 2018.10.22.00)
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.58.3)
+  - React/RCTAnimation (0.58.3):
+    - React/Core
+  - React/RCTBlob (0.58.3):
+    - React/Core
+  - React/RCTNetwork (0.58.3):
+    - React/Core
+  - React/RCTText (0.58.3):
+    - React/Core
+  - React/RCTWebSocket (0.58.3):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - RNPermissions/Calendars (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Camera (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Contacts (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Core (2.0.0-alpha.1):
+    - React/Core
+  - yoga (0.58.3.React)
+
+DEPENDENCIES:
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNPermissions/Calendars (from `../../ios`)
+  - RNPermissions/Camera (from `../../ios`)
+  - RNPermissions/Contacts (from `../../ios`)
+  - RNPermissions/Core (from `../../ios`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
+
+EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Folly:
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  React:
+    :path: "../node_modules/react-native"
+  RNPermissions:
+    :path: "../../ios"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
+  RNPermissions: 321a373f579ab57a6d04bbd2bdb43665217b34ba
+  yoga: 0885622311729a02c2bc02dca97167787a51488b
+
+PODFILE CHECKSUM: 869da5c10a441881f63c79119e902c84e4c58131
+
+COCOAPODS: 1.5.3

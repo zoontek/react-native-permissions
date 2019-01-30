@@ -52,7 +52,7 @@
 #import "RNPermissionHandlerStoreKit.h"
 #endif
 
-static NSString* requestedKey = @"requested-permissions";
+static NSString* requestedKey = @"@RNPermissions:requested";
 
 @implementation RNPermissionsManager
 
