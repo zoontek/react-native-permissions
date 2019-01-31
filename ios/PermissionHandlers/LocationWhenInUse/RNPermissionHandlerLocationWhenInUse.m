@@ -22,7 +22,7 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  
+
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
@@ -39,13 +39,15 @@
 - (void)requestWithOptions:(__unused NSDictionary * _Nullable)options
               withResolver:(void (^)(RNPermissionStatus status))resolve
               withRejecter:(void (^)(NSError *error))reject {
-  if ([CLLocationManager locationServicesEnabled] != kCLAuthorizationStatusNotDetermined) {
+  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+
+  if (status != kCLAuthorizationStatusNotDetermined) {
     return [self checkWithResolver:resolve withRejecter:reject];
   }
-  
+
   _resolve = resolve;
   _reject = reject;
-  
+
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
   [_locationManager requestWhenInUseAuthorization];
@@ -56,7 +58,7 @@
     _initialChangeEventFired = true;
   } else {
     [self checkWithResolver:_resolve withRejecter:_reject];
-    
+
     [_locationManager setDelegate:nil];
     _locationManager = nil;
   }
