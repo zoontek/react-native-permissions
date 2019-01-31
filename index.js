@@ -159,9 +159,14 @@ async function internalRequest(
 async function internalCheckMultiple(
   permissions: Permission[],
 ): Promise<{ [permission: Permission]: PermissionStatus }> {
-  const result = await getUnavailablePermissions(permissions);
-  const unavailable = Object.keys(result);
-  const available = permissions.filter(p => !unavailable.includes(p));
+  let available = permissions;
+  let result = {};
+
+  if (Platform.OS === "android") {
+    result = await getUnavailablePermissions(permissions);
+    const unavailable = Object.keys(result);
+    available = permissions.filter(p => !unavailable.includes(p));
+  }
 
   return Promise.all(available.map(p => internalCheck(p)))
     .then(statuses =>
