@@ -26,7 +26,7 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  
+
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
@@ -44,19 +44,19 @@
               withResolver:(void (^)(RNPermissionStatus status))resolve
               withRejecter:(void (^)(NSError *error))reject {
   CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-  
+
   if ((status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) ||
       ([RNPermissionsManager hasBeenRequestedOnce:self] && status == kCLAuthorizationStatusAuthorizedWhenInUse)) {
     return [self checkWithResolver:resolve withRejecter:reject];
   }
-  
+
   _resolve = resolve;
   _reject = reject;
-  
+
   if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIApplicationDidBecomeActiveNotification:) name:UIApplicationDidBecomeActiveNotification object:nil];
   }
-  
+
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
   [_locationManager requestAlwaysAuthorization];
@@ -64,7 +64,7 @@
 
 - (void)onAuthorizationStatus {
   [self checkWithResolver:_resolve withRejecter:_reject];
-  
+
   [_locationManager setDelegate:nil];
   _locationManager = nil;
 }
@@ -81,7 +81,7 @@
   if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
     [self onAuthorizationStatus];
   }
-  
+
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 

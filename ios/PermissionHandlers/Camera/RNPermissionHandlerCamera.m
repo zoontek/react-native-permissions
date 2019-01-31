@@ -21,7 +21,7 @@
       return resolve(RNPermissionStatusAuthorized);
   }
 }
-  
+
 - (void)requestWithOptions:(__unused NSDictionary * _Nullable)options
               withResolver:(void (^)(RNPermissionStatus status))resolve
               withRejecter:(void (^)(NSError *error))reject {

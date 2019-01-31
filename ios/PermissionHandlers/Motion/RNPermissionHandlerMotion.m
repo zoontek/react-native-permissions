@@ -22,7 +22,7 @@ static NSString* handlerKey = @"motion";
   if (![CMMotionActivityManager isActivityAvailable]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  
+
   if (@available(iOS 11.0, *)) {
     switch ([CMMotionActivityManager authorizationStatus]) {
       case CMAuthorizationStatusNotDetermined:
@@ -35,11 +35,11 @@ static NSString* handlerKey = @"motion";
         return resolve(RNPermissionStatusAuthorized);
     }
   }
-  
+
   if (![RNPermissionsManager hasBeenRequestedOnce:self]) {
     return resolve(RNPermissionStatusNotDetermined);
   }
-  
+
   [self requestWithOptions:nil withResolver:resolve withRejecter:reject];
 }
 
@@ -49,10 +49,10 @@ static NSString* handlerKey = @"motion";
   if (![CMMotionActivityManager isActivityAvailable]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  
+
   _motionActivityManager = [CMMotionActivityManager new];
   _motionActivityQueue = [NSOperationQueue new];
-  
+
   [_motionActivityManager queryActivityStartingFromDate:[NSDate distantPast] toDate:[NSDate date] toQueue:_motionActivityQueue withHandler:^(NSArray<CMMotionActivity *> * _Nullable activities, NSError * _Nullable error) {
     if (error != nil) {
       if (error.code == CMErrorNotAuthorized || error.code == CMErrorMotionActivityNotAuthorized) {
@@ -65,7 +65,7 @@ static NSString* handlerKey = @"motion";
     } else {
       resolve(RNPermissionStatusNotDetermined);
     }
-    
+
     self->_motionActivityManager = nil;
     self->_motionActivityQueue = nil;
   }];

@@ -23,7 +23,7 @@
     }];
   } else {
     UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-    
+
     if (settings == nil || settings.types == UIUserNotificationTypeNone) {
       resolve(RNPermissionStatusNotDetermined);
     } else {
@@ -40,21 +40,21 @@
 
     if (options != nil) {
       NSArray<NSString *> *notificationOptions = [options objectForKey:@"notificationOptions"];
-      
+
       if (notificationOptions != nil && [notificationOptions isKindOfClass:[NSArray class]]) {
 #if RCT_DEV
         // @TODO check if it's possible to use RCTConvert + RCT_ENUM_CONVERTER
         // https://developer.apple.com/documentation/usernotifications/unnotificationsettings?language=objc
-        
+
         NSArray<NSString *> *possible = [[NSArray alloc] initWithObjects:@"badge", @"sound", @"alert", @"carPlay", @"provisional", @"criticalAlert", nil];
-        
+
         for (NSString *option in notificationOptions) {
           if (![possible containsObject:option]) {
             return [RNPermissionsManager logErrorMessage:[NSString stringWithFormat:@"Invalid notificationOptions value : %@. Must be one of : %@.", option, [possible componentsJoinedByString:@", "]]];
           }
         }
 #endif
-        
+
         if ([notificationOptions containsObject:@"badge"]) {
           toRequest += UNAuthorizationOptionBadge;
         }
@@ -67,7 +67,7 @@
         if ([notificationOptions containsObject:@"carPlay"]) {
           toRequest += UNAuthorizationOptionCarPlay;
         }
-        
+
         if (@available(iOS 12.0, *)) {
           if ([notificationOptions containsObject:@"provisional"]) {
             toRequest += UNAuthorizationOptionProvisional;
@@ -82,7 +82,7 @@
         toRequest += UNAuthorizationOptionAlert;
       }
     }
-    
+
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:toRequest completionHandler:^(BOOL granted, NSError * _Nullable error) {
       if (error != nil) {
         reject(error);
