@@ -5,6 +5,7 @@ import {
   NativeModules,
   PermissionsAndroid,
   Platform,
+  // $FlowFixMe
 } from "react-native";
 
 const { RNPermissions } = NativeModules;
@@ -68,10 +69,10 @@ export type NotificationOption =
   | "criticalAlert"
   | "provisional";
 
-export type RequestConfig = {|
+export type RequestConfig = {
   notificationOptions?: NotificationOption[],
   rationale?: Rationale,
-|};
+};
 
 const platformPermissions = Object.values(
   Platform.OS === "ios" ? IOS_PERMISSIONS : ANDROID_PERMISSIONS,
@@ -91,12 +92,12 @@ function assertValidPermission(permission: string) {
 function getUnavailablePermissions(permissions: string[]) {
   return Promise.all(
     permissions.map(p => RNPermissions.isPermissionAvailable(p)),
-  ).then(result =>
-    result.reduce(
-      (acc, isAvailable, i) =>
-        isAvailable ? acc : { ...acc, [permissions[i]]: RESULTS.UNAVAILABLE },
-      {},
-    ),
+  ).then(availabilities =>
+    availabilities.reduce((acc, available, i) => {
+      return !available
+        ? { ...acc, [permissions[i]]: RESULTS.UNAVAILABLE }
+        : acc;
+    }, {}),
   );
 }
 
@@ -104,14 +105,12 @@ const requestedKey = "@RNPermissions:requested";
 
 async function getRequestedPermissions() {
   const requested = await AsyncStorage.getItem(requestedKey);
-
   return requested ? JSON.parse(requested) : [];
 }
 
 async function setRequestedPermissions(permissions: string[]) {
   const requested = await getRequestedPermissions();
   const dedup = [...new Set([...requested, ...permissions])];
-
   return AsyncStorage.setItem(requestedKey, dedup);
 }
 
@@ -141,22 +140,20 @@ async function internalCheck(
 
 async function internalRequest(
   permission: string,
-  config: RequestConfig,
+  config: RequestConfig = {},
 ): Promise<PermissionStatus> {
   const { notificationOptions, rationale } = config;
 
   if (Platform.OS !== "android") {
     return RNPermissions.request(permission, { notificationOptions });
   }
+
   if (!(await RNPermissions.isPermissionAvailable(permission))) {
     return RESULTS.UNAVAILABLE;
   }
 
   const status = await PermissionsAndroid.request(permission, rationale);
-
-  // set permission as requested
-  await setRequestedPermissions([permission]);
-  return status;
+  return setRequestedPermissions([permission]).then(() => status);
 }
 
 async function internalCheckMultiple(
@@ -168,7 +165,9 @@ async function internalCheckMultiple(
 
   return Promise.all(available.map(p => internalCheck(p)))
     .then(statuses =>
-      statuses.reduce((acc, s, i) => ({ ...acc, [available[i]]: s }), {}),
+      statuses.reduce((acc, status, i) => {
+        return { ...acc, [available[i]]: status };
+      }, {}),
     )
     .then(statuses => ({ ...result, ...statuses }));
 }
@@ -181,8 +180,7 @@ async function internalRequestMultiple(
 
     for (let i = 0; i < permissions.length; i++) {
       const permission = permissions[i];
-      // avoid checking them all at once
-      result[permission] = await internalRequest(permission);
+      result[permission] = await internalRequest(permission); // once at the time
     }
 
     return result;
@@ -195,9 +193,7 @@ async function internalRequestMultiple(
     permissions.filter(p => !unavailable.includes(p)),
   ).then(statuses => ({ ...result, ...statuses }));
 
-  // set permissions as requested
-  await setRequestedPermissions(permissions);
-  return status;
+  return setRequestedPermissions(permissions).then(() => statuses);
 }
 
 export function openSettings(): Promise<boolean> {
