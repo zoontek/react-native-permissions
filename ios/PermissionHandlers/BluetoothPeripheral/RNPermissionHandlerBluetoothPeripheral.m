@@ -56,14 +56,12 @@
 }
 
 - (void)peripheralManagerDidUpdateState:(nonnull CBPeripheralManager *)peripheral {
-  CBManagerState state = peripheral.state;
+  int state = peripheral.state;
 
   [_peripheralManager stopAdvertising];
   _peripheralManager = nil;
 
   switch (state) {
-    case CBManagerStatePoweredOn:
-      return [self checkWithResolver:_resolve withRejecter:_reject];
     case CBManagerStatePoweredOff:
     case CBManagerStateResetting:
     case CBManagerStateUnsupported:
@@ -72,6 +70,8 @@
       return _resolve(RNPermissionStatusNotDetermined);
     case CBManagerStateUnauthorized:
       return _resolve(RNPermissionStatusDenied);
+    case CBManagerStatePoweredOn:
+      return [self checkWithResolver:_resolve withRejecter:_reject];
   }
 }
 
