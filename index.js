@@ -111,7 +111,7 @@ async function getRequestedPermissions() {
 async function setRequestedPermissions(permissions: string[]) {
   const requested = await getRequestedPermissions();
   const dedup = [...new Set([...requested, ...permissions])];
-  return AsyncStorage.setItem(requestedKey, dedup);
+  return AsyncStorage.setItem(requestedKey, JSON.stringify(dedup));
 }
 
 async function internalCheck(
