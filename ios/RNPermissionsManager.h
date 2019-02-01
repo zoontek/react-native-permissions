@@ -12,7 +12,7 @@ typedef enum {
 
 @optional
 
-+ (NSArray<NSString *> * _Nullable)usageDescriptionKeys;
++ (NSArray<NSString *> *)usageDescriptionKeys;
 
 @required
 

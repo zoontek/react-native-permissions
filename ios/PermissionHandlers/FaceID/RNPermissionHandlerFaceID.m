@@ -4,7 +4,7 @@
 
 @implementation RNPermissionHandlerFaceID
 
-+ (NSArray<NSString *> * _Nullable)usageDescriptionKeys {
++ (NSArray<NSString *> *)usageDescriptionKeys {
   return @[@"NSFaceIDUsageDescription"];
 }
 
@@ -60,9 +60,9 @@
       return resolve(RNPermissionStatusAuthorized);
     }
 
-    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSFaceIDUsageDescription"] reply:^(BOOL success, NSError * _Nullable evaluationError) {
-      if (evaluationError != nil) {
-        [self handleError:evaluationError withResolver:resolve withRejecter:reject];
+    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSFaceIDUsageDescription"] reply:^(BOOL success, NSError * _Nullable error) {
+      if (error != nil) {
+        [self handleError:error withResolver:resolve withRejecter:reject];
       } else {
         resolve(success ? RNPermissionStatusAuthorized : RNPermissionStatusDenied);
       }

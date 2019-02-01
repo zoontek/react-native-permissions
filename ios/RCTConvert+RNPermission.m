@@ -4,7 +4,7 @@
 
 RCT_ENUM_CONVERTER(RNPermission, (@{
 #if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-  @"BLUETOOTH_PERIPHERICAL": @(RNPermissionBluetoothPeripheral),
+  @"BLUETOOTH_PERIPHERAL": @(RNPermissionBluetoothPeripheral),
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
   @"CALENDARS": @(RNPermissionCalendars),

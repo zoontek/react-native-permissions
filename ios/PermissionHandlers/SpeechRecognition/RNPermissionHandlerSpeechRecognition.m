@@ -4,7 +4,7 @@
 
 @implementation RNPermissionHandlerSpeechRecognition
 
-+ (NSArray<NSString *> * _Nullable)usageDescriptionKeys {
++ (NSArray<NSString *> *)usageDescriptionKeys {
   return @[@"NSSpeechRecognitionUsageDescription"];
 }
 

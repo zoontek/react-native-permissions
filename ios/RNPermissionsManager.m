@@ -158,12 +158,10 @@ RCT_EXPORT_MODULE(RNPermissions);
   if (handler != nil && [[handler class] respondsToSelector:@selector(usageDescriptionKeys)]) {
     NSArray<NSString *> *usageDescriptionKeys = [[handler class] usageDescriptionKeys];
 
-    if (usageDescriptionKeys != nil) {
-      for (NSString *key in usageDescriptionKeys) {
-        if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
-          RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file.", key);
-          return nil;
-        }
+    for (NSString *key in usageDescriptionKeys) {
+      if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
+        RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file.", key);
+        return nil;
       }
     }
   }

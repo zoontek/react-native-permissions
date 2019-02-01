@@ -4,7 +4,7 @@
 
 @implementation RNPermissionHandlerMediaLibrary
 
-+ (NSArray<NSString *> * _Nullable)usageDescriptionKeys {
++ (NSArray<NSString *> *)usageDescriptionKeys {
   return @[@"NSAppleMusicUsageDescription"];
 }
 
