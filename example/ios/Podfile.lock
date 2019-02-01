@@ -6,6 +6,8 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - React (0.58.3):
+    - React/Core (= 0.58.3)
   - React/Core (0.58.3):
     - yoga (= 0.58.3.React)
   - React/CxxBridge (0.58.3):
@@ -28,18 +30,36 @@ PODS:
     - React/cxxreact
     - React/jsi
   - React/jsinspector (0.58.3)
+  - React/RCTActionSheet (0.58.3):
+    - React/Core
   - React/RCTAnimation (0.58.3):
     - React/Core
   - React/RCTBlob (0.58.3):
     - React/Core
+  - React/RCTGeolocation (0.58.3):
+    - React/Core
+  - React/RCTImage (0.58.3):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.58.3):
+    - React/Core
   - React/RCTNetwork (0.58.3):
     - React/Core
+  - React/RCTPushNotification (0.58.3):
+    - React/Core
+  - React/RCTSettings (0.58.3):
+    - React/Core
   - React/RCTText (0.58.3):
+    - React/Core
+  - React/RCTVibration (0.58.3):
     - React/Core
   - React/RCTWebSocket (0.58.3):
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNPermissions/BluetoothPeripheral (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
   - RNPermissions/Calendars (2.0.0-alpha.1):
     - React/Core
     - RNPermissions/Core
@@ -51,6 +71,41 @@ PODS:
     - RNPermissions/Core
   - RNPermissions/Core (2.0.0-alpha.1):
     - React/Core
+  - RNPermissions/FaceID (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/LocationAlways (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/LocationWhenInUse (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/MediaLibrary (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Microphone (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Motion (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Notifications (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/PhotoLibrary (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/Reminders (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/SpeechRecognition (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNPermissions/StoreKit (2.0.0-alpha.1):
+    - React/Core
+    - RNPermissions/Core
+  - RNVectorIcons (6.2.0):
+    - React
   - yoga (0.58.3.React)
 
 DEPENDENCIES:
@@ -60,14 +115,35 @@ DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTBlob (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTPushNotification (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNPermissions/Calendars (from `../../ios`)
-  - RNPermissions/Camera (from `../../ios`)
-  - RNPermissions/Contacts (from `../../ios`)
-  - RNPermissions/Core (from `../../ios`)
+  - RNPermissions/BluetoothPeripheral (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Calendars (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Camera (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Contacts (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Core (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/FaceID (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/LocationAlways (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/LocationWhenInUse (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/MediaLibrary (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Microphone (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Motion (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Notifications (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/PhotoLibrary (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/Reminders (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/SpeechRecognition (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/StoreKit (from `../node_modules/react-native-permissions/ios`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -84,7 +160,9 @@ EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
   RNPermissions:
-    :path: "../../ios"
+    :path: "../node_modules/react-native-permissions/ios"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -95,8 +173,9 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
   RNPermissions: 321a373f579ab57a6d04bbd2bdb43665217b34ba
+  RNVectorIcons: 8c52e1e8da1153613fdef44748e865c25556cb9c
   yoga: 0885622311729a02c2bc02dca97167787a51488b
 
-PODFILE CHECKSUM: 869da5c10a441881f63c79119e902c84e4c58131
+PODFILE CHECKSUM: fb8a88496928dd4e0badc53e7c84da316fa8a61e
 
 COCOAPODS: 1.5.3

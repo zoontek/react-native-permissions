@@ -3,17 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "clean-haste": "rm -rf node_modules/react-native-permissions/node_modules",
-    "start": "npm run clean-haste && node node_modules/react-native/local-cli/cli.js start"
+    "clean:modules": "rm -rf node_modules/react-native-permissions/node_modules",
+    "clean:example": "rm -rf node_modules/react-native-permissions/example",
+    "start": "yarn clean:modules && yarn clean:example && node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
     "react": "16.6.3",
     "react-native": "0.58.3",
-    "react-native-paper": "^2.6.3",
-    "react-native-permissions": "../"
+    "react-native-paper": "2.6.3",
+    "react-native-permissions": "../",
+    "react-native-vector-icons": "6.2.0"
   },
   "devDependencies": {
-    "babel-core": "^7.0.0-bridge.0",
+    "babel-core": "7.0.0-bridge.0",
     "metro-react-native-babel-preset": "0.51.1"
   }
 }
