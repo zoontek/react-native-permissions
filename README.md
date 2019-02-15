@@ -8,6 +8,8 @@
 
 Request user permissions from React Native, iOS + Android
 
+### 2.0.0 is on it's way! A bit of help is needed [here](https://github.com/yonahforst/react-native-permissions/pull/291)!
+
 | Version | React Native Support |
 | ------- | -------------------- |
 | 1.1.1   | 0.40 - 0.52          |
