@@ -127,22 +127,21 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNPermissions/BluetoothPeripheral (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Calendars (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Camera (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Contacts (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Core (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/FaceID (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/LocationAlways (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/LocationWhenInUse (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/MediaLibrary (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Microphone (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Motion (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Notifications (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/PhotoLibrary (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/Reminders (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/SpeechRecognition (from `../node_modules/react-native-permissions/ios`)
-  - RNPermissions/StoreKit (from `../node_modules/react-native-permissions/ios`)
+  - RNPermissions/BluetoothPeripheral (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Calendars (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Camera (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Contacts (from `../node_modules/react-native-permissions`)
+  - RNPermissions/FaceID (from `../node_modules/react-native-permissions`)
+  - RNPermissions/LocationAlways (from `../node_modules/react-native-permissions`)
+  - RNPermissions/LocationWhenInUse (from `../node_modules/react-native-permissions`)
+  - RNPermissions/MediaLibrary (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Microphone (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Motion (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Notifications (from `../node_modules/react-native-permissions`)
+  - RNPermissions/PhotoLibrary (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Reminders (from `../node_modules/react-native-permissions`)
+  - RNPermissions/SpeechRecognition (from `../node_modules/react-native-permissions`)
+  - RNPermissions/StoreKit (from `../node_modules/react-native-permissions`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -160,7 +159,7 @@ EXTERNAL SOURCES:
   React:
     :path: "../node_modules/react-native"
   RNPermissions:
-    :path: "../node_modules/react-native-permissions/ios"
+    :path: "../node_modules/react-native-permissions"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   yoga:
@@ -171,11 +170,11 @@ SPEC CHECKSUMS:
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
-  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
-  RNPermissions: 321a373f579ab57a6d04bbd2bdb43665217b34ba
-  RNVectorIcons: 8c52e1e8da1153613fdef44748e865c25556cb9c
-  yoga: 0885622311729a02c2bc02dca97167787a51488b
+  React: d099597d6ba7001f0219dbc48532b63cfd8d0eca
+  RNPermissions: 064e4eb34c8c3da493ab48bda0af53cdd019b6a7
+  RNVectorIcons: b6b131d2fdc2e240f7aba41296df869141443793
+  yoga: 220e7595ec3cfe80c5ce02a0d0881be66b405e81
 
-PODFILE CHECKSUM: fb8a88496928dd4e0badc53e7c84da316fa8a61e
+PODFILE CHECKSUM: 75fce33e62eb57e94e378207b3565afd773f6e07
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0

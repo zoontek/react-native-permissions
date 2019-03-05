@@ -1,8 +1,4 @@
-/**
- * @format
- * @flow
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
+// @flow
 
 import * as React from "react";
 import { Appbar, List, TouchableRipple, Snackbar } from "react-native-paper";

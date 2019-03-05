@@ -1,9 +1,6 @@
 platform :ios, '9.0'
 
 target 'RNPermissionsExample' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'Core',
     'CxxBridge', # Include this for RN >= 0.47
@@ -34,8 +31,7 @@ target 'RNPermissionsExample' do
   # RN dependencies
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions/ios', :subspecs => [
-    'Core',
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions', :subspecs => [
     # Comment unwanted permissions
     'BluetoothPeripheral',
     'Calendars',
@@ -54,10 +50,7 @@ target 'RNPermissionsExample' do
     'SpeechRecognition',
     'StoreKit',
   ]
-
 end
 
 target 'RNPermissionsExample-tvOS' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
 end

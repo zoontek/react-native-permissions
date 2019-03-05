@@ -15,16 +15,17 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
-		344B09050D8F9DD98200F820 /* libPods-RNPermissionsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE508594924E415A0050663 /* libPods-RNPermissionsExample.a */; };
+		9C0E968CA5A4475A72D098CC /* libPods-RNPermissionsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61386F2312C2EA9721BCFEA4 /* libPods-RNPermissionsExample.a */; };
 		C365FCDF23384B71BADA5827 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0FEF2381CCE4DAC89A441F0 /* MaterialIcons.ttf */; };
-		DD176EC822033C2C00D4A914 /* libPods-RNPermissionsExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD176EC722033C2C00D4A914 /* libPods-RNPermissionsExample-tvOS.a */; };
+		E70847AA58F41ED81DF7DC77 /* libPods-RNPermissionsExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF6F9CA5073A9D32EB370652 /* libPods-RNPermissionsExample-tvOS.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		112A13EA7418A1DA3FFFE89E /* Pods-RNPermissionsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.release.xcconfig"; sourceTree = "<group>"; };
+		0E7EBB2FDF7AAECF1C038287 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample-tvOS/Pods-RNPermissionsExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		1378F599F6455B105F696280 /* Pods-RNPermissionsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.debug.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RNPermissionsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNPermissionsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNPermissionsExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNPermissionsExample/AppDelegate.m; sourceTree = "<group>"; };
@@ -34,15 +35,13 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNPermissionsExample/main.m; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* RNPermissionsExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RNPermissionsExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5EE508594924E415A0050663 /* libPods-RNPermissionsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		675F5D41159578CF07B761C5 /* libPods-RNPermissionsExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3695C8635FFAF0C2C558D58 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNPermissionsExample-tvOS/Pods-RNPermissionsExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		61386F2312C2EA9721BCFEA4 /* libPods-RNPermissionsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FEF2381CCE4DAC89A441F0 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		B4C1975DC33A53090D5B8018 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNPermissionsExample-tvOS/Pods-RNPermissionsExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		DD176EC722033C2C00D4A914 /* libPods-RNPermissionsExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-RNPermissionsExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4E8F220F58DB908082D8E08 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample-tvOS/Pods-RNPermissionsExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		DF6F9CA5073A9D32EB370652 /* libPods-RNPermissionsExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		EFC2B4024563B97F765C7CAF /* Pods-RNPermissionsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.debug.xcconfig"; sourceTree = "<group>"; };
+		F96F055A36F2991DEF9E65C0 /* Pods-RNPermissionsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.release.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
-				344B09050D8F9DD98200F820 /* libPods-RNPermissionsExample.a in Frameworks */,
+				9C0E968CA5A4475A72D098CC /* libPods-RNPermissionsExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,24 +60,13 @@
 			files = (
 				ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
-				DD176EC822033C2C00D4A914 /* libPods-RNPermissionsExample-tvOS.a in Frameworks */,
+				E70847AA58F41ED81DF7DC77 /* libPods-RNPermissionsExample-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01938D2000C2EABCD5318130 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EFC2B4024563B97F765C7CAF /* Pods-RNPermissionsExample.debug.xcconfig */,
-				112A13EA7418A1DA3FFFE89E /* Pods-RNPermissionsExample.release.xcconfig */,
-				A3695C8635FFAF0C2C558D58 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */,
-				B4C1975DC33A53090D5B8018 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* RNPermissionsExample */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,12 +84,11 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DD176EC722033C2C00D4A914 /* libPods-RNPermissionsExample-tvOS.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				5EE508594924E415A0050663 /* libPods-RNPermissionsExample.a */,
-				675F5D41159578CF07B761C5 /* libPods-RNPermissionsExample-tvOS.a */,
+				61386F2312C2EA9721BCFEA4 /* libPods-RNPermissionsExample.a */,
+				DF6F9CA5073A9D32EB370652 /* libPods-RNPermissionsExample-tvOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,8 +99,8 @@
 				13B07FAE1A68108700A75B9A /* RNPermissionsExample */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				01938D2000C2EABCD5318130 /* Pods */,
 				F00001AB828C4AB78E644833 /* Resources */,
+				A95D533A68278397BDA8D48F /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -127,6 +114,18 @@
 				2D02E47B1E0B4A5D006451C7 /* RNPermissionsExample-tvOS.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A95D533A68278397BDA8D48F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1378F599F6455B105F696280 /* Pods-RNPermissionsExample.debug.xcconfig */,
+				F96F055A36F2991DEF9E65C0 /* Pods-RNPermissionsExample.release.xcconfig */,
+				D4E8F220F58DB908082D8E08 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */,
+				0E7EBB2FDF7AAECF1C038287 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		F00001AB828C4AB78E644833 /* Resources */ = {
@@ -144,12 +143,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNPermissionsExample" */;
 			buildPhases = (
-				B42AA7D4FE9C586F3907791A /* [CP] Check Pods Manifest.lock */,
+				5F51F0458DC0318504BAA1BC /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				4D2FBE14CA4911D84AA38FD7 /* [CP] Copy Pods Resources */,
+				32560C6C133B2E27B79B4503 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -164,7 +163,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNPermissionsExample-tvOS" */;
 			buildPhases = (
-				08D3B8539F5064A757526BF1 /* [CP] Check Pods Manifest.lock */,
+				C5EF9DE7AEB391F931CDFB68 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
@@ -263,28 +262,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		08D3B8539F5064A757526BF1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNPermissionsExample-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,7 +276,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		4D2FBE14CA4911D84AA38FD7 /* [CP] Copy Pods Resources */ = {
+		32560C6C133B2E27B79B4503 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -307,7 +284,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -346,10 +323,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B42AA7D4FE9C586F3907791A /* [CP] Check Pods Manifest.lock */ = {
+		5F51F0458DC0318504BAA1BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -365,6 +342,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-RNPermissionsExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5EF9DE7AEB391F931CDFB68 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNPermissionsExample-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -409,7 +408,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFC2B4024563B97F765C7CAF /* Pods-RNPermissionsExample.debug.xcconfig */;
+			baseConfigurationReference = 1378F599F6455B105F696280 /* Pods-RNPermissionsExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -437,7 +436,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 112A13EA7418A1DA3FFFE89E /* Pods-RNPermissionsExample.release.xcconfig */;
+			baseConfigurationReference = F96F055A36F2991DEF9E65C0 /* Pods-RNPermissionsExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -464,7 +463,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3695C8635FFAF0C2C558D58 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */;
+			baseConfigurationReference = D4E8F220F58DB908082D8E08 /* Pods-RNPermissionsExample-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -497,7 +496,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4C1975DC33A53090D5B8018 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */;
+			baseConfigurationReference = 0E7EBB2FDF7AAECF1C038287 /* Pods-RNPermissionsExample-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
