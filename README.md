@@ -174,34 +174,16 @@ IOS_PERMISSIONS.STOREKIT;
 
 ### Methods
 
-*types used in usage examples*
+_types used in usage examples_
 
-```ts  
-type Permission =
-  | keyof ANDROID_PERMISSIONS
-  | keyof IOS_PERMISSIONS
+```ts
+type Permission = keyof ANDROID_PERMISSIONS | keyof IOS_PERMISSIONS;
 
 type PermissionStatus =
   | "granted"
   | "denied"
   | "never_ask_again"
   | "unavailable";
-
-type NotificationOption =
-  | "badge"
-  | "sound"
-  | "alert"
-  | "carPlay"
-  | "criticalAlert"
-  | "provisional";
-
-type Rationale = {
-  title: string;
-  message: string;
-  buttonPositive: string;
-  buttonNegative?: string;
-  buttonNeutral?: string;
-};
 ```
 
 #### check()
@@ -272,7 +254,29 @@ Request one permission.
 #### Method type
 
 ```ts
-function request(permission: string, config: RequestConfig = {}): Promise<PermissionStatus>;
+type NotificationOption =
+  | "badge"
+  | "sound"
+  | "alert"
+  | "carPlay"
+  | "criticalAlert"
+  | "provisional";
+
+type Rationale = {
+  title: string;
+  message: string;
+  buttonPositive: string;
+  buttonNegative?: string;
+  buttonNeutral?: string;
+};
+
+function request(
+  permission: string,
+  config: {
+    notificationOptions?: NotificationOption[];
+    rationale?: Rationale;
+  } = {},
+): Promise<PermissionStatus>;
 ```
 
 #### Usage example
