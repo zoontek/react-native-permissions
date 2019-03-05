@@ -221,7 +221,7 @@ RCT_REMAP_METHOD(check,
   [handler checkWithResolver:^(RNPermissionStatus status) {
     resolve([self stringForStatus:status]);
   } withRejecter:^(NSError *error) {
-    reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
+    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   }];
 }
 
@@ -249,7 +249,7 @@ RCT_REMAP_METHOD(request,
 
     resolve([self stringForStatus:status]);
   } withRejecter:^(NSError *error) {
-    reject([NSString stringWithFormat:@"%ld", error.code], error.localizedDescription, error);
+    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   }];
 }
 
