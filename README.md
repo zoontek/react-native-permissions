@@ -79,7 +79,7 @@ dependencies {
 3.  Add the import and link the package in `MainApplication.java`:
 
 ```java
-import com.yonahforst.rnpermissions.RNPermissionsPackage; // <-- Add the RNLocalize import
+import com.yonahforst.rnpermissions.RNPermissionsPackage; // <-- Add the import
 
 public class MainApplication extends Application implements ReactApplication {
 
