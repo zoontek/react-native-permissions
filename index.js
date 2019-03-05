@@ -212,9 +212,9 @@ export function check(permission: Permission): Promise<PermissionStatus> {
   return internalCheck(permission);
 }
 
-export function checkMultiple(
-  permissions: Permission[],
-): Promise<{ [permission: Permission]: PermissionStatus }> {
+export function checkMultiple<P: Permission>(
+  permissions: P[],
+): Promise<{ [permission: P]: PermissionStatus }> {
   permissions.forEach(assertValidPermission);
   return internalCheckMultiple(permissions);
 }
@@ -227,9 +227,9 @@ export function request(
   return internalRequest(permission, config);
 }
 
-export function requestMultiple(
-  permissions: Permission[],
-): Promise<{ [permission: Permission]: PermissionStatus }> {
+export function requestMultiple<P: Permission>(
+  permissions: P[],
+): Promise<{ [permission: P]: PermissionStatus }> {
   permissions.forEach(assertValidPermission);
   return internalRequestMultiple(permissions);
 }
