@@ -32,6 +32,7 @@ target 'RNPermissionsExample' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions', :subspecs => [
+    'Core',
     # Comment unwanted permissions
     'BluetoothPeripheral',
     'Calendars',

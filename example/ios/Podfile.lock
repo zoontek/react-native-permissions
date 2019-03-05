@@ -131,6 +131,7 @@ DEPENDENCIES:
   - RNPermissions/Calendars (from `../node_modules/react-native-permissions`)
   - RNPermissions/Camera (from `../node_modules/react-native-permissions`)
   - RNPermissions/Contacts (from `../node_modules/react-native-permissions`)
+  - RNPermissions/Core (from `../node_modules/react-native-permissions`)
   - RNPermissions/FaceID (from `../node_modules/react-native-permissions`)
   - RNPermissions/LocationAlways (from `../node_modules/react-native-permissions`)
   - RNPermissions/LocationWhenInUse (from `../node_modules/react-native-permissions`)
@@ -175,6 +176,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: b6b131d2fdc2e240f7aba41296df869141443793
   yoga: 220e7595ec3cfe80c5ce02a0d0881be66b405e81
 
-PODFILE CHECKSUM: 75fce33e62eb57e94e378207b3565afd773f6e07
+PODFILE CHECKSUM: 6c6a73d9d885717f9c74907d423c3de5f74e21c3
 
 COCOAPODS: 1.6.0
