@@ -12,9 +12,11 @@ const { RNPermissions } = NativeModules;
 
 export const ANDROID_PERMISSIONS = {
   ...PermissionsAndroid.PERMISSIONS,
-  // Dangerous permissions not included in PermissionsAndroid (which might be unavailable)
+  // Dangerous permissions not included in PermissionsAndroid
+  // They might be unavailable in the current OS
+  ANSWER_PHONE_CALLS: "android.permission.ANSWER_PHONE_CALLS",
   ACCEPT_HANDOVER: "android.permission.ACCEPT_HANDOVER",
-  // @TODO Add more of them (https://developer.android.com/reference/android/Manifest.permission)
+  READ_PHONE_NUMBERS: "android.permission.READ_PHONE_NUMBERS",
 };
 
 // function keyMirror<O: {}>(obj: O): $ObjMapi<O, <K>(k: K) => K> {
