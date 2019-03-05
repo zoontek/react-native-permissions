@@ -331,7 +331,7 @@ import { openSettings } from "react-native-permissions";
 openSettings().catch(() => console.warn("cannot open settings");
 ```
 
-### iOS Notes
+## 🍎  iOS Notes
 
 - Permission type `BLUETOOTH_PERIPHERAL` represents the status of the `CBPeripheralManager`.
 - If `notificationOptions` config array is omitted on `NOTIFICATIONS` request, it will request `alert`, `badge` and `sound`.
