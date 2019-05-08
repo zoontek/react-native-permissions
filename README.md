@@ -183,14 +183,14 @@ The current supported permissions are:
 ### iOS Notes
 
 * Permission type `bluetooth` represents the status of the
-  `CBPeripheralManager`. Don't use this if only need `CBCentralManager`
+  `CBPeripheralManager`. Don't use this if only need `CBCentralManager`.
 * Permission type `location` accepts a second parameter for `request()` and
   `check()`; the second parameter is a string, either `always` or `whenInUse`
   (default).
 * Permission type `notification` accepts a second parameter for `request()`. The
   second parameter is an array with the desired alert types. Any combination of
   `alert`, `badge` and `sound` (default requests all three).
-* If you are not requesting mediaLibrary then you can remove MediaPlayer.framework from the xcode project
+* If you are not requesting mediaLibrary then you can remove MediaPlayer.framework from the xcode project.
 
 ```js
 // example
@@ -221,7 +221,7 @@ Contacts Usage Description`.
 
 #### App Store submission disclaimer
 
-If you need to submit you application to the AppStore, you need to add to your
+If you need to submit your application to the AppStore, you need to add to your
 `Info.plist` all `*UsageDescription` keys with a string value explaining to the
 user how the app uses this data. **Even if you don't use them**.
 
@@ -313,4 +313,4 @@ android {
 #### Q: iOS - App crashes when I change permission from settings
 
 > A: This is normal. iOS restarts your app when your privacy settings change.
-> Just google "iOS crash permission change"
+> Just google "iOS crash permission change".
