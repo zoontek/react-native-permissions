@@ -183,7 +183,7 @@ The current supported permissions are:
 ### iOS Notes
 
 * Permission type `bluetooth` represents the status of the
-  `CBPeripheralManager`. Don't use this if only need `CBCentralManager`.
+  `CBPeripheralManager`. Don't use this if you only need `CBCentralManager`.
 * Permission type `location` accepts a second parameter for `request()` and
   `check()`; the second parameter is a string, either `always` or `whenInUse`
   (default).
