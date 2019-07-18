@@ -150,25 +150,25 @@ The current supported permissions are:
 
 |                    | Type                | iOS | Android |
 | ------------------ | ------------------- | --- | ------- |
-| Location           | `location`          | ✔️  | ✔       |
 | Camera             | `camera`            | ✔️  | ✔       |
-| Microphone         | `microphone`        | ✔️  | ✔       |
-| Photos             | `photo`             | ✔️  | ✔       |
 | Contacts           | `contacts`          | ✔️  | ✔       |
 | Events             | `event`             | ✔️  | ✔       |
-| Coarse location    | `coarseLocation`    | ❌  | ✔       |
-| Bluetooth          | `bluetooth`         | ✔️  | ❌      |
-| Reminders          | `reminder`          | ✔️  | ❌      |
-| Push Notifications | `notification`      | ✔️  | ❌      |
+| Location           | `location`          | ✔️  | ✔       |
+| Microphone         | `microphone`        | ✔️  | ✔       |
+| Photos             | `photo`             | ✔️  | ✔       |
 | Background Refresh | `backgroundRefresh` | ✔️  | ❌      |
-| Speech Recognition | `speechRecognition` | ✔️  | ❌      |
+| Bluetooth          | `bluetooth`         | ✔️  | ❌      |
 | Media Library      | `mediaLibrary`      | ✔️  | ❌      |
 | Motion Activity    | `motion`            | ✔️  | ❌      |
-| Storage            | `storage`           | ❌️ | ✔       |
+| Push Notifications | `notification`      | ✔️  | ❌      |
+| Reminders          | `reminder`          | ✔️  | ❌      |
+| Speech Recognition | `speechRecognition` | ✔️  | ❌      |
+| Coarse location    | `coarseLocation`    | ❌  | ✔       |
 | Phone Call         | `callPhone`         | ❌️ | ✔       |
 | Read SMS           | `readSms`           | ❌️ | ✔       |
 | Receive SMS        | `receiveSms`        | ❌️ | ✔       |
 | Send SMS           | `sendSms`           | ❌️ | ✔       |
+| Storage            | `storage`           | ❌️ | ✔       |
 
 ### Methods
 
