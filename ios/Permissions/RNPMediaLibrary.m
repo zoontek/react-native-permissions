@@ -13,8 +13,7 @@
 
 + (NSString *)getStatus
 {
-    int status = [MPMediaLibrary authorizationStatus];
-    switch (status) {
+    switch ([MPMediaLibrary authorizationStatus]) {
         case MPMediaLibraryAuthorizationStatusAuthorized:
             return RNPStatusAuthorized;
         case MPMediaLibraryAuthorizationStatusDenied:
@@ -33,7 +32,7 @@
             completionHandler([self.class getStatus]);
         });
     };
-    
+
     [MPMediaLibrary requestAuthorization:^(MPMediaLibraryAuthorizationStatus status){
         handler();
     }];
