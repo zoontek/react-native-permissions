@@ -156,6 +156,7 @@ The current supported permissions are:
 | Photos             | `photo`             | ✔️  | ✔       |
 | Contacts           | `contacts`          | ✔️  | ✔       |
 | Events             | `event`             | ✔️  | ✔       |
+| Coarse location    | `coarseLocation`    | ❌  | ✔       |
 | Bluetooth          | `bluetooth`         | ✔️  | ❌      |
 | Reminders          | `reminder`          | ✔️  | ❌      |
 | Push Notifications | `notification`      | ✔️  | ❌      |
