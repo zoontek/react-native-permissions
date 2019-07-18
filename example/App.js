@@ -1,6 +1,7 @@
 // @flow
 
-import React, {Component} from 'react';
+import React from 'react';
+import Permissions, {type PermissionStatus} from 'react-native-permissions';
 
 import {
   StyleSheet,
@@ -12,38 +13,52 @@ import {
   Platform,
 } from 'react-native';
 
-import Permissions from 'react-native-permissions';
+type State = {
+  types: string[],
+  status: {[permission: string]: PermissionStatus},
+  isAlways: boolean,
+};
 
-export default class App extends Component {
-  state = {
+export default class App extends React.Component<{}, State> {
+  state: State = {
     types: [],
     status: {},
+    isAlways: false,
+    statuses: {},
   };
 
   componentDidMount() {
-    let types = Permissions.getTypes();
-    let canOpenSettings = Permissions.canOpenSettings();
+    const types = Permissions.getTypes();
 
-    this.setState({types, canOpenSettings});
-    this._updatePermissions(types);
-    AppState.addEventListener('change', this._handleAppStateChange);
+    this.setState({types});
+    this.updatePermissions(types);
+
+    AppState.addEventListener('change', this.onAppStateChange);
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener('change', this.onAppStateChange);
   }
 
-  //update permissions when app comes back from settings
-  _handleAppStateChange = appState => {
-    if (appState == 'active') {
-      this._updatePermissions(this.state.types);
+  onAppStateChange = (appState: 'active' | 'inactive' | 'background') => {
+    if (appState === 'active') {
+      this.updatePermissions(this.state.types);
     }
   };
 
-  _openSettings = () =>
-    Permissions.openSettings().then(() => alert('back to app!!'));
+  openSettings = () =>
+    Permissions.canOpenSettings().then(canIt => {
+      if (canIt) {
+        return Permissions.openSettings();
+      }
 
-  _updatePermissions = types => {
+      Alert.alert(
+        'Not supported',
+        'openSettings is currently not supported on this platform',
+      );
+    });
+
+  updatePermissions = (types: string[]) => {
     Permissions.checkMultiple(types)
       .then(status => {
         if (this.state.isAlways) {
@@ -57,7 +72,7 @@ export default class App extends Component {
       .then(status => this.setState({status}));
   };
 
-  _requestPermission = permission => {
+  requestPermission = (permission: string) => {
     var options;
 
     if (permission == 'location') {
@@ -65,63 +80,59 @@ export default class App extends Component {
     }
 
     Permissions.request(permission, options)
-      .then(res => {
+      .then(result => {
         this.setState({
-          status: {...this.state.status, [permission]: res},
+          status: {...this.state.status, [permission]: result},
         });
-        if (res != 'authorized') {
-          var buttons = [{text: 'Cancel', style: 'cancel'}];
-          if (this.state.canOpenSettings)
-            buttons.push({
-              text: 'Open Settings',
-              onPress: this._openSettings,
-            });
 
+        if (result != 'authorized') {
           Alert.alert(
             'Whoops!',
             'There was a problem getting your permission. Please enable it from settings.',
-            buttons,
+            [{text: 'Cancel', style: 'cancel'}],
           );
         }
       })
-      .catch(e => console.warn(e));
+      .catch(error => console.warn(error));
   };
 
-  _onLocationSwitchChange = () => {
+  onLocationSwitchChange = () => {
     this.setState({isAlways: !this.state.isAlways});
-    this._updatePermissions(this.state.types);
+    this.updatePermissions(this.state.types);
   };
 
   render() {
     return (
       <View style={styles.container}>
-        {this.state.types.map(p => (
+        {this.state.types.map(permission => (
           <TouchableHighlight
-            style={[styles.button, styles[this.state.status[p]]]}
-            key={p}
-            onPress={() => this._requestPermission(p)}>
+            style={[styles.button, styles[this.state.status[permission]]]}
+            key={permission}
+            onPress={() => this.requestPermission(permission)}>
             <View>
               <Text style={styles.text}>
-                {Platform.OS == 'ios' && p == 'location'
+                {Platform.OS == 'ios' && permission == 'location'
                   ? `location ${this.state.isAlways ? 'always' : 'whenInUse'}`
-                  : p}
+                  : permission}
               </Text>
-              <Text style={styles.subtext}>{this.state.status[p]}</Text>
+
+              <Text style={styles.subtext}>
+                {this.state.status[permission]}
+              </Text>
             </View>
           </TouchableHighlight>
         ))}
+
         <View style={styles.footer}>
           <TouchableHighlight
             style={styles['footer_' + Platform.OS]}
-            onPress={this._onLocationSwitchChange}>
+            onPress={this.onLocationSwitchChange}>
             <Text style={styles.text}>Toggle location type</Text>
           </TouchableHighlight>
 
-          {this.state.canOpenSettings && (
-            <TouchableHighlight onPress={this._openSettings}>
-              <Text style={styles.text}>Open settings</Text>
-            </TouchableHighlight>
-          )}
+          <TouchableHighlight onPress={this.openSettings}>
+            <Text style={styles.text}>Open settings</Text>
+          </TouchableHighlight>
         </View>
 
         <Text style={styles['footer_' + Platform.OS]}>
