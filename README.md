@@ -8,43 +8,29 @@
 
 Request user permissions from React Native, iOS + Android
 
-### 2.0.0 is on it's way! A bit of help is needed [here](https://github.com/yonahforst/react-native-permissions/pull/291)!
+### 2.0.0 is on it's way! A bit of help is needed [here](https://github.com/react-native-community/react-native-permissions/pull/291)!
 
 | Version | React Native Support |
 | ------- | -------------------- |
-| 1.1.1   | 0.40 - 0.52          |
-| 0.2.5   | 0.33 - 0.39          |
-
-_Complies with
-[react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)_
-
-## ⚠️ Breaking changes in version 1.0.0
-
-- Now using React Native's own JS `PermissionsAndroid` module on Android, which
-  is great because we no longer have to do any additional linking on Android
-- Updated API to be closer to React Native's `PermissionsAndroid`
-- Removed `openSettings()` support on Android (to stay linking-free). There are
-  several NPM modules available for this
-- `restricted` status now supported on Android, although it means something
-  different than iOS
+| 1.2.0+  | 0.52.0+              |
 
 ## Setup
 
 ```sh
-npm install --save react-native-permissions
+npm install --save react-native-permissions @react-native-community/async-storage
 # --- or ---
-yarn add react-native-permissions
+yarn add react-native-permissions @react-native-community/async-storage
 ```
 
-_📌 Don't forget to add permissions to `AndroidManifest.xml` for android and
-`Info.plist` for iOS (Xcode >= 8). See [iOS Notes](#ios-notes) or [Android Notes](#android-notes) for more details._
+_⚠️ To install `@react-native-community/async-storage`, please refers to the [package documentation](https://github.com/react-native-community/async-storage)._
+
+_📌 Don't forget to add permissions to `AndroidManifest.xml` for android and `Info.plist` for iOS (Xcode >= 8). See [iOS Notes](#ios-notes) or [Android Notes](#android-notes) for more details._
 
 ### Additional iOS setup
 
 #### Using cocoaPods
 
-Update the following line with your path to `node_modules/` and add it to your
-podfile:
+Update the following line with your path to `node_modules/` and add it to your podfile:
 
 ```ruby
 pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
@@ -58,10 +44,8 @@ react-native link react-native-permissions
 
 #### Using manual linking
 
-1. In the XCode's "Project navigator", right click on your project's Libraries
-   folder ➜ `Add Files to <...>`
-2. Go to `node_modules` ➜ `react-native-permissions` ➜ select
-   `ReactNativePermissions.xcodeproj`
+1. In the XCode's "Project navigator", right click on your project's Libraries folder ➜ `Add Files to <…>`
+2. Go to `node_modules` ➜ `react-native-permissions` ➜ select `ReactNativePermissions.xcodeproj`
 3. Add `libReactNativePermissions.a` to `Build Phases` -> `Link Binary With Libraries`
 
 ## Using
@@ -71,10 +55,10 @@ import Permissions from 'react-native-permissions';
 // OR const Permissions = require('react-native-permissions').default
 // if you use CommonJS module system
 
-//...
+// …
 
 export default class extends React.Component {
-  //...
+  // …
 
   // Check the status of a single permission
   componentDidMount() {
@@ -127,7 +111,7 @@ export default class extends React.Component {
     );
   }
 
-  //...
+  // …
 }
 ```
 
@@ -183,14 +167,9 @@ The current supported permissions are:
 
 ### iOS Notes
 
-- Permission type `bluetooth` represents the status of the
-  `CBPeripheralManager`. Don't use this if you only need `CBCentralManager`.
-- Permission type `location` accepts a second parameter for `request()` and
-  `check()`; the second parameter is a string, either `always` or `whenInUse`
-  (default).
-- Permission type `notification` accepts a second parameter for `request()`. The
-  second parameter is an array with the desired alert types. Any combination of
-  `alert`, `badge` and `sound` (default requests all three).
+- Permission type `bluetooth` represents the status of the `CBPeripheralManager`. Don't use this if you only need `CBCentralManager`.
+- Permission type `location` accepts a second parameter for `request()` and `check()`; the second parameter is a string, either `always` or `whenInUse` (default).
+- Permission type `notification` accepts a second parameter for `request()`. The second parameter is an array with the desired alert types. Any combination of `alert`, `badge` and `sound` (default requests all three).
 - If you are not requesting mediaLibrary then you can remove MediaPlayer.framework from the xcode project.
 
 ```js
@@ -211,9 +190,7 @@ Permissions.request('notification', {type: ['alert', 'badge']}).then(
 ```
 
 - You cannot request microphone permissions on the simulator.
-- With Xcode 8, you now need to add usage descriptions for each permission you
-  will request. Open Xcode ➜ `Info.plist` ➜ Add a key (starting with "Privacy -
-  ...") with your kit specific permission.
+- With Xcode 8, you now need to add usage descriptions for each permission you will request. Open Xcode ➜ `Info.plist` ➜ Add a key (starting with "Privacy - …") with your kit specific permission.
 
 Example: If you need Contacts permission you have to add the key `Privacy - Contacts Usage Description`.
 
@@ -221,12 +198,9 @@ Example: If you need Contacts permission you have to add the key `Privacy - Cont
 
 #### App Store submission disclaimer
 
-If you need to submit your application to the AppStore, you need to add to your
-`Info.plist` all `*UsageDescription` keys with a string value explaining to the
-user how the app uses this data. **Even if you don't use them**.
+If you need to submit your application to the AppStore, you need to add to your `Info.plist` all `*UsageDescription` keys with a string value explaining to the user how the app uses this data. **Even if you don't use them**.
 
-So before submitting your app to the App Store, make sure that in your
-`Info.plist` you have the following keys:
+So before submitting your app to the App Store, make sure that in your `Info.plist` you have the following keys:
 
 ```xml
 <key>NSBluetoothPeripheralUsageDescription</key>
@@ -249,28 +223,19 @@ So before submitting your app to the App Store, make sure that in your
 <string>Some description</string>
 ```
 
-This is required because during the phase of processing in the App Store
-submission, the system detects that you app contains code to request the
-permission `X` but don't have the `UsageDescription` key and then it rejects the
-build.
+This is required because during the phase of processing in the App Store submission, the system detects that you app contains code to request the permission `X` but don't have the `UsageDescription` key and then it rejects the build.
 
-> Please note that it will only be shown to the users the usage descriptions of
-> the permissions you really require in your app.
+> Please note that it will only be shown to the users the usage descriptions of the permissions you really require in your app.
 
 You can find more information about this issue in #46.
 
 ### Android Notes
 
-- Uses React Native's own
-  [`PermissionsAndroid` JS API](http://facebook.github.io/react-native/docs/permissionsandroid.html).
-- All required permissions also need to be included in the `AndroidManifest.xml`
-  file before they can be requested. Otherwise `request()` will immediately
-  return `denied`.
-- You can request write access to any of these types by also including the
-  appropriate write permission in the `AndroidManifest.xml` file.
-  [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous). _e.g._ `<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>`
+- Uses React Native's own [`PermissionsAndroid` JS API](http://facebook.github.io/react-native/docs/permissionsandroid.html).
+- All required permissions also need to be included in the `AndroidManifest.xml` file before they can be requested. Otherwise `request()` will immediately return `denied`.
+- You can request write access to any of these types by also including the appropriate write permission in the `AndroidManifest.xml` file. [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous). _e.g._ `<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>`
 
-  Read more [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
+Read more [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
 
 - The optional rationale argument will show a dialog prompt.
 
@@ -288,32 +253,14 @@ Permissions.request('camera', {
 });
 ```
 
-- Permissions are automatically accepted for **targetSdkVersion < 23** but you
-  can still use `check()` to check if the user has disabled them from Settings.
-
-You might need to elevate the **targetSdkVersion** version in your
-`build.gradle`:
-
-```groovy
-android {
-  compileSdkVersion 23 // ← set at least 23
-  buildToolsVersion "23.0.1"  // ← set at least 23.0.0
-
-  defaultConfig {
-    minSdkVersion 16
-    targetSdkVersion 23 // ← set at least 23
-    // ...
-```
+- Permissions are automatically accepted for **targetSdkVersion < 23** but you can still use `check()` to check if the user has disabled them from Settings.
 
 ## Troubleshooting
 
 #### Q: iOS - App crashes as soon as I request permission
 
-> A: Starting with Xcode 8, you need to add permission descriptions. See iOS
-> notes for more details. Thanks to [@jesperlndk](https://github.com/jesperlndk)
-> for discovering this.
+> A: Starting with Xcode 8, you need to add permission descriptions. See iOS notes for more details. Thanks to [@jesperlndk](https://github.com/jesperlndk) for discovering this.
 
 #### Q: iOS - App crashes when I change permission from settings
 
-> A: This is normal. iOS restarts your app when your privacy settings change.
-> Just google "iOS crash permission change".
+> A: This is normal. iOS restarts your app when your privacy settings change. Just google "iOS crash permission change".
