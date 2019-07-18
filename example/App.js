@@ -81,17 +81,7 @@ export default class App extends React.Component<{}, State> {
 
     Permissions.request(permission, options)
       .then(result => {
-        this.setState({
-          status: {...this.state.status, [permission]: result},
-        });
-
-        if (result != 'authorized') {
-          Alert.alert(
-            'Whoops!',
-            'There was a problem getting your permission. Please enable it from settings.',
-            [{text: 'Cancel', style: 'cancel'}],
-          );
-        }
+        this.setState({status: {...this.state.status, [permission]: result}});
       })
       .catch(error => console.warn(error));
   };
