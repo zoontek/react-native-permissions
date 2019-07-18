@@ -266,8 +266,10 @@ You can find more information about this issue in #46.
   file before they can be requested. Otherwise `request()` will immediately
   return `denied`.
 - You can request write access to any of these types by also including the
-  appropriate write permission in the `AndroidManifest.xml` file. Read more
-  [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
+  appropriate write permission in the `AndroidManifest.xml` file.
+  [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous). _e.g._ `<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>`
+
+  Read more [here](https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous).
 
 - The optional rationale argument will show a dialog prompt.
 
