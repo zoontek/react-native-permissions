@@ -19,6 +19,10 @@
 
 + (NSString *)getStatusForType:(NSString *)type
 {
+    if (![CLLocationManager locationServicesEnabled]) {
+        return RNPStatusRestricted;
+    }
+
     int status = [CLLocationManager authorizationStatus];
     switch (status) {
         case kCLAuthorizationStatusAuthorizedAlways:
@@ -36,6 +40,10 @@
 
 - (void)request:(NSString*)type completionHandler:(void (^)(NSString *))completionHandler
 {
+    if (![CLLocationManager locationServicesEnabled]) {
+        return completionHandler(RNPStatusRestricted);
+    }
+
     NSString *status = [RNPLocation getStatusForType:nil];
     if (status == RNPStatusUndetermined) {
         self.completionHandler = completionHandler;
