@@ -11,7 +11,7 @@
 
 @interface RNPNotification : NSObject
 
-+ (NSString *)getStatus;
++ (void)getStatusWithCompletionHandler:(void (^)(NSString*))completionHandler;
 - (void)request:(UIUserNotificationType)types completionHandler:(void (^)(NSString*))completionHandler;
 
 @end

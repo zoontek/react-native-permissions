@@ -139,9 +139,12 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id
         case RNPTypeBluetooth:
             status = [RNPBluetooth getStatus];
             break;
-        case RNPTypeNotification:
-            status = [RNPNotification getStatus];
-            break;
+        case RNPTypeNotification: {
+            [RNPNotification getStatusWithCompletionHandler:^(NSString *status) {
+                resolve(status);
+            }];
+            return;
+        }
         case RNPTypeBackgroundRefresh:
             status = [RNPBackgroundRefresh getStatus];
             break;
@@ -163,8 +166,6 @@ RCT_REMAP_METHOD(getPermissionStatus, getPermissionStatus:(RNPType)type json:(id
 
 RCT_REMAP_METHOD(requestPermission, permissionType:(RNPType)type json:(id)json resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    NSString *status;
-
     switch (type) {
         case RNPTypeLocation:
             return [self requestLocation:json resolve:resolve];
