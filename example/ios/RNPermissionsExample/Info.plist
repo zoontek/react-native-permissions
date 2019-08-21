@@ -38,33 +38,33 @@
 		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Please let me use your media library</string>
+	<string>Let me use your media library</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Please let me use your bluetooth peripheral</string>
+	<string>Let me use your bluetooth peripheral</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Please let me use your calendar</string>
+	<string>Let me use your calendar</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Please let me use your camera</string>
+	<string>Let me use your camera</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Please let me use your contacts</string>
+	<string>Let me use your contacts</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Please let me use FaceID</string>
+	<string>Let me use FaceID</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Please let me use your location, even in background</string>
+	<string>Let me use your location, even in background</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Please let me use your location, even in background</string>
+	<string>Let me use your location, even in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please let me use your location when the app is opened</string>
+	<string>Let me use your location when the app is opened</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Please let me use your microphone</string>
+	<string>Let me use your microphone</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Please let me use your motion data</string>
+	<string>Let me use your motion data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please let me use your photo library</string>
+	<string>Let me use your photo library</string>
 	<key>NSRemindersUsageDescription</key>
-	<string>Please let me use your reminders</string>
+	<string>Let me use your reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Please let me use speech recognition</string>
+	<string>Let me use speech recognition</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialIcons.ttf</string>
@@ -83,8 +83,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

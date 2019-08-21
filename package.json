@@ -1,39 +1,80 @@
 {
   "name": "react-native-permissions",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-rc.0",
   "license": "MIT",
-  "description": "Check and request user permissions in React Native.",
-  "author": "Yonah Forst <yonaforst@hotmail.com>",
-  "main": "index.js",
-  "homepage": "https://github.com/yonahforst/react-native-permissions",
+  "description": "Check and request user permissions in React Native",
+  "author": "Mathieu Acthernoene <zoontek@gmail.com>",
+  "homepage": "https://github.com/zoontek/react-native-permissions#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yonahforst/react-native-permissions.git"
+    "url": "https://github.com/zoontek/react-native-permissions.git"
   },
   "keywords": [
     "react-native",
-    "react-permissions",
-    "permissions"
+    "react native",
+    "permission",
+    "authorization"
+  ],
+  "react-native": "src/index.ts",
+  "types": "lib/typescript/index.d.ts",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "files": [
+    "/android",
+    "!/android/build",
+    "/ios",
+    "/src",
+    "/lib",
+    "/*.podspec"
   ],
   "scripts": {
-    "precommit": "lint-staged",
-    "format": "prettier --write '**/*.{js,json,md}'",
-    "typecheck": "flow ."
+    "start": "react-native start",
+    "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
+    "prepare": "bob build",
+    "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
+    "validate:tsc": "tsc --project ./ --noEmit"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
-    "**/*.{js,json,md}": [
-      "prettier --write",
+    "**/*.{json,md}": [
+      "yarn format",
+      "git add"
+    ],
+    "**/*.{js,ts,tsx}": [
+      "yarn format",
+      "yarn validate:eslint",
       "git add"
     ]
   },
   "peerDependencies": {
-    "react": ">=16.6.3",
-    "react-native": ">=0.58.3"
+    "react": ">=16.8.6",
+    "react-native": ">=0.60.0"
   },
   "devDependencies": {
-    "flow-bin": "0.86.0",
-    "husky": "1.3.1",
-    "lint-staged": "8.1.1",
-    "prettier": "1.16.1"
+    "@react-native-community/bob": "0.7.0",
+    "@react-native-community/eslint-config": "0.0.5",
+    "@types/react-native": "0.60.7",
+    "@typescript-eslint/eslint-plugin": "2.0.0",
+    "@typescript-eslint/parser": "2.0.0",
+    "eslint": "6.2.1",
+    "eslint-config-prettier": "6.1.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "husky": "3.0.4",
+    "lint-staged": "9.2.3",
+    "prettier": "1.18.2",
+    "typescript": "3.5.3"
   }
 }
