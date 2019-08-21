@@ -20,9 +20,9 @@ For 2.0.0 with 0.59-, you can use [`jetify -r`](https://github.com/mikehardy/jet
 ## Setup
 
 ```bash
-$ npm install --save react-native-permissions@2.0.0-rc.0
+$ npm install --save react-native-permissions@next
 # --- or ---
-$ yarn add react-native-permissions@2.0.0-rc.0
+$ yarn add react-native-permissions@next
 ```
 
 ### iOS
