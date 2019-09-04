@@ -211,8 +211,15 @@ export async function request(
   return RESULTS.UNAVAILABLE;
 }
 
-export const checkNotifications = RNPermissions.checkNotifications;
-export const requestNotifications = RNPermissions.requestNotifications;
+export function checkNotifications(): Promise<NotificationsResponse> {
+  return RNPermissions.checkNotifications();
+}
+
+export function requestNotifications(
+  options: NotificationOption[],
+): Promise<NotificationsResponse> {
+  return RNPermissions.requestNotifications(options);
+}
 
 export default {
   PERMISSIONS,
