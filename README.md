@@ -289,7 +289,7 @@ checkNotifications().then(({status, settings}) => {
 
 #### requestNotifications
 
-Open application settings
+Request notifications permission status and get settings values.
 
 ```ts
 // only used on iOS
