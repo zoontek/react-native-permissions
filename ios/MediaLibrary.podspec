@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.platform        = :ios, "9.0"
   s.requires_arc    = true
 
-  s.source          = { :git => s.homepage, :tag => s.version }
-  s.source_files           = "MediaLibrary/*.{h,m}"
+  s.source          = { :git => package["repository"]["url"], :tag => s.version }
+  s.source_files    = "MediaLibrary/*.{h,m}"
 end
