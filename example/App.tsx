@@ -12,16 +12,18 @@ import {
 } from 'react-native';
 
 import RNPermissions, {
-  Permission,
   PermissionStatus,
+  Permission,
   NotificationsResponse,
 } from 'react-native-permissions';
 
-const {PERMISSIONS} = RNPermissions;
+const {PERMISSIONS, RESULTS} = RNPermissions;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
-const PLATFORM_PERMISSIONS = Platform.select({
+const PLATFORM_PERMISSIONS = Platform.select<
+  typeof PERMISSIONS_IOS | typeof PERMISSIONS.ANDROID | {}
+>({
   ios: PERMISSIONS_IOS,
   android: PERMISSIONS.ANDROID,
   default: {},
@@ -88,6 +90,17 @@ export default class App extends React.Component<{}, State> {
   }
 
   render() {
+    const {notifications} = this.state;
+
+    const {
+      alert,
+      badge,
+      sound,
+      lockScreen,
+      carPlay,
+      critical,
+    } = notifications.settings;
+
     return (
       <View style={{flex: 1, backgroundColor: theme.colors.background}}>
         <StatusBar
@@ -122,12 +135,8 @@ export default class App extends React.Component<{}, State> {
                 name={item}
                 onPress={() => {
                   RNPermissions.request(value)
-                    .then(result => {
-                      const statuses = [...this.state.statuses];
-                      statuses[index] = result;
-                      this.setState({statuses});
-                    })
-                    .then(() => this.check());
+                    .then(() => this.check())
+                    .catch(err => console.error(err));
                 }}
               />
             );
@@ -141,23 +150,70 @@ export default class App extends React.Component<{}, State> {
 
         <TouchableRipple
           onPress={() => {
-            RNPermissions.requestNotifications(['alert', 'badge', 'sound']);
+            RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
+              .then(() => this.check())
+              .catch(err => console.error(err));
           }}>
           <List.Item
             right={() => (
               <List.Icon
-                color={colors[this.state.notifications.status]}
-                icon={icons[this.state.notifications.status]}
+                color={colors[notifications.status]}
+                icon={icons[notifications.status]}
               />
             )}
             title="NOTIFICATIONS"
-            description={this.state.notifications.status}
+            description={notifications.status}
           />
         </TouchableRipple>
 
         <Text style={{margin: 15, marginTop: 0, color: '#777'}}>
-          {'settings = ' +
-            JSON.stringify(this.state.notifications.settings, null, 2)}
+          {`alert: ${
+            alert
+              ? RESULTS.GRANTED
+              : alert === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
+
+          {`badge: ${
+            badge
+              ? RESULTS.GRANTED
+              : badge === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
+
+          {`sound: ${
+            sound
+              ? RESULTS.GRANTED
+              : sound === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
+
+          {`lockScreen: ${
+            lockScreen
+              ? RESULTS.GRANTED
+              : lockScreen === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
+
+          {`carPlay: ${
+            carPlay
+              ? RESULTS.GRANTED
+              : carPlay === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
+
+          {`critical: ${
+            critical
+              ? RESULTS.GRANTED
+              : critical === false
+              ? RESULTS.DENIED
+              : RESULTS.UNAVAILABLE
+          }\n`}
         </Text>
       </View>
     );
