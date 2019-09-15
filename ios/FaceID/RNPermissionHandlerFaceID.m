@@ -45,7 +45,7 @@
       return resolve(RNPermissionStatusNotAvailable);
     }
 
-    if (![RNPermissions hasAlreadyBeenRequested:self]) {
+    if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
       return resolve(RNPermissionStatusNotDetermined);
     }
 
@@ -93,7 +93,7 @@
                       reply:^(__unused BOOL success, __unused NSError * _Nullable error) {}];
 
     // Hack to invalidate FaceID verification immediately after being requested
-    [self performSelector:@selector(invalidateContext) withObject:self afterDelay:0.015];
+    [self performSelector:@selector(invalidateContext) withObject:self afterDelay:0.05];
   } else {
     resolve(RNPermissionStatusNotAvailable);
   }
@@ -109,6 +109,7 @@
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
 
+  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
   [self checkWithResolver:_resolve rejecter:_reject];
 }
 

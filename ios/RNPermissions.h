@@ -77,19 +77,11 @@ typedef enum {
 
 @end
 
-@protocol RNPermissionWithRequestOptions <NSObject>
-
-@required
-
-- (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject
-                    options:(NSArray<NSString *> * _Nonnull)options;
-
-@end
-
 @interface RNPermissions : NSObject <RCTBridgeModule>
 
-+ (bool)hasAlreadyBeenRequested:(id<RNPermissionHandler> _Nonnull)handler;
++ (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId;
+
++ (void)flagAsRequested:(NSString * _Nonnull)handlerId;
 
 + (bool)isBackgroundModeEnabled:(NSString * _Nonnull)mode;
 

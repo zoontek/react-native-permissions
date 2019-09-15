@@ -38,7 +38,7 @@
     }
   }
 
-  if (![RNPermissions hasAlreadyBeenRequested:self]) {
+  if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
     return resolve(RNPermissionStatusNotDetermined);
   }
 
@@ -73,6 +73,8 @@
 
     self->_operationQueue = nil;
     self->_activityManager = nil;
+
+    [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
   }];
 }
 

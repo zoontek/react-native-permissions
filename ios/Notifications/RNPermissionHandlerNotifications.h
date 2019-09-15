@@ -1,7 +1,14 @@
 #import "RNPermissions.h"
 
-@interface RNPermissionHandlerNotifications : NSObject<RNPermissionHandler, RNPermissionWithRequestOptions>
+@interface RNPermissionHandlerNotifications : NSObject
 
-- (void)getSettingsWithResolver:(void (^ _Nonnull)(NSDictionary * _Nonnull settings))resolve;
++ (NSString * _Nonnull)handlerUniqueId;
+
+- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
+                 rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
+
+- (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject
+                    options:(NSArray<NSString *> * _Nonnull)options;
 
 @end

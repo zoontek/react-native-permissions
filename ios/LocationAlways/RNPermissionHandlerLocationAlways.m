@@ -63,7 +63,7 @@
   _initialChangeEventFired = false;
   _isWaitingDidBecomeActive = false;
 
-  if (status == kCLAuthorizationStatusAuthorizedWhenInUse && ![RNPermissions hasAlreadyBeenRequested:self]) {
+  if (status == kCLAuthorizationStatusAuthorizedWhenInUse && ![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
     _isWaitingDidBecomeActive = true;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -77,6 +77,7 @@
 }
 
 - (void)onAuthorizationStatus {
+  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
   [self checkWithResolver:_resolve rejecter:_reject];
 
   [_locationManager setDelegate:nil];

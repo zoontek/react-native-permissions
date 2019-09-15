@@ -225,25 +225,24 @@ RCT_EXPORT_MODULE();
   }
 }
 
-+ (void)setRequested:(id<RNPermissionHandler> _Nonnull)handler {
++ (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId {
+  NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
+  return requested == nil ? false : [requested containsObject:handlerId];
+}
+
++ (void)flagAsRequested:(NSString * _Nonnull)handlerId {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  NSString *handlerUniqueId = [[handler class] handlerUniqueId];
   NSMutableArray *requested = [[userDefaults arrayForKey:SETTING_KEY] mutableCopy];
 
   if (requested == nil) {
     requested = [NSMutableArray new];
   }
 
-  if (![requested containsObject:handlerUniqueId]) {
-    [requested addObject:handlerUniqueId];
+  if (![requested containsObject:handlerId]) {
+    [requested addObject:handlerId];
     [userDefaults setObject:requested forKey:SETTING_KEY];
     [userDefaults synchronize];
   }
-}
-
-+ (bool)hasAlreadyBeenRequested:(id<RNPermissionHandler> _Nonnull)handler {
-  NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
-  return requested == nil ? false : [requested containsObject:[[handler class] handlerUniqueId]];
 }
 
 + (bool)isBackgroundModeEnabled:(NSString * _Nonnull)mode {
@@ -278,8 +277,11 @@ RCT_REMAP_METHOD(check,
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
 
   [handler checkWithResolver:^(RNPermissionStatus status) {
-    resolve([self stringForStatus:status]);
+    NSString *strStatus = [self stringForStatus:status];
+    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
+    resolve(strStatus);
   } rejecter:^(NSError *error) {
+    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   }];
 }
@@ -291,9 +293,11 @@ RCT_REMAP_METHOD(request,
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
 
   [handler requestWithResolver:^(RNPermissionStatus status) {
-    [RNPermissions setRequested:handler];
-    resolve([self stringForStatus:status]);
+    NSString *strStatus = [self stringForStatus:status];
+    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
+    resolve(strStatus);
   } rejecter:^(NSError *error) {
+    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   }];
 }
@@ -304,15 +308,16 @@ RCT_REMAP_METHOD(checkNotifications,
 #if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
 
-  [handler checkWithResolver:^(RNPermissionStatus status) {
-    [handler getSettingsWithResolver:^(NSDictionary * _Nonnull settings) {
-      resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
-    }];
+  [handler checkWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
+    NSString *strStatus = [self stringForStatus:status];
+    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
+    resolve(@{ @"status": strStatus, @"settings": settings });
   } rejecter:^(NSError * _Nonnull error) {
+    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   }];
 #else
-  reject(@"notification_missing", @"Notification permission handler is missing", nil);
+  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
 #endif
 }
 
@@ -323,15 +328,16 @@ RCT_REMAP_METHOD(requestNotifications,
 #if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
 
-  [handler requestWithResolver:^(RNPermissionStatus status) {
-    [handler getSettingsWithResolver:^(NSDictionary * _Nonnull settings) {
-      resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
-    }];
+  [handler requestWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
+    NSString *strStatus = [self stringForStatus:status];
+    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
+    resolve(@{ @"status": strStatus, @"settings": settings });
   } rejecter:^(NSError * _Nonnull error) {
+    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
   } options:options];
 #else
-  reject(@"notification_missing", @"Notification permission handler is missing", nil);
+  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
 #endif
 }
 
