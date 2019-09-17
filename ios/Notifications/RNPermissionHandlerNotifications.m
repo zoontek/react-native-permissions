@@ -27,6 +27,7 @@
       bool sound = settings.soundSetting == UNNotificationSettingEnabled;
       bool lockScreen = settings.lockScreenSetting == UNNotificationSettingEnabled;
       bool carPlay = settings.carPlaySetting == UNNotificationSettingEnabled;
+      bool notificationCenter = settings.notificationCenterSetting == UNNotificationSettingEnabled;
 
       if (settings.alertSetting != UNNotificationSettingNotSupported)
         [result setValue:@(alert) forKey:@"alert"];
@@ -38,6 +39,8 @@
         [result setValue:@(lockScreen) forKey:@"lockScreen"];
       if (settings.carPlaySetting != UNNotificationSettingNotSupported)
         [result setValue:@(carPlay) forKey:@"carPlay"];
+      if (settings.notificationCenterSetting != UNNotificationSettingNotSupported)
+        [result setValue:@(notificationCenter) forKey:@"notificationCenter"];
 
       if (@available(iOS 12.0, *)) {
         bool criticalAlert = settings.criticalAlertSetting == UNNotificationSettingEnabled;
@@ -104,7 +107,12 @@
       if (provisional) types += UNAuthorizationOptionProvisional;
     }
 
-    if (!alert && !badge && !sound && !criticalAlert && !carPlay && !provisional) {
+    if (!alert &&
+        !badge &&
+        !sound &&
+        !criticalAlert &&
+        !carPlay &&
+        !provisional) {
       types += UNAuthorizationOptionAlert;
       types += UNAuthorizationOptionBadge;
       types += UNAuthorizationOptionSound;
@@ -135,7 +143,9 @@
       if (badge) types += UIUserNotificationTypeBadge;
       if (sound) types += UIUserNotificationTypeSound;
 
-      if (!alert && !badge && !sound) {
+      if (!alert &&
+          !badge &&
+          !sound) {
         types += UIUserNotificationTypeAlert;
         types += UIUserNotificationTypeBadge;
         types += UIUserNotificationTypeSound;

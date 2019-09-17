@@ -88,7 +88,8 @@ export interface NotificationSettings {
   sound?: boolean;
   lockScreen?: boolean;
   carPlay?: boolean;
-  critical?: boolean;
+  notificationCenter?: boolean;
+  criticalAlert?: boolean;
 }
 
 export interface NotificationsResponse {

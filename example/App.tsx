@@ -68,6 +68,14 @@ interface State {
   notifications: NotificationsResponse;
 }
 
+function getSettingString(setting: boolean | undefined) {
+  return setting
+    ? RESULTS.GRANTED
+    : setting === false
+    ? RESULTS.DENIED
+    : RESULTS.UNAVAILABLE;
+}
+
 export default class App extends React.Component<{}, State> {
   state: State = {
     statuses: [],
@@ -91,15 +99,9 @@ export default class App extends React.Component<{}, State> {
 
   render() {
     const {notifications} = this.state;
+    const {settings} = notifications;
 
-    const {
-      alert,
-      badge,
-      sound,
-      lockScreen,
-      carPlay,
-      critical,
-    } = notifications.settings;
+    console.warn(settings);
 
     return (
       <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -167,53 +169,15 @@ export default class App extends React.Component<{}, State> {
         </TouchableRipple>
 
         <Text style={{margin: 15, marginTop: 0, color: '#777'}}>
-          {`alert: ${
-            alert
-              ? RESULTS.GRANTED
-              : alert === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
-
-          {`badge: ${
-            badge
-              ? RESULTS.GRANTED
-              : badge === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
-
-          {`sound: ${
-            sound
-              ? RESULTS.GRANTED
-              : sound === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
-
-          {`lockScreen: ${
-            lockScreen
-              ? RESULTS.GRANTED
-              : lockScreen === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
-
-          {`carPlay: ${
-            carPlay
-              ? RESULTS.GRANTED
-              : carPlay === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
-
-          {`critical: ${
-            critical
-              ? RESULTS.GRANTED
-              : critical === false
-              ? RESULTS.DENIED
-              : RESULTS.UNAVAILABLE
-          }\n`}
+          {`alert: ${getSettingString(settings.alert)}\n`}
+          {`badge: ${getSettingString(settings.badge)}\n`}
+          {`sound: ${getSettingString(settings.sound)}\n`}
+          {`lockScreen: ${getSettingString(settings.lockScreen)}\n`}
+          {`notificationCenter: ${getSettingString(
+            settings.notificationCenter,
+          )}\n`}
+          {`carPlay: ${getSettingString(settings.carPlay)}\n`}
+          {`criticalAlert: ${getSettingString(settings.criticalAlert)}\n`}
         </Text>
       </View>
     );

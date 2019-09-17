@@ -268,7 +268,8 @@ interface NotificationSettings {
   sound?: boolean;
   lockScreen?: boolean;
   carPlay?: boolean;
-  critical?: boolean;
+  notificationCenter?: boolean;
+  criticalAlert?: boolean;
 }
 
 function checkNotifications(): Promise<{
@@ -309,7 +310,8 @@ interface NotificationSettings {
   sound?: boolean;
   lockScreen?: boolean;
   carPlay?: boolean;
-  critical?: boolean;
+  notificationCenter?: boolean;
+  criticalAlert?: boolean;
 }
 
 function requestNotifications(
