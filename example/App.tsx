@@ -101,8 +101,6 @@ export default class App extends React.Component<{}, State> {
     const {notifications} = this.state;
     const {settings} = notifications;
 
-    console.warn(settings);
-
     return (
       <View style={{flex: 1, backgroundColor: theme.colors.background}}>
         <StatusBar
