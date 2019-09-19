@@ -262,7 +262,7 @@ Check notifications permission status and get settings values.
 ```ts
 interface NotificationSettings {
   // properties only availables on iOS
-  // unavaible settings will not be included in the response object
+  // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
@@ -304,7 +304,7 @@ type NotificationOption =
 
 interface NotificationSettings {
   // properties only availables on iOS
-  // unavaible settings will not be included in the response object
+  // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
