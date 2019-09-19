@@ -203,6 +203,10 @@ If you need to submit your application to the AppStore, you need to add to your 
 So before submitting your app to the App Store, make sure that in your `Info.plist` you have the following keys:
 
 ```xml
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Some description</string>
+<!-- only need peripheral if target is less than iOS 13 -->
+<!-- https://developer.apple.com/documentation/bundleresources/information_property_list/nsbluetoothperipheralusagedescription -->
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>Some description</string>
 <key>NSCalendarsUsageDescription</key>
