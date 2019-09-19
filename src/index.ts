@@ -129,9 +129,11 @@ if (RNPermissions == null) {
 If none of these fix the issue, please open an issue on the Github repository: https://github.com/react-native-community/react-native-permissions`);
 }
 
-const platformPermissions = Object.values(
-  Platform.OS === 'ios' ? IOS : ANDROID,
-);
+const platformPermissions = Platform.select<Permission[]>({
+  ios: Object.values(IOS),
+  android: Object.values(ANDROID),
+  default: [],
+});
 
 function isPlatformPermission(permission: Permission): boolean {
   if (platformPermissions.includes(permission)) {
@@ -158,7 +160,7 @@ export async function check(permission: Permission): Promise<PermissionStatus> {
     return RESULTS.UNAVAILABLE;
   }
 
-  if (Platform.OS !== 'android') {
+  if (Platform.OS === 'ios') {
     return RNPermissions.check(permission);
   }
 
@@ -194,7 +196,7 @@ export async function request(
     return RESULTS.UNAVAILABLE;
   }
 
-  if (Platform.OS !== 'android') {
+  if (Platform.OS === 'ios') {
     return RNPermissions.request(permission);
   }
 
