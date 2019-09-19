@@ -13,7 +13,10 @@
 @implementation RNPermissionHandlerBluetoothPeripheral
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSBluetoothPeripheralUsageDescription"];
+  return @[
+    @"NSBluetoothPeripheralUsageDescription",
+    @"NSBluetoothAlwaysUsageDescription",
+  ];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
