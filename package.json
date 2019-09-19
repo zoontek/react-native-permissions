@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Check user permissions in React Native",
   "author": "Yonah Forst <yonaforst@hotmail.com>",
   "license": "MIT",
