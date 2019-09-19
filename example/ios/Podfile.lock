@@ -242,21 +242,21 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  Permission-BluetoothPeripheral: a6c49a6f56e1272cf3a28b3f925380f949976261
-  Permission-Calendars: 13d857b0b95bc232b26518f3fb9a37ce3be168a0
-  Permission-Camera: 40b0be462fac1db38fedddb01ae4aea898991707
-  Permission-Contacts: 3f71dc654b46c87345b442d4cf9b8ae6d4dbcfde
-  Permission-FaceID: 107ba5eed56ba7c6c0165c48707d27452b8fe8a1
-  Permission-LocationAlways: 06c700f10cd8f5e182d00a4a13eaa1b39e69142c
-  Permission-LocationWhenInUse: 52d6deaac51fc0a51ccabb291c80445ed9e67acb
-  Permission-MediaLibrary: 64e2e59f8e46c1964729fc408bf7be9180ef7838
-  Permission-Microphone: aad740aeb66b54a84b034c7636de8d5078d005cf
-  Permission-Motion: e79139a6e6cd646994293e8a01f236e69547cb3f
-  Permission-Notifications: 5e9a4e026259b7db0021cde9593725003332425b
-  Permission-PhotoLibrary: c87959cfabfb54b2324fd1ec5958bf9a57ffce2c
-  Permission-Reminders: 6131282099964b4b2dbfc90b42e01a94cd14ffd6
-  Permission-SpeechRecognition: 329c78ba287f665d14c5a38b081500ebdd17d4b0
-  Permission-StoreKit: 2386d7ddd0a0a05381446fa87c6d7465e24c270d
+  Permission-BluetoothPeripheral: 5cf4dcbf8bf8bfa26cdc8d5e22560ead66907aea
+  Permission-Calendars: 671913c79ffcc834b0ca63696f94420ccf8db260
+  Permission-Camera: 943fe2127d7547eb5faf127849967e0010375dc5
+  Permission-Contacts: f22e9dd0c13aa3db548c67c75fe404a30984fb29
+  Permission-FaceID: 07f01e3037e305074a94e4b287ecb55ce0d23ed2
+  Permission-LocationAlways: edb0f76f677df94ef6e4fff7075152c80c7b3b91
+  Permission-LocationWhenInUse: 4ae6f7b723bd972c1854ab352ed16ab4facdc11e
+  Permission-MediaLibrary: 92f69c8b63e1e33ef7eaf4b854774034536493c7
+  Permission-Microphone: 1095d084f4998b1bfeccf6df25cb632452f601b6
+  Permission-Motion: def24295b0a06686567e44eab11c40fd043fb3fd
+  Permission-Notifications: bfb61a77dcacec8742d651e7023732dec4501df1
+  Permission-PhotoLibrary: 4002b02a7732a9d7edf13180e87a1233644048cd
+  Permission-Reminders: eeac1b0c2d40fd5d9b707fa2a77788745dd7c825
+  Permission-SpeechRecognition: 4865644601fc35513e1808aef119b907260bf667
+  Permission-StoreKit: 3eb5299146c0f87d30b4146a1fbc02df3256b923
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -274,7 +274,7 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
-  RNPermissions: 4de767fb0ff41240a387b4f1275b51fe0f15f950
+  RNPermissions: 3753579000223a353d41b51e41e1d51788b75486
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
