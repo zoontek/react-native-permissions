@@ -61,7 +61,10 @@ _⚠️ Don't forget to add permissions to `AndroidManifest.xml` for android and
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60+, you will probably don't need to link it. Otherwise if you follow all the previous steps and it still doesn't work, try to link this library manually:
+Because this package targets React Native 0.60+, you will probably don't need to link it. Otherwise if you follow all the previous steps and it still doesn't work, try to link this library manually.
+
+<details>
+  <summary>👀 See manual linking instructions</summary>
 
 #### iOS
 
@@ -113,6 +116,7 @@ public class MainApplication extends Application implements ReactApplication {
   // …
 }
 ```
+</details>
 
 ## API
 
