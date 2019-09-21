@@ -119,110 +119,6 @@ public class MainApplication extends Application implements ReactApplication {
 
 </details>
 
-## Permission lifecycles
-
-Permission are not handled in the same way on iOS and Android. This library provides an abstraction over the platforms behaviors. To understand it a little better, have a look to these two flowcharts:
-
-### iOS
-
-```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │
-          └────────────────┘
-                   │
-                   ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-        Does the user accepted
-            the request ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                   ┌─────────────────┐
-                ╚═════╝                   │ RESULTS.BLOCKED │
-                   │                      └─────────────────┘
-                   ▼
-          ┌─────────────────┐
-          │ RESULTS.GRANTED │
-          └─────────────────┘
-```
-
-### Android
-
-```
- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │◀──────────────────────┐
-          └────────────────┘                       │
-                   │                               │
-                   ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
-                   │                               │
-        Does the user accepted                     │
-            the request ?                          │
-                   │           ╔════╗    Does the user checked
-                   ├───────────║ NO ║─────"Never ask again" ?
-                   │           ╚════╝              │
-                ╔═════╗                         ╔═════╗
-                ║ YES ║                         ║ YES ║
-                ╚═════╝                         ╚═════╝
-                   │                               │
-                   ▼                               ▼
-          ┌─────────────────┐             ┌─────────────────┐
-          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
-          └─────────────────┘             └─────────────────┘
-```
-
 ## API
 
 ### Permissions statuses
@@ -453,4 +349,108 @@ function openSettings(): Promise<void>;
 import {openSettings} from 'react-native-permissions';
 
 openSettings().catch(() => console.warn('cannot open settings'));
+```
+
+## Understanding lifecycle
+
+As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms behaviors. To understand it a little better, have a look to these two flowcharts:
+
+### iOS
+
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+             requestable ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                  ┌───────────────────┐
+                ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │  RESULTS.GRANTED  │
+                   ▼                     └───────────────────┘
+          ┌────────────────┐
+          │ RESULTS.DENIED │
+          └────────────────┘
+                   │
+                   ▼
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+        Does the user accepted
+            the request ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                   ┌─────────────────┐
+                ╚═════╝                   │ RESULTS.BLOCKED │
+                   │                      └─────────────────┘
+                   ▼
+          ┌─────────────────┐
+          │ RESULTS.GRANTED │
+          └─────────────────┘
+```
+
+### Android
+
+```
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+             requestable ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                  ┌───────────────────┐
+                ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │  RESULTS.GRANTED  │
+                   ▼                     └───────────────────┘
+          ┌────────────────┐
+          │ RESULTS.DENIED │◀──────────────────────┐
+          └────────────────┘                       │
+                   │                               │
+                   ▼                               │
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
+┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
+                   │                               │
+        Does the user accepted                     │
+            the request ?                          │
+                   │           ╔════╗    Does the user checked
+                   ├───────────║ NO ║─────"Never ask again" ?
+                   │           ╚════╝              │
+                ╔═════╗                         ╔═════╗
+                ║ YES ║                         ║ YES ║
+                ╚═════╝                         ╚═════╝
+                   │                               │
+                   ▼                               ▼
+          ┌─────────────────┐             ┌─────────────────┐
+          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
+          └─────────────────┘             └─────────────────┘
 ```
