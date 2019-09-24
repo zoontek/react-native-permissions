@@ -59,38 +59,48 @@ end
 Then update your `Info.plist` with wanted permissions usage descriptions.
 
 ```xml
-<!-- 🚨 keep only the permissions used in your app! 🚨 -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
 
-<key>NSAppleMusicUsageDescription</key>
-<string>TEXT</string>
-<key>NSBluetoothAlwaysUsageDescription</key>
-<string>TEXT</string>
-<key>NSBluetoothPeripheralUsageDescription</key>
-<string>TEXT</string>
-<key>NSCalendarsUsageDescription</key>
-<string>TEXT</string>
-<key>NSCameraUsageDescription</key>
-<string>TEXT</string>
-<key>NSContactsUsageDescription</key>
-<string>TEXT</string>
-<key>NSFaceIDUsageDescription</key>
-<string>TEXT</string>
-<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>TEXT</string>
-<key>NSLocationAlwaysUsageDescription</key>
-<string>TEXT</string>
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>TEXT</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>TEXT</string>
-<key>NSMotionUsageDescription</key>
-<string>TEXT</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>TEXT</string>
-<key>NSRemindersUsageDescription</key>
-<string>TEXT</string>
-<key>NSSpeechRecognitionUsageDescription</key>
-<string>TEXT</string>
+  <!-- 🚨 keep only the permissions used in your app! 🚨 -->
+
+  <key>NSAppleMusicUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSBluetoothAlwaysUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSCalendarsUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSCameraUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSContactsUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSMotionUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSRemindersUsageDescription</key>
+  <string>TEXT</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>TEXT</string>
+
+  <!-- … -->
+
+</dict>
+</plist>
 ```
 
 ### Android
