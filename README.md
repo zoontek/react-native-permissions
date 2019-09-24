@@ -27,7 +27,7 @@ $ yarn add react-native-permissions@next
 
 ### iOS
 
-By default, no permission handler is installed. Update your `Podfile` by choosing the ones you want, then run `pod install`.
+By default no permission handler is installed. Update your `Podfile` by choosing the ones you want then run `pod install`.
 
 ```ruby
 target 'YourAwesomeProject' do
