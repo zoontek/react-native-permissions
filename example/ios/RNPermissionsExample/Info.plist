@@ -40,11 +40,13 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Let me use your media library</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Let me use your bluetooth peripheral</string>
+	<string>Let me use bluetooth</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Let me use bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Let me use your calendar</string>
+	<string>Let me use your calendars</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Let me use your camera</string>
+	<string>Let me use the camera</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Let me use your contacts</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -56,7 +58,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Let me use your location when the app is opened</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Let me use your microphone</string>
+	<string>Let me use the microphone</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Let me use your motion data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
