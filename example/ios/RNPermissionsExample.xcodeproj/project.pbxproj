@@ -11,7 +11,6 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2A94077659864F9EB01C8A33 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7C280AB05534E81BE62866B /* MaterialIcons.ttf */; };
 		FF61E46FEEB7199D22A548F5 /* libPods-RNPermissionsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D78CFB0B797068FC55B9C8C1 /* libPods-RNPermissionsExample.a */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +24,6 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNPermissionsExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNPermissionsExample/main.m; sourceTree = "<group>"; };
 		6508191B9B16B2AC0281B3AC /* Pods-RNPermissionsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.release.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.release.xcconfig"; sourceTree = "<group>"; };
-		A7C280AB05534E81BE62866B /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B6736F72654167EDBA7145AA /* Pods-RNPermissionsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.debug.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.debug.xcconfig"; sourceTree = "<group>"; };
 		D78CFB0B797068FC55B9C8C1 /* libPods-RNPermissionsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -77,14 +75,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5F78D441884D47A18F90131B /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A7C280AB05534E81BE62866B /* MaterialIcons.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
@@ -92,7 +82,6 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				2426786032D9E4653AC74A82 /* Pods */,
-				5F78D441884D47A18F90131B /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -171,7 +160,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				2A94077659864F9EB01C8A33 /* MaterialIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

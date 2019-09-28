@@ -11,17 +11,17 @@
     "reinstall": "yarn clean && yarn install"
   },
   "dependencies": {
-    "react": "16.8.6",
-    "react-native": "0.60.5",
+    "react": "16.9.0",
+    "react-native": "0.61.1",
     "react-native-paper": "2.16.0",
     "react-native-permissions": "../",
     "react-native-vector-icons": "6.6.0"
   },
   "devDependencies": {
-    "@babel/core": "7.6.0",
-    "@babel/runtime": "7.6.0",
-    "@types/react": "16.8.25",
-    "@types/react-native": "0.60.15",
+    "@babel/core": "7.6.2",
+    "@babel/runtime": "7.6.2",
+    "@types/react": "16.9.3",
+    "@types/react-native": "0.60.17",
     "metro-react-native-babel-preset": "0.56.0",
     "typescript": "3.6.3"
   }
