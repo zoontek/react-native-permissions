@@ -6,28 +6,28 @@
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-Check and request user permissions in React Native
+An unified permissions API for React Native on iOS and Android.
 
 ## Support
 
 | version | react-native version |
 | ------- | -------------------- |
 | 2.0.0+  | 0.60.0+              |
-| 1.1.1   | 0.40.0 - 0.52.2      |
+| 1.2.1   | 0.56.0 - 0.59.10     |
 
-For 2.0.0 with 0.59-, you can use [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries)
+_You can use 2.0.0 with 0.59.10- with the [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries) `postinstall` command._
 
 ## Setup
 
 ```bash
-$ npm install --save react-native-permissions@next
+$ npm install --save react-native-permissions
 # --- or ---
-$ yarn add react-native-permissions@next
+$ yarn add react-native-permissions
 ```
 
 ### iOS
 
-By default no permission handler is installed. Update your `Podfile` by choosing the ones you want then run `pod install`.
+By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
 
 ```ruby
 target 'YourAwesomeProject' do
@@ -56,7 +56,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-Then update your `Info.plist` with wanted permissions usage descriptions.
+Then update your `Info.plist` with wanted permissions usage descriptions:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -64,38 +64,38 @@ Then update your `Info.plist` with wanted permissions usage descriptions.
 <plist version="1.0">
 <dict>
 
-  <!-- 🚨 keep only the permissions used in your app! 🚨 -->
+  <!-- 🚨 Keep only the permissions used in your app 🚨 -->
 
   <key>NSAppleMusicUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSCalendarsUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSContactsUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSFaceIDUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSLocationAlwaysUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSLocationWhenInUseUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSMicrophoneUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSMotionUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSRemindersUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
-  <string>TEXT</string>
+  <string>YOUR TEXT</string>
 
   <!-- … -->
 
@@ -105,13 +105,13 @@ Then update your `Info.plist` with wanted permissions usage descriptions.
 
 ### Android
 
-Add all wanted permissions to your app `android/app/src/main/res/AndroidManifest.xml`.
+Add all wanted permissions to your app `android/app/src/main/res/AndroidManifest.xml` file:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.myawesomeapp">
 
-  <!-- 🚨 keep only the permissions used in your app! 🚨 -->
+  <!-- 🚨 Keep only the permissions used in your app 🚨 -->
 
   <uses-permission android:name="android.permission.ACCEPT_HANDOVER" />
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -150,10 +150,10 @@ Add all wanted permissions to your app `android/app/src/main/res/AndroidManifest
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60+, you will probably don't need to link it. Otherwise if you follow all the previous steps and it still doesn't work, try to link this library manually.
+Because this package targets React Native 0.60.0+, you will probably don't need to link it manually. Otherwise if it's not the case, follow this additional instructions:
 
 <details>
-  <summary>👀 See manual linking instructions</summary>
+  <summary><b>👀 See manual linking instructions</b></summary>
 
 ### iOS
 
@@ -208,18 +208,111 @@ public class MainApplication extends Application implements ReactApplication {
 
 </details>
 
+## Understanding permission flow
+
+As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms behaviors. To understand it a little better, take a look to these two flowcharts:
+
+### iOS flow
+
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+             requestable ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                  ┌───────────────────┐
+                ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │  RESULTS.GRANTED  │
+                   ▼                     └───────────────────┘
+          ┌────────────────┐
+          │ RESULTS.DENIED │
+          └────────────────┘
+                   │
+                   ▼
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+        Does the user accepted
+            the request ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                   ┌─────────────────┐
+                ╚═════╝                   │ RESULTS.BLOCKED │
+                   │                      └─────────────────┘
+                   ▼
+          ┌─────────────────┐
+          │ RESULTS.GRANTED │
+          └─────────────────┘
+```
+
+### Android flow
+
+```
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+             requestable ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                  ┌───────────────────┐
+                ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │  RESULTS.GRANTED  │
+                   ▼                     └───────────────────┘
+          ┌────────────────┐
+          │ RESULTS.DENIED │◀──────────────────────┐
+          └────────────────┘                       │
+                   │                               │
+                   ▼                               │
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
+┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
+                   │                               │
+        Does the user accepted                     │
+            the request ?                          │
+                   │           ╔════╗    Does the user checked
+                   ├───────────║ NO ║─────"Never ask again" ?
+                   │           ╚════╝              │
+                ╔═════╗                         ╔═════╗
+                ║ YES ║                         ║ YES ║
+                ╚═════╝                         ╚═════╝
+                   │                               │
+                   ▼                               ▼
+          ┌─────────────────┐             ┌─────────────────┐
+          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
+          └─────────────────┘             └─────────────────┘
+```
+
 ## API
-
-### Permissions statuses
-
-Promises resolve into one of these statuses:
-
-| Return value          | Notes                                                             |
-| --------------------- | ----------------------------------------------------------------- |
-| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)  |
-| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
-| `RESULTS.GRANTED`     | The permission is granted                                         |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
 
 ### Supported permissions
 
@@ -277,11 +370,21 @@ PERMISSIONS.IOS.SPEECH_RECOGNITION;
 PERMISSIONS.IOS.STOREKIT;
 ```
 
+### Permissions statuses
+
+Permission checks and requests resolve into one of these statuses:
+
+| Return value          | Notes                                                             |
+| --------------------- | ----------------------------------------------------------------- |
+| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)  |
+| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
+| `RESULTS.GRANTED`     | The permission is granted                                         |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
+
 ### Methods
 
-_types used in usage examples_
-
 ```ts
+// type used in usage examples
 type PermissionStatus = 'unavailable' | 'denied' | 'blocked' | 'granted';
 ```
 
@@ -300,16 +403,20 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   .then(result => {
     switch (result) {
       case RESULTS.UNAVAILABLE:
-        console.log('the feature is not available');
-        break;
-      case RESULTS.GRANTED:
-        console.log('permission is granted');
+        console.log(
+          'This feature is not available (on this device / in this context)',
+        );
         break;
       case RESULTS.DENIED:
-        console.log('permission is denied and / or requestable');
+        console.log(
+          'The permission has not been requested / is denied but requestable',
+        );
+        break;
+      case RESULTS.GRANTED:
+        console.log('The permission is granted');
         break;
       case RESULTS.BLOCKED:
-        console.log('permission is denied and not requestable');
+        console.log('The permission is denied and not requestable anymore');
         break;
     }
   })
@@ -351,7 +458,7 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
 
 #### checkNotifications
 
-Check notifications permission status and get settings values.
+Check notifications permission status and get notifications settings values.
 
 ```ts
 interface NotificationSettings {
@@ -384,7 +491,7 @@ checkNotifications().then(({status, settings}) => {
 
 #### requestNotifications
 
-Request notifications permission status and get settings values.
+Request notifications permission status and get notifications settings values.
 
 ```ts
 // only used on iOS
@@ -440,106 +547,36 @@ import {openSettings} from 'react-native-permissions';
 openSettings().catch(() => console.warn('cannot open settings'));
 ```
 
-## Understanding lifecycle
+## Additional recipes
 
-As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms behaviors. To understand it a little better, have a look to these two flowcharts:
+#### Check multiples permissions
 
-### iOS
+```js
+import {check, PERMISSIONS} from 'react-native-permissions';
 
-```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │
-          └────────────────┘
-                   │
-                   ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-        Does the user accepted
-            the request ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                   ┌─────────────────┐
-                ╚═════╝                   │ RESULTS.BLOCKED │
-                   │                      └─────────────────┘
-                   ▼
-          ┌─────────────────┐
-          │ RESULTS.GRANTED │
-          └─────────────────┘
+// can be done in parallel
+Promise.all([
+  check(PERMISSIONS.IOS.CAMERA),
+  check(PERMISSIONS.IOS.CONTACTS),
+  // …
+]).then(([cameraStatus, contactsStatus /* … */]) => {
+  console.log({cameraStatus, contactsStatus});
+});
 ```
 
-### Android
+#### Request multiples permissions
 
-```
- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │◀──────────────────────┐
-          └────────────────┘                       │
-                   │                               │
-                   ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
-                   │                               │
-        Does the user accepted                     │
-            the request ?                          │
-                   │           ╔════╗    Does the user checked
-                   ├───────────║ NO ║─────"Never ask again" ?
-                   │           ╚════╝              │
-                ╔═════╗                         ╔═════╗
-                ║ YES ║                         ║ YES ║
-                ╚═════╝                         ╚═════╝
-                   │                               │
-                   ▼                               ▼
-          ┌─────────────────┐             ┌─────────────────┐
-          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
-          └─────────────────┘             └─────────────────┘
+_⚠️  It's a very bad UX pattern, avoid doing it!_
+
+```js
+import {check, request, PERMISSIONS} from 'react-native-permissions';
+
+// should be done in sequence
+async function requestAll() {
+  const cameraStatus = await request(PERMISSIONS.IOS.CAMERA);
+  const contactsStatus = await request(PERMISSIONS.IOS.CONTACTS);
+  return {cameraStatus, contactsStatus};
+}
+
+console.log(requestAll());
 ```
