@@ -8,16 +8,10 @@ daysUntilClose: 7
 
 # Issues with these labels will never be considered stale
 exemptLabels:
-  - Security
-  - Pinned
-  - Good first issue
-  - 'Type: Discussion'
-  - Partner
-  - Core Team
-  - 'Help Wanted :octocat:'
-  - 'Impact: Regression'
-  - 'Resolution: PR Submitted'
-  - 'Resolution: Backlog'
+  - security
+  - pinned
+  - good first issue
+  - help wanted
 
 # Label to use when marking an issue as stale
 staleLabel: Stale
