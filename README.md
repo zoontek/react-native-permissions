@@ -10,12 +10,10 @@ An unified permissions API for React Native on iOS and Android.
 
 ## Support
 
-| version | react-native version |
-| ------- | -------------------- |
-| 2.0.0+  | 0.60.0+              |
-| 1.2.1   | 0.56.0 - 0.59.10     |
-
-_You can use 2.0.0 with 0.59.10- with the [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries) `postinstall` command._
+| version                                                                                                                                                       | react-native version |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| 2.0.0+                                                                                                                                                        | 0.60.0+              |
+| 2.0.0+ & [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries) | 0.56.0 - 0.59.10     |
 
 ## Setup
 
@@ -569,7 +567,7 @@ Promise.all([
 _⚠️  It's a very bad UX pattern, avoid doing it!_
 
 ```js
-import {check, request, PERMISSIONS} from 'react-native-permissions';
+import {request, PERMISSIONS} from 'react-native-permissions';
 
 // should be done in sequence
 async function requestAll() {
