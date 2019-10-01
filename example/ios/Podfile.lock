@@ -397,21 +397,21 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: c4cf958af1b97799b524f63a26a1c509c0295b04
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  Permission-BluetoothPeripheral: ca07124613f3e7ee8633a39074e912e1d724e28b
-  Permission-Calendars: eadc1b8060ff4e98417c6339e75c76f277fc7fce
-  Permission-Camera: 550f1b7609fc658fa2e28f930e235aa994c7b315
-  Permission-Contacts: 3a6e04f3960fcaf6d352c9c4c5e82d42bcbcb4cc
-  Permission-FaceID: de6d7c544fee1425f8d3d32f1240b290f198e194
-  Permission-LocationAlways: 358bb6ab37d28a39dfcdc7b35cf2e3bbbf69d295
-  Permission-LocationWhenInUse: eba4249d3c1783fd235b18c213c530b66398bbbd
-  Permission-MediaLibrary: 7c30b4ba4bdb062863c58ed6013a4219a01ef6fc
-  Permission-Microphone: c63c2adf5027d69383e27784622af743207fdf10
-  Permission-Motion: 534e287327fbf44e864328c52b2cd5a584e94cb5
-  Permission-Notifications: b85820c267c433ba07b5212f575f6dd02e9b4420
-  Permission-PhotoLibrary: 908dceabf4cc66c81c0c485a72e1e6b1d253f58e
-  Permission-Reminders: 412dd3103fae872f13c34bfd2f9061395ea27900
-  Permission-SpeechRecognition: 15ca6fa0535ad385de45f166f0748ccea8912450
-  Permission-StoreKit: 97edf428564d8a11356f311afa1aa498274e9787
+  Permission-BluetoothPeripheral: 8f3fa6e7deded6491e5c3fc9e70a71b90f64ee0e
+  Permission-Calendars: 6a229a222f94cb01c623dbffd84cf8afdbd1ee22
+  Permission-Camera: 64a104eaed6f6adf9a929d9def421be39232ff66
+  Permission-Contacts: f8f4d1d9c6104b8f19ec6a4a14298c21fe7d622e
+  Permission-FaceID: eda537e02235f76b40aa58a3b720eefbac062da6
+  Permission-LocationAlways: 8e6574d808576e9fa9452c16e9b91783afc24e5d
+  Permission-LocationWhenInUse: 5d41a3f6dab5528d000932db5fbb5a1e14fdf92c
+  Permission-MediaLibrary: 5953dfe31afc75b8055375f9471e5ef66fb3c038
+  Permission-Microphone: 7c97fb87dfb7f97281d73cf9866a6351e20c8d77
+  Permission-Motion: dc85e0694ded53573a5bc8875dd091bf6f828a3e
+  Permission-Notifications: e0144f6b4849c1426a8852e6d8fe172c4a400b27
+  Permission-PhotoLibrary: 294c04e1a14eac26fe042517d6752fef9781356c
+  Permission-Reminders: 96a5f973a765a056172d91ebd8326c93b506b008
+  Permission-SpeechRecognition: a6b4817397f640b7b9ca73f45dfc99373eb7ccc6
+  Permission-StoreKit: a5d806677c97615edea4beb8f4220d65515e3e48
   RCTRequired: 53825815218847d3e9c7b6d92ad2d197a926d51e
   RCTTypeSafety: d886540c518e53064dfa081bf7693fd650699b92
   React: 5dea58967c421bd1fdf6b94c18b9ed0f5134683c
@@ -431,7 +431,7 @@ SPEC CHECKSUMS:
   React-RCTText: 81b62b4e7f11531a5154e4daa5617670d5a2d5de
   React-RCTVibration: 8be61459e3749d1fb02cf414edd05b3007622882
   ReactCommon: 4fba5be89efdf0b5720e0adb3d8d7edf6e532db0
-  RNPermissions: 0954178834810a675efad2a26041ffa5380e663f
+  RNPermissions: 4efe449170bcddfa308b5cb8743b7db26d62d701
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
