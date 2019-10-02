@@ -4,49 +4,49 @@
 typedef NS_ENUM(NSInteger, RNPermission) {
   RNPermissionUnknown = 0,
 #if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-  RNPermissionBluetoothPeripheral,
+  RNPermissionBluetoothPeripheral = 1,
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
-  RNPermissionCalendars,
+  RNPermissionCalendars = 2,
 #endif
 #if __has_include("RNPermissionHandlerCamera.h")
-  RNPermissionCamera,
+  RNPermissionCamera = 3,
 #endif
 #if __has_include("RNPermissionHandlerContacts.h")
-  RNPermissionContacts,
+  RNPermissionContacts = 4,
 #endif
 #if __has_include("RNPermissionHandlerFaceID.h")
-  RNPermissionFaceID,
+  RNPermissionFaceID = 5,
 #endif
 #if __has_include("RNPermissionHandlerLocationAlways.h")
-  RNPermissionLocationAlways,
+  RNPermissionLocationAlways = 6,
 #endif
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  RNPermissionLocationWhenInUse,
+  RNPermissionLocationWhenInUse = 7,
 #endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
-  RNPermissionMediaLibrary,
+  RNPermissionMediaLibrary = 8,
 #endif
 #if __has_include("RNPermissionHandlerMicrophone.h")
-  RNPermissionMicrophone,
+  RNPermissionMicrophone = 9,
 #endif
 #if __has_include("RNPermissionHandlerMotion.h")
-  RNPermissionMotion,
+  RNPermissionMotion = 10,
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  RNPermissionPhotoLibrary,
+  RNPermissionPhotoLibrary = 11,
 #endif
 #if __has_include("RNPermissionHandlerReminders.h")
-  RNPermissionReminders,
+  RNPermissionReminders = 12,
 #endif
 #if __has_include("RNPermissionHandlerSiri.h")
-  RNPermissionSiri,
+  RNPermissionSiri = 13,
 #endif
 #if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  RNPermissionSpeechRecognition,
+  RNPermissionSpeechRecognition = 14,
 #endif
 #if __has_include("RNPermissionHandlerStoreKit.h")
-  RNPermissionStoreKit,
+  RNPermissionStoreKit = 15,
 #endif
 };
 
