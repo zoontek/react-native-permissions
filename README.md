@@ -13,7 +13,7 @@ An unified permissions API for React Native on iOS and Android.
 | version                                                                                                                                                       | react-native version |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | 2.0.0+                                                                                                                                                        | 0.60.0+              |
-| 2.0.0+ & [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries) | 0.56.0 - 0.59.10     |
+| 2.0.0+ & [`jetify -r`](https://github.com/mikehardy/jetifier/blob/master/README.md#to-reverse-jetify--convert-node_modules-dependencies-to-support-libraries) | 0.59.0 - 0.59.10     |
 
 ## Setup
 
