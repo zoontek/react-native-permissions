@@ -247,7 +247,15 @@ RCT_EXPORT_MODULE();
 
 + (bool)isBackgroundModeEnabled:(NSString * _Nonnull)mode {
   NSArray *modes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIBackgroundModes"];
-  return [modes isKindOfClass:[NSArray class]] && [modes containsObject:mode];
+  bool isEnabled = [modes isKindOfClass:[NSArray class]] && [modes containsObject:mode];
+
+#if RCT_DEV
+  if (!isEnabled) {
+    RCTLogWarn(@"Missing \"%@\" in \"UIBackgroundModes\" forces check / request result to \"unavailable\" status", mode);
+  }
+#endif
+
+  return isEnabled;
 }
 
 RCT_REMAP_METHOD(openSettings,
