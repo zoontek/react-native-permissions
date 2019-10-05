@@ -58,23 +58,20 @@
                                            toDate:[NSDate date]
                                           toQueue:_operationQueue
                                       withHandler:^(NSArray<CMMotionActivity *> * _Nullable activities, NSError * _Nullable error) {
-    if (error != nil) {
-      if (error.code != CMErrorNotAuthorized &&
-          error.code != CMErrorMotionActivityNotAuthorized) {
-        reject(error);
-      } else {
-        resolve(RNPermissionStatusDenied);
-      }
-    } else if (activities) {
-      resolve(RNPermissionStatusAuthorized);
-    } else {
-      resolve(RNPermissionStatusNotDetermined);
+    if (error != nil && error.code != CMErrorNotAuthorized && error.code != CMErrorMotionActivityNotAuthorized) {
+      return reject(error);
     }
 
-    self->_operationQueue = nil;
-    self->_activityManager = nil;
-
     [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+
+    if (error != nil) {
+      return resolve(RNPermissionStatusDenied);
+    }
+    if (activities) {
+      return resolve(RNPermissionStatusAuthorized);
+    }
+
+    return resolve(RNPermissionStatusNotDetermined);
   }];
 }
 

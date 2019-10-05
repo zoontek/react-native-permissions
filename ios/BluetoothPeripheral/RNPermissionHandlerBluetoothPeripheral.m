@@ -76,7 +76,6 @@
 
 - (void)peripheralManagerDidUpdateState:(nonnull CBPeripheralManager *)peripheral {
   [_peripheralManager stopAdvertising];
-  _peripheralManager = nil;
 
   switch (peripheral.state) {
     case CBManagerStatePoweredOff:

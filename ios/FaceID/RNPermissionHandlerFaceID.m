@@ -101,7 +101,6 @@
 
 - (void)invalidateContext {
   [_laContext invalidate];
-  _laContext = nil;
 }
 
 - (void)UIApplicationDidBecomeActiveNotification:(__unused NSNotification *)notification {
