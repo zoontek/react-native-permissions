@@ -6,8 +6,6 @@
 @interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic) bool initialChangeEventFired;
-@property (nonatomic) bool isWaitingDidBecomeActive;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
 @property (nonatomic, strong) void (^reject)(NSError *error);
 
@@ -51,57 +49,22 @@
   if (![CLLocationManager locationServicesEnabled] || ![RNPermissions isBackgroundModeEnabled:@"location"]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-
-  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-
-  if (status == kCLAuthorizationStatusAuthorizedAlways) {
-    return resolve(RNPermissionStatusAuthorized);
+  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+    return [self checkWithResolver:resolve rejecter:reject];
   }
 
   _resolve = resolve;
   _reject = reject;
-  _initialChangeEventFired = false;
-  _isWaitingDidBecomeActive = false;
-
-  if (status == kCLAuthorizationStatusAuthorizedWhenInUse && ![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
-    _isWaitingDidBecomeActive = true;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(UIApplicationDidBecomeActiveNotification:)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
-  }
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
   [_locationManager requestAlwaysAuthorization];
 }
 
-- (void)onAuthorizationStatus {
-  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
-  [self checkWithResolver:_resolve rejecter:_reject];
-
-  [_locationManager setDelegate:nil];
-  _locationManager = nil;
-
-  if (_isWaitingDidBecomeActive) {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIApplicationDidBecomeActiveNotification
-                                                  object:nil];
-  }
-}
-
-- (void)UIApplicationDidBecomeActiveNotification:(NSNotification *)notification {
-  if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
-    [self onAuthorizationStatus];
-  }
-}
-
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  // @see https://github.com/iosphere/ISHPermissionKit/blob/2.1.2/ISHPermissionKit/Requests/ISHPermissionRequestLocation.m#L127
-  if (status != kCLAuthorizationStatusNotDetermined && _initialChangeEventFired) {
-    [self onAuthorizationStatus];
-  } else {
-    _initialChangeEventFired = true;
+  if (status != kCLAuthorizationStatusNotDetermined) {
+    [_locationManager setDelegate:nil];
+    [self checkWithResolver:_resolve rejecter:_reject];
   }
 }
 
