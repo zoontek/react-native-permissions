@@ -158,7 +158,6 @@ export function requestNotifications(
 }
 
 export * from './types';
-
 export {PERMISSIONS, RESULTS} from './constants';
 
 export default {

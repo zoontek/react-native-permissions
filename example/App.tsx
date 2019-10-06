@@ -12,12 +12,13 @@ import {
 } from 'react-native';
 
 import RNPermissions, {
+  PERMISSIONS,
+  RESULTS,
   PermissionStatus,
   Permission,
   NotificationsResponse,
 } from 'react-native-permissions';
 
-const {PERMISSIONS, RESULTS} = RNPermissions;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
