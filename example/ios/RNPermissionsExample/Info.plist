@@ -63,6 +63,8 @@
 	<string>Let me use your motion data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let me use your photo library</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Let me use your NFC library</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Let me use your reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

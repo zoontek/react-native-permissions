@@ -31,6 +31,9 @@
 #if __has_include("RNPermissionHandlerMotion.h")
 #import "RNPermissionHandlerMotion.h"
 #endif
+#if __has_include("RNPermissionHandlerNFC.h")
+#import "RNPermissionHandlerNFC.h"
+#endif
 #if __has_include("RNPermissionHandlerNotifications.h")
 #import "RNPermissionHandlerNotifications.h"
 #endif
@@ -84,6 +87,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerMotion.h")
   [RNPermissionHandlerMotion handlerUniqueId]: @(RNPermissionMotion),
+#endif
+  #if __has_include("RNPermissionHandlerNFC.h")
+  [RNPermissionHandlerNFC handlerUniqueId]: @(RNPermissionNFC),
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
   [RNPermissionHandlerPhotoLibrary handlerUniqueId]: @(RNPermissionPhotoLibrary),
@@ -168,6 +174,11 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerMotion.h")
     case RNPermissionMotion:
       handler = [RNPermissionHandlerMotion new];
+      break;
+#endif
+#if __has_include("RNPermissionHandlerNFC.h")
+    case RNPermissionNFC:
+      handler = [RNPermissionHandlerNFC new];
       break;
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")

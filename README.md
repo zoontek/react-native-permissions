@@ -25,7 +25,7 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
+By default no permission handler is installed. Update your `ios/Podfile` by choosing the ones you want to check or request, then run `pod install`.
 
 ```ruby
 target 'YourAwesomeProject' do
@@ -44,6 +44,7 @@ target 'YourAwesomeProject' do
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
   pod 'Permission-Motion', :path => "#{permissions_path}/Motion.podspec"
+  pod 'Permission-NFC', :path => "#{permissions_path}/NFC.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
   pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
@@ -54,7 +55,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-Then update your `Info.plist` with wanted permissions usage descriptions:
+Then update your `ios/yourAppName/Info.plist` with wanted permissions usage descriptions:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -90,6 +91,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSPhotoLibraryUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NFCReaderUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSRemindersUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
@@ -97,6 +100,21 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
   <!-- … -->
 
+</dict>
+</plist>
+```
+
+For _NFC_ support, Add a new file `ios/yourAppName/yourAppName.entitlements`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>com.apple.developer.nfc.readersession.formats</key>
+  <array>
+    <string>NDEF</string>
+  </array>
 </dict>
 </plist>
 ```
@@ -140,6 +158,8 @@ Add all wanted permissions to your app `android/app/src/main/res/AndroidManifest
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="com.android.voicemail.permission.ADD_VOICEMAIL" />
+  <uses-permission android:name="android.permission.NFC" />
+  <uses-feature android:name="android.hardware.nfc" android:required="false" /> // android:required="true" if a device must have nfc
 
   <!-- … -->
 
@@ -330,6 +350,7 @@ PERMISSIONS.ANDROID.BODY_SENSORS;
 PERMISSIONS.ANDROID.CALL_PHONE;
 PERMISSIONS.ANDROID.CAMERA;
 PERMISSIONS.ANDROID.GET_ACCOUNTS;
+PERMISSIONS.ANDROID.NFC;
 PERMISSIONS.ANDROID.PROCESS_OUTGOING_CALLS;
 PERMISSIONS.ANDROID.READ_CALENDAR;
 PERMISSIONS.ANDROID.READ_CALL_LOG;
@@ -361,6 +382,7 @@ PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
 PERMISSIONS.IOS.MEDIA_LIBRARY;
 PERMISSIONS.IOS.MICROPHONE;
 PERMISSIONS.IOS.MOTION;
+PERMISSIONS.IOS.NFC;
 PERMISSIONS.IOS.PHOTO_LIBRARY;
 PERMISSIONS.IOS.REMINDERS;
 PERMISSIONS.IOS.SIRI;

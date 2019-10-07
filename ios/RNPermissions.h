@@ -33,20 +33,23 @@ typedef NS_ENUM(NSInteger, RNPermission) {
 #if __has_include("RNPermissionHandlerMotion.h")
   RNPermissionMotion = 10,
 #endif
+#if __has_include("RNPermissionHandlerNFC.h")
+  RNPermissionNFC = 11,
+#endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  RNPermissionPhotoLibrary = 11,
+  RNPermissionPhotoLibrary = 12,
 #endif
 #if __has_include("RNPermissionHandlerReminders.h")
-  RNPermissionReminders = 12,
+  RNPermissionReminders = 13,
 #endif
 #if __has_include("RNPermissionHandlerSiri.h")
-  RNPermissionSiri = 13,
+  RNPermissionSiri = 14,
 #endif
 #if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  RNPermissionSpeechRecognition = 14,
+  RNPermissionSpeechRecognition = 15,
 #endif
 #if __has_include("RNPermissionHandlerStoreKit.h")
-  RNPermissionStoreKit = 15,
+  RNPermissionStoreKit = 16,
 #endif
 };
 

@@ -39,6 +39,8 @@ PODS:
     - RNPermissions
   - Permission-Motion (2.0.1):
     - RNPermissions
+  - Permission-NFC (2.0.1):
+    - RNPermissions
   - Permission-Notifications (2.0.1):
     - RNPermissions
   - Permission-PhotoLibrary (2.0.1):
@@ -269,6 +271,7 @@ DEPENDENCIES:
   - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary.podspec`)
   - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone.podspec`)
   - Permission-Motion (from `../node_modules/react-native-permissions/ios/Motion.podspec`)
+  - Permission-NFC (from `../node_modules/react-native-permissions/ios/NFC.podspec`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary.podspec`)
   - Permission-Reminders (from `../node_modules/react-native-permissions/ios/Reminders.podspec`)
@@ -301,7 +304,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
 
 EXTERNAL SOURCES:
@@ -335,6 +338,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/Microphone.podspec"
   Permission-Motion:
     :path: "../node_modules/react-native-permissions/ios/Motion.podspec"
+  Permission-NFC:
+    :path: "../node_modules/react-native-permissions/ios/NFC.podspec"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
   Permission-PhotoLibrary:
@@ -407,6 +412,7 @@ SPEC CHECKSUMS:
   Permission-MediaLibrary: dc4d430db5044d76d9078ab8526249715ab26a35
   Permission-Microphone: 164a5367e602fb8e282247d96230fcec46d10d3f
   Permission-Motion: 240d392de4d33a04b0c4049a9d0355b786e79120
+  Permission-NFC: bcb9d4ff0885bdb271f7e205cc4bdda17b4e5b4c
   Permission-Notifications: 4749374f22c802adcf72b5a7c84ade6968e7315f
   Permission-PhotoLibrary: c7b56d8021e1b3f964cf79de63b2204dd597b8c4
   Permission-Reminders: f8028bfa1cc8818201a43988454bf175aa376c6b
@@ -435,6 +441,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 70f55b4fbde93d4bb26d3fe0576d9f0813e81c72
+PODFILE CHECKSUM: 345d8e5fc0baf42331647de7c47039f3d3bc701b
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.7.5

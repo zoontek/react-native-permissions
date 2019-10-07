@@ -136,7 +136,7 @@ export default class App extends React.Component<{}, State> {
                 onPress={() => {
                   RNPermissions.request(value)
                     .then(() => this.check())
-                    .catch(err => console.error(err));
+                    .catch(console.error);
                 }}
               />
             );
