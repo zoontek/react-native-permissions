@@ -692,9 +692,9 @@
     "@hapi/topo" "3.x.x"
 
 "@hapi/topo@3.x.x":
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-3.1.4.tgz#42e2fe36f593d90ad258a08b582be128c141c45d"
-  integrity sha512-aVWQTOI9wBD6zawmOr6f+tdEIxQC8JXfQVLTjgGe8YEStAWGn/GNNVTobKJhbWKveQj2RyYF3oYbO9SC8/eOCA==
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@hapi/topo/-/topo-3.1.5.tgz#3baea17e456530edad69a75c3fc7cde97dd6d331"
+  integrity sha512-bi9m1jrui9LlvtVdLaHv0DqeOoe+I8dep+nEcTgW6XxJHL3xArQcilYz3tIp0cRC4gWlsVtABK7vNKg4jzEmAA==
   dependencies:
     "@hapi/hoek" "8.x.x"
 
@@ -3782,7 +3782,7 @@ react-native-paper@2.16.0:
     react-native-safe-area-view "^0.12.0"
 
 react-native-permissions@../:
-  version "2.0.1"
+  version "2.0.2"
 
 react-native-safe-area-view@^0.12.0:
   version "0.12.0"
