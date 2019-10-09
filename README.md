@@ -245,7 +245,7 @@ As permissions are not handled in the same way on iOS and Android, this library 
   ┃ request(PERMISSIONS.IOS.CAMERA) ┃
   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                    │
-        Does the user accepted
+         Does the user accept
             the request ?
                    │           ╔════╗
                    ├───────────║ NO ║──────────────┐
@@ -295,9 +295,9 @@ As permissions are not handled in the same way on iOS and Android, this library 
 ┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
                    │                               │
-        Does the user accepted                     │
+         Does the user accept                      │
             the request ?                          │
-                   │           ╔════╗    Does the user checked
+                   │           ╔════╗     Does the user check
                    ├───────────║ NO ║─────"Never ask again" ?
                    │           ╚════╝              │
                 ╔═════╗                         ╔═════╗
