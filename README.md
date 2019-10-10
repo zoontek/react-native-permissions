@@ -54,6 +54,8 @@ target 'YourAwesomeProject' do
 end
 ```
 
+_⚠️  If you have the error `Invalid RNPermission X. Should be one of: ()`, try to cleanup Xcode stale data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods && rm -fr ./node_modules`_
+
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
 ```xml
