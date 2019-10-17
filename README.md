@@ -54,7 +54,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-_⚠️  If you encounter the error `Invalid RNPermission X. Should be one of: ()`, try to cleanup Xcode junk data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`_
+_⚠️  If you encounter the error `Invalid RNPermission X. Should be one of: ()`, first check that you link at least one permission handler. If you did, try to cleanup Xcode junk data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`_
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
@@ -578,5 +578,5 @@ async function requestAll() {
   return {cameraStatus, contactsStatus};
 }
 
-console.log(requestAll());
+requestAll().then(statuses => console.log(statuses));
 ```
