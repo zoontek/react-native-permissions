@@ -105,7 +105,7 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 ### Android
 
-Add all wanted permissions to your app `android/app/src/main/res/AndroidManifest.xml` file:
+Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
