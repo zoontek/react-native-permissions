@@ -28,6 +28,11 @@ $ yarn add react-native-permissions
 By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
 
 ```ruby
+# 🚨 If you use use_framework! 🚨
+# - Ensure that you have installed at least Cocoapods 1.5.0
+# - Replace use_framework! with use_modular_headers!
+# (see http://blog.cocoapods.org/CocoaPods-1.5.0 for more details)
+
 target 'YourAwesomeProject' do
 
   # …
@@ -54,7 +59,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-_⚠️  If you encounter the error `Invalid RNPermission X. Should be one of: ()`, first check that you link at least one permission handler. If you did, try to cleanup Xcode junk data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`_
+_⚠️ If you encounter the error `Invalid RNPermission X. Should be one of: ()`, first check that you link at least one permission handler. If you did, try to cleanup Xcode junk data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`_
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
