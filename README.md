@@ -28,6 +28,31 @@ $ yarn add react-native-permissions
 By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
 
 ```ruby
+# if you have prebuild dynamic cocoapods dependencies and could not migrate
+# to use_modular_headers you should use workaround for linking app with dynamic frameworks
+# and with static libraries by placing this code at the top of Podfile
+# 
+# Add this code at the top of Podfile right after platform definition
+use_frameworks!
+
+dynamic_frameworks = ['RxCocoa', 'RxSwift', 'WhatEverSDKName']
+
+# make all the other dependencies into static libraries by overriding the static_library
+pre_install do |installer|
+    installer.pod_targets.each do |pod|
+        if !dynamic_frameworks.include?(pod.name)
+            puts "Overriding the static_library for #{pod.name}"
+            def pod.build_type;
+              Pod::Target::BuildType.static_library
+              # for static framework -
+              # Pod::Target::BuildType.static_framework
+            end
+        end
+    end
+end
+```
+
+```ruby
 # 🚨 If you use use_framework! 🚨
 # - Ensure that you have installed at least Cocoapods 1.5.0
 # - Replace use_framework! with use_modular_headers!
