@@ -4,10 +4,10 @@ platform :ios, '9.0'
 # you can make all the dynamic frameworks turning into static libraries.
 
 # use_frameworks!
+
 # $dynamic_frameworks = []
 
 # pre_install do |installer|
-#   #
 #   installer.pod_targets.each do |pod|
 #     if !$dynamic_frameworks.include?(pod.name)
 #       puts "Overriding the static_framework? method for #{pod.name}"
