@@ -1,21 +1,21 @@
 platform :ios, '9.0'
 
-# if you have prebuild dynamic cocoapods dependencies and could not migrate
-# to use_modular_headers you should use workaround for linking app with dynamic frameworks
-# and with static libraries by uncommenting next code
+# If you use `use_frameworks!` but can't replace it with `use_modular_headers!`,
+# you can make all the dynamic frameworks turning into static libraries.
 
 # use_frameworks!
-# dynamic_frameworks = []
+# $dynamic_frameworks = []
+
 # pre_install do |installer|
-#   # make all the other libraries into static frameworks by overriding the static_library
-#     installer.pod_targets.each do |pod|
-#         if !dynamic_frameworks.include?(pod.name)
-#             puts "Overriding the static_framework? method for #{pod.name}"
-#             def pod.build_type;
-#               Pod::Target::BuildType.static_library
-#             end
-#         end
+#   #
+#   installer.pod_targets.each do |pod|
+#     if !$dynamic_frameworks.include?(pod.name)
+#       puts "Overriding the static_framework? method for #{pod.name}"
+#       def pod.build_type;
+#         Pod::Target::BuildType.static_library
+#       end
 #     end
+#   end
 # end
 
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'

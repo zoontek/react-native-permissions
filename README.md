@@ -28,36 +28,6 @@ $ yarn add react-native-permissions
 By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
 
 ```ruby
-# if you have prebuild dynamic cocoapods dependencies and could not migrate
-# to use_modular_headers you should use workaround for linking app with dynamic frameworks
-# and with static libraries by placing this code at the top of Podfile
-# 
-# Add this code at the top of Podfile right after platform definition
-use_frameworks!
-
-dynamic_frameworks = ['RxCocoa', 'RxSwift', 'WhatEverSDKName']
-
-# make all the other dependencies into static libraries by overriding the static_library
-pre_install do |installer|
-    installer.pod_targets.each do |pod|
-        if !dynamic_frameworks.include?(pod.name)
-            puts "Overriding the static_library for #{pod.name}"
-            def pod.build_type;
-              Pod::Target::BuildType.static_library
-              # for static framework -
-              # Pod::Target::BuildType.static_framework
-            end
-        end
-    end
-end
-```
-
-```ruby
-# 🚨 If you use use_framework! 🚨
-# - Ensure that you have installed at least Cocoapods 1.5.0
-# - Replace use_framework! with use_modular_headers!
-# (see http://blog.cocoapods.org/CocoaPods-1.5.0 for more details)
-
 target 'YourAwesomeProject' do
 
   # …
@@ -84,7 +54,32 @@ target 'YourAwesomeProject' do
 end
 ```
 
-_⚠️ If you encounter the error `Invalid RNPermission X. Should be one of: ()`, first check that you link at least one permission handler. If you did, try to cleanup Xcode junk data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`_
+#### ⚠️ If you encounter the error `Invalid RNPermission X. Should be one of: ()`
+
+1. Check that you linked **at least one** permission handler.
+2. Clean up Xcode stale data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`
+3. If you use `use_frameworks!`, replace it by `use_modular_headers!` - see [this blog post](http://blog.cocoapods.org/CocoaPods-1.5.0) for more details
+4. If you use `use_frameworks!` but **can't** replace it with `use_modular_headers!`, check the following workaround:
+
+```ruby
+# Add this code at the top of Podfile right after platform definition.
+# It will make all the dynamic frameworks turning into static libraries.
+
+use_frameworks!
+
+$dynamic_frameworks = ['RxCocoa', 'RxSwift', 'WhatEverSDKName']
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if !$dynamic_frameworks.include?(pod.name)
+      puts "Overriding the static_framework? method for #{pod.name}"
+      def pod.build_type;
+        Pod::Target::BuildType.static_library
+      end
+    end
+  end
+end
+```
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
