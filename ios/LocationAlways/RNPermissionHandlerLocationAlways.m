@@ -17,7 +17,6 @@
   return @[
     @"NSLocationAlwaysAndWhenInUseUsageDescription",
     @"NSLocationAlwaysUsageDescription",
-    @"NSLocationWhenInUseUsageDescription",
   ];
 }
 
