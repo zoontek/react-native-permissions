@@ -83,6 +83,4 @@ typedef enum {
 
 + (void)flagAsRequested:(NSString * _Nonnull)handlerId;
 
-+ (bool)isBackgroundModeEnabled:(NSString * _Nonnull)mode;
-
 @end

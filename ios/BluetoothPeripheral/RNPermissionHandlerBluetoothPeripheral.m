@@ -28,9 +28,6 @@
 #if TARGET_OS_SIMULATOR
   return resolve(RNPermissionStatusNotAvailable);
 #else
-  if (![RNPermissions isBackgroundModeEnabled:@"bluetooth-peripheral"]) {
-    return resolve(RNPermissionStatusNotAvailable);
-  }
 
   if (@available(iOS 13.0, *)) {
     switch ([[CBManager new] authorization]) {
@@ -60,10 +57,6 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if (![RNPermissions isBackgroundModeEnabled:@"bluetooth-peripheral"]) {
-    return resolve(RNPermissionStatusNotAvailable);
-  }
-
   _resolve = resolve;
   _reject = reject;
 

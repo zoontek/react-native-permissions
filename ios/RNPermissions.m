@@ -245,19 +245,6 @@ RCT_EXPORT_MODULE();
   }
 }
 
-+ (bool)isBackgroundModeEnabled:(NSString * _Nonnull)mode {
-  NSArray *modes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIBackgroundModes"];
-  bool isEnabled = [modes isKindOfClass:[NSArray class]] && [modes containsObject:mode];
-
-#if RCT_DEV
-  if (!isEnabled) {
-    RCTLogWarn(@"Missing \"%@\" in \"UIBackgroundModes\" forces check / request result to \"unavailable\" status", mode);
-  }
-#endif
-
-  return isEnabled;
-}
-
 RCT_REMAP_METHOD(openSettings,
                  openSettingsWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
