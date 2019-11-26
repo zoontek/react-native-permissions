@@ -12,18 +12,18 @@ export type NotificationOption =
   | 'alert'
   | 'badge'
   | 'sound'
-  | 'criticalAlert'
   | 'carPlay'
+  | 'criticalAlert'
   | 'provisional';
 
 export interface NotificationSettings {
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
-  lockScreen?: boolean;
   carPlay?: boolean;
-  notificationCenter?: boolean;
   criticalAlert?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
 }
 
 export interface NotificationsResponse {

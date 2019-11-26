@@ -5,6 +5,10 @@ module.exports = {
   extends: ['@react-native-community'],
   overrides: [
     {
+      files: ['./mock.js'],
+      env: {jest: true},
+    },
+    {
       files: ['*.ts', '*.tsx'],
       // Apply the recommended Typescript defaults and the prettier overrides to all Typescript files
       rules: Object.assign(

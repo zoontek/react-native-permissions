@@ -25,7 +25,8 @@
     "/ios",
     "/src",
     "/lib",
-    "/*.podspec"
+    "/*.podspec",
+    "./mock.js"
   ],
   "scripts": {
     "start": "react-native start",
