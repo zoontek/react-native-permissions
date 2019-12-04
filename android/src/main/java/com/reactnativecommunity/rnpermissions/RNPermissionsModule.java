@@ -95,7 +95,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
     if (enabled) {
       map.putString("status", "granted");
     } else {
-      map.putString("status", "denied");
+      map.putString("status", "blocked");
     }
 
     map.putMap("settings", settings);
