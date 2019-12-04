@@ -65,20 +65,20 @@
     "react-native": ">=0.60.0"
   },
   "devDependencies": {
-    "@babel/core": "7.6.2",
+    "@babel/core": "7.7.4",
     "@react-native-community/bob": "0.7.0",
     "@react-native-community/eslint-config": "0.0.5",
-    "@types/react-native": "0.60.18",
-    "@typescript-eslint/eslint-plugin": "2.3.2",
-    "@typescript-eslint/parser": "2.3.2",
-    "eslint": "6.5.1",
-    "eslint-config-prettier": "6.3.0",
+    "@types/react-native": "0.60.23",
+    "@typescript-eslint/eslint-plugin": "2.10.0",
+    "@typescript-eslint/parser": "2.10.0",
+    "eslint": "6.7.2",
+    "eslint-config-prettier": "6.7.0",
     "eslint-plugin-prettier": "3.1.1",
-    "husky": "3.0.8",
-    "lint-staged": "9.4.1",
-    "prettier": "1.18.2",
+    "husky": "3.1.0",
+    "lint-staged": "9.5.0",
+    "prettier": "1.19.1",
     "react": "16.9.0",
-    "react-native": "0.61.2",
-    "typescript": "3.6.3"
+    "react-native": "0.61.5",
+    "typescript": "3.7.3"
   }
 }
