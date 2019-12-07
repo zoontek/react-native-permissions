@@ -107,7 +107,13 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 1. Check that you linked **at least one** permission handler.
 2. Clean up Xcode stale data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`
-3. If you use `use_frameworks!`, replace it by `use_modular_headers!` - see [this blog post](http://blog.cocoapods.org/CocoaPods-1.5.0) for more details
+3. If you use `use_frameworks!`, replace it by `use_modular_headers!` - see [this blog post](http://blog.cocoapods.org/CocoaPods-1.5.0) for more details. [Create empty Swift file in XCode](https://stackoverflow.com/questions/52536380/why-linker-link-static-libraries-with-errors-ios/56176956#56176956). Then add ":modular_headers => false" to Pods with build errors:
+
+```ruby
+pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
+pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec', :modular_headers => false
+```
+
 4. If you use `use_frameworks!` but **can't** replace it with `use_modular_headers!`, check the following workaround:
 
 ```ruby
