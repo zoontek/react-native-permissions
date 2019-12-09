@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS and Android",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -15,7 +15,7 @@
     "permission",
     "authorization"
   ],
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/index.d.ts",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "files": [
