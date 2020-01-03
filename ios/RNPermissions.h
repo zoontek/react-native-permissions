@@ -79,8 +79,6 @@ typedef enum {
 
 @interface RNPermissions : NSObject <RCTBridgeModule>
 
-@property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>>  *_Nonnull handlers;
-
 + (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId;
 
 + (void)flagAsRequested:(NSString * _Nonnull)handlerId;

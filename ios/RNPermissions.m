@@ -104,6 +104,10 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 
 @end
 
+@interface RNPermissions ()
+@property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>>  *_Nonnull handlers;
+@end
+
 @implementation RNPermissions
 
 RCT_EXPORT_MODULE();
@@ -226,13 +230,13 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSString *)insertHandler:(id<RNPermissionHandler>)handler {
-    if( self.handlers == nil){
-        self.handlers = [NSMutableDictionary new];
+    if(_handlers == nil){
+        _handlers = [NSMutableDictionary new];
     }
     
     NSString *randomId = [[NSUUID UUID] UUIDString];
     
-    [self.handlers setObject:handler forKey:randomId];
+    [_handlers setObject:handler forKey:randomId];
     
     return randomId;
 }
