@@ -104,8 +104,10 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 
 @end
 
-@interface RNPermissions ()
-@property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>>  *_Nonnull handlers;
+@interface RNPermissions()
+
+@property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>> *_Nonnull handlers;
+
 @end
 
 @implementation RNPermissions
