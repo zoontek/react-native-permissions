@@ -13,16 +13,16 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-paper": "2.16.0",
+    "react-native-paper": "3.4.0",
     "react-native-permissions": "../",
     "react-native-vector-icons": "6.6.0"
   },
   "devDependencies": {
-    "@babel/core": "7.7.4",
-    "@babel/runtime": "7.7.4",
-    "@types/react": "16.9.14",
-    "@types/react-native": "0.60.23",
+    "@babel/core": "7.7.7",
+    "@babel/runtime": "7.7.7",
+    "@types/react": "16.9.17",
+    "@types/react-native": "0.60.27",
     "metro-react-native-babel-preset": "0.57.0",
-    "typescript": "3.7.3"
+    "typescript": "3.7.4"
   }
 }

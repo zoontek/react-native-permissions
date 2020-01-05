@@ -1,23 +1,14 @@
 import React from 'react';
+import {FlatList, Platform, StatusBar, Text, View} from 'react-native';
 import {Appbar, List, TouchableRipple} from 'react-native-paper';
-import theme from './theme';
-
-import {
-  FlatList,
-  Platform,
-  StatusBar,
-  Text,
-  View,
-  GestureResponderEvent,
-} from 'react-native';
-
 import RNPermissions, {
-  PERMISSIONS,
-  RESULTS,
-  PermissionStatus,
-  Permission,
   NotificationsResponse,
+  Permission,
+  PERMISSIONS,
+  PermissionStatus,
+  RESULTS,
 } from 'react-native-permissions';
+import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
@@ -40,10 +31,10 @@ const colors: {[key: string]: string} = {
 };
 
 const icons: {[key: string]: string} = {
-  unavailable: 'lens',
-  denied: 'error',
+  unavailable: 'circle',
+  denied: 'alert-circle',
   granted: 'check-circle',
-  blocked: 'cancel',
+  blocked: 'close-circle',
 };
 
 const PermissionRow = ({
@@ -53,9 +44,12 @@ const PermissionRow = ({
 }: {
   name: string;
   status: string;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: () => void;
 }) => (
-  <TouchableRipple onPress={onPress}>
+  <TouchableRipple
+    onPress={() => {
+      onPress();
+    }}>
     <List.Item
       right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
       title={name}
@@ -118,8 +112,10 @@ export default class App extends React.Component<{}, State> {
           <Appbar.Action onPress={this.refresh} icon="refresh" />
 
           <Appbar.Action
-            onPress={RNPermissions.openSettings}
-            icon="settings-applications"
+            icon="settings"
+            onPress={() => {
+              RNPermissions.openSettings();
+            }}
           />
         </Appbar.Header>
 
