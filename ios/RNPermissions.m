@@ -104,6 +104,10 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 
 @end
 
+@interface RNPermissions ()
+@property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>>  *_Nonnull handlers;
+@end
+
 @implementation RNPermissions
 
 RCT_EXPORT_MODULE();
@@ -225,6 +229,18 @@ RCT_EXPORT_MODULE();
   }
 }
 
+- (NSString *)insertHandler:(id<RNPermissionHandler>)handler {
+    if(_handlers == nil){
+        _handlers = [NSMutableDictionary new];
+    }
+    
+    NSString *randomId = [[NSUUID UUID] UUIDString];
+    
+    [_handlers setObject:handler forKey:randomId];
+    
+    return randomId;
+}
+
 + (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId {
   NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
   return requested == nil ? false : [requested containsObject:handlerId];
@@ -271,13 +287,19 @@ RCT_REMAP_METHOD(check,
                  rejecter:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
 
+  NSString *randomId = [self insertHandler: handler];
+
   [handler checkWithResolver:^(RNPermissionStatus status) {
     NSString *strStatus = [self stringForStatus:status];
     NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
     resolve(strStatus);
+
+    [self.handlers removeObjectForKey:randomId];
   } rejecter:^(NSError *error) {
     NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+
+    [self.handlers removeObjectForKey:randomId];
   }];
 }
 
@@ -287,13 +309,19 @@ RCT_REMAP_METHOD(request,
                  rejecter:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
 
+  NSString *randomId = [self insertHandler: handler];
+
   [handler requestWithResolver:^(RNPermissionStatus status) {
     NSString *strStatus = [self stringForStatus:status];
     NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
     resolve(strStatus);
+
+    [self.handlers removeObjectForKey:randomId];
   } rejecter:^(NSError *error) {
     NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+
+    [self.handlers removeObjectForKey:randomId];
   }];
 }
 
