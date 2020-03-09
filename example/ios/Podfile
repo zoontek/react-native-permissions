@@ -10,9 +10,11 @@ platform :ios, '9.0'
 # pre_install do |installer|
 #   installer.pod_targets.each do |pod|
 #     if !$dynamic_frameworks.include?(pod.name)
-#       puts "Overriding the static_framework? method for #{pod.name}"
+#       puts "Link #{pod.name} as static_library"
 #       def pod.build_type;
-#         Pod::Target::BuildType.static_library
+#         # Uncomment one line depending on your CocoaPods version
+#         # Pod::BuildType.static_library # >= 1.9
+#         # Pod::Target::BuildType.static_library # < 1.9
 #       end
 #     end
 #   end
