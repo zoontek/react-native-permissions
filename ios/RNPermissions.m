@@ -1,105 +1,43 @@
 #import "RNPermissions.h"
 #import <React/RCTLog.h>
 
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
 #import "RNPermissionHandlerBluetoothPeripheral.h"
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
 #import "RNPermissionHandlerCalendars.h"
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
 #import "RNPermissionHandlerCamera.h"
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
 #import "RNPermissionHandlerContacts.h"
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
 #import "RNPermissionHandlerFaceID.h"
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
 #import "RNPermissionHandlerLocationAlways.h"
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
 #import "RNPermissionHandlerLocationWhenInUse.h"
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
 #import "RNPermissionHandlerMediaLibrary.h"
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
 #import "RNPermissionHandlerMicrophone.h"
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
 #import "RNPermissionHandlerMotion.h"
-#endif
-#if __has_include("RNPermissionHandlerNotifications.h")
 #import "RNPermissionHandlerNotifications.h"
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
 #import "RNPermissionHandlerPhotoLibrary.h"
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
 #import "RNPermissionHandlerReminders.h"
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
 #import "RNPermissionHandlerSiri.h"
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
 #import "RNPermissionHandlerSpeechRecognition.h"
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
 #import "RNPermissionHandlerStoreKit.h"
-#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
 @implementation RCTConvert(RNPermission)
 
 RCT_ENUM_CONVERTER(RNPermission, (@{
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
   [RNPermissionHandlerBluetoothPeripheral handlerUniqueId]: @(RNPermissionBluetoothPeripheral),
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
   [RNPermissionHandlerCalendars handlerUniqueId]: @(RNPermissionCalendars),
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
   [RNPermissionHandlerCamera handlerUniqueId]: @(RNPermissionCamera),
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
   [RNPermissionHandlerContacts handlerUniqueId]: @(RNPermissionContacts),
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
   [RNPermissionHandlerFaceID handlerUniqueId]: @(RNPermissionFaceID),
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
   [RNPermissionHandlerLocationAlways handlerUniqueId]: @(RNPermissionLocationAlways),
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
   [RNPermissionHandlerLocationWhenInUse handlerUniqueId]: @(RNPermissionLocationWhenInUse),
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
   [RNPermissionHandlerMediaLibrary handlerUniqueId]: @(RNPermissionMediaLibrary),
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
   [RNPermissionHandlerMicrophone handlerUniqueId]: @(RNPermissionMicrophone),
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
   [RNPermissionHandlerMotion handlerUniqueId]: @(RNPermissionMotion),
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
   [RNPermissionHandlerPhotoLibrary handlerUniqueId]: @(RNPermissionPhotoLibrary),
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
   [RNPermissionHandlerReminders handlerUniqueId]: @(RNPermissionReminders),
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
   [RNPermissionHandlerSiri handlerUniqueId]: @(RNPermissionSiri),
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
   [RNPermissionHandlerSpeechRecognition handlerUniqueId]: @(RNPermissionSpeechRecognition),
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
   [RNPermissionHandlerStoreKit handlerUniqueId]: @(RNPermissionStoreKit),
-#endif
 }), RNPermissionUnknown, integerValue);
 
 @end
@@ -126,81 +64,51 @@ RCT_EXPORT_MODULE();
   id<RNPermissionHandler> handler = nil;
 
   switch (permission) {
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
     case RNPermissionBluetoothPeripheral:
       handler = [RNPermissionHandlerBluetoothPeripheral new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
     case RNPermissionCalendars:
       handler = [RNPermissionHandlerCalendars new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
     case RNPermissionCamera:
       handler = [RNPermissionHandlerCamera new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
     case RNPermissionContacts:
       handler = [RNPermissionHandlerContacts new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
     case RNPermissionFaceID:
       handler = [RNPermissionHandlerFaceID new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
     case RNPermissionLocationAlways:
       handler = [RNPermissionHandlerLocationAlways new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
     case RNPermissionLocationWhenInUse:
       handler = [RNPermissionHandlerLocationWhenInUse new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
     case RNPermissionMediaLibrary:
       handler = [RNPermissionHandlerMediaLibrary new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
     case RNPermissionMicrophone:
       handler = [RNPermissionHandlerMicrophone new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
     case RNPermissionMotion:
       handler = [RNPermissionHandlerMotion new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
     case RNPermissionPhotoLibrary:
       handler = [RNPermissionHandlerPhotoLibrary new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
     case RNPermissionReminders:
       handler = [RNPermissionHandlerReminders new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
     case RNPermissionSiri:
       handler = [RNPermissionHandlerSiri new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
     case RNPermissionSpeechRecognition:
       handler = [RNPermissionHandlerSpeechRecognition new];
       break;
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
     case RNPermissionStoreKit:
       handler = [RNPermissionHandlerStoreKit new];
       break;
-#endif
     case RNPermissionUnknown:
       break; // RCTConvert prevents this case
   }
@@ -333,7 +241,6 @@ RCT_REMAP_METHOD(request,
 RCT_REMAP_METHOD(checkNotifications,
                  checkNotificationsWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
@@ -349,16 +256,12 @@ RCT_REMAP_METHOD(checkNotifications,
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   }];
-#else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
-#endif
 }
 
 RCT_REMAP_METHOD(requestNotifications,
                  requestNotificationsWithOptions:(NSArray<NSString *> * _Nonnull)options
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
@@ -374,9 +277,6 @@ RCT_REMAP_METHOD(requestNotifications,
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   } options:options];
-#else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
-#endif
 }
 
 @end
