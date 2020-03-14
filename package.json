@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS and Android",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -31,7 +31,7 @@
     "start": "react-native start",
     "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
     "prepare": "bob build",
-    "validate:eslint": "eslint \"src/**/*.{js,ts,tsx}\" \"example/**/*.{js,ts,tsx}\"",
+    "validate:eslint": "eslint \"./**/*.{js,ts,tsx}\"",
     "validate:tsc": "tsc --project ./ --noEmit"
   },
   "@react-native-community/bob": {
@@ -43,42 +43,40 @@
       "typescript"
     ]
   },
+  "lint-staged": {
+    "**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint"
+    ],
+    "**/*.{json,md}": [
+      "prettier --write"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "**/*.{json,md}": [
-      "yarn format",
-      "git add"
-    ],
-    "**/*.{js,ts,tsx}": [
-      "yarn format",
-      "yarn validate:eslint",
-      "git add"
-    ]
   },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-native": ">=0.60.0"
   },
   "devDependencies": {
-    "@babel/core": "7.7.7",
-    "@react-native-community/bob": "0.7.0",
-    "@react-native-community/eslint-config": "0.0.6",
+    "@babel/core": "7.8.7",
+    "@react-native-community/bob": "0.10.0",
+    "@react-native-community/eslint-config": "0.0.7",
     "@react-native-community/eslint-plugin": "1.0.0",
-    "@types/react-native": "0.60.27",
-    "@typescript-eslint/eslint-plugin": "2.14.0",
-    "@typescript-eslint/parser": "2.14.0",
+    "@types/react-native": "0.61.22",
+    "@typescript-eslint/eslint-plugin": "2.23.0",
+    "@typescript-eslint/parser": "2.23.0",
     "eslint": "6.8.0",
-    "eslint-config-prettier": "6.9.0",
+    "eslint-config-prettier": "6.10.0",
     "eslint-plugin-prettier": "3.1.2",
-    "husky": "3.1.0",
-    "lint-staged": "9.5.0",
+    "husky": "4.2.3",
+    "lint-staged": "10.0.8",
     "prettier": "1.19.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "typescript": "3.7.4"
+    "typescript": "3.8.3"
   }
 }
