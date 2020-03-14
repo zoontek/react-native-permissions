@@ -14,8 +14,6 @@ import {
 
 import {ANDROID, IOS, PERMISSIONS, RESULTS} from './constants';
 
-const NativePermissionsAndroid = NativeModules.PermissionsAndroid;
-
 const RNPermissions: {
   // Android + iOS
   checkNotifications: () => Promise<NotificationsResponse>;
@@ -93,15 +91,9 @@ export async function check(permission: Permission): Promise<PermissionStatus> {
 
   const nonRequestables = await RNPermissions.getNonRequestables();
 
-  if (!nonRequestables.includes(permission)) {
-    return RESULTS.DENIED;
-  }
-
-  return (await NativePermissionsAndroid.shouldShowRequestPermissionRationale(
-    permission,
-  ))
-    ? RESULTS.DENIED
-    : RESULTS.BLOCKED;
+  return nonRequestables.includes(permission)
+    ? RESULTS.BLOCKED
+    : RESULTS.DENIED;
 }
 
 export async function request(
