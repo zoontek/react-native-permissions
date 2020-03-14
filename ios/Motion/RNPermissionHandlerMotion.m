@@ -53,9 +53,12 @@
 
   _activityManager = [CMMotionActivityManager new];
   _operationQueue = [NSOperationQueue new];
+  _operationQueue.maxConcurrentOperationCount = 1;
 
-  [_activityManager queryActivityStartingFromDate:[NSDate distantPast]
-                                           toDate:[NSDate date]
+  NSDate *now = [NSDate new];
+
+  [_activityManager queryActivityStartingFromDate:now
+                                           toDate:now
                                           toQueue:_operationQueue
                                       withHandler:^(NSArray<CMMotionActivity *> * _Nullable activities, NSError * _Nullable error) {
     if (error != nil && error.code != CMErrorNotAuthorized && error.code != CMErrorMotionActivityNotAuthorized) {
