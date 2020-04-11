@@ -122,6 +122,71 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
+- (NSDictionary *)constantsToExport {
+  NSMutableArray<NSString *> *available = [NSMutableArray new];
+
+#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
+  [available addObject:[RNPermissionHandlerBluetoothPeripheral handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerCalendars.h")
+  [available addObject:[RNPermissionHandlerCalendars handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerCamera.h")
+  [available addObject:[RNPermissionHandlerCamera handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerContacts.h")
+  [available addObject:[RNPermissionHandlerContacts handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerFaceID.h")
+  [available addObject:[RNPermissionHandlerFaceID handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerLocationAlways.h")
+  [available addObject:[RNPermissionHandlerLocationAlways handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
+  [available addObject:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerMediaLibrary.h")
+  [available addObject:[RNPermissionHandlerMediaLibrary handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerMicrophone.h")
+  [available addObject:[RNPermissionHandlerMicrophone handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerMotion.h")
+  [available addObject:[RNPermissionHandlerMotion handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerPhotoLibrary.h")
+  [available addObject:[RNPermissionHandlerPhotoLibrary handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerReminders.h")
+  [available addObject:[RNPermissionHandlerReminders handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerSiri.h")
+  [available addObject:[RNPermissionHandlerSiri handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerSpeechRecognition.h")
+  [available addObject:[RNPermissionHandlerSpeechRecognition handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerStoreKit.h")
+  [available addObject:[RNPermissionHandlerStoreKit handlerUniqueId]];
+#endif
+
+#if RCT_DEV
+  if ([available count] == 0) {
+    NSMutableString *message = [NSMutableString new];
+
+    [message appendString:@"⚠  No permission handler detected.\n\n"];
+    [message appendString:@"• Check that you link at least one permission handler in your Podfile.\n"];
+    [message appendString:@"• Uninstall this app, delete your Xcode DerivedData folder and rebuild it.\n"];
+    [message appendString:@"• If you use `use_frameworks!`, follow the workaround guide in the project README."];
+
+    RCTLogError(@"%@", message);
+  }
+#endif
+
+  return @{ @"available": available };
+}
+
 - (id<RNPermissionHandler> _Nullable)handlerForPermission:(RNPermission)permission {
   id<RNPermissionHandler> handler = nil;
 
@@ -296,14 +361,9 @@ RCT_REMAP_METHOD(check,
   NSString *lockId = [self lockHandler:handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status) {
-    NSString *strStatus = [self stringForStatus:status];
-    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
-
-    resolve(strStatus);
+    resolve([self stringForStatus:status]);
     [self unlockHandler:lockId];
   } rejecter:^(NSError *error) {
-    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
-
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   }];
@@ -317,14 +377,9 @@ RCT_REMAP_METHOD(request,
   NSString *lockId = [self lockHandler:handler];
 
   [handler requestWithResolver:^(RNPermissionStatus status) {
-    NSString *strStatus = [self stringForStatus:status];
-    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
-
-    resolve(strStatus);
+    resolve([self stringForStatus:status]);
     [self unlockHandler:lockId];
   } rejecter:^(NSError *error) {
-    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
-
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   }];
@@ -338,14 +393,9 @@ RCT_REMAP_METHOD(checkNotifications,
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
-    NSString *strStatus = [self stringForStatus:status];
-    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
-
-    resolve(@{ @"status": strStatus, @"settings": settings });
+    resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
     [self unlockHandler:lockId];
   } rejecter:^(NSError * _Nonnull error) {
-    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
-
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   }];
@@ -363,14 +413,9 @@ RCT_REMAP_METHOD(requestNotifications,
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler requestWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
-    NSString *strStatus = [self stringForStatus:status];
-    NSLog(@"[react-native-permissions] %@ permission checked: %@", [[handler class] handlerUniqueId], strStatus);
-
-    resolve(@{ @"status": strStatus, @"settings": settings });
+    resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
     [self unlockHandler:lockId];
   } rejecter:^(NSError * _Nonnull error) {
-    NSLog(@"[react-native-permissions] %@ permission failed: %@", [[handler class] handlerUniqueId], error.localizedDescription);
-
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   } options:options];

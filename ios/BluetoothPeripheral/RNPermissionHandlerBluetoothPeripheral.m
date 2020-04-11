@@ -57,6 +57,9 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_SIMULATOR
+  return resolve(RNPermissionStatusNotAvailable);
+#else
   _resolve = resolve;
   _reject = reject;
 
@@ -65,6 +68,7 @@
   }];
 
   [_peripheralManager startAdvertising:@{}];
+#endif
 }
 
 - (void)peripheralManagerDidUpdateState:(nonnull CBPeripheralManager *)peripheral {

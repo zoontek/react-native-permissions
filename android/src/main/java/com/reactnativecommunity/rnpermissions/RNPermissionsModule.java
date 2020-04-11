@@ -19,7 +19,10 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 @ReactModule(name = RNPermissionsModule.MODULE_NAME)
 public class RNPermissionsModule extends ReactContextBaseJavaModule {
@@ -27,6 +30,38 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
   private static final String ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY";
   public static final String MODULE_NAME = "RNPermissions";
   private static final String SETTING_NAME = "@RNPermissions:NonRequestables";
+
+  private static final String[][] PERMISSIONS = new String[][] {
+    { "ACCEPT_HANDOVER", "android.permission.ACCEPT_HANDOVER" },
+    { "ACCESS_BACKGROUND_LOCATION", "android.permission.ACCESS_BACKGROUND_LOCATION" },
+    { "ACCESS_COARSE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION" },
+    { "ACCESS_FINE_LOCATION", "android.permission.ACCESS_FINE_LOCATION" },
+    { "ACTIVITY_RECOGNITION", "android.permission.ACTIVITY_RECOGNITION" },
+    { "ADD_VOICEMAIL", "com.android.voicemail.permission.ADD_VOICEMAIL" },
+    { "ANSWER_PHONE_CALLS", "android.permission.ANSWER_PHONE_CALLS" },
+    { "BODY_SENSORS", "android.permission.BODY_SENSORS" },
+    { "CALL_PHONE", "android.permission.CALL_PHONE" },
+    { "CAMERA", "android.permission.CAMERA" },
+    { "GET_ACCOUNTS", "android.permission.GET_ACCOUNTS" },
+    { "PROCESS_OUTGOING_CALLS", "android.permission.PROCESS_OUTGOING_CALLS" },
+    { "READ_CALENDAR", "android.permission.READ_CALENDAR" },
+    { "READ_CALL_LOG", "android.permission.READ_CALL_LOG" },
+    { "READ_CONTACTS", "android.permission.READ_CONTACTS" },
+    { "READ_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE" },
+    { "READ_PHONE_NUMBERS", "android.permission.READ_PHONE_NUMBERS" },
+    { "READ_PHONE_STATE", "android.permission.READ_PHONE_STATE" },
+    { "READ_SMS", "android.permission.READ_SMS" },
+    { "RECEIVE_MMS", "android.permission.RECEIVE_MMS" },
+    { "RECEIVE_SMS", "android.permission.RECEIVE_SMS" },
+    { "RECEIVE_WAP_PUSH", "android.permission.RECEIVE_WAP_PUSH" },
+    { "RECORD_AUDIO", "android.permission.RECORD_AUDIO" },
+    { "SEND_SMS", "android.permission.SEND_SMS" },
+    { "USE_SIP", "android.permission.USE_SIP" },
+    { "WRITE_CALENDAR", "android.permission.WRITE_CALENDAR" },
+    { "WRITE_CALL_LOG", "android.permission.WRITE_CALL_LOG" },
+    { "WRITE_CONTACTS", "android.permission.WRITE_CONTACTS" },
+    { "WRITE_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE" },
+  };
 
   private final SharedPreferences sharedPrefs;
 
@@ -40,16 +75,43 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
     return MODULE_NAME;
   }
 
-  @ReactMethod
-  public void isAvailable(final String permission, final Promise promise) {
-    String fieldName = permission.substring(permission.lastIndexOf('.') + 1);
-
+  private boolean fieldExists(final String fieldName) {
     try {
       Manifest.permission.class.getField(fieldName);
-      promise.resolve(true);
-    } catch (NoSuchFieldException e) {
-      promise.resolve(false);
+      return true;
+    } catch (NoSuchFieldException ignored) {
+      return false;
     }
+  }
+
+  @Override
+  public @Nullable Map<String, Object> getConstants() {
+    HashMap<String, Object> constants = new HashMap<>();
+    WritableArray available = Arguments.createArray();
+
+    for (String[] permission : PERMISSIONS) {
+      if (fieldExists(permission[0]))
+        available.pushString(permission[1]);
+    }
+
+    constants.put("available", available);
+    return constants;
+  }
+
+  @ReactMethod
+  public void isNonRequestable(final String permission, final Promise promise) {
+    promise.resolve(sharedPrefs.getBoolean(permission, false));
+  }
+
+  @ReactMethod
+  public void getNonRequestables(final Promise promise) {
+    WritableArray output = Arguments.createArray();
+    Map<String, ?> entries = sharedPrefs.getAll();
+
+    for (Map.Entry<String, ?> entry : entries.entrySet())
+      output.pushString(entry.getKey());
+
+    promise.resolve(output);
   }
 
   @ReactMethod
@@ -58,15 +120,30 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getNonRequestables(final Promise promise) {
-    WritableArray result = Arguments.createArray();
-    Map<String, ?> entries = sharedPrefs.getAll();
+  public void setNonRequestables(final ReadableArray permissions, final Promise promise) {
+    SharedPreferences.Editor editor = sharedPrefs.edit();
 
-    for (Map.Entry<String, ?> entry : entries.entrySet()) {
-      result.pushString(entry.getKey());
+    for (int i = 0; i < permissions.size(); i++)
+      editor.putBoolean(permissions.getString(i), true);
+
+    promise.resolve(editor.commit());
+  }
+
+  @ReactMethod
+  public void checkNotifications(final Promise promise) {
+    final boolean enabled = NotificationManagerCompat
+      .from(getReactApplicationContext()).areNotificationsEnabled();
+    final WritableMap output = Arguments.createMap();
+    final WritableMap settings = Arguments.createMap();
+
+    if (enabled) {
+      output.putString("status", "granted");
+    } else {
+      output.putString("status", "blocked");
     }
 
-    promise.resolve(result);
+    output.putMap("settings", settings);
+    promise.resolve(output);
   }
 
   @ReactMethod
@@ -74,41 +151,16 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
     try {
       final ReactApplicationContext reactContext = getReactApplicationContext();
       final Intent intent = new Intent();
+      final String packageName = reactContext.getPackageName();
 
       intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
+      intent.setData(Uri.fromParts("package", packageName, null));
 
       reactContext.startActivity(intent);
       promise.resolve(true);
     } catch (Exception e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
-  }
-
-  private WritableMap internalCheckNotifications() {
-    final ReactApplicationContext reactContext = getReactApplicationContext();
-    final boolean enabled = NotificationManagerCompat.from(reactContext).areNotificationsEnabled();
-    final WritableMap map = Arguments.createMap();
-    final WritableMap settings = Arguments.createMap();
-
-    if (enabled) {
-      map.putString("status", "granted");
-    } else {
-      map.putString("status", "blocked");
-    }
-
-    map.putMap("settings", settings);
-    return map;
-  }
-
-  @ReactMethod
-  public void checkNotifications(final Promise promise) {
-    promise.resolve(internalCheckNotifications());
-  }
-
-  @ReactMethod
-  public void requestNotifications(ReadableArray options, final Promise promise) {
-    promise.resolve(internalCheckNotifications());
   }
 }
