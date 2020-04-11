@@ -46,10 +46,7 @@ const PermissionRow = ({
   status: string;
   onPress: () => void;
 }) => (
-  <TouchableRipple
-    onPress={() => {
-      onPress();
-    }}>
+  <TouchableRipple onPress={onPress}>
     <List.Item
       right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
       title={name}
@@ -59,33 +56,36 @@ const PermissionRow = ({
 );
 
 interface State {
-  statuses: PermissionStatus[];
+  statuses: Partial<Record<Permission, PermissionStatus>>;
   notifications: NotificationsResponse;
 }
 
-function getSettingString(setting: boolean | undefined) {
-  return setting
-    ? RESULTS.GRANTED
-    : setting === false
-    ? RESULTS.DENIED
-    : RESULTS.UNAVAILABLE;
+function toSettingString(setting: boolean | undefined) {
+  switch (setting) {
+    case true:
+      return RESULTS.GRANTED;
+    case false:
+      return RESULTS.DENIED;
+    default:
+      return RESULTS.UNAVAILABLE;
+  }
 }
 
 export default class App extends React.Component<{}, State> {
   state: State = {
-    statuses: [],
+    statuses: {},
     notifications: {status: 'unavailable', settings: {}},
   };
 
   check = () =>
-    Promise.all(PERMISSIONS_VALUES.map((_) => RNPermissions.check(_)))
+    RNPermissions.checkMultiple(PERMISSIONS_VALUES)
       .then((statuses) => this.setState({statuses}))
       .then(() => RNPermissions.checkNotifications())
       .then((notifications) => this.setState({notifications}))
       .catch((error) => console.warn(error));
 
   refresh = () => {
-    this.setState({statuses: []}, this.check);
+    this.setState({statuses: {}}, this.check);
   };
 
   componentDidMount() {
@@ -124,7 +124,11 @@ export default class App extends React.Component<{}, State> {
           data={Object.keys(PLATFORM_PERMISSIONS)}
           renderItem={({item, index}) => {
             const value = PERMISSIONS_VALUES[index];
-            const status = this.state.statuses[index];
+            const status = this.state.statuses[value];
+
+            if (!status) {
+              return null;
+            }
 
             return (
               <PermissionRow
@@ -133,7 +137,7 @@ export default class App extends React.Component<{}, State> {
                 onPress={() => {
                   RNPermissions.request(value)
                     .then(() => this.check())
-                    .catch((err) => console.error(err));
+                    .catch((error) => console.error(error));
                 }}
               />
             );
@@ -149,7 +153,7 @@ export default class App extends React.Component<{}, State> {
           onPress={() => {
             RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
               .then(() => this.check())
-              .catch((err) => console.error(err));
+              .catch((error) => console.error(error));
           }}>
           <List.Item
             right={() => (
@@ -164,15 +168,15 @@ export default class App extends React.Component<{}, State> {
         </TouchableRipple>
 
         <Text style={{margin: 15, marginTop: 0, color: '#777'}}>
-          {`alert: ${getSettingString(settings.alert)}\n`}
-          {`badge: ${getSettingString(settings.badge)}\n`}
-          {`sound: ${getSettingString(settings.sound)}\n`}
-          {`lockScreen: ${getSettingString(settings.lockScreen)}\n`}
-          {`notificationCenter: ${getSettingString(
+          {`alert: ${toSettingString(settings.alert)}\n`}
+          {`badge: ${toSettingString(settings.badge)}\n`}
+          {`sound: ${toSettingString(settings.sound)}\n`}
+          {`lockScreen: ${toSettingString(settings.lockScreen)}\n`}
+          {`notificationCenter: ${toSettingString(
             settings.notificationCenter,
           )}\n`}
-          {`carPlay: ${getSettingString(settings.carPlay)}\n`}
-          {`criticalAlert: ${getSettingString(settings.criticalAlert)}\n`}
+          {`carPlay: ${toSettingString(settings.carPlay)}\n`}
+          {`criticalAlert: ${toSettingString(settings.criticalAlert)}\n`}
         </Text>
       </View>
     );
