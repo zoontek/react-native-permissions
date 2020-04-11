@@ -46,7 +46,7 @@ async function check(permission: Permission): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
-  if (!(await RNP.isNonRequestable(permission))) {
+  if (await RNP.isNonRequestable(permission)) {
     return RESULTS.BLOCKED;
   }
 
@@ -61,7 +61,7 @@ async function request(
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
-  if (!(await RNP.isNonRequestable(permission))) {
+  if (await RNP.isNonRequestable(permission)) {
     return RESULTS.BLOCKED;
   }
 
