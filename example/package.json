@@ -11,18 +11,18 @@
     "reinstall": "yarn clean && yarn install"
   },
   "dependencies": {
-    "react": "16.9.0",
-    "react-native": "0.61.5",
-    "react-native-paper": "3.6.0",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-paper": "3.8.0",
     "react-native-permissions": "../",
     "react-native-vector-icons": "6.6.0"
   },
   "devDependencies": {
-    "@babel/core": "7.8.7",
-    "@babel/runtime": "7.8.7",
-    "@types/react": "16.9.17",
-    "@types/react-native": "0.61.22",
-    "metro-react-native-babel-preset": "0.58.0",
+    "@babel/core": "7.9.0",
+    "@babel/runtime": "7.9.2",
+    "@types/react": "16.9.34",
+    "@types/react-native": "0.62.2",
+    "metro-react-native-babel-preset": "0.59.0",
     "typescript": "3.8.3"
   }
 }
