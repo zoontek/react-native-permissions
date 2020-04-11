@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "2.0.10",
+  "version": "2.1.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS and Android",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -73,7 +73,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "husky": "4.2.3",
     "lint-staged": "10.1.2",
-    "prettier": "1.19.1",
+    "prettier": "2.0.4",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "typescript": "3.8.3"

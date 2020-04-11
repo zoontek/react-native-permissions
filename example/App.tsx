@@ -78,11 +78,11 @@ export default class App extends React.Component<{}, State> {
   };
 
   check = () =>
-    Promise.all(PERMISSIONS_VALUES.map(_ => RNPermissions.check(_)))
-      .then(statuses => this.setState({statuses}))
+    Promise.all(PERMISSIONS_VALUES.map((_) => RNPermissions.check(_)))
+      .then((statuses) => this.setState({statuses}))
       .then(() => RNPermissions.checkNotifications())
-      .then(notifications => this.setState({notifications}))
-      .catch(error => console.warn(error));
+      .then((notifications) => this.setState({notifications}))
+      .catch((error) => console.warn(error));
 
   refresh = () => {
     this.setState({statuses: []}, this.check);
@@ -120,7 +120,7 @@ export default class App extends React.Component<{}, State> {
         </Appbar.Header>
 
         <FlatList
-          keyExtractor={item => item}
+          keyExtractor={(item) => item}
           data={Object.keys(PLATFORM_PERMISSIONS)}
           renderItem={({item, index}) => {
             const value = PERMISSIONS_VALUES[index];
@@ -133,7 +133,7 @@ export default class App extends React.Component<{}, State> {
                 onPress={() => {
                   RNPermissions.request(value)
                     .then(() => this.check())
-                    .catch(err => console.error(err));
+                    .catch((err) => console.error(err));
                 }}
               />
             );
@@ -149,7 +149,7 @@ export default class App extends React.Component<{}, State> {
           onPress={() => {
             RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
               .then(() => this.check())
-              .catch(err => console.error(err));
+              .catch((err) => console.error(err));
           }}>
           <List.Item
             right={() => (

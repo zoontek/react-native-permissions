@@ -103,31 +103,17 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 </plist>
 ```
 
-#### ⚠️ If you encounter the error `Invalid RNPermission X. Should be one of: ()`
+## Workaround for `use_frameworks!` issues
 
-1. Check that you linked **at least one** permission handler.
-2. Clean up Xcode stale data with `npx react-native-clean-project --remove-iOS-build --remove-iOS-pods`
-3. If you use `use_frameworks!`, replace it by `use_modular_headers!` - see [this blog post](http://blog.cocoapods.org/CocoaPods-1.5.0) for more details. [Create empty Swift file in XCode](https://stackoverflow.com/questions/52536380/why-linker-link-static-libraries-with-errors-ios/56176956#56176956). Then add ":modular_headers => false" to Pods with build errors:
+If you use `use_frameworks!`, add this at the top of your `Podfile`:
 
 ```ruby
-pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
-pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec', :modular_headers => false
-```
-
-4. If you use `use_frameworks!` but **can't** replace it with `use_modular_headers!`, check the following workaround:
-
-```ruby
-# Add this code at the top of Podfile right after platform definition.
-# It will make all the dynamic frameworks turning into static libraries.
-
 use_frameworks!
 
-$dynamic_frameworks = ['RxCocoa', 'RxSwift', 'WhatEverSDKName']
-
+# Convert all permissions handlers into static libraries
 pre_install do |installer|
   installer.pod_targets.each do |pod|
-    if !$dynamic_frameworks.include?(pod.name)
-      puts "Link #{pod.name} as static_library"
+    if pod.name.start_with?('Permission-')
       def pod.build_type;
         # Uncomment one line depending on your CocoaPods version
         # Pod::BuildType.static_library # >= 1.9
@@ -435,7 +421,7 @@ function check(permission: string): Promise<PermissionStatus>;
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 check(PERMISSIONS.IOS.LOCATION_ALWAYS)
-  .then(result => {
+  .then((result) => {
     switch (result) {
       case RESULTS.UNAVAILABLE:
         console.log(
@@ -455,7 +441,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
         break;
     }
   })
-  .catch(error => {
+  .catch((error) => {
     // …
   });
 ```
@@ -484,7 +470,7 @@ function request(
 ```js
 import {request, PERMISSIONS} from 'react-native-permissions';
 
-request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
+request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
   // …
 });
 ```
@@ -568,6 +554,52 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 ---
 
+#### checkMultiple
+
+Check multiples permissions in parallel.
+
+```ts
+function checkMultiple<P extends Permission[]>(
+  permissions: P,
+): Promise<Record<P[number], PermissionStatus>>;
+```
+
+```js
+import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
+
+checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
+  (statuses) => {
+    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+  },
+);
+```
+
+---
+
+#### requestMultiple
+
+Request multiple permissions in sequence.
+
+```ts
+function requestMultiple<P extends Permission[]>(
+  permissions: P,
+): Promise<Record<P[number], PermissionStatus>>;
+```
+
+```js
+import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+
+requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
+  (statuses) => {
+    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+  },
+);
+```
+
+---
+
 #### openSettings
 
 Open application settings.
@@ -602,38 +634,4 @@ request(
     ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
   }),
 );
-```
-
-## Additional recipes
-
-#### Check multiples permissions
-
-```js
-import {check, PERMISSIONS} from 'react-native-permissions';
-
-// can be done in parallel
-Promise.all([
-  check(PERMISSIONS.IOS.CAMERA),
-  check(PERMISSIONS.IOS.CONTACTS),
-  // …
-]).then(([cameraStatus, contactsStatus /* … */]) => {
-  console.log({cameraStatus, contactsStatus});
-});
-```
-
-#### Request multiples permissions
-
-_⚠️  It's a very bad UX pattern, avoid doing it!_
-
-```js
-import {request, PERMISSIONS} from 'react-native-permissions';
-
-// should be done in sequence
-async function requestAll() {
-  const cameraStatus = await request(PERMISSIONS.IOS.CAMERA);
-  const contactsStatus = await request(PERMISSIONS.IOS.CONTACTS);
-  return {cameraStatus, contactsStatus};
-}
-
-requestAll().then(statuses => console.log(statuses));
 ```
