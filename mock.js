@@ -39,6 +39,20 @@ export const requestNotifications = jest.fn(async (options) => ({
     }),
 }));
 
+export const checkMultiple = jest.fn(async (permissions) =>
+  permissions.reduce((acc, permission) => ({
+    ...acc,
+    [permission]: RESULTS.GRANTED,
+  })),
+);
+
+export const requestMultiple = jest.fn(async (permissions) =>
+  permissions.reduce((acc, permission) => ({
+    ...acc,
+    [permission]: RESULTS.GRANTED,
+  })),
+);
+
 export default {
   PERMISSIONS,
   RESULTS,
@@ -47,4 +61,6 @@ export default {
   request,
   checkNotifications,
   requestNotifications,
+  checkMultiple,
+  requestMultiple,
 };
