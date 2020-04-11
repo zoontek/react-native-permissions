@@ -84,6 +84,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSAppleMusicUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSMicrophoneUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSMotionUsageDescription</key>
