@@ -155,6 +155,9 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerMotion.h")
   [available addObject:[RNPermissionHandlerMotion handlerUniqueId]];
 #endif
+#if __has_include("RNPermissionHandlerNotifications.h")
+  [available addObject:[RNPermissionHandlerNotifications handlerUniqueId]];
+#endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
   [available addObject:[RNPermissionHandlerPhotoLibrary handlerUniqueId]];
 #endif

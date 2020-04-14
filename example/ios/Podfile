@@ -2,6 +2,8 @@ platform :ios, '9.0'
 
 # use_frameworks!
 
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
 # pre_install do |installer|
 #   installer.pod_targets.each do |pod|
 #     if pod.name.start_with?('Permission-')
@@ -13,8 +15,6 @@ platform :ios, '9.0'
 #     end
 #   end
 # end
-
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
   versions['Flipper'] ||= '~> 0.33.1'
