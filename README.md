@@ -103,7 +103,7 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 </plist>
 ```
 
-## Workaround for `use_frameworks!` issues
+#### Workaround for `use_frameworks!` issues
 
 If you use `use_frameworks!`, add this at the top of your `Podfile`:
 
