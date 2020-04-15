@@ -110,10 +110,10 @@ If you use `use_frameworks!`, add this at the top of your `Podfile`:
 ```ruby
 use_frameworks!
 
-# Convert all permissions handlers into static libraries
+# Convert all permission pods into static libraries
 pre_install do |installer|
   installer.pod_targets.each do |pod|
-    if pod.name.start_with?('Permission-')
+    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
       def pod.build_type;
         # Uncomment one line depending on your CocoaPods version
         # Pod::BuildType.static_library # >= 1.9

@@ -6,7 +6,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 # pre_install do |installer|
 #   installer.pod_targets.each do |pod|
-#     if pod.name.start_with?('Permission-')
+#     if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
 #       def pod.build_type;
 #         # Uncomment one line depending on your CocoaPods version
 #         # Pod::BuildType.static_library # >= 1.9
