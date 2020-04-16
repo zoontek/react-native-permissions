@@ -21,10 +21,6 @@ const RNP: {
   setNonRequestables: (permissions: Permission[]) => Promise<true>;
 } = NativeModules.RNPermissions;
 
-function grantedToStatus(granted: boolean): PermissionStatus {
-  return granted ? RESULTS.GRANTED : RESULTS.DENIED;
-}
-
 function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   switch (status) {
     case 'granted':
@@ -46,12 +42,14 @@ async function check(permission: Permission): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
-  if (await RNP.isNonRequestable(permission)) {
-    return RESULTS.BLOCKED;
+
+  if (await Core.check(permission as CorePermission)) {
+    return RESULTS.GRANTED;
   }
 
-  const granted = await Core.check(permission as CorePermission);
-  return grantedToStatus(granted);
+  return (await RNP.isNonRequestable(permission))
+    ? RESULTS.BLOCKED
+    : RESULTS.DENIED;
 }
 
 async function request(
@@ -60,9 +58,6 @@ async function request(
 ): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
-  }
-  if (await RNP.isNonRequestable(permission)) {
-    return RESULTS.BLOCKED;
   }
 
   const status = coreStatusToStatus(
@@ -76,32 +71,26 @@ async function request(
   return status;
 }
 
-async function splitByUsability<P extends Permission[]>(
+function splitByAvailability<P extends Permission[]>(
   permissions: P,
-): Promise<{
-  unusables: Partial<Record<P[number], PermissionStatus>>;
-  usables: P[number][];
-}> {
-  const unusables: Partial<Record<P[number], PermissionStatus>> = {};
-  const usables: P[number][] = [];
-  const blocklist = await RNP.getNonRequestables();
+): {
+  unavailable: Partial<Record<P[number], PermissionStatus>>;
+  available: P[number][];
+} {
+  const unavailable: Partial<Record<P[number], PermissionStatus>> = {};
+  const available: P[number][] = [];
 
   for (let index = 0; index < permissions.length; index++) {
     const permission: P[number] = permissions[index];
 
-    if (blocklist.includes(permission)) {
-      unusables[permission] = RESULTS.BLOCKED;
-      continue;
+    if (RNP.available.includes(permission)) {
+      available.push(permission);
+    } else {
+      unavailable[permission] = RESULTS.UNAVAILABLE;
     }
-    if (!RNP.available.includes(permission)) {
-      unusables[permission] = RESULTS.UNAVAILABLE;
-      continue;
-    }
-
-    usables.push(permission);
   }
 
-  return {unusables, usables};
+  return {unavailable, available};
 }
 
 function checkNotifications(): Promise<NotificationsResponse> {
@@ -112,12 +101,18 @@ async function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
   const dedup = uniq(permissions);
-  const {unusables: output, usables} = await splitByUsability(dedup);
+  const {unavailable: output, available} = splitByAvailability(dedup);
+  const blocklist = await RNP.getNonRequestables();
 
   await Promise.all(
-    usables.map(async (permission: P[number]) => {
+    available.map(async (permission: P[number]) => {
       const granted = await Core.check(permission as CorePermission);
-      output[permission] = grantedToStatus(granted);
+
+      output[permission] = granted
+        ? RESULTS.GRANTED
+        : blocklist.includes(permission)
+        ? RESULTS.BLOCKED
+        : RESULTS.DENIED;
     }),
   );
 
@@ -129,8 +124,8 @@ async function requestMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>> {
   const toSetAsNonRequestable: Permission[] = [];
   const dedup = uniq(permissions);
-  const {unusables: output, usables} = await splitByUsability(dedup);
-  const statuses = await Core.requestMultiple(usables as CorePermission[]);
+  const {unavailable: output, available} = splitByAvailability(dedup);
+  const statuses = await Core.requestMultiple(available as CorePermission[]);
 
   for (const permission in statuses) {
     if (statuses.hasOwnProperty(permission)) {
