@@ -171,7 +171,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60.0+, you will probably don't need to link it manually. Otherwise if it's not the case, follow this additional instructions:
+Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow this additional instructions:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
