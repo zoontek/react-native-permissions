@@ -35,14 +35,10 @@
     }
 
     if (error != nil) {
-      if (error.code == LAErrorBiometryNotEnrolled)
-        return resolve(RNPermissionStatusNotAvailable);
-      if (error.code != LAErrorBiometryNotAvailable)
-        return reject(error);
-      if (hasFaceID)
+      if (error.code == LAErrorBiometryNotAvailable && hasFaceID)
         return resolve(RNPermissionStatusDenied);
-
-      return resolve(RNPermissionStatusNotAvailable);
+      else
+        return resolve(RNPermissionStatusNotAvailable);
     }
 
     if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
@@ -69,14 +65,10 @@
     }
 
     if (error != nil) {
-      if (error.code == LAErrorBiometryNotEnrolled)
-        return resolve(RNPermissionStatusNotAvailable);
-      if (error.code != LAErrorBiometryNotAvailable)
-        return reject(error);
-      if (hasFaceID)
+      if (error.code == LAErrorBiometryNotAvailable && hasFaceID)
         return resolve(RNPermissionStatusDenied);
-
-      return resolve(RNPermissionStatusNotAvailable);
+      else
+        return resolve(RNPermissionStatusNotAvailable);
     }
 
     _resolve = resolve;
