@@ -2,7 +2,7 @@ import {ANDROID, IOS, RESULTS} from './constants';
 
 type Values<T extends object> = T[keyof T];
 
-export type {Rationale} from 'react-native';
+export {Rationale} from 'react-native';
 
 export type AndroidPermission = Values<typeof ANDROID>;
 export type IOSPermission = Values<typeof IOS>;
