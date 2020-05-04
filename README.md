@@ -104,6 +104,7 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 ```
 
 #### Workaround for `use_frameworks!` issues
+`use_frameworks!` builds _all_ Pods as dynamic frameworks. react-native-permissions must be compiled as a static library.
 
 If you use `use_frameworks!`, add this at the top of your `Podfile`:
 
@@ -123,6 +124,8 @@ pre_install do |installer|
   end
 end
 ```
+
+Or as an alternative to `use_frameworks!`, use the [cocoapods-user-defined-build-types](https://github.com/joncardasis/cocoapods-user-defined-build-types) plugin to selectively mark other Pods as dynamic frameworks.
 
 ### Android
 
