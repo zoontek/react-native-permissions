@@ -4,7 +4,7 @@
 
 @interface RNPermissionHandlerBluetoothPeripheral() <CBPeripheralManagerDelegate>
 
-@property (nonatomic, strong) CBPeripheralManager* peripheralManager;
+@property (nonatomic, strong) CBPeripheralManager* manager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
 @property (nonatomic, strong) void (^reject)(NSError *error);
 
@@ -63,17 +63,13 @@
   _resolve = resolve;
   _reject = reject;
 
-  _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{
+  _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{
     CBPeripheralManagerOptionShowPowerAlertKey: @false,
   }];
-
-  [_peripheralManager startAdvertising:@{}];
 #endif
 }
 
 - (void)peripheralManagerDidUpdateState:(nonnull CBPeripheralManager *)peripheral {
-  [_peripheralManager stopAdvertising];
-
   switch (peripheral.state) {
     case CBManagerStatePoweredOff:
     case CBManagerStateResetting:
