@@ -124,6 +124,8 @@ pre_install do |installer|
 end
 ```
 
+> :warning: **No permission handler detected error**: Make sure that you have a permission set up. In some cases the Xcode cache needs to be reset for the error to disappear. Clear it by running `Xcode -> Product -> Clean Build Folder`
+
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
