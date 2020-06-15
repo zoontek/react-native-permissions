@@ -32,6 +32,7 @@ target 'YourAwesomeProject' do
 
   # …
 
+  pod 'RNPermissions', :path => "../node_modules/react-native-permissions"
   permissions_path = '../node_modules/react-native-permissions/ios'
 
   pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
