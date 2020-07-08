@@ -54,7 +54,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-> :warning: If you see a **No permission handler detected error**: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be clear (`Xcode -> Product -> Clean Build Folder`)
+> :warning: If you see a **No permission handler detected** error: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be clear (`Xcode -> Product -> Clean Build Folder`)
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
