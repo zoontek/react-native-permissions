@@ -6,7 +6,7 @@
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-An unified permissions API for React Native on iOS and Android.
+A unified permissions API for React Native on iOS and Android.
 
 ## Support
 
@@ -54,7 +54,7 @@ target 'YourAwesomeProject' do
 end
 ```
 
-> :warning: If you see a **No permission handler detected** error: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be clear (`Xcode -> Product -> Clean Build Folder`)
+> :warning: If you see a **No permission handler detected** error: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be cleared (`Xcode -> Product -> Clean Build Folder`)
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
@@ -173,7 +173,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow this additional instructions:
+Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
@@ -233,7 +233,7 @@ public class MainApplication extends Application implements ReactApplication {
 
 ## Understanding permission flow
 
-As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms behaviors. To understand it a little better, take a look to these two flowcharts:
+As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms' behaviors. To understand it a little better, take a look to these two flowcharts:
 
 ### iOS flow
 
