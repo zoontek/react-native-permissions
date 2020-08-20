@@ -34,6 +34,7 @@ target 'YourAwesomeProject' do
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 
+  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency.podspec"
   pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
   pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars.podspec"
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
@@ -98,6 +99,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSSiriUsageDescription</key>
   <string>YOUR TEXT</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>YOUR TEXT</string>
 
   <!-- … -->
 
