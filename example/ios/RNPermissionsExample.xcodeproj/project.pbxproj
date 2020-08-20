@@ -23,6 +23,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNPermissionsExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNPermissionsExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNPermissionsExample/main.m; sourceTree = "<group>"; };
+		59DCBBDF24EE5AF000FEBE51 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		615E8FE35802E6D32ADCFD4C /* Pods-RNPermissionsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.debug.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.debug.xcconfig"; sourceTree = "<group>"; };
 		C6AF97F3E23718347362F9AB /* Pods-RNPermissionsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNPermissionsExample.release.xcconfig"; path = "Target Support Files/Pods-RNPermissionsExample/Pods-RNPermissionsExample.release.xcconfig"; sourceTree = "<group>"; };
 		D1B2CF7CB21D0A588199C895 /* libPods-RNPermissionsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNPermissionsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +69,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59DCBBDF24EE5AF000FEBE51 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				D1B2CF7CB21D0A588199C895 /* libPods-RNPermissionsExample.a */,

@@ -70,6 +70,8 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
+  - Permission-AppTrackingTransparency (2.1.5):
+    - RNPermissions
   - Permission-BluetoothPeripheral (2.1.5):
     - RNPermissions
   - Permission-Calendars (2.1.5):
@@ -355,6 +357,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.33.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency.podspec`)
   - Permission-BluetoothPeripheral (from `../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec`)
   - Permission-Calendars (from `../node_modules/react-native-permissions/ios/Calendars.podspec`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera.podspec`)
@@ -422,6 +425,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-AppTrackingTransparency:
+    :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency.podspec"
   Permission-BluetoothPeripheral:
     :path: "../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec"
   Permission-Calendars:
@@ -514,6 +519,7 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
+  Permission-AppTrackingTransparency: e9c0edf423abffca2fddee9cd8ed55e9cc7133df
   Permission-BluetoothPeripheral: 4663a8373072abfe3099c44cb06bf10b0c16c110
   Permission-Calendars: dc345e3388149514603309c621151ff3cfd5816a
   Permission-Camera: afad27bf90337684d4a86f3825112d648c8c4d3b
@@ -553,6 +559,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 48265109032bce1863187d238dd58c9e3563d7e5
+PODFILE CHECKSUM: 33d4013cd5154539040dffe614d959a536bc61f4
 
 COCOAPODS: 1.9.1
