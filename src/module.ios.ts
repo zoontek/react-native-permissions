@@ -1,5 +1,5 @@
 import {NativeModules} from 'react-native';
-import {RESULTS, PERMISSIONS} from './constants';
+import {RESULTS} from './constants';
 import {Contract} from './contract';
 import {
   NotificationOption,
@@ -16,6 +16,9 @@ const RNP: {
   requestNotifications: (
     options: NotificationOption[],
   ) => Promise<NotificationsResponse>;
+  requestLocationTemporaryFullAccuracy(
+    purposeKey: string,
+  ): Promise<PermissionStatus>;
   openSettings: () => Promise<true>;
   check: (permission: Permission) => Promise<PermissionStatus>;
   request: (permission: Permission) => Promise<PermissionStatus>;
@@ -45,6 +48,12 @@ export function requestNotifications(
   options: NotificationOption[],
 ): Promise<NotificationsResponse> {
   return RNP.requestNotifications(options);
+}
+
+export function requestLocationTemporaryFullAccuracy(
+  purposeKey: string,
+): Promise<PermissionStatus> {
+  return RNP.requestLocationTemporaryFullAccuracy(purposeKey);
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -86,6 +95,7 @@ export const module: Contract = {
   request,
   checkNotifications,
   requestNotifications,
+  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };

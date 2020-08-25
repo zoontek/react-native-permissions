@@ -22,6 +22,9 @@
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
 #import "RNPermissionHandlerLocationWhenInUse.h"
 #endif
+#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
+#import "RNPermissionHandlerLocationFullAccuracy.h"
+#endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
 #import "RNPermissionHandlerMediaLibrary.h"
 #endif
@@ -75,6 +78,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
   [RNPermissionHandlerLocationWhenInUse handlerUniqueId]: @(RNPermissionLocationWhenInUse),
+#endif
+#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
+  [RNPermissionHandlerLocationFullAccuracy handlerUniqueId]: @(RNPermissionLocationFullAccuracy),
 #endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
   [RNPermissionHandlerMediaLibrary handlerUniqueId]: @(RNPermissionMediaLibrary),
@@ -145,6 +151,9 @@ RCT_EXPORT_MODULE();
 #endif
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
   [available addObject:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
+  [available addObject:[RNPermissionHandlerLocationFullAccuracy handlerUniqueId]];
 #endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
   [available addObject:[RNPermissionHandlerMediaLibrary handlerUniqueId]];
@@ -227,6 +236,11 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
     case RNPermissionLocationWhenInUse:
       handler = [RNPermissionHandlerLocationWhenInUse new];
+      break;
+#endif
+#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
+    case RNPermissionLocationFullAccuracy:
+      handler = [RNPermissionHandlerLocationFullAccuracy new];
       break;
 #endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
@@ -424,6 +438,26 @@ RCT_REMAP_METHOD(requestNotifications,
   } options:options];
 #else
   reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+#endif
+}
+
+RCT_REMAP_METHOD(requestLocationTemporaryFullAccuracy,
+                 requestLocationTemporaryFullAccuracyWithPurposeKey:(NSString * _Nonnull)purposeKey
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
+  RNPermissionHandlerLocationFullAccuracy *handler = [RNPermissionHandlerLocationFullAccuracy new];
+  NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
+
+  [handler requestTemporaryWithResolver:^(RNPermissionStatus status) {
+    resolve([self stringForStatus:status]);
+    [self unlockHandler:lockId];
+  } rejecter:^(NSError * _Nonnull error) {
+    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+    [self unlockHandler:lockId];
+  } purposeKey:purposeKey];
+#else
+  reject(@"location_full_accuracy_pod_missing", @"LocationFullAccuracy permission pod is missing", nil);
 #endif
 }
 

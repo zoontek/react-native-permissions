@@ -97,6 +97,12 @@ function checkNotifications(): Promise<NotificationsResponse> {
   return RNP.checkNotifications();
 }
 
+export async function requestLocationTemporaryFullAccuracy(
+  _purposeKey: string,
+): Promise<PermissionStatus> {
+  return RESULTS.UNAVAILABLE;
+}
+
 async function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
@@ -150,6 +156,7 @@ export const module: Contract = {
   request,
   checkNotifications,
   requestNotifications: checkNotifications,
+  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };
