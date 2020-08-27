@@ -49,6 +49,9 @@
 #if __has_include("RNPermissionHandlerStoreKit.h")
 #import "RNPermissionHandlerStoreKit.h"
 #endif
+#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
+#import "RNPermissionHandlerAppTrackingTransparency.h"
+#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
@@ -99,6 +102,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerStoreKit.h")
   [RNPermissionHandlerStoreKit handlerUniqueId]: @(RNPermissionStoreKit),
+#endif
+#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
+  [RNPermissionHandlerAppTrackingTransparency handlerUniqueId]: @(RNPermissionAppTrackingTransparency),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -172,6 +178,9 @@ RCT_EXPORT_MODULE();
 #endif
 #if __has_include("RNPermissionHandlerStoreKit.h")
   [available addObject:[RNPermissionHandlerStoreKit handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
+  [available addObject:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]];
 #endif
 
 #if RCT_DEV
@@ -267,6 +276,11 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerStoreKit.h")
     case RNPermissionStoreKit:
       handler = [RNPermissionHandlerStoreKit new];
+      break;
+#endif
+#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
+    case RNPermissionAppTrackingTransparency:
+      handler = [RNPermissionHandlerAppTrackingTransparency new];
       break;
 #endif
     case RNPermissionUnknown:
