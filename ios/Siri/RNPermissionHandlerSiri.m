@@ -31,7 +31,8 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                  rationale:(NSDictionary *_Nullable)rationale {
   if (@available(iOS 10.0, *)) {
     [INPreferences requestSiriAuthorization:^(__unused INSiriAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];

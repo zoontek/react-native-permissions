@@ -44,7 +44,8 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                  rationale:(NSDictionary *_Nullable)rationale {
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }

@@ -6,6 +6,7 @@ import {
   NotificationsResponse,
   Permission,
   PermissionStatus,
+  Rationale,
 } from './types';
 import {uniq} from './utils';
 
@@ -16,12 +17,12 @@ const RNP: {
   requestNotifications: (
     options: NotificationOption[],
   ) => Promise<NotificationsResponse>;
-  requestLocationTemporaryFullAccuracy(
-    purposeKey: string,
-  ): Promise<PermissionStatus>;
   openSettings: () => Promise<true>;
   check: (permission: Permission) => Promise<PermissionStatus>;
-  request: (permission: Permission) => Promise<PermissionStatus>;
+  request: (
+    permission: Permission,
+    rationale?: object,
+  ) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
 async function openSettings(): Promise<void> {
@@ -34,9 +35,12 @@ async function check(permission: Permission): Promise<PermissionStatus> {
     : RESULTS.UNAVAILABLE;
 }
 
-async function request(permission: Permission): Promise<PermissionStatus> {
+async function request(
+  permission: Permission,
+  rationale?: Rationale,
+): Promise<PermissionStatus> {
   return RNP.available.includes(permission)
-    ? RNP.request(permission)
+    ? RNP.request(permission, rationale)
     : RESULTS.UNAVAILABLE;
 }
 
@@ -48,12 +52,6 @@ export function requestNotifications(
   options: NotificationOption[],
 ): Promise<NotificationsResponse> {
   return RNP.requestNotifications(options);
-}
-
-export function requestLocationTemporaryFullAccuracy(options: {
-  purposeKey: string;
-}): Promise<PermissionStatus> {
-  return RNP.requestLocationTemporaryFullAccuracy(options.purposeKey);
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -95,7 +93,6 @@ export const module: Contract = {
   request,
   checkNotifications,
   requestNotifications,
-  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };

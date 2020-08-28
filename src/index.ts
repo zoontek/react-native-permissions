@@ -17,8 +17,6 @@ export const check = module.check;
 export const request = module.request;
 export const checkNotifications = module.checkNotifications;
 export const requestNotifications = module.requestNotifications;
-export const requestLocationTemporaryFullAccuracy =
-  module.requestLocationTemporaryFullAccuracy;
 export const checkMultiple = module.checkMultiple;
 export const requestMultiple = module.requestMultiple;
 
@@ -30,7 +28,6 @@ export default {
   request,
   checkNotifications,
   requestNotifications,
-  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };

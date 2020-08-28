@@ -76,7 +76,8 @@ typedef enum {
                  rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject
+                  rationale:(NSDictionary *_Nullable)rationale;
 
 @end
 

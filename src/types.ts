@@ -1,8 +1,13 @@
 import {ANDROID, IOS, RESULTS} from './constants';
+import {Rationale as RNRationalAndroid} from 'react-native';
 
 type Values<T extends object> = T[keyof T];
 
-export {Rationale} from 'react-native';
+export type RationaleAndroid = RNRationalAndroid;
+export interface RationaleFullAccuracyIOS {
+  temporaryPurposeKey: string;
+}
+export type Rationale = RationaleAndroid | RationaleFullAccuracyIOS;
 
 export type AndroidPermission = Values<typeof ANDROID>;
 export type IOSPermission = Values<typeof IOS>;

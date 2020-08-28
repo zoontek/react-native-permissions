@@ -3,11 +3,16 @@ import {
   Permission as CorePermission,
   PermissionsAndroid as Core,
   PermissionStatus as CoreStatus,
-  Rationale,
 } from 'react-native';
 import {RESULTS} from './constants';
 import {Contract} from './contract';
-import {NotificationsResponse, Permission, PermissionStatus} from './types';
+import {
+  NotificationsResponse,
+  Permission,
+  PermissionStatus,
+  Rationale,
+  RationaleAndroid,
+} from './types';
 import {uniq} from './utils';
 
 const RNP: {
@@ -61,7 +66,10 @@ async function request(
   }
 
   const status = coreStatusToStatus(
-    await Core.request(permission as CorePermission, rationale),
+    await Core.request(
+      permission as CorePermission,
+      rationale as RationaleAndroid,
+    ),
   );
 
   if (status === RESULTS.BLOCKED) {
@@ -95,12 +103,6 @@ function splitByAvailability<P extends Permission[]>(
 
 function checkNotifications(): Promise<NotificationsResponse> {
   return RNP.checkNotifications();
-}
-
-export async function requestLocationTemporaryFullAccuracy(_options: {}): Promise<
-  PermissionStatus
-> {
-  return RESULTS.UNAVAILABLE;
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -156,7 +158,6 @@ export const module: Contract = {
   request,
   checkNotifications,
   requestNotifications: checkNotifications,
-  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };

@@ -461,7 +461,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 Request one permission.
 
 ```ts
-type Rationale = {
+type RationaleAndroid = {
   title: string;
   message: string;
   buttonPositive?: string;
@@ -469,9 +469,13 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
+type RationalFullAccuracyIOS {
+  temporaryPurposeKey: string
+}
+
 function request(
   permission: string,
-  rationale?: Rationale,
+  rationale?: RationaleAndroid | RationalFullAccuracyIOS,
 ): Promise<PermissionStatus>;
 ```
 
@@ -558,28 +562,6 @@ import {requestNotifications} from 'react-native-permissions';
 requestNotifications(['alert', 'sound']).then(({status, settings}) => {
   // …
 });
-```
-
----
-
-#### requestLocationTemporaryFullAccuracy
-
-Requests temporary precise location tracking on iOS, using the provided purpose key.
-
-```ts
-function requestLocationTemporaryFullAccuracy(options: {
-  purposeKey: string;
-}): Promise<PermissionStatus>;
-```
-
-```js
-import {requestNotifications} from 'react-native-permissions';
-
-requestLocationTemporaryFullAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'}).then(
-  (status) => {
-    // …
-  },
-);
 ```
 
 ---

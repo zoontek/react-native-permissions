@@ -388,6 +388,7 @@ RCT_REMAP_METHOD(check,
 
 RCT_REMAP_METHOD(request,
                  requestWithPermission:(RNPermission)permission
+                 rationale:(NSDictionary *_Nullable)rationale
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
@@ -399,7 +400,7 @@ RCT_REMAP_METHOD(request,
   } rejecter:^(NSError *error) {
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
-  }];
+  } rationale:rationale];
 }
 
 RCT_REMAP_METHOD(checkNotifications,
@@ -438,26 +439,6 @@ RCT_REMAP_METHOD(requestNotifications,
   } options:options];
 #else
   reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
-#endif
-}
-
-RCT_REMAP_METHOD(requestLocationTemporaryFullAccuracy,
-                 requestLocationTemporaryFullAccuracyWithPurposeKey:(NSString * _Nonnull)purposeKey
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerLocationFullAccuracy.h")
-  RNPermissionHandlerLocationFullAccuracy *handler = [RNPermissionHandlerLocationFullAccuracy new];
-  NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
-
-  [handler requestTemporaryWithResolver:^(RNPermissionStatus status) {
-    resolve([self stringForStatus:status]);
-    [self unlockHandler:lockId];
-  } rejecter:^(NSError * _Nonnull error) {
-    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
-    [self unlockHandler:lockId];
-  } purposeKey:purposeKey];
-#else
-  reject(@"location_full_accuracy_pod_missing", @"LocationFullAccuracy permission pod is missing", nil);
 #endif
 }
 

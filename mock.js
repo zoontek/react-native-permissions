@@ -39,10 +39,6 @@ export const requestNotifications = jest.fn(async (options) => ({
     }),
 }));
 
-export const requestLocationTemporaryFullAccuracy = jest.fn(
-  async (options) => RESULTS.GRANTED,
-);
-
 export const checkMultiple = jest.fn(async (permissions) =>
   permissions.reduce((acc, permission) => ({
     ...acc,
@@ -65,7 +61,6 @@ export default {
   request,
   checkNotifications,
   requestNotifications,
-  requestLocationTemporaryFullAccuracy,
   checkMultiple,
   requestMultiple,
 };

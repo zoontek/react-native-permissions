@@ -42,11 +42,12 @@
     return resolve(RNPermissionStatusNotDetermined);
   }
 
-  [self requestWithResolver:resolve rejecter:reject];
+  [self requestWithResolver:resolve rejecter:reject rationale:nil];
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                  rationale:(NSDictionary *_Nullable)rationale {
   if (![CMMotionActivityManager isActivityAvailable]) {
     return resolve(RNPermissionStatusNotAvailable);
   }

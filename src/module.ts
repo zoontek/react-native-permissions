@@ -25,7 +25,6 @@ export const module: Contract = {
   request: check,
   checkNotifications,
   requestNotifications: checkNotifications,
-  requestLocationTemporaryFullAccuracy: check,
   checkMultiple,
   requestMultiple: checkMultiple,
 };

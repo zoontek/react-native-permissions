@@ -25,7 +25,7 @@
       return RNPermissionStatusAuthorized;
     case CLAccuracyAuthorizationReducedAccuracy:
     default:
-      return RNPermissionStatusDenied;
+      return RNPermissionStatusNotDetermined;
   }
 }
 
@@ -44,21 +44,15 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  // It is not possible to request full accuracy permanently within the app.  Either prompt user
-  // to open settings or request temporary full accuracy.
-  return resolve(RNPermissionStatusDenied);
-}
-
-- (void)requestTemporaryWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                            rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                          purposeKey:(NSString * _Nonnull)purposeKey {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                  rationale:(NSDictionary *_Nullable)rationale {
   if (!CLLocationManager.locationServicesEnabled || CLLocationManager.authorizationStatus != RNPermissionStatusAuthorized) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
   if (@available(iOS 14.0, *)) {
     CLLocationManager *locationManager = [CLLocationManager new];
+    NSString *purposeKey = [rationale objectForKey:@"temporaryPurposeKey"];
     [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
                                                                   completion:^(NSError * _Nullable error) {
       RNPermissionStatus status = [RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager];
