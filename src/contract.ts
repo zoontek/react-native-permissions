@@ -22,9 +22,9 @@ export interface Contract {
     options: NotificationOption[],
   ): Promise<NotificationsResponse>;
 
-  requestLocationTemporaryFullAccuracy(
-    purposeKey: string,
-  ): Promise<PermissionStatus>;
+  requestLocationTemporaryFullAccuracy(options: {
+    purposeKey: string;
+  }): Promise<PermissionStatus>;
 
   checkMultiple<P extends Permission[]>(
     permissions: P,

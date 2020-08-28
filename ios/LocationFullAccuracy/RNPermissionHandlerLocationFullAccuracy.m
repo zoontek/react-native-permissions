@@ -31,7 +31,7 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  if (![CLLocationManager locationServicesEnabled]) {
+  if (!CLLocationManager.locationServicesEnabled || CLLocationManager.authorizationStatus != RNPermissionStatusAuthorized) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
@@ -53,7 +53,7 @@
 - (void)requestTemporaryWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                             rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
                           purposeKey:(NSString * _Nonnull)purposeKey {
-  if (![CLLocationManager locationServicesEnabled]) {
+  if (!CLLocationManager.locationServicesEnabled || CLLocationManager.authorizationStatus != RNPermissionStatusAuthorized) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
@@ -61,10 +61,14 @@
     CLLocationManager *locationManager = [CLLocationManager new];
     [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
                                                                   completion:^(NSError * _Nullable error) {
-      if (error) {
+      RNPermissionStatus status = [RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager];
+
+      // Ignore errors due to full accuracy already being authorized
+      if (error && (error.code != kCLErrorPromptDeclined || status != RNPermissionStatusAuthorized)) {
         return reject(error);
+      } else {
+        return resolve(status);
       }
-      return resolve([RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager]);
     }];
   } else {
     return resolve(RNPermissionStatusAuthorized);

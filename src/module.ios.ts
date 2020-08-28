@@ -50,10 +50,10 @@ export function requestNotifications(
   return RNP.requestNotifications(options);
 }
 
-export function requestLocationTemporaryFullAccuracy(
-  purposeKey: string,
-): Promise<PermissionStatus> {
-  return RNP.requestLocationTemporaryFullAccuracy(purposeKey);
+export function requestLocationTemporaryFullAccuracy(options: {
+  purposeKey: string;
+}): Promise<PermissionStatus> {
+  return RNP.requestLocationTemporaryFullAccuracy(options.purposeKey);
 }
 
 async function checkMultiple<P extends Permission[]>(

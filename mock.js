@@ -40,7 +40,7 @@ export const requestNotifications = jest.fn(async (options) => ({
 }));
 
 export const requestLocationTemporaryFullAccuracy = jest.fn(
-  async (purposeKey) => RESULTS.GRANTED,
+  async (options) => RESULTS.GRANTED,
 );
 
 export const checkMultiple = jest.fn(async (permissions) =>

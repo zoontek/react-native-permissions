@@ -97,9 +97,9 @@ function checkNotifications(): Promise<NotificationsResponse> {
   return RNP.checkNotifications();
 }
 
-export async function requestLocationTemporaryFullAccuracy(
-  _purposeKey: string,
-): Promise<PermissionStatus> {
+export async function requestLocationTemporaryFullAccuracy(_options: {}): Promise<
+  PermissionStatus
+> {
   return RESULTS.UNAVAILABLE;
 }
 

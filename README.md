@@ -86,6 +86,11 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>YOUR TEXT</string>
+	</dict>
   <key>NSMicrophoneUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSMotionUsageDescription</key>
@@ -383,6 +388,7 @@ PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
 PERMISSIONS.IOS.LOCATION_ALWAYS;
 PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+PERMISSIONS.IOS.LOCATION_FULL_ACCURACY;
 PERMISSIONS.IOS.MEDIA_LIBRARY;
 PERMISSIONS.IOS.MICROPHONE;
 PERMISSIONS.IOS.MOTION;
@@ -485,7 +491,7 @@ Check notifications permission status and get notifications settings values.
 
 ```ts
 interface NotificationSettings {
-  // properties only availables on iOS
+  // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
@@ -527,7 +533,7 @@ type NotificationOption =
   | 'provisional';
 
 interface NotificationSettings {
-  // properties only availables on iOS
+  // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
@@ -552,6 +558,28 @@ import {requestNotifications} from 'react-native-permissions';
 requestNotifications(['alert', 'sound']).then(({status, settings}) => {
   // …
 });
+```
+
+---
+
+#### requestLocationTemporaryFullAccuracy
+
+Requests temporary precise location tracking on iOS, using the provided purpose key.
+
+```ts
+function requestLocationTemporaryFullAccuracy(options: {
+  purposeKey: string;
+}): Promise<PermissionStatus>;
+```
+
+```js
+import {requestNotifications} from 'react-native-permissions';
+
+requestLocationTemporaryFullAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'}).then(
+  (status) => {
+    // …
+  },
+);
 ```
 
 ---

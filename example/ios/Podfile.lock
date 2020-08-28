@@ -82,6 +82,8 @@ PODS:
     - RNPermissions
   - Permission-LocationAlways (2.1.5):
     - RNPermissions
+  - Permission-LocationFullAccuracy (2.1.5):
+    - RNPermissions
   - Permission-LocationWhenInUse (2.1.5):
     - RNPermissions
   - Permission-MediaLibrary (2.1.5):
@@ -361,6 +363,7 @@ DEPENDENCIES:
   - Permission-Contacts (from `../node_modules/react-native-permissions/ios/Contacts.podspec`)
   - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID.podspec`)
   - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways.podspec`)
+  - Permission-LocationFullAccuracy (from `../node_modules/react-native-permissions/ios/LocationFullAccuracy.podspec`)
   - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec`)
   - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary.podspec`)
   - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone.podspec`)
@@ -434,6 +437,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/FaceID.podspec"
   Permission-LocationAlways:
     :path: "../node_modules/react-native-permissions/ios/LocationAlways.podspec"
+  Permission-LocationFullAccuracy:
+    :path: "../node_modules/react-native-permissions/ios/LocationFullAccuracy.podspec"
   Permission-LocationWhenInUse:
     :path: "../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
   Permission-MediaLibrary:
@@ -520,6 +525,7 @@ SPEC CHECKSUMS:
   Permission-Contacts: edde2d433382b3118f0d4c9ebc7708d5d87c4f17
   Permission-FaceID: fbdeb41087f35887f0cade55396007fadee3a234
   Permission-LocationAlways: 155e6251b757b380f6354737cae8e8d59c472495
+  Permission-LocationFullAccuracy: 661c56f2e7d8a79ff2709326265ec70ca7b969ee
   Permission-LocationWhenInUse: 3624cf08c12c6019926aba3054efee7f4f8ee91e
   Permission-MediaLibrary: dd1c48888cd95961fbfebdaebf8d4127c6e92e7d
   Permission-Microphone: 0ffabc3fe1c75cfb260525ee3f529383c9f4368c
@@ -553,6 +559,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 48265109032bce1863187d238dd58c9e3563d7e5
+PODFILE CHECKSUM: 9e96e19d5067985facb6a376a9c1fc970d97e8db
 
 COCOAPODS: 1.9.1
