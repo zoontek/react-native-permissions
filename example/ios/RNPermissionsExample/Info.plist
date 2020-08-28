@@ -72,6 +72,8 @@
 	<string>Let me use your reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Let me use speech recognition</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Let me use your ad identifier</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialCommunityIcons.ttf</string>

@@ -15,7 +15,7 @@ PODS:
     - Flipper-Folly (~> 2.1)
     - Flipper-RSocket (~> 1.0)
   - Flipper-DoubleConversion (1.1.7)
-  - Flipper-Folly (2.1.1):
+  - Flipper-Folly (2.2.0):
     - boost-for-react-native
     - CocoaLibEvent (~> 1.0)
     - Flipper-DoubleConversion
@@ -23,8 +23,8 @@ PODS:
     - OpenSSL-Universal (= 1.0.2.19)
   - Flipper-Glog (0.3.6)
   - Flipper-PeerTalk (0.0.4)
-  - Flipper-RSocket (1.0.0):
-    - Flipper-Folly (~> 2.0)
+  - Flipper-RSocket (1.1.0):
+    - Flipper-Folly (~> 2.2)
   - FlipperKit (0.33.1):
     - FlipperKit/Core (= 0.33.1)
   - FlipperKit/Core (0.33.1):
@@ -70,37 +70,39 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
-  - Permission-BluetoothPeripheral (2.1.5):
+  - Permission-AppTrackingTransparency (2.2.0):
     - RNPermissions
-  - Permission-Calendars (2.1.5):
+  - Permission-BluetoothPeripheral (2.2.0):
     - RNPermissions
-  - Permission-Camera (2.1.5):
+  - Permission-Calendars (2.2.0):
     - RNPermissions
-  - Permission-Contacts (2.1.5):
+  - Permission-Camera (2.2.0):
     - RNPermissions
-  - Permission-FaceID (2.1.5):
+  - Permission-Contacts (2.2.0):
     - RNPermissions
-  - Permission-LocationAlways (2.1.5):
+  - Permission-FaceID (2.2.0):
     - RNPermissions
-  - Permission-LocationFullAccuracy (2.1.5):
+  - Permission-LocationAlways (2.2.0):
     - RNPermissions
-  - Permission-LocationWhenInUse (2.1.5):
+  - Permission-LocationFullAccuracy (2.2.0):
     - RNPermissions
-  - Permission-MediaLibrary (2.1.5):
+  - Permission-LocationWhenInUse (2.2.0):
     - RNPermissions
-  - Permission-Microphone (2.1.5):
+  - Permission-MediaLibrary (2.2.0):
     - RNPermissions
-  - Permission-Motion (2.1.5):
+  - Permission-Microphone (2.2.0):
     - RNPermissions
-  - Permission-Notifications (2.1.5):
+  - Permission-Motion (2.2.0):
     - RNPermissions
-  - Permission-PhotoLibrary (2.1.5):
+  - Permission-Notifications (2.2.0):
     - RNPermissions
-  - Permission-Reminders (2.1.5):
+  - Permission-PhotoLibrary (2.2.0):
     - RNPermissions
-  - Permission-SpeechRecognition (2.1.5):
+  - Permission-Reminders (2.2.0):
     - RNPermissions
-  - Permission-StoreKit (2.1.5):
+  - Permission-SpeechRecognition (2.2.0):
+    - RNPermissions
+  - Permission-StoreKit (2.2.0):
     - RNPermissions
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
@@ -324,7 +326,7 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - RNPermissions (2.1.5):
+  - RNPermissions (2.2.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -357,6 +359,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.33.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency.podspec`)
   - Permission-BluetoothPeripheral (from `../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec`)
   - Permission-Calendars (from `../node_modules/react-native-permissions/ios/Calendars.podspec`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera.podspec`)
@@ -425,6 +428,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-AppTrackingTransparency:
+    :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency.podspec"
   Permission-BluetoothPeripheral:
     :path: "../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec"
   Permission-Calendars:
@@ -511,30 +516,31 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 5465d51ccfeecb7faa12f9ae0024f2044ce4044e
   Flipper: 6c1f484f9a88d30ab3e272800d53688439e50f69
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
-  Flipper-Folly: 2de3d03e0acc7064d5e4ed9f730e2f217486f162
+  Flipper-Folly: c12092ea368353b58e992843a990a3225d4533c3
   Flipper-Glog: 1dfd6abf1e922806c52ceb8701a3599a79a200a6
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
-  Flipper-RSocket: 1260a31c05c238eabfa9bb8a64e3983049048371
+  Flipper-RSocket: 64e7431a55835eb953b0bf984ef3b90ae9fdddd7
   FlipperKit: 6dc9b8f4ef60d9e5ded7f0264db299c91f18832e
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
-  Permission-BluetoothPeripheral: 4663a8373072abfe3099c44cb06bf10b0c16c110
-  Permission-Calendars: dc345e3388149514603309c621151ff3cfd5816a
-  Permission-Camera: afad27bf90337684d4a86f3825112d648c8c4d3b
-  Permission-Contacts: edde2d433382b3118f0d4c9ebc7708d5d87c4f17
-  Permission-FaceID: fbdeb41087f35887f0cade55396007fadee3a234
-  Permission-LocationAlways: 155e6251b757b380f6354737cae8e8d59c472495
-  Permission-LocationFullAccuracy: 661c56f2e7d8a79ff2709326265ec70ca7b969ee
-  Permission-LocationWhenInUse: 3624cf08c12c6019926aba3054efee7f4f8ee91e
-  Permission-MediaLibrary: dd1c48888cd95961fbfebdaebf8d4127c6e92e7d
-  Permission-Microphone: 0ffabc3fe1c75cfb260525ee3f529383c9f4368c
-  Permission-Motion: 099bc32191080089d1cb839cbae96d621a589c8f
-  Permission-Notifications: 231d0e1db2300b686548587d384ba414e6a93332
-  Permission-PhotoLibrary: 4d2eff62c8f4b8a27bcf045c0e36f5047efbbf20
-  Permission-Reminders: 330cfafecc259594cfd7845a035580b623f771ae
-  Permission-SpeechRecognition: 069447d0304a16237a43e9221052da7581d7f48c
-  Permission-StoreKit: 27c9c90c94ecdc144551623a3fc14ac7488f3000
+  Permission-AppTrackingTransparency: ae4200d3044616263bedcd6bfaf788abdbac5d7d
+  Permission-BluetoothPeripheral: d7b686f612db77ffb95762e28d76f01b587dcd03
+  Permission-Calendars: 3d05c490fd5abebdfdadc791c4a9a32a9194e711
+  Permission-Camera: 9ff12884205fb282b4a22b9e8c358ba53cee7567
+  Permission-Contacts: 2c9a8932f30582ed175551b7baa8d0344837c53b
+  Permission-FaceID: 3106c7006b85a3baec8081ba17ee1f39a16ca9e0
+  Permission-LocationAlways: 8026796fd0fc8d735adbd84cd1ae28a4fb22ac22
+  Permission-LocationFullAccuracy: 249810174a64bdf3d80faedd644d260b59861c9b
+  Permission-LocationWhenInUse: eba08412fee84a8ac5140472d83aef2427a5befe
+  Permission-MediaLibrary: d8dcc62b06bce4053adcfe53bceef73eef9d483a
+  Permission-Microphone: 06462b9d979ada12095bcff8d5ee1aeeeaf20b5d
+  Permission-Motion: b8f1f0e7baf8fb136fc54aabf6a8669e95265d16
+  Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
+  Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
+  Permission-Reminders: 82dfcc66d1afdaef20a0084350753c3ff2691e4a
+  Permission-SpeechRecognition: 0dc3e7a65fa38beb9d249cd37ef1b1565f72a494
+  Permission-StoreKit: 0fc596a9c7d2c3fbebfd4b1c89222db3ce94eba2
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
@@ -554,11 +560,11 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
+  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9e96e19d5067985facb6a376a9c1fc970d97e8db
+PODFILE CHECKSUM: b923998a83e9d4b4cd58b688d2952dc56cc42676
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
