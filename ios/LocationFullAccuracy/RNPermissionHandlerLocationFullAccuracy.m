@@ -3,6 +3,11 @@
 @import CoreLocation;
 @import UIKit;
 
+NSErrorDomain const RNPermissionHandlerLocationFullAccuracyDomain = @"RNPermissionHandlerLocationFullAccuracy";
+NS_ENUM(NSInteger) {
+  RNPermissionHandlerLocationFullAccuracyNoPurposeKey = 1,
+};
+
 @interface RNPermissionHandlerLocationFullAccuracy()
 
 @end
@@ -53,6 +58,13 @@
   if (@available(iOS 14.0, *)) {
     CLLocationManager *locationManager = [CLLocationManager new];
     NSString *purposeKey = [rationale objectForKey:@"temporaryPurposeKey"];
+
+    if (!purposeKey) {
+      return reject([NSError errorWithDomain:RNPermissionHandlerLocationFullAccuracyDomain
+                                        code:RNPermissionHandlerLocationFullAccuracyNoPurposeKey
+                                    userInfo:@{NSLocalizedDescriptionKey: @"temporaryPurposeKey is required to request LOCATION_FULL_ACCURACY"}]);
+    }
+
     [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
                                                                   completion:^(NSError * _Nullable error) {
       RNPermissionStatus status = [RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager];

@@ -1,13 +1,9 @@
-import {IOS} from './constants';
 import {
-  AndroidPermission,
-  IOSPermission,
   NotificationOption,
   NotificationsResponse,
   Permission,
   PermissionStatus,
-  RationaleAndroid,
-  RationaleFullAccuracyIOS,
+  Rationale,
 } from './types';
 
 export interface Contract {
@@ -16,15 +12,8 @@ export interface Contract {
   check(permission: Permission): Promise<PermissionStatus>;
 
   request(
-    permission: AndroidPermission,
-    rationale?: RationaleAndroid,
-  ): Promise<PermissionStatus>;
-  request(
-    permission: Exclude<IOSPermission, typeof IOS.LOCATION_FULL_ACCURACY>,
-  ): Promise<PermissionStatus>;
-  request(
-    permission: typeof IOS.LOCATION_FULL_ACCURACY,
-    rationale: RationaleFullAccuracyIOS,
+    permission: Permission,
+    rationale?: Rationale,
   ): Promise<PermissionStatus>;
 
   checkNotifications(): Promise<NotificationsResponse>;
