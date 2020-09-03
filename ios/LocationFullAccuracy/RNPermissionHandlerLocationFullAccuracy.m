@@ -36,7 +36,7 @@ NS_ENUM(NSInteger) {
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  if (!CLLocationManager.locationServicesEnabled || CLLocationManager.authorizationStatus != RNPermissionStatusAuthorized) {
+  if (!CLLocationManager.locationServicesEnabled) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
@@ -51,7 +51,7 @@ NS_ENUM(NSInteger) {
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
                   rationale:(NSDictionary *_Nullable)rationale {
-  if (!CLLocationManager.locationServicesEnabled || CLLocationManager.authorizationStatus != RNPermissionStatusAuthorized) {
+  if (!CLLocationManager.locationServicesEnabled) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
