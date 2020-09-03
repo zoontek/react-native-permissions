@@ -50,19 +50,17 @@ NS_ENUM(NSInteger) {
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                  rationale:(NSDictionary *_Nullable)rationale {
+                    options:(NSDictionary *_Nullable)options {
   if (!CLLocationManager.locationServicesEnabled) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
   if (@available(iOS 14.0, *)) {
     CLLocationManager *locationManager = [CLLocationManager new];
-    NSString *purposeKey = [rationale objectForKey:@"temporaryPurposeKey"];
+    NSString *purposeKey = [options objectForKey:@"temporaryPurposeKey"];
 
     if (!purposeKey) {
-      return reject([NSError errorWithDomain:RNPermissionHandlerLocationFullAccuracyDomain
-                                        code:RNPermissionHandlerLocationFullAccuracyNoPurposeKey
-                                    userInfo:@{NSLocalizedDescriptionKey: @"temporaryPurposeKey is required to request LOCATION_FULL_ACCURACY"}]);
+      purposeKey = @"full-accuracy";
     }
 
     [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey

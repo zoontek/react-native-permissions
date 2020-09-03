@@ -402,7 +402,7 @@ RCT_REMAP_METHOD(check,
 
 RCT_REMAP_METHOD(request,
                  requestWithPermission:(RNPermission)permission
-                 rationale:(NSDictionary *_Nullable)rationale
+                   options:(NSDictionary *_Nullable)options
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
@@ -414,7 +414,7 @@ RCT_REMAP_METHOD(request,
   } rejecter:^(NSError *error) {
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
-  } rationale:rationale];
+  } options:options];
 }
 
 RCT_REMAP_METHOD(checkNotifications,

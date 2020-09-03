@@ -465,7 +465,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 Request one permission.
 
 ```ts
-type RationaleAndroid = {
+type Rationale = {
   title: string;
   message: string;
   buttonPositive?: string;
@@ -473,13 +473,13 @@ type RationaleAndroid = {
   buttonNeutral?: string;
 };
 
-type RationalFullAccuracyIOS {
+type FullAccuracyOptionsIOS {
   temporaryPurposeKey: string
 }
 
 function request(
   permission: string,
-  rationale?: RationaleAndroid | RationalFullAccuracyIOS,
+  options?: Rationale | FullAccuracyOptionsIOS,
 ): Promise<PermissionStatus>;
 ```
 

@@ -28,7 +28,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                  rationale:(NSDictionary *_Nullable)rationale {
+                    options:(NSDictionary *_Nullable)options {
   [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];

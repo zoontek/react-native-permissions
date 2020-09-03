@@ -189,13 +189,7 @@ export default class App extends React.Component<{}, State> {
         status={status}
         name={item}
         onPress={() => {
-          const request =
-            value === PERMISSIONS.IOS.LOCATION_FULL_ACCURACY
-              ? RNPermissions.request(value, {
-                  temporaryPurposeKey: 'full-accuracy',
-                })
-              : RNPermissions.request(value);
-          request
+          RNPermissions.request(value)
             .then(() => this.check())
             .catch((error) => console.error(error));
         }}

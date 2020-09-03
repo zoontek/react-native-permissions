@@ -6,7 +6,7 @@ import {
   NotificationsResponse,
   Permission,
   PermissionStatus,
-  Rationale,
+  RequestOptions,
 } from './types';
 import {uniq} from './utils';
 
@@ -21,7 +21,7 @@ const RNP: {
   check: (permission: Permission) => Promise<PermissionStatus>;
   request: (
     permission: Permission,
-    rationale?: object,
+    options?: object,
   ) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
@@ -37,10 +37,10 @@ async function check(permission: Permission): Promise<PermissionStatus> {
 
 async function request(
   permission: Permission,
-  rationale?: Rationale,
+  options?: RequestOptions,
 ): Promise<PermissionStatus> {
   return RNP.available.includes(permission)
-    ? RNP.request(permission, rationale)
+    ? RNP.request(permission, options)
     : RESULTS.UNAVAILABLE;
 }
 

@@ -3,7 +3,7 @@ import {
   NotificationsResponse,
   Permission,
   PermissionStatus,
-  Rationale,
+  RequestOptions,
 } from './types';
 
 export interface Contract {
@@ -11,9 +11,9 @@ export interface Contract {
 
   check(permission: Permission): Promise<PermissionStatus>;
 
-  request(
-    permission: Permission,
-    rationale?: Rationale,
+  request<T extends Permission>(
+    permission: T,
+    options?: RequestOptions<T>,
   ): Promise<PermissionStatus>;
 
   checkNotifications(): Promise<NotificationsResponse>;

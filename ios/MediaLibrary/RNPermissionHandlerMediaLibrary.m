@@ -36,7 +36,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                  rationale:(NSDictionary *_Nullable)rationale {
+                    options:(NSDictionary *_Nullable)options {
 #if TARGET_OS_SIMULATOR
   resolve(RNPermissionStatusNotAvailable);
 #else

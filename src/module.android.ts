@@ -11,7 +11,7 @@ import {
   Permission,
   PermissionStatus,
   Rationale,
-  RationaleAndroid,
+  RequestOptions,
 } from './types';
 import {uniq} from './utils';
 
@@ -59,17 +59,14 @@ async function check(permission: Permission): Promise<PermissionStatus> {
 
 async function request(
   permission: Permission,
-  rationale?: Rationale,
+  options?: RequestOptions,
 ): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
 
   const status = coreStatusToStatus(
-    await Core.request(
-      permission as CorePermission,
-      rationale as RationaleAndroid,
-    ),
+    await Core.request(permission as CorePermission, options as Rationale),
   );
 
   if (status === RESULTS.BLOCKED) {
