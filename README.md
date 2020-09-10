@@ -99,8 +99,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSSiriUsageDescription</key>
   <string>YOUR TEXT</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>YOUR TEXT</string>
+  <key>NSUserTrackingUsageDescription</key>
+  <string>YOUR TEXT</string>
 
   <!-- … -->
 
