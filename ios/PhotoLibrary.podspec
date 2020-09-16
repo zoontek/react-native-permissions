@@ -18,4 +18,5 @@ Pod::Spec.new do |s|
 
   s.source                    = { :git => package["repository"]["url"], :tag => s.version }
   s.source_files              = "PhotoLibrary/*.{h,m}"
+  s.frameworks                = "PhotosUI"
 end
