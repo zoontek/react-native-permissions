@@ -47,6 +47,7 @@ target 'YourAwesomeProject' do
   pod 'Permission-Motion', :path => "#{permissions_path}/Motion.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly.podspec"
   pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
   pod 'Permission-Siri', :path => "#{permissions_path}/Siri.podspec"
   pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition.podspec"
@@ -93,6 +94,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSPhotoLibraryUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+	<string>YOUR TEXT</string>
   <key>NSRemindersUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
@@ -391,6 +394,7 @@ PERMISSIONS.IOS.MEDIA_LIBRARY;
 PERMISSIONS.IOS.MICROPHONE;
 PERMISSIONS.IOS.MOTION;
 PERMISSIONS.IOS.PHOTO_LIBRARY;
+PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY;
 PERMISSIONS.IOS.REMINDERS;
 PERMISSIONS.IOS.SIRI;
 PERMISSIONS.IOS.SPEECH_RECOGNITION;
@@ -407,12 +411,18 @@ Permission checks and requests resolve into one of these statuses:
 | `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
 | `RESULTS.GRANTED`     | The permission is granted                                         |
 | `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations                    |
 
 ### Methods
 
 ```ts
 // type used in usage examples
-type PermissionStatus = 'unavailable' | 'denied' | 'blocked' | 'granted';
+type PermissionStatus =
+  | 'unavailable'
+  | 'denied'
+  | 'blocked'
+  | 'granted'
+  | 'limited';
 ```
 
 #### check
@@ -618,6 +628,24 @@ function openSettings(): Promise<void>;
 import {openSettings} from 'react-native-permissions';
 
 openSettings().catch(() => console.warn('cannot open settings'));
+```
+
+---
+
+#### presentLimitedLibraryPicker
+
+On iOS, open a picker to update the photo selection when limited permissions are given. This is a no-op on Android, and when full permissions are given.
+
+```ts
+function presentLimitedLibraryPicker(): Promise<void>;
+```
+
+```js
+import {presentLimitedLibraryPicker} from 'react-native-permissions';
+
+presentLimitedLibraryPicker().catch(() =>
+  console.warn('cannot open presentLimitedLibraryPicker'),
+);
 ```
 
 ## Migrating from v1.x.x
