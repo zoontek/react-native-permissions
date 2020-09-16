@@ -9,6 +9,8 @@ import {
 export interface Contract {
   openSettings(): Promise<void>;
 
+  presentLimitedLibraryPicker(): Promise<void>;
+
   check(permission: Permission): Promise<PermissionStatus>;
 
   request(

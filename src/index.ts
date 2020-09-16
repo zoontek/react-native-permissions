@@ -19,6 +19,7 @@ export const checkNotifications = module.checkNotifications;
 export const requestNotifications = module.requestNotifications;
 export const checkMultiple = module.checkMultiple;
 export const requestMultiple = module.requestMultiple;
+export const presentLimitedLibraryPicker = module.presentLimitedLibraryPicker;
 
 export default {
   PERMISSIONS,
@@ -30,4 +31,5 @@ export default {
   requestNotifications,
   checkMultiple,
   requestMultiple,
+  presentLimitedLibraryPicker,
 };
