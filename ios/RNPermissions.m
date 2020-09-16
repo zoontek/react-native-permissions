@@ -52,6 +52,9 @@
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
 #import "RNPermissionHandlerAppTrackingTransparency.h"
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+#import "RNPermissionHandlerPhotoLibraryAddOnly.h"
+#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
@@ -105,6 +108,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   [RNPermissionHandlerAppTrackingTransparency handlerUniqueId]: @(RNPermissionAppTrackingTransparency),
+#endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionAppPhotoLibraryAddOnly),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -181,6 +187,9 @@ RCT_EXPORT_MODULE();
 #endif
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   [available addObject:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  [available addObject:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]];
 #endif
 
 #if RCT_DEV
@@ -283,6 +292,11 @@ RCT_EXPORT_MODULE();
       handler = [RNPermissionHandlerAppTrackingTransparency new];
       break;
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+    case RNPermissionAppPhotoLibraryAddOnly:
+      handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
+      break;
+#endif
     case RNPermissionUnknown:
       break; // RCTConvert prevents this case
   }
@@ -310,6 +324,8 @@ RCT_EXPORT_MODULE();
       return @"blocked";
     case RNPermissionStatusAuthorized:
       return @"granted";
+    case RNPermissionStatusLimited:
+      return @"limited";
   }
 }
 
@@ -440,5 +456,22 @@ RCT_REMAP_METHOD(requestNotifications,
   reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
 #endif
 }
+
+RCT_REMAP_METHOD(presentLimitedLibraryPicker,
+                 presentLimitedLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerPhotoLibrary.h")
+  if (@available(iOS 14.0, *)) {
+    RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
+    [handler presentLimitedLibraryPickerFromViewController];
+    resolve(@true);
+  } else {
+    reject(@"cannot_open_limited_picker", @"Limited picker is only available on iOS 14 or higher.", nil);
+  }
+#else
+  reject(@"photos_pod_missing", @"Photo permission pod is missing", nil);
+#endif
+}
+
 
 @end
