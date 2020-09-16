@@ -107,6 +107,7 @@ target 'RNPermissionsExample' do
   pod 'Permission-Motion', :path => "#{permissions_path}/Motion.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly.podspec"
   pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
   # pod 'Permission-Siri', :path => "#{permissions_path}/Siri.podspec"
   pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition.podspec"

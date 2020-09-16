@@ -28,6 +28,7 @@ const colors: {[key: string]: string} = {
   denied: '#ff9800',
   granted: '#43a047',
   blocked: '#e53935',
+  limited: '#ffdd00',
 };
 
 const icons: {[key: string]: string} = {
@@ -35,6 +36,7 @@ const icons: {[key: string]: string} = {
   denied: 'alert-circle',
   granted: 'check-circle',
   blocked: 'close-circle',
+  limited: 'check-circle-outline',
 };
 
 const PermissionRow = ({
@@ -115,6 +117,12 @@ export default class App extends React.Component<{}, State> {
             icon="settings"
             onPress={() => {
               RNPermissions.openSettings();
+            }}
+          />
+          <Appbar.Action
+            icon="image-multiple"
+            onPress={() => {
+              RNPermissions.presentLimitedLibraryPicker();
             }}
           />
         </Appbar.Header>

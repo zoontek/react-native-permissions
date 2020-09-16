@@ -96,6 +96,8 @@ PODS:
     - RNPermissions
   - Permission-PhotoLibrary (2.2.0):
     - RNPermissions
+  - Permission-PhotoLibraryAddOnly (2.2.0):
+    - RNPermissions
   - Permission-Reminders (2.2.0):
     - RNPermissions
   - Permission-SpeechRecognition (2.2.0):
@@ -370,6 +372,7 @@ DEPENDENCIES:
   - Permission-Motion (from `../node_modules/react-native-permissions/ios/Motion.podspec`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary.podspec`)
+  - Permission-PhotoLibraryAddOnly (from `../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly.podspec`)
   - Permission-Reminders (from `../node_modules/react-native-permissions/ios/Reminders.podspec`)
   - Permission-SpeechRecognition (from `../node_modules/react-native-permissions/ios/SpeechRecognition.podspec`)
   - Permission-StoreKit (from `../node_modules/react-native-permissions/ios/StoreKit.podspec`)
@@ -451,6 +454,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
   Permission-PhotoLibrary:
     :path: "../node_modules/react-native-permissions/ios/PhotoLibrary.podspec"
+  Permission-PhotoLibraryAddOnly:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly.podspec"
   Permission-Reminders:
     :path: "../node_modules/react-native-permissions/ios/Reminders.podspec"
   Permission-SpeechRecognition:
@@ -531,7 +536,8 @@ SPEC CHECKSUMS:
   Permission-Microphone: 06462b9d979ada12095bcff8d5ee1aeeeaf20b5d
   Permission-Motion: b8f1f0e7baf8fb136fc54aabf6a8669e95265d16
   Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
-  Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
+  Permission-PhotoLibrary: e7419100010711b9c1cf002c1483653d66e6c246
+  Permission-PhotoLibraryAddOnly: a8f8e696158be0d7652dc14a3ce8f1d9d738e7ab
   Permission-Reminders: 82dfcc66d1afdaef20a0084350753c3ff2691e4a
   Permission-SpeechRecognition: 0dc3e7a65fa38beb9d249cd37ef1b1565f72a494
   Permission-StoreKit: 0fc596a9c7d2c3fbebfd4b1c89222db3ce94eba2
@@ -559,6 +565,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 33d4013cd5154539040dffe614d959a536bc61f4
+PODFILE CHECKSUM: 8f91a3a16ccf05cf62965b5febfce149cb72da42
 
 COCOAPODS: 1.9.3
