@@ -3,7 +3,7 @@ package = JSON.parse(File.read('./package.json'))
 
 Pod::Spec.new do |s|
   s.name                      = "RNPermissions"
-  s.dependency                  "React"
+  s.dependency                  "React-Core"
 
   s.version                   = package["version"]
   s.license                   = package["license"]
