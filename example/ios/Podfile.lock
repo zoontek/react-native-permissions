@@ -70,37 +70,37 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
-  - Permission-AppTrackingTransparency (2.2.0):
+  - Permission-AppTrackingTransparency (2.2.1):
     - RNPermissions
-  - Permission-BluetoothPeripheral (2.2.0):
+  - Permission-BluetoothPeripheral (2.2.1):
     - RNPermissions
-  - Permission-Calendars (2.2.0):
+  - Permission-Calendars (2.2.1):
     - RNPermissions
-  - Permission-Camera (2.2.0):
+  - Permission-Camera (2.2.1):
     - RNPermissions
-  - Permission-Contacts (2.2.0):
+  - Permission-Contacts (2.2.1):
     - RNPermissions
-  - Permission-FaceID (2.2.0):
+  - Permission-FaceID (2.2.1):
     - RNPermissions
-  - Permission-LocationAlways (2.2.0):
+  - Permission-LocationAlways (2.2.1):
     - RNPermissions
-  - Permission-LocationWhenInUse (2.2.0):
+  - Permission-LocationWhenInUse (2.2.1):
     - RNPermissions
-  - Permission-MediaLibrary (2.2.0):
+  - Permission-MediaLibrary (2.2.1):
     - RNPermissions
-  - Permission-Microphone (2.2.0):
+  - Permission-Microphone (2.2.1):
     - RNPermissions
-  - Permission-Motion (2.2.0):
+  - Permission-Motion (2.2.1):
     - RNPermissions
-  - Permission-Notifications (2.2.0):
+  - Permission-Notifications (2.2.1):
     - RNPermissions
-  - Permission-PhotoLibrary (2.2.0):
+  - Permission-PhotoLibrary (2.2.1):
     - RNPermissions
-  - Permission-Reminders (2.2.0):
+  - Permission-Reminders (2.2.1):
     - RNPermissions
-  - Permission-SpeechRecognition (2.2.0):
+  - Permission-SpeechRecognition (2.2.1):
     - RNPermissions
-  - Permission-StoreKit (2.2.0):
+  - Permission-StoreKit (2.2.1):
     - RNPermissions
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
@@ -324,8 +324,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - RNPermissions (2.2.0):
-    - React
+  - RNPermissions (2.2.1):
+    - React-Core
   - RNVectorIcons (6.6.0):
     - React
   - Yoga (1.14.0)
@@ -519,22 +519,22 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
-  Permission-AppTrackingTransparency: ae4200d3044616263bedcd6bfaf788abdbac5d7d
-  Permission-BluetoothPeripheral: d7b686f612db77ffb95762e28d76f01b587dcd03
-  Permission-Calendars: 3d05c490fd5abebdfdadc791c4a9a32a9194e711
-  Permission-Camera: 9ff12884205fb282b4a22b9e8c358ba53cee7567
-  Permission-Contacts: 2c9a8932f30582ed175551b7baa8d0344837c53b
-  Permission-FaceID: 3106c7006b85a3baec8081ba17ee1f39a16ca9e0
-  Permission-LocationAlways: 8026796fd0fc8d735adbd84cd1ae28a4fb22ac22
-  Permission-LocationWhenInUse: eba08412fee84a8ac5140472d83aef2427a5befe
-  Permission-MediaLibrary: d8dcc62b06bce4053adcfe53bceef73eef9d483a
-  Permission-Microphone: 06462b9d979ada12095bcff8d5ee1aeeeaf20b5d
-  Permission-Motion: b8f1f0e7baf8fb136fc54aabf6a8669e95265d16
-  Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
-  Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
-  Permission-Reminders: 82dfcc66d1afdaef20a0084350753c3ff2691e4a
-  Permission-SpeechRecognition: 0dc3e7a65fa38beb9d249cd37ef1b1565f72a494
-  Permission-StoreKit: 0fc596a9c7d2c3fbebfd4b1c89222db3ce94eba2
+  Permission-AppTrackingTransparency: a598a1d8b95fbe88b94b1f661d23f71cc3c968ee
+  Permission-BluetoothPeripheral: fcaed9570265193ef4e43c8a14b4f9ebf6e94ba6
+  Permission-Calendars: a0e108931f9d111ea291cf31d6b323aa55474ab3
+  Permission-Camera: 357e8024a3597a5c0df529a8f87120f1f7e36895
+  Permission-Contacts: 842e5c90da4f14f6ddce430f059ae93337e34a9f
+  Permission-FaceID: 65e9643924136d34007c339f64dd9389ba174312
+  Permission-LocationAlways: f67f696820b2ee8a420a049242c96eaaa2cfc0da
+  Permission-LocationWhenInUse: 3d1bd1eeedcf397090e31ffcb4e6b6ff128087ca
+  Permission-MediaLibrary: 67006580556e4fd8d886486348fcf309922cff13
+  Permission-Microphone: 0f6d419edccc94135333daf5cb873f9d161557e3
+  Permission-Motion: 584c71294bfc619f7ee6293f95e0904779cf0d6d
+  Permission-Notifications: 68ed977040885caa5c9ace4812ed448c70018e8d
+  Permission-PhotoLibrary: 6c7add434f810971ea2019117f5322cf54bcace0
+  Permission-Reminders: 7f664e6c5361fd123a174171eea40e178411c521
+  Permission-SpeechRecognition: 9536d688032bc2278fee2964600a736c6014ff5b
+  Permission-StoreKit: 5e468605c699d4d2c9e63ad782f8ffcf1850640f
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
@@ -554,7 +554,7 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
+  RNPermissions: 54f83272e3d1961fcbd6aff8fd826014c37fc578
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
