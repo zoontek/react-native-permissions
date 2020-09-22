@@ -49,7 +49,39 @@ export const IOS = Object.freeze({
   STOREKIT: 'ios.permission.STOREKIT' as const,
 });
 
-export const PERMISSIONS = Object.freeze({ANDROID, IOS});
+export const WINDOWS = Object.freeze({
+  APPOINTMENTS: 'appointments' as const,
+  BLOCKED_CHAT_MESSAGES: 'blockedChatMessages' as const,
+  BLUETOOTH_GATT: 'bluetooth.genericAttributeProfile' as const,
+  BLUETOOTH_RFCOMM: 'bluetooth.rfcomm' as const,
+  CHAT: 'chat' as const,
+  CODE_GENERATION: 'codeGeneration' as const,
+  CONTACTS: 'contacts' as const,
+  DOCUMENTS_LIBRARY: 'documentsLibrary' as const,
+  ENTERPRISE_AUTHENTICATION: 'enterpriseAuthentication' as const,
+  HUMAN_INTERFACE_DEVICE: 'humaninterfacedevice' as const,
+  INTERNET_CLIENT: 'internetClient' as const,
+  INTERNET_CLIENT_SERVER: 'internetClientServer' as const,
+  LOCATION: 'location' as const,
+  MICROPHONE: 'microphone' as const,
+  MUSIC_LIBRARY: 'musicLibrary' as const,
+  OBJECTS_3D: 'objects3d' as const,
+  PHONE_CALL: 'phoneCall' as const,
+  PHOTO_LIBRARY: 'picturesLibrary' as const,
+  POINT_OF_SERVICE: 'pointOfService' as const,
+  PRIVATE_NETWORK_CLIENT_SERVER: 'privateNetworkClientServer' as const,
+  PROXIMITY: 'proximity' as const,
+  RECORDED_CALLS_FOLDER: 'recordedCallsFolder' as const,
+  REMOVABLE_STORAGE: 'removableStorage' as const,
+  SHARED_USER_CERTIFICATES: 'sharedUserCertificates' as const,
+  USB: 'usb' as const,
+  USER_ACCOUNT_INFORMATION: 'userAccountInformation' as const,
+  VIDEOS_LIBRARY: 'videosLibrary' as const,
+  VOIP_CALL: 'voipCall' as const,
+  WEBCAM: 'webcam' as const,
+});
+
+export const PERMISSIONS = Object.freeze({ANDROID, IOS, WINDOWS});
 
 export const RESULTS = Object.freeze({
   UNAVAILABLE: 'unavailable' as const,

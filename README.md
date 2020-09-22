@@ -2,17 +2,19 @@
 
 [![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
 [![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
-![Platform - Android and iOS](https://img.shields.io/badge/platform-Android%20%7C%20iOS-yellow.svg)
+![Platform - Android, iOS and Windows](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Windows-yellow.svg)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-A unified permissions API for React Native on iOS and Android.
+A unified permissions API for React Native on iOS, Android and Windows.
+
+For Windows only builds 18362 and later are supported.
 
 ## Support
 
-| version                                                                                                                                                       | react-native version |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| 2.0.0+                                                                                                                                                        | 0.60.2+              |
+| version | react-native version |
+| ------- | -------------------- |
+| 2.0.0+  | 0.60.2+              |
 
 ## Setup
 
@@ -173,9 +175,13 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 </manifest>
 ```
 
+### Windows
+
+Open the project solution file from the `windows` folder. In the app project open `Package.appxmanifest` file. From there you can select which capabilites you want your app to support.
+
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions:
+Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions. You also need to manual link the module on Windows when using React Native Windows prior to 0.63:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
@@ -230,6 +236,23 @@ public class MainApplication extends Application implements ReactApplication {
   // …
 }
 ```
+
+### Windows
+
+1. In `windows/myapp.sln` add the `RNCConfig` project to your solution:
+
+   - Open the solution in Visual Studio 2019
+   - Right-click Solution icon in Solution Explorer > Add > Existing Project
+   - Select `node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj`
+
+2. In `windows/myapp/myapp.vcxproj` ad a reference to `RNPermissions` to your main application project. From Visual Studio 2019:
+
+   - Right-click main application project > Add > Reference...
+   - Check `RNPermissions` from Solution Projects.
+
+3. In `pch.h` add `#include "winrt/RNPermissions.h"`.
+
+4. In `app.cpp` add `PackageProviders().Append(winrt::RNPermissions::ReactPackageProvider());` before `InitializeComponent();`.
 
 </details>
 
@@ -337,6 +360,56 @@ As permissions are not handled in the same way on iOS and Android, this library 
           └─────────────────┘             └─────────────────┘
 ```
 
+### Windows flow
+
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                     │
+         Is the feature available
+              on this device ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                 ┌─────────────────────┐
+                  ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                     │                    └─────────────────────┘
+             Is the permission
+               requestable ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                  ┌───────────────────┐
+                  ╚═════╝                  │ RESULTS.BLOCKED / │
+                     │                     │  RESULTS.GRANTED  │
+                     ▼                     └───────────────────┘
+            ┌────────────────┐
+            │ RESULTS.DENIED │
+            └────────────────┘
+                     │
+                     ▼
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ request(PERMISSIONS.WINDOWS.WEBCAM) ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                     │
+           Does the user accept
+              the request ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                   ┌─────────────────┐
+                  ╚═════╝                   │ RESULTS.BLOCKED │
+                     │                      └─────────────────┘
+                     ▼
+            ┌─────────────────┐
+            │ RESULTS.GRANTED │
+            └─────────────────┘
+```
+
 ## API
 
 ### Supported permissions
@@ -394,6 +467,38 @@ PERMISSIONS.IOS.REMINDERS;
 PERMISSIONS.IOS.SIRI;
 PERMISSIONS.IOS.SPEECH_RECOGNITION;
 PERMISSIONS.IOS.STOREKIT;
+
+// Windows permissions
+
+PERMISSIONS.WINDOWS.APPOINTMENTS;
+PERMISSIONS.WINDOWS.BLOCKED_CHAT_MESSAGES;
+PERMISSIONS.WINDOWS.BLUETOOTH_GATT;
+PERMISSIONS.WINDOWS.BLUETOOTH_RFCOMM;
+PERMISSIONS.WINDOWS.CHAT;
+PERMISSIONS.WINDOWS.CODE_GENERATION;
+PERMISSIONS.WINDOWS.CONTACTS;
+PERMISSIONS.WINDOWS.DOCUMENTS_LIBRARY;
+PERMISSIONS.WINDOWS.ENTERPRISE_AUTHENTICATION;
+PERMISSIONS.WINDOWS.HUMAN_INTERFACE_DEVICE;
+PERMISSIONS.WINDOWS.INTERNET_CLIENT;
+PERMISSIONS.WINDOWS.INTERNET_CLIENT_SERVER;
+PERMISSIONS.WINDOWS.LOCATION;
+PERMISSIONS.WINDOWS.MICROPHONE;
+PERMISSIONS.WINDOWS.MUSIC_LIBRARY;
+PERMISSIONS.WINDOWS.OBJECTS_3D;
+PERMISSIONS.WINDOWS.PHONE_CALL;
+PERMISSIONS.WINDOWS.PHOTO_LIBRARY;
+PERMISSIONS.WINDOWS.POINT_OF_SERVICE;
+PERMISSIONS.WINDOWS.PRIVATE_NETWORK_CLIENT_SERVER;
+PERMISSIONS.WINDOWS.PROXIMITY;
+PERMISSIONS.WINDOWS.RECORDED_CALLS_FOLDER;
+PERMISSIONS.WINDOWS.REMOVABLE_STORAGE;
+PERMISSIONS.WINDOWS.SHARED_USER_CERTIFICATES;
+PERMISSIONS.WINDOWS.USB;
+PERMISSIONS.WINDOWS.USER_ACCOUNT_INFORMATION;
+PERMISSIONS.WINDOWS.VIDEOS_LIBRARY;
+PERMISSIONS.WINDOWS.VOIP_CALL;
+PERMISSIONS.WINDOWS.WEBCAM;
 ```
 
 ### Permissions statuses
@@ -519,6 +624,8 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
+You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.
+
 ```ts
 // only used on iOS
 type NotificationOption =
@@ -637,6 +744,7 @@ request(
   Platform.select({
     android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
     ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+    windows: PERMISSIONS.WINDOWS.LOCATION,
   }),
 );
 ```
