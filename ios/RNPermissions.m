@@ -356,18 +356,13 @@ RCT_REMAP_METHOD(openSettings,
   UIApplication *sharedApplication = [UIApplication sharedApplication];
   NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
 
-  if (@available(iOS 10.0, *)) {
-    [sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
-      if (success) {
-        resolve(@(true));
-      } else {
-        reject(@"cannot_open_settings", @"Cannot open application settings", nil);
-      }
-    }];
-  } else {
-    [sharedApplication openURL:url];
-    resolve(@(true));
-  }
+  [sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
+    if (success) {
+      resolve(@(true));
+    } else {
+      reject(@"cannot_open_settings", @"Cannot open application settings", nil);
+    }
+  }];
 }
 
 RCT_REMAP_METHOD(check,

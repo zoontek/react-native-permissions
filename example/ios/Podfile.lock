@@ -519,22 +519,22 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
-  Permission-AppTrackingTransparency: a598a1d8b95fbe88b94b1f661d23f71cc3c968ee
-  Permission-BluetoothPeripheral: fcaed9570265193ef4e43c8a14b4f9ebf6e94ba6
-  Permission-Calendars: a0e108931f9d111ea291cf31d6b323aa55474ab3
-  Permission-Camera: 357e8024a3597a5c0df529a8f87120f1f7e36895
-  Permission-Contacts: 842e5c90da4f14f6ddce430f059ae93337e34a9f
-  Permission-FaceID: 65e9643924136d34007c339f64dd9389ba174312
-  Permission-LocationAlways: f67f696820b2ee8a420a049242c96eaaa2cfc0da
-  Permission-LocationWhenInUse: 3d1bd1eeedcf397090e31ffcb4e6b6ff128087ca
-  Permission-MediaLibrary: 67006580556e4fd8d886486348fcf309922cff13
-  Permission-Microphone: 0f6d419edccc94135333daf5cb873f9d161557e3
-  Permission-Motion: 584c71294bfc619f7ee6293f95e0904779cf0d6d
-  Permission-Notifications: 68ed977040885caa5c9ace4812ed448c70018e8d
-  Permission-PhotoLibrary: 6c7add434f810971ea2019117f5322cf54bcace0
-  Permission-Reminders: 7f664e6c5361fd123a174171eea40e178411c521
-  Permission-SpeechRecognition: 9536d688032bc2278fee2964600a736c6014ff5b
-  Permission-StoreKit: 5e468605c699d4d2c9e63ad782f8ffcf1850640f
+  Permission-AppTrackingTransparency: 937354295dc259d1f71bd439118f0f475d0eab32
+  Permission-BluetoothPeripheral: 1a4c032c6c11ca5d347b3470eaba3ca20372652d
+  Permission-Calendars: 877112e6b254d51cd507005a3db2aebe44a369f4
+  Permission-Camera: ef465330eac6f3f02318ff4245c2c030c736dde5
+  Permission-Contacts: 32364d57eb3a430c9ad2b98f83fe8e3267cf3271
+  Permission-FaceID: b1b1afff38c7aeb3d3084715393dd2ecc91752f8
+  Permission-LocationAlways: 916f0b80028ebb36479882f72f146f662a4b039d
+  Permission-LocationWhenInUse: f201b0ec784e244de9837586bff6953ce06c3e6e
+  Permission-MediaLibrary: 6732a67dc163b8cf2f7868725ca1fbae65bc41c4
+  Permission-Microphone: ee1b885a730d81789a3863933edabb2ffb6c349b
+  Permission-Motion: 2c85ea3b96696bf577d8fd49b94252267ec358b2
+  Permission-Notifications: 0c6d4425296f2d1a4abf514b503cd5c00073d897
+  Permission-PhotoLibrary: 549de1139912cd68a1c38b42df4d0df90796e974
+  Permission-Reminders: 4daa9f72e2a0747e9b35b86a680639c3f764118e
+  Permission-SpeechRecognition: f436f099098dd47a7fd2f9810f287562715a969b
+  Permission-StoreKit: 9ef5ce0d24eeb69f564759306eb87bbe53bab0e0
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
@@ -554,11 +554,11 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNPermissions: 54f83272e3d1961fcbd6aff8fd826014c37fc578
+  RNPermissions: ffc7fe7138c4d1abac36f5d75131386addb74bfe
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 33d4013cd5154539040dffe614d959a536bc61f4
+PODFILE CHECKSUM: ac19e91984e3101ac13e5fa053ec234395143216
 
 COCOAPODS: 1.9.3
