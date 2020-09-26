@@ -116,6 +116,8 @@ use_frameworks!
 
 # Convert all permission pods into static libraries
 pre_install do |installer|
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+
   installer.pod_targets.each do |pod|
     if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
       def pod.build_type;
