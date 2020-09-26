@@ -6,7 +6,7 @@ import {
   Rationale,
 } from './types';
 
-export interface Contract {
+export type Contract = {
   openSettings(): Promise<void>;
 
   check(permission: Permission): Promise<PermissionStatus>;
@@ -29,4 +29,4 @@ export interface Contract {
   requestMultiple<P extends Permission[]>(
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
-}
+};

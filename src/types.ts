@@ -18,7 +18,7 @@ export type NotificationOption =
   | 'criticalAlert'
   | 'provisional';
 
-export interface NotificationSettings {
+export type NotificationSettings = {
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
@@ -26,9 +26,9 @@ export interface NotificationSettings {
   criticalAlert?: boolean;
   lockScreen?: boolean;
   notificationCenter?: boolean;
-}
+};
 
-export interface NotificationsResponse {
+export type NotificationsResponse = {
   status: PermissionStatus;
   settings: NotificationSettings;
-}
+};
