@@ -1,4 +1,4 @@
-const {PERMISSIONS, RESULTS} = require('./lib/commonjs/constants');
+const {PERMISSIONS, RESULTS} = require('./dist/commonjs/constants');
 export {PERMISSIONS, RESULTS};
 
 export const openSettings = jest.fn(async () => {});

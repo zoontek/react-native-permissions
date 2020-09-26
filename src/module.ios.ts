@@ -1,5 +1,5 @@
 import {NativeModules} from 'react-native';
-import {RESULTS, PERMISSIONS} from './constants';
+import {RESULTS} from './constants';
 import {Contract} from './contract';
 import {
   NotificationOption,

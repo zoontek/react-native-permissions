@@ -1,4 +1,4 @@
 node_modules
-lib/
+dist/
 example/android/app/build
 example/ios/Pods

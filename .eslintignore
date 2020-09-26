@@ -1,4 +1,6 @@
+.eslintrc.js
+dist/
+example/
+mock.js
+
 node_modules
-lib/
-example/android/app/build
-example/ios/Pods

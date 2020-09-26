@@ -15,28 +15,28 @@
     "permission",
     "authorization"
   ],
-  "types": "lib/typescript/index.d.ts",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
+  "types": "dist/typescript/index.d.ts",
+  "main": "dist/commonjs/index.js",
+  "module": "dist/module/index.js",
   "files": [
     "/android",
     "!/android/build",
+    "/dist",
     "/ios",
     "/src",
-    "/lib",
     "/*.podspec",
     "mock.js"
   ],
   "scripts": {
     "start": "react-native start",
-    "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
     "prepare": "bob build",
-    "validate:eslint": "eslint \"./**/*.{js,ts,tsx}\"",
-    "validate:tsc": "tsc --project ./ --noEmit"
+    "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
+    "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "tscheck": "tsc --project ./ --noEmit"
   },
   "@react-native-community/bob": {
     "source": "src",
-    "output": "lib",
+    "output": "dist",
     "targets": [
       "commonjs",
       "module",
@@ -58,24 +58,23 @@
     }
   },
   "peerDependencies": {
-    "react": ">=16.8.6",
-    "react-native": ">=0.60.0"
+    "react": ">=16.13.1",
+    "react-native": ">=0.63.2"
   },
   "devDependencies": {
-    "@babel/core": "7.9.0",
-    "@react-native-community/bob": "0.10.0",
-    "@react-native-community/eslint-config": "1.0.0",
-    "@types/react-native": "0.62.2",
-    "@typescript-eslint/eslint-plugin": "2.27.0",
-    "@typescript-eslint/parser": "2.27.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "6.10.1",
-    "eslint-plugin-prettier": "3.1.2",
-    "husky": "4.2.5",
-    "lint-staged": "10.1.3",
-    "prettier": "2.0.4",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
-    "typescript": "3.8.3"
+    "@babel/core": "^7.11.6",
+    "@react-native-community/bob": "^0.16.2",
+    "@types/react-native": "^0.63.22",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.9.0",
+    "eslint-plugin-react": "7.21.2",
+    "eslint-plugin-react-hooks": "4.1.2",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
+    "react": "^16.13.1",
+    "react-native": "^0.63.2",
+    "typescript": "^4.0.3"
   }
 }
