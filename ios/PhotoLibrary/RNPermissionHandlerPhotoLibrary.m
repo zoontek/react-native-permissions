@@ -22,6 +22,9 @@
     case PHAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
     case PHAuthorizationStatusAuthorized:
+#ifdef __IPHONE_14_0
+    case PHAuthorizationStatusLimited: // TODO: Handle Limited status
+#endif
       return resolve(RNPermissionStatusAuthorized);
   }
 }
