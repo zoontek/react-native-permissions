@@ -10,9 +10,9 @@ A unified permissions API for React Native on iOS and Android.
 
 ## Support
 
-| version                                                                                                                                                       | react-native version |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| 2.0.0+                                                                                                                                                        | 0.60.2+              |
+| version | react-native version |
+| ------- | -------------------- |
+| 2.0.0+  | 0.60.2+              |
 
 ## Setup
 
@@ -212,7 +212,7 @@ dependencies {
 3. Add the import and link the package in `MainApplication.java`:
 
 ```java
-import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
+import com.zoontek.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
 
 public class MainApplication extends Application implements ReactApplication {
 

@@ -1,4 +1,4 @@
-package com.reactnativecommunity.rnpermissions;
+package com.zoontek.rnpermissions;
 
 import android.Manifest;
 import android.content.Context;
