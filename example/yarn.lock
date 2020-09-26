@@ -3553,7 +3553,7 @@ react-native-paper@3.8.0:
     react-native-safe-area-view "^0.14.6"
 
 react-native-permissions@../:
-  version "2.2.1"
+  version "3.0.0-alpha.0"
 
 react-native-safe-area-view@^0.14.6:
   version "0.14.9"
