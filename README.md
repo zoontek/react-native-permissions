@@ -10,9 +10,9 @@ A unified permissions API for React Native on iOS and Android.
 
 ## Support
 
-| version                                                                                                                                                       | react-native version |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| 2.0.0+                                                                                                                                                        | 0.60.2+              |
+| version | react-native version |
+| ------- | -------------------- |
+| 2.0.0+  | 0.60.2+              |
 
 ## Setup
 
@@ -406,6 +406,16 @@ Permission checks and requests resolve into one of these statuses:
 | `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
 | `RESULTS.GRANTED`     | The permission is granted                                         |
 | `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
+
+### Getting the result of `PERMISSION.IOS.LOCATION_ALWAYS` on iOS 13 and later
+
+If you request `PERMISSION.IOS.LOCATION_ALWAYS` when `PERMISSION.IOS.LOCATION_WHEN_IN_USE` is granted, the request only resolves _if_ the user selects "Change to Always Allow" from the permission prompt.
+
+If the user selects "Keep Only While Using" from the permission prompt, the request that triggered the prompt will not resolve.
+
+This happens because iOS only informs the library when the authorization status _changes_. Since the authorization status remains the same if the user selects "Keep Only While Using" from the permission prompt, the library doesn't have any way of knowing this and resolving the request.
+
+Subsequent calls to `check`, `checkMultiple`, or `request` with `PERMISSIONS.IOS.LOCATION_ALWAYS` after the user selected "Keep Only While Using" from the permission prompt will return the correct result of `RESULTS.BLOCKED`.
 
 ### Methods
 
