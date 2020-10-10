@@ -14,7 +14,16 @@
 }
 
 - (RNPermissionStatus)statusWithLocationManager:(CLLocationManager *)locationManager API_AVAILABLE(ios(14.0)) {
-  switch (locationManager.accuracyAuthorization) {
+  switch ([CLLocationManager authorizationStatus]) {
+    case kCLAuthorizationStatusDenied:
+      return RNPermissionStatusDenied;
+    case kCLAuthorizationStatusRestricted:
+      return RNPermissionStatusRestricted;
+    default:
+      break;
+  }
+
+  switch ([locationManager accuracyAuthorization]) {
     case CLAccuracyAuthorizationFullAccuracy:
       return RNPermissionStatusAuthorized;
     case CLAccuracyAuthorizationReducedAccuracy:
@@ -45,6 +54,15 @@
   }
 
   if (@available(iOS 14.0, *)) {
+    switch ([CLLocationManager authorizationStatus]) {
+      case kCLAuthorizationStatusDenied:
+        return resolve(RNPermissionStatusDenied);
+      case kCLAuthorizationStatusRestricted:
+        return resolve(RNPermissionStatusRestricted);
+      default:
+        break;
+    }
+
     CLLocationManager *locationManager = [CLLocationManager new];
     NSString *purposeKey = [options objectForKey:@"purposeKey"];
 
