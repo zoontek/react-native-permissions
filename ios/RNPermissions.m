@@ -322,10 +322,10 @@ RCT_EXPORT_MODULE();
       return @"denied";
     case RNPermissionStatusDenied:
       return @"blocked";
-    case RNPermissionStatusAuthorized:
-      return @"granted";
     case RNPermissionStatusLimited:
       return @"limited";
+    case RNPermissionStatusAuthorized:
+      return @"granted";
   }
 }
 
@@ -459,6 +459,7 @@ RCT_REMAP_METHOD(presentLimitedLibraryPicker,
   if (@available(iOS 14.0, *)) {
     RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
     [handler presentLimitedLibraryPickerFromViewController];
+
     resolve(@true);
   } else {
     reject(@"cannot_open_limited_picker", @"Limited picker is only available on iOS 14 or higher.", nil);
@@ -467,6 +468,5 @@ RCT_REMAP_METHOD(presentLimitedLibraryPicker,
   reject(@"photos_pod_missing", @"Photo permission pod is missing", nil);
 #endif
 }
-
 
 @end

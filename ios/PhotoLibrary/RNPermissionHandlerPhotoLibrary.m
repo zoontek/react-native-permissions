@@ -16,12 +16,13 @@
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
   PHAuthorizationStatus status;
+
   if (@available(iOS 14.0, *)) {
     status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
   } else {
     status = [PHPhotoLibrary authorizationStatus];
   }
-  
+
   switch (status) {
     case PHAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
@@ -41,22 +42,20 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  
+
   if (@available(iOS 14.0, *)) {
     [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(__unused PHAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];
     }];
-    return;
+  } else {
+    [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
+      [self checkWithResolver:resolve rejecter:reject];
+    }];
   }
-  
-  [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
-    [self checkWithResolver:resolve rejecter:reject];
-  }];
 }
 
 - (void)presentLimitedLibraryPickerFromViewController {
   UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-  
   [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
 }
 
