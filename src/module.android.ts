@@ -7,11 +7,11 @@ import {
 import {RESULTS} from './constants';
 import {Contract} from './contract';
 import {
+  FullLocationAccuracyOptions,
   NotificationsResponse,
   Permission,
   PermissionStatus,
   Rationale,
-  RequestOptions,
 } from './types';
 import {uniq} from './utils';
 
@@ -39,6 +39,12 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
+async function askForFullLocationAccuracy(
+  _options: FullLocationAccuracyOptions,
+): Promise<boolean> {
+  throw new Error('Only available on iOS 14 or higher');
+}
+
 async function openLimitedPhotoLibraryPicker(): Promise<void> {
   throw new Error('Only available on iOS 14 or higher');
 }
@@ -63,14 +69,14 @@ async function check(permission: Permission): Promise<PermissionStatus> {
 
 async function request(
   permission: Permission,
-  options?: RequestOptions,
+  rationale?: Rationale,
 ): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
 
   const status = coreStatusToStatus(
-    await Core.request(permission as CorePermission, options as Rationale),
+    await Core.request(permission as CorePermission, rationale),
   );
 
   if (status === RESULTS.BLOCKED) {
@@ -154,6 +160,7 @@ async function requestMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
+  askForFullLocationAccuracy,
   openLimitedPhotoLibraryPicker,
   openSettings,
   check,

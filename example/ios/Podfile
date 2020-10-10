@@ -33,7 +33,6 @@ target 'RNPermissionsExample' do
   pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-  pod 'Permission-LocationFullAccuracy', :path => "#{permissions_path}/LocationFullAccuracy"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"

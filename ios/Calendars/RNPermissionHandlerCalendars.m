@@ -27,8 +27,7 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                    options:(NSDictionary *_Nullable)options {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   [[EKEventStore new] requestAccessToEntityType:EKEntityTypeEvent
                                      completion:^(__unused BOOL granted, NSError * _Nullable error) {
     if (error != nil) {

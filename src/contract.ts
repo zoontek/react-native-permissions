@@ -1,20 +1,25 @@
 import {
+  FullLocationAccuracyOptions,
   NotificationOption,
   NotificationsResponse,
   Permission,
   PermissionStatus,
-  RequestOptions,
+  Rationale,
 } from './types';
 
 export type Contract = {
+  askForFullLocationAccuracy(
+    options: FullLocationAccuracyOptions,
+  ): Promise<boolean>;
+
   openLimitedPhotoLibraryPicker(): Promise<void>;
   openSettings(): Promise<void>;
 
   check(permission: Permission): Promise<PermissionStatus>;
 
-  request<T extends Permission>(
-    permission: T,
-    options?: RequestOptions<T>,
+  request(
+    permission: Permission,
+    rationale?: Rationale,
   ): Promise<PermissionStatus>;
 
   checkNotifications(): Promise<NotificationsResponse>;

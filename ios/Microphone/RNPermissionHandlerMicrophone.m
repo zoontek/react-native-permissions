@@ -27,8 +27,7 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                    options:(NSDictionary *_Nullable)options {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio
                            completionHandler:^(__unused BOOL granted) {
     [self checkWithResolver:resolve rejecter:reject];

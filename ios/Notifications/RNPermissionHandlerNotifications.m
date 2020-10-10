@@ -21,34 +21,39 @@
   [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
     NSMutableDictionary *result = [NSMutableDictionary new];
 
-    bool alert = settings.alertSetting == UNNotificationSettingEnabled;
-    bool badge = settings.badgeSetting == UNNotificationSettingEnabled;
-    bool sound = settings.soundSetting == UNNotificationSettingEnabled;
-    bool lockScreen = settings.lockScreenSetting == UNNotificationSettingEnabled;
-    bool carPlay = settings.carPlaySetting == UNNotificationSettingEnabled;
-    bool notificationCenter = settings.notificationCenterSetting == UNNotificationSettingEnabled;
-
-    if (settings.alertSetting != UNNotificationSettingNotSupported)
-      [result setValue:@(alert) forKey:@"alert"];
-    if (settings.badgeSetting != UNNotificationSettingNotSupported)
-      [result setValue:@(badge) forKey:@"badge"];
-    if (settings.soundSetting != UNNotificationSettingNotSupported)
-      [result setValue:@(sound) forKey:@"sound"];
-    if (settings.lockScreenSetting != UNNotificationSettingNotSupported)
-      [result setValue:@(lockScreen) forKey:@"lockScreen"];
-    if (settings.carPlaySetting != UNNotificationSettingNotSupported)
-      [result setValue:@(carPlay) forKey:@"carPlay"];
-    if (settings.notificationCenterSetting != UNNotificationSettingNotSupported)
-      [result setValue:@(notificationCenter) forKey:@"notificationCenter"];
+    if (settings.alertSetting != UNNotificationSettingNotSupported) {
+      bool value = settings.alertSetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"alert"];
+    }
+    if (settings.badgeSetting != UNNotificationSettingNotSupported) {
+      bool value = settings.badgeSetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"badge"];
+    }
+    if (settings.soundSetting != UNNotificationSettingNotSupported) {
+      bool value = settings.soundSetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"sound"];
+    }
+    if (settings.lockScreenSetting != UNNotificationSettingNotSupported) {
+      bool value = settings.lockScreenSetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"lockScreen"];
+    }
+    if (settings.carPlaySetting != UNNotificationSettingNotSupported) {
+      bool value = settings.carPlaySetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"carPlay"];
+    }
+    if (settings.notificationCenterSetting != UNNotificationSettingNotSupported) {
+      bool value = settings.notificationCenterSetting == UNNotificationSettingEnabled;
+      [result setValue:@(value) forKey:@"notificationCenter"];
+    }
 
     if (@available(iOS 12.0, *)) {
-      bool criticalAlert = settings.criticalAlertSetting == UNNotificationSettingEnabled;
-      bool provisional = settings.authorizationStatus == UNAuthorizationStatusProvisional;
+      bool provisionalValue = settings.authorizationStatus == UNAuthorizationStatusProvisional;
+      [result setValue:@(provisionalValue) forKey:@"provisional"];
 
-      [result setValue:@(provisional) forKey:@"provisional"];
-
-      if (settings.criticalAlertSetting != UNNotificationSettingNotSupported)
-        [result setValue:@(criticalAlert) forKey:@"criticalAlert"];
+      if (settings.criticalAlertSetting != UNNotificationSettingNotSupported) {
+        bool value = settings.criticalAlertSetting == UNNotificationSettingEnabled;
+        [result setValue:@(value) forKey:@"criticalAlert"];
+      }
     }
 
     switch (settings.authorizationStatus) {
@@ -68,9 +73,6 @@
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject
                     options:(NSArray<NSString *> * _Nonnull)options {
-  _resolve = resolve;
-  _reject = reject;
-
   bool alert = [options containsObject:@"alert"];
   bool badge = [options containsObject:@"badge"];
   bool sound = [options containsObject:@"sound"];
@@ -80,14 +82,26 @@
 
   UNAuthorizationOptions types = UNAuthorizationOptionNone;
 
-  if (alert) types += UNAuthorizationOptionAlert;
-  if (badge) types += UNAuthorizationOptionBadge;
-  if (sound) types += UNAuthorizationOptionSound;
-  if (carPlay) types += UNAuthorizationOptionCarPlay;
+  if (alert) {
+    types += UNAuthorizationOptionAlert;
+  }
+  if (badge) {
+    types += UNAuthorizationOptionBadge;
+  }
+  if (sound) {
+    types += UNAuthorizationOptionSound;
+  }
+  if (carPlay) {
+    types += UNAuthorizationOptionCarPlay;
+  }
 
   if (@available(iOS 12.0, *)) {
-    if (criticalAlert) types += UNAuthorizationOptionCriticalAlert;
-    if (provisional) types += UNAuthorizationOptionProvisional;
+    if (criticalAlert) {
+      types += UNAuthorizationOptionCriticalAlert;
+    }
+    if (provisional) {
+      types += UNAuthorizationOptionProvisional;
+    }
   }
 
   if (!alert &&
@@ -113,8 +127,7 @@
       });
     }
 
-    [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
-    [self checkWithResolver:self->_resolve rejecter:self->_reject];
+    [self checkWithResolver:resolve rejecter:reject];
   }];
 }
 

@@ -27,8 +27,7 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                    options:(NSDictionary *_Nullable)options {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   [INPreferences requestSiriAuthorization:^(__unused INSiriAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];

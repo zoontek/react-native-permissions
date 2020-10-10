@@ -85,7 +85,7 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSLocationAlwaysUsageDescription</key>
   <string>YOUR TEXT</string>
-  key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
   <dict>
     <key>YOUR-PURPOSE-KEY</key>
     <string>YOUR TEXT</string>
@@ -395,7 +395,6 @@ PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
 PERMISSIONS.IOS.LOCATION_ALWAYS;
-PERMISSIONS.IOS.LOCATION_FULL_ACCURACY;
 PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
 PERMISSIONS.IOS.MEDIA_LIBRARY;
 PERMISSIONS.IOS.MICROPHONE;
@@ -462,6 +461,9 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
       case RESULTS.BLOCKED:
         console.log('The permission is denied and not requestable anymore');
         break;
+      case RESULTS.LIMITED:
+        console.log('The permission is limited: some actions are possibles');
+        break;
     }
   })
   .catch((error) => {
@@ -484,13 +486,9 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
-type FullAccuracyOptionsIOS {
-  purposeKey: string
-}
-
 function request(
   permission: string,
-  options?: Rationale | FullAccuracyOptionsIOS,
+  options?: Rationale,
 ): Promise<PermissionStatus>;
 ```
 
@@ -509,17 +507,18 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 Check notifications permission status and get notifications settings values.
 
 ```ts
-interface NotificationSettings {
+type NotificationSettings = {
   // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
-  lockScreen?: boolean;
   carPlay?: boolean;
-  notificationCenter?: boolean;
   criticalAlert?: boolean;
-}
+  provisional?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
+};
 
 function checkNotifications(): Promise<{
   status: PermissionStatus;
@@ -551,17 +550,18 @@ type NotificationOption =
   | 'carPlay'
   | 'provisional';
 
-interface NotificationSettings {
+type NotificationSettings = {
   // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
-  lockScreen?: boolean;
   carPlay?: boolean;
-  notificationCenter?: boolean;
   criticalAlert?: boolean;
-}
+  provisional?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
+};
 
 function requestNotifications(
   options: NotificationOption[],
@@ -643,9 +643,37 @@ openSettings().catch(() => console.warn('cannot open settings'));
 
 ---
 
-#### openLimitedPhotoLibraryPicker
+#### askForFullLocationAccuracy (iOS 14+)
 
-On iOS 14+, open a picker to update the photo selection when limited `PhotoLibrary` permission is given. This will reject if unsupported / if full permission is granted.
+When `LocationWhenInUse` or `LocationAlways` is granted, ask the user to use his precise location. Will resolve immediately if already accorded.
+
+```ts
+type FullLocationAccuracyOptions = {
+  purposeKey: string;
+};
+
+function askForFullLocationAccuracy(
+  options: FullLocationAccuracyOptions,
+): Promise<boolean>;
+```
+
+```js
+import {askForFullLocationAccuracy} from 'react-native-permissions';
+
+askForFullLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
+  .then((accorded) => {
+    console.log(`Full accuracy accorded: ${accorded}`);
+  })
+  .catch(() => {
+    console.warn('Cannot ask full location accuracy');
+  });
+```
+
+---
+
+#### openLimitedPhotoLibraryPicker (iOS 14+)
+
+Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
 
 ```ts
 function openLimitedPhotoLibraryPicker(): Promise<void>;
@@ -655,7 +683,7 @@ function openLimitedPhotoLibraryPicker(): Promise<void>;
 import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
 
 openLimitedPhotoLibraryPicker().catch(() => {
-  console.warn('Cannot open PhotoLibrary picker');
+  console.warn('Cannot open photo library picker');
 });
 ```
 

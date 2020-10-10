@@ -37,9 +37,7 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                    options:(NSDictionary *_Nullable)options {
-
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 14.0, *)) {
     [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(__unused PHAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];

@@ -2,11 +2,11 @@ import {NativeModules} from 'react-native';
 import {RESULTS} from './constants';
 import {Contract} from './contract';
 import {
+  FullLocationAccuracyOptions,
   NotificationOption,
   NotificationsResponse,
   Permission,
   PermissionStatus,
-  RequestOptions,
 } from './types';
 import {uniq} from './utils';
 
@@ -17,6 +17,7 @@ const RNP: {
   requestNotifications: (
     options: NotificationOption[],
   ) => Promise<NotificationsResponse>;
+  askForFullLocationAccuracy: (purposeKey: string) => Promise<boolean>;
   openLimitedPhotoLibraryPicker: () => Promise<true>;
   openSettings: () => Promise<true>;
   check: (permission: Permission) => Promise<PermissionStatus>;
@@ -25,6 +26,12 @@ const RNP: {
     options?: object,
   ) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
+
+function askForFullLocationAccuracy(
+  options: FullLocationAccuracyOptions,
+): Promise<boolean> {
+  return RNP.askForFullLocationAccuracy(options.purposeKey);
+}
 
 async function openLimitedPhotoLibraryPicker(): Promise<void> {
   await RNP.openLimitedPhotoLibraryPicker();
@@ -40,12 +47,9 @@ async function check(permission: Permission): Promise<PermissionStatus> {
     : RESULTS.UNAVAILABLE;
 }
 
-async function request(
-  permission: Permission,
-  options?: RequestOptions,
-): Promise<PermissionStatus> {
+async function request(permission: Permission): Promise<PermissionStatus> {
   return RNP.available.includes(permission)
-    ? RNP.request(permission, options)
+    ? RNP.request(permission)
     : RESULTS.UNAVAILABLE;
 }
 
@@ -93,6 +97,7 @@ async function requestMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
+  askForFullLocationAccuracy,
   openLimitedPhotoLibraryPicker,
   openSettings,
   check,

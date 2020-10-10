@@ -1,9 +1,8 @@
 import React from 'react';
 import {
   AppState,
-  FlatList,
-  ListRenderItemInfo,
   Platform,
+  ScrollView,
   StatusBar,
   Text,
   View,
@@ -65,21 +64,10 @@ const PermissionRow = ({
   </TouchableRipple>
 );
 
-interface State {
+type State = {
   statuses: Partial<Record<Permission, PermissionStatus>>;
   notifications: NotificationsResponse;
-}
-
-function toSettingString(setting: boolean | undefined) {
-  switch (setting) {
-    case true:
-      return RESULTS.GRANTED;
-    case false:
-      return RESULTS.DENIED;
-    default:
-      return RESULTS.UNAVAILABLE;
-  }
-}
+};
 
 export default class App extends React.Component<{}, State> {
   state: State = {
@@ -134,6 +122,15 @@ export default class App extends React.Component<{}, State> {
           />
 
           <Appbar.Action
+            icon="crosshairs-question"
+            onPress={() => {
+              RNPermissions.askForFullLocationAccuracy({
+                purposeKey: 'full-accuracy',
+              }).then((accorded) => console.warn({accorded}));
+            }}
+          />
+
+          <Appbar.Action
             icon="cellphone-cog"
             onPress={() => {
               RNPermissions.openSettings();
@@ -141,51 +138,49 @@ export default class App extends React.Component<{}, State> {
           />
         </Appbar.Header>
 
-        <FlatList
-          keyExtractor={(item) => item}
-          data={PERMISSIONS_VALUES}
-          renderItem={this.renderPermissionItem}
-        />
+        <ScrollView>
+          {PERMISSIONS_VALUES.map(this.renderPermissionItem)}
 
-        <View
-          style={{backgroundColor: '#e0e0e0', height: 1}}
-          accessibilityRole="none"
-        />
-
-        <TouchableRipple
-          onPress={() => {
-            RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
-              .then(() => this.check())
-              .catch((error) => console.error(error));
-          }}>
-          <List.Item
-            right={() => (
-              <List.Icon
-                color={colors[notifications.status]}
-                icon={icons[notifications.status]}
-              />
-            )}
-            title="NOTIFICATIONS"
-            description={notifications.status}
+          <View
+            style={{backgroundColor: '#e0e0e0', height: 1}}
+            accessibilityRole="none"
           />
-        </TouchableRipple>
 
-        <Text style={{margin: 15, marginTop: 0, color: '#777'}}>
-          {`alert: ${toSettingString(settings.alert)}\n`}
-          {`badge: ${toSettingString(settings.badge)}\n`}
-          {`sound: ${toSettingString(settings.sound)}\n`}
-          {`lockScreen: ${toSettingString(settings.lockScreen)}\n`}
-          {`notificationCenter: ${toSettingString(
-            settings.notificationCenter,
-          )}\n`}
-          {`carPlay: ${toSettingString(settings.carPlay)}\n`}
-          {`criticalAlert: ${toSettingString(settings.criticalAlert)}\n`}
-        </Text>
+          <TouchableRipple
+            onPress={() => {
+              RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
+                .then(() => this.check())
+                .catch((error) => console.error(error));
+            }}>
+            <>
+              <List.Item
+                title="ios.permission.NOTIFICATIONS"
+                right={() => (
+                  <List.Icon
+                    color={colors[notifications.status]}
+                    icon={icons[notifications.status]}
+                  />
+                )}
+              />
+
+              <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
+                {`alert: ${settings.alert}\n`}
+                {`badge: ${settings.badge}\n`}
+                {`sound: ${settings.sound}\n`}
+                {`carPlay: ${settings.carPlay}\n`}
+                {`criticalAlert: ${settings.criticalAlert}\n`}
+                {`provisional: ${settings.provisional}\n`}
+                {`lockScreen: ${settings.lockScreen}\n`}
+                {`notificationCenter: ${settings.notificationCenter}\n`}
+              </Text>
+            </>
+          </TouchableRipple>
+        </ScrollView>
       </View>
     );
   }
 
-  renderPermissionItem = ({item, index}: ListRenderItemInfo<Permission>) => {
+  renderPermissionItem = (item: Permission, index: number) => {
     const value = PERMISSIONS_VALUES[index];
     const status = this.state.statuses[value];
 
@@ -196,6 +191,7 @@ export default class App extends React.Component<{}, State> {
     return (
       <PermissionRow
         status={status}
+        key={item}
         name={item}
         onPress={() => {
           RNPermissions.request(value)

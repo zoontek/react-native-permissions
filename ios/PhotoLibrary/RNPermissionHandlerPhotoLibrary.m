@@ -38,8 +38,7 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
-                    options:(NSDictionary *_Nullable)options {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 14.0, *)) {
     [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(__unused PHAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];
@@ -51,8 +50,8 @@
   }
 }
 
-- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
-                                         rejecter:(RCTPromiseRejectBlock)reject {
+- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                                         rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
   if (@available(iOS 14, *)) {
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
