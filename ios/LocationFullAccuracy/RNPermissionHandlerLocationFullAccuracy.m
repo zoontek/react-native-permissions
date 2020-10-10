@@ -3,16 +3,6 @@
 @import CoreLocation;
 @import UIKit;
 
-NSErrorDomain const RNPermissionHandlerLocationFullAccuracyDomain = @"RNPermissionHandlerLocationFullAccuracy";
-
-NS_ENUM(NSInteger) {
-  RNPermissionHandlerLocationFullAccuracyNoPurposeKey = 1,
-};
-
-@interface RNPermissionHandlerLocationFullAccuracy()
-
-@end
-
 @implementation RNPermissionHandlerLocationFullAccuracy
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
@@ -23,7 +13,7 @@ NS_ENUM(NSInteger) {
   return @"ios.permission.LOCATION_FULL_ACCURACY";
 }
 
-+ (RNPermissionStatus)getAccuracyStatus:(CLLocationManager *)locationManager API_AVAILABLE(ios(14.0)) {
+- (RNPermissionStatus)statusWithLocationManager:(CLLocationManager *)locationManager API_AVAILABLE(ios(14.0)) {
   switch (locationManager.accuracyAuthorization) {
     case CLAccuracyAuthorizationFullAccuracy:
       return RNPermissionStatusAuthorized;
@@ -35,22 +25,22 @@ NS_ENUM(NSInteger) {
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  if (!CLLocationManager.locationServicesEnabled) {
+  if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
   if (@available(iOS 14.0, *)) {
     CLLocationManager *locationManager = [CLLocationManager new];
-    return resolve([RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager]);
+    resolve([self statusWithLocationManager:locationManager]);
   } else {
-    return resolve(RNPermissionStatusAuthorized);
+    resolve(RNPermissionStatusNotAvailable);
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
                     options:(NSDictionary *_Nullable)options {
-  if (!CLLocationManager.locationServicesEnabled) {
+  if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
 
@@ -64,17 +54,17 @@ NS_ENUM(NSInteger) {
 
     [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
                                                                   completion:^(NSError * _Nullable error) {
-      RNPermissionStatus status = [RNPermissionHandlerLocationFullAccuracy getAccuracyStatus:locationManager];
+      RNPermissionStatus status = [self statusWithLocationManager:locationManager];
 
       // Ignore errors due to full accuracy already being authorized
       if (error && (error.code != kCLErrorPromptDeclined || status != RNPermissionStatusAuthorized)) {
-        return reject(error);
+        reject(error);
       } else {
-        return resolve(status);
+        [self checkWithResolver:resolve rejecter:reject];
       }
     }];
   } else {
-    return resolve(RNPermissionStatusAuthorized);
+    return resolve(RNPermissionStatusNotAvailable);
   }
 }
 
