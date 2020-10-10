@@ -36,7 +36,7 @@ const colors: {[key: string]: string} = {
   denied: '#ff9800',
   granted: '#43a047',
   blocked: '#e53935',
-  limited: '#ffdd00',
+  limited: '#a1887f',
 };
 
 const icons: {[key: string]: string} = {
@@ -44,7 +44,7 @@ const icons: {[key: string]: string} = {
   denied: 'alert-circle',
   granted: 'check-circle',
   blocked: 'close-circle',
-  limited: 'check-circle-outline',
+  limited: 'alpha-l-circle',
 };
 
 const PermissionRow = ({
@@ -127,16 +127,16 @@ export default class App extends React.Component<{}, State> {
           <Appbar.Action onPress={this.refresh} icon="refresh" />
 
           <Appbar.Action
-            icon="settings"
+            icon="image-multiple"
             onPress={() => {
-              RNPermissions.openSettings();
+              RNPermissions.presentLimitedLibraryPicker();
             }}
           />
 
           <Appbar.Action
-            icon="image-multiple"
+            icon="cellphone-cog"
             onPress={() => {
-              RNPermissions.presentLimitedLibraryPicker();
+              RNPermissions.openSettings();
             }}
           />
         </Appbar.Header>
