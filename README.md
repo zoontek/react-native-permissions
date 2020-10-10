@@ -488,7 +488,7 @@ type Rationale = {
 
 function request(
   permission: string,
-  options?: Rationale,
+  rationale?: Rationale,
 ): Promise<PermissionStatus>;
 ```
 
