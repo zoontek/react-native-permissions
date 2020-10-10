@@ -21,6 +21,7 @@ async function checkMultiple<P extends Permission[]>(
 
 export const module: Contract = {
   openSettings: Promise.reject,
+  presentLimitedLibraryPicker: Promise.reject,
   check,
   request: check,
   checkNotifications,
