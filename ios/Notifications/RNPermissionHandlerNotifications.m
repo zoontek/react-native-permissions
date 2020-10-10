@@ -54,12 +54,8 @@
       case UNAuthorizationStatusDenied:
         return resolve(RNPermissionStatusDenied, result);
       case UNAuthorizationStatusAuthorized:
-#ifdef __IPHONE_14_0
       case UNAuthorizationStatusEphemeral: // TODO: Handle Ephemeral status
-#endif
-#ifdef __IPHONE_12_0
       case UNAuthorizationStatusProvisional: // TODO: Handle Provisional status
-#endif
         return resolve(RNPermissionStatusAuthorized, result);
     }
   }];
