@@ -36,6 +36,7 @@ export type NotificationSettings = {
   carPlay?: boolean;
   criticalAlert?: boolean;
   lockScreen?: boolean;
+  provisional?: boolean;
   notificationCenter?: boolean;
 };
 

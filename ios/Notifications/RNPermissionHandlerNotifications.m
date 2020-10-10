@@ -43,6 +43,9 @@
 
     if (@available(iOS 12.0, *)) {
       bool criticalAlert = settings.criticalAlertSetting == UNNotificationSettingEnabled;
+      bool provisional = settings.authorizationStatus == UNAuthorizationStatusProvisional;
+
+      [result setValue:@(provisional) forKey:@"provisional"];
 
       if (settings.criticalAlertSetting != UNNotificationSettingNotSupported)
         [result setValue:@(criticalAlert) forKey:@"criticalAlert"];
@@ -53,9 +56,10 @@
         return resolve(RNPermissionStatusNotDetermined, result);
       case UNAuthorizationStatusDenied:
         return resolve(RNPermissionStatusDenied, result);
+      case UNAuthorizationStatusEphemeral:
+        return resolve(RNPermissionStatusLimited, result);
       case UNAuthorizationStatusAuthorized:
-      case UNAuthorizationStatusEphemeral: // TODO: Handle Ephemeral status
-      case UNAuthorizationStatusProvisional: // TODO: Handle Provisional status
+      case UNAuthorizationStatusProvisional:
         return resolve(RNPermissionStatusAuthorized, result);
     }
   }];
