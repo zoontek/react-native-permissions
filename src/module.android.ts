@@ -3,11 +3,16 @@ import {
   Permission as CorePermission,
   PermissionsAndroid as Core,
   PermissionStatus as CoreStatus,
-  Rationale,
 } from 'react-native';
 import {RESULTS} from './constants';
 import {Contract} from './contract';
-import {NotificationsResponse, Permission, PermissionStatus} from './types';
+import {
+  NotificationsResponse,
+  Permission,
+  PermissionStatus,
+  Rationale,
+  RequestOptions,
+} from './types';
 import {uniq} from './utils';
 
 const RNP: {
@@ -58,14 +63,14 @@ async function check(permission: Permission): Promise<PermissionStatus> {
 
 async function request(
   permission: Permission,
-  rationale?: Rationale,
+  options?: RequestOptions,
 ): Promise<PermissionStatus> {
   if (!RNP.available.includes(permission)) {
     return RESULTS.UNAVAILABLE;
   }
 
   const status = coreStatusToStatus(
-    await Core.request(permission as CorePermission, rationale),
+    await Core.request(permission as CorePermission, options as Rationale),
   );
 
   if (status === RESULTS.BLOCKED) {

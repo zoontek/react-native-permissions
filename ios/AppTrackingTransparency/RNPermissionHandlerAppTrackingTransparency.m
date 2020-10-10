@@ -38,7 +38,8 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                    options:(NSDictionary *_Nullable)options {
   if (@available(iOS 14.0, *)) {
     [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(__unused ATTrackingManagerAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];
