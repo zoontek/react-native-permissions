@@ -462,7 +462,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
         console.log('The permission is denied and not requestable anymore');
         break;
       case RESULTS.LIMITED:
-        console.log('The permission is limited: some actions are possibles');
+        console.log('The permission is limited: some actions are possible');
         break;
     }
   })
