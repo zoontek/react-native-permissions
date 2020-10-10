@@ -1,23 +1,22 @@
-#import "RNPermissionHandlerPhotoLibrary.h"
+#import "RNPermissionHandlerPhotoLibraryAddOnly.h"
 
 @import Photos;
-@import PhotosUI;
 
-@implementation RNPermissionHandlerPhotoLibrary
+@implementation RNPermissionHandlerPhotoLibraryAddOnly
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
   return @[@"NSPhotoLibraryUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.PHOTO_LIBRARY";
+  return @"ios.permission.PHOTO_LIBRARY_ADD_ONLY";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
   PHAuthorizationStatus status;
   if (@available(iOS 14.0, *)) {
-    status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+    status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly];
   } else {
     status = [PHPhotoLibrary authorizationStatus];
   }
@@ -30,9 +29,6 @@
     case PHAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
     case PHAuthorizationStatusAuthorized:
-#ifdef __IPHONE_14_0
-    case PHAuthorizationStatusLimited: // TODO: Handle Limited status
-#endif
       return resolve(RNPermissionStatusAuthorized);
     case PHAuthorizationStatusLimited:
       return resolve(RNPermissionStatusLimited);
@@ -43,7 +39,7 @@
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   
   if (@available(iOS 14.0, *)) {
-    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(__unused PHAuthorizationStatus status) {
+    [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(__unused PHAuthorizationStatus status) {
       [self checkWithResolver:resolve rejecter:reject];
     }];
     return;
@@ -52,12 +48,6 @@
   [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];
-}
-
-- (void)presentLimitedLibraryPickerFromViewController {
-  UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-  
-  [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
 }
 
 @end

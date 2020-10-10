@@ -61,6 +61,8 @@
 	<string>Let me use the microphone</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Let me use your motion data</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Let me add photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let me use your photo library</string>
 	<key>NSRemindersUsageDescription</key>

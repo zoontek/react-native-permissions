@@ -34,6 +34,10 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
+async function presentLimitedLibraryPicker(): Promise<void> {
+  return;
+}
+
 async function openSettings(): Promise<void> {
   await RNP.openSettings();
 }
@@ -152,4 +156,5 @@ export const module: Contract = {
   requestNotifications: checkNotifications,
   checkMultiple,
   requestMultiple,
+  presentLimitedLibraryPicker,
 };
