@@ -27,7 +27,8 @@
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject
+                    options:(NSDictionary *_Nullable)options {
   [[CNContactStore new] requestAccessForEntityType:CNEntityTypeContacts
                                  completionHandler:^(__unused BOOL granted, NSError * _Nullable error) {
     if (error != nil && error.code != 100) { // error code 100 is permission denied

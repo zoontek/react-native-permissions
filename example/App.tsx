@@ -1,5 +1,13 @@
 import React from 'react';
-import {FlatList, Platform, StatusBar, Text, View} from 'react-native';
+import {
+  AppState,
+  FlatList,
+  ListRenderItemInfo,
+  Platform,
+  StatusBar,
+  Text,
+  View,
+} from 'react-native';
 import {Appbar, List, TouchableRipple} from 'react-native-paper';
 import RNPermissions, {
   NotificationsResponse,
@@ -92,6 +100,11 @@ export default class App extends React.Component<{}, State> {
 
   componentDidMount() {
     this.check();
+    AppState.addEventListener('change', this.check);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.check);
   }
 
   render() {
@@ -130,27 +143,8 @@ export default class App extends React.Component<{}, State> {
 
         <FlatList
           keyExtractor={(item) => item}
-          data={Object.keys(PLATFORM_PERMISSIONS)}
-          renderItem={({item, index}) => {
-            const value = PERMISSIONS_VALUES[index];
-            const status = this.state.statuses[value];
-
-            if (!status) {
-              return null;
-            }
-
-            return (
-              <PermissionRow
-                status={status}
-                name={item}
-                onPress={() => {
-                  RNPermissions.request(value)
-                    .then(() => this.check())
-                    .catch((error) => console.error(error));
-                }}
-              />
-            );
-          }}
+          data={PERMISSIONS_VALUES}
+          renderItem={this.renderPermissionItem}
         />
 
         <View
@@ -190,4 +184,25 @@ export default class App extends React.Component<{}, State> {
       </View>
     );
   }
+
+  renderPermissionItem = ({item, index}: ListRenderItemInfo<Permission>) => {
+    const value = PERMISSIONS_VALUES[index];
+    const status = this.state.statuses[value];
+
+    if (!status) {
+      return null;
+    }
+
+    return (
+      <PermissionRow
+        status={status}
+        name={item}
+        onPress={() => {
+          RNPermissions.request(value)
+            .then(() => this.check())
+            .catch((error) => console.error(error));
+        }}
+      />
+    );
+  };
 }

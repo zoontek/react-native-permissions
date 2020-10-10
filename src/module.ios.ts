@@ -6,6 +6,7 @@ import {
   NotificationsResponse,
   Permission,
   PermissionStatus,
+  RequestOptions,
 } from './types';
 import {uniq} from './utils';
 
@@ -19,7 +20,10 @@ const RNP: {
   openSettings: () => Promise<true>;
   presentLimitedLibraryPicker: () => Promise<true>;
   check: (permission: Permission) => Promise<PermissionStatus>;
-  request: (permission: Permission) => Promise<PermissionStatus>;
+  request: (
+    permission: Permission,
+    options?: object,
+  ) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
 async function openSettings(): Promise<void> {
@@ -36,9 +40,12 @@ async function check(permission: Permission): Promise<PermissionStatus> {
     : RESULTS.UNAVAILABLE;
 }
 
-async function request(permission: Permission): Promise<PermissionStatus> {
+async function request(
+  permission: Permission,
+  options?: RequestOptions,
+): Promise<PermissionStatus> {
   return RNP.available.includes(permission)
-    ? RNP.request(permission)
+    ? RNP.request(permission, options)
     : RESULTS.UNAVAILABLE;
 }
 
