@@ -7,9 +7,8 @@ import {
 } from './types';
 
 export type Contract = {
+  openLimitedPhotoLibraryPicker(): Promise<void>;
   openSettings(): Promise<void>;
-
-  presentLimitedLibraryPicker(): Promise<void>;
 
   check(permission: Permission): Promise<PermissionStatus>;
 

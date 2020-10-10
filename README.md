@@ -643,20 +643,20 @@ openSettings().catch(() => console.warn('cannot open settings'));
 
 ---
 
-#### presentLimitedLibraryPicker
+#### openLimitedPhotoLibraryPicker
 
-On iOS, open a picker to update the photo selection when limited permissions are given. This is a no-op on Android, and when full permissions are given.
+On iOS 14+, open a picker to update the photo selection when limited `PhotoLibrary` permission is given. This will reject if unsupported / if full permission is granted.
 
 ```ts
-function presentLimitedLibraryPicker(): Promise<void>;
+function openLimitedPhotoLibraryPicker(): Promise<void>;
 ```
 
 ```js
-import {presentLimitedLibraryPicker} from 'react-native-permissions';
+import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
 
-presentLimitedLibraryPicker().catch(() =>
-  console.warn('cannot open presentLimitedLibraryPicker'),
-);
+openLimitedPhotoLibraryPicker().catch(() => {
+  console.warn('Cannot open PhotoLibrary picker');
+});
 ```
 
 ## Migrating from v1.x.x

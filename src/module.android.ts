@@ -39,8 +39,8 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
-async function presentLimitedLibraryPicker(): Promise<void> {
-  return;
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
+  throw new Error('Only available on iOS 14 or higher');
 }
 
 async function openSettings(): Promise<void> {
@@ -154,6 +154,7 @@ async function requestMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
+  openLimitedPhotoLibraryPicker,
   openSettings,
   check,
   request,
@@ -161,5 +162,4 @@ export const module: Contract = {
   requestNotifications: checkNotifications,
   checkMultiple,
   requestMultiple,
-  presentLimitedLibraryPicker,
 };

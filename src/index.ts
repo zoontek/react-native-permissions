@@ -12,6 +12,8 @@ if (NativeModules.RNPermissions == null) {
 export {PERMISSIONS, RESULTS} from './constants';
 export * from './types';
 
+export const openLimitedPhotoLibraryPicker =
+  module.openLimitedPhotoLibraryPicker;
 export const openSettings = module.openSettings;
 export const check = module.check;
 export const request = module.request;
@@ -19,11 +21,11 @@ export const checkNotifications = module.checkNotifications;
 export const requestNotifications = module.requestNotifications;
 export const checkMultiple = module.checkMultiple;
 export const requestMultiple = module.requestMultiple;
-export const presentLimitedLibraryPicker = module.presentLimitedLibraryPicker;
 
 export default {
   PERMISSIONS,
   RESULTS,
+  openLimitedPhotoLibraryPicker,
   openSettings,
   check,
   request,
@@ -31,5 +33,4 @@ export default {
   requestNotifications,
   checkMultiple,
   requestMultiple,
-  presentLimitedLibraryPicker,
 };

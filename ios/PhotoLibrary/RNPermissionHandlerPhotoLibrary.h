@@ -2,6 +2,7 @@
 
 @interface RNPermissionHandlerPhotoLibrary : NSObject<RNPermissionHandler>
 
-- (void)presentLimitedLibraryPickerFromViewController API_AVAILABLE(ios(14));
+- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
+                                         rejecter:(RCTPromiseRejectBlock)reject;
 
 @end

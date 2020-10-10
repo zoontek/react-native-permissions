@@ -467,20 +467,14 @@ RCT_REMAP_METHOD(requestNotifications,
 #endif
 }
 
-RCT_REMAP_METHOD(presentLimitedLibraryPicker,
-                 presentLimitedLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
+RCT_REMAP_METHOD(openLimitedPhotoLibraryPicker,
+                 openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  if (@available(iOS 14.0, *)) {
-    RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
-    [handler presentLimitedLibraryPickerFromViewController];
-
-    resolve(@true);
-  } else {
-    reject(@"cannot_open_limited_picker", @"Limited picker is only available on iOS 14 or higher.", nil);
-  }
+  RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
+  [handler openLimitedPhotoLibraryPickerWithResolver:resolve rejecter:reject];
 #else
-  reject(@"photos_pod_missing", @"Photo permission pod is missing", nil);
+  reject(@"photo_library_pod_missing", @"Photo Library permission pod is missing", nil);
 #endif
 }
 

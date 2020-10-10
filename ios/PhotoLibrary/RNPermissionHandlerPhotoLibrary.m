@@ -51,9 +51,20 @@
   }
 }
 
-- (void)presentLimitedLibraryPickerFromViewController {
-  UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-  [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
+- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
+                                         rejecter:(RCTPromiseRejectBlock)reject {
+  if (@available(iOS 14, *)) {
+    if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
+      return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
+    }
+
+    UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
+    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
+
+    resolve(@(true));
+  } else {
+    reject(@"cannot_open_limited_picker", @"Only available on iOS 14 or higher", nil);
+  }
 }
 
 @end

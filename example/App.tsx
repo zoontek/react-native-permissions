@@ -129,7 +129,7 @@ export default class App extends React.Component<{}, State> {
           <Appbar.Action
             icon="image-multiple"
             onPress={() => {
-              RNPermissions.presentLimitedLibraryPicker();
+              RNPermissions.openLimitedPhotoLibraryPicker();
             }}
           />
 

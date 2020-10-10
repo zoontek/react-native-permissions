@@ -17,8 +17,8 @@ const RNP: {
   requestNotifications: (
     options: NotificationOption[],
   ) => Promise<NotificationsResponse>;
+  openLimitedPhotoLibraryPicker: () => Promise<true>;
   openSettings: () => Promise<true>;
-  presentLimitedLibraryPicker: () => Promise<true>;
   check: (permission: Permission) => Promise<PermissionStatus>;
   request: (
     permission: Permission,
@@ -26,12 +26,12 @@ const RNP: {
   ) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
-async function openSettings(): Promise<void> {
-  await RNP.openSettings();
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
+  await RNP.openLimitedPhotoLibraryPicker();
 }
 
-async function presentLimitedLibraryPicker(): Promise<void> {
-  await RNP.presentLimitedLibraryPicker();
+async function openSettings(): Promise<void> {
+  await RNP.openSettings();
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
@@ -93,6 +93,7 @@ async function requestMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
+  openLimitedPhotoLibraryPicker,
   openSettings,
   check,
   request,
@@ -100,5 +101,4 @@ export const module: Contract = {
   requestNotifications,
   checkMultiple,
   requestMultiple,
-  presentLimitedLibraryPicker,
 };
