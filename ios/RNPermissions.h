@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, RNPermission) {
   RNPermissionAppTrackingTransparency = 16,
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  RNPermissionAppPhotoLibraryAddOnly = 17,
+  RNPermissionPhotoLibraryAddOnly = 17,
 #endif
 };
 

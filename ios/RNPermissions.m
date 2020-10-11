@@ -55,6 +55,9 @@
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
 #import "RNPermissionHandlerPhotoLibraryAddOnly.h"
 #endif
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+#import "RNPermissionHandlerLocationAccuracy.h"
+#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
@@ -110,7 +113,7 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
   [RNPermissionHandlerAppTrackingTransparency handlerUniqueId]: @(RNPermissionAppTrackingTransparency),
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionAppPhotoLibraryAddOnly),
+  [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionPhotoLibraryAddOnly),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -191,6 +194,9 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
   [available addObject:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]];
 #endif
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [available addObject:[RNPermissionHandlerLocationAccuracy handlerUniqueId]];
+#endif
 
 #if RCT_DEV
   if ([available count] == 0) {
@@ -206,6 +212,17 @@ RCT_EXPORT_MODULE();
 #endif
 
   return @{ @"available": available };
+}
+
+- (void)checkUsageDescriptionKeys:(NSArray<NSString *> * _Nonnull)keys {
+#if RCT_DEV
+  for (NSString *key in keys) {
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
+      RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file", key);
+      return;
+    }
+  }
+#endif
 }
 
 - (id<RNPermissionHandler> _Nullable)handlerForPermission:(RNPermission)permission {
@@ -293,7 +310,7 @@ RCT_EXPORT_MODULE();
       break;
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-    case RNPermissionAppPhotoLibraryAddOnly:
+    case RNPermissionPhotoLibraryAddOnly:
       handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
       break;
 #endif
@@ -301,15 +318,7 @@ RCT_EXPORT_MODULE();
       break; // RCTConvert prevents this case
   }
 
-#if RCT_DEV
-  for (NSString *key in [[handler class] usageDescriptionKeys]) {
-    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
-      RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file", key);
-      return nil;
-    }
-  }
-#endif
-
+  [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
   return handler;
 }
 
@@ -459,22 +468,34 @@ RCT_REMAP_METHOD(openLimitedPhotoLibraryPicker,
   RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
   [handler openLimitedPhotoLibraryPickerWithResolver:resolve rejecter:reject];
 #else
-  reject(@"photo_library_pod_missing", @"Photo Library permission pod is missing", nil);
+  reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
 #endif
 }
 
-RCT_REMAP_METHOD(askForFullLocationAccuracy,
-                 askForFullLocationAccuracyWithPurposeKey:(NSString * _Nonnull)purposeKey
+RCT_REMAP_METHOD(checkLocationAccuracy,
+                 checkLocationAccuracyWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+
+  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  [handler checkWithResolver:resolve rejecter:reject];
+#else
+  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+#endif
+}
+
+RCT_REMAP_METHOD(requestLocationAccuracy,
+                 requestLocationAccuracyWithPurposeKey:(NSString * _Nonnull)purposeKey
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-  RNPermissionHandlerLocationAlways *handler = [RNPermissionHandlerLocationAlways new];
-  [handler askForFullLocationAccuracyWithResolver:resolve rejecter:reject purposeKey:purposeKey];
-#elif __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  RNPermissionHandlerLocationWhenInUse *handler = [RNPermissionHandlerLocationWhenInUse new];
-  [handler askForFullLocationAccuracyWithResolver:resolve rejecter:reject purposeKey:purposeKey];
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+
+  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  [handler requestWithPurposeKey:purposeKey resolver:resolve rejecter:reject];
 #else
-  reject(@"location_pod_missing", @"Location permission pod is missing", nil);
+  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
 #endif
 }
 

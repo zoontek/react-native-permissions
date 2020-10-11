@@ -20,13 +20,14 @@ async function checkMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
-  askForFullLocationAccuracy: Promise.reject,
   openLimitedPhotoLibraryPicker: Promise.reject,
   openSettings: Promise.reject,
   check,
   request: check,
   checkNotifications,
   requestNotifications: checkNotifications,
+  checkLocationAccuracy: Promise.reject,
+  requestLocationAccuracy: Promise.reject,
   checkMultiple,
   requestMultiple: checkMultiple,
 };

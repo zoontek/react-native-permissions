@@ -12,7 +12,6 @@ if (NativeModules.RNPermissions == null) {
 export {PERMISSIONS, RESULTS} from './constants';
 export * from './types';
 
-export const askForFullLocationAccuracy = module.askForFullLocationAccuracy;
 export const openLimitedPhotoLibraryPicker =
   module.openLimitedPhotoLibraryPicker;
 export const openSettings = module.openSettings;
@@ -20,19 +19,22 @@ export const check = module.check;
 export const request = module.request;
 export const checkNotifications = module.checkNotifications;
 export const requestNotifications = module.requestNotifications;
+export const checkLocationAccuracy = module.checkLocationAccuracy;
+export const requestLocationAccuracy = module.requestLocationAccuracy;
 export const checkMultiple = module.checkMultiple;
 export const requestMultiple = module.requestMultiple;
 
 export default {
   PERMISSIONS,
   RESULTS,
-  askForFullLocationAccuracy,
   openLimitedPhotoLibraryPicker,
   openSettings,
   check,
   request,
   checkNotifications,
   requestNotifications,
+  checkLocationAccuracy,
+  requestLocationAccuracy,
   checkMultiple,
   requestMultiple,
 };

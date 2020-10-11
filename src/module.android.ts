@@ -7,7 +7,8 @@ import {
 import {RESULTS} from './constants';
 import {Contract} from './contract';
 import {
-  FullLocationAccuracyOptions,
+  LocationAccuracy,
+  LocationAccuracyOptions,
   NotificationsResponse,
   Permission,
   PermissionStatus,
@@ -39,13 +40,17 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
-async function askForFullLocationAccuracy(
-  _options: FullLocationAccuracyOptions,
-): Promise<boolean> {
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
   throw new Error('Only available on iOS 14 or higher');
 }
 
-async function openLimitedPhotoLibraryPicker(): Promise<void> {
+async function checkLocationAccuracy(): Promise<LocationAccuracy> {
+  throw new Error('Only available on iOS 14 or higher');
+}
+
+async function requestLocationAccuracy(
+  _options: LocationAccuracyOptions,
+): Promise<LocationAccuracy> {
   throw new Error('Only available on iOS 14 or higher');
 }
 
@@ -160,13 +165,14 @@ async function requestMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
-  askForFullLocationAccuracy,
   openLimitedPhotoLibraryPicker,
   openSettings,
   check,
   request,
   checkNotifications,
   requestNotifications: checkNotifications,
+  checkLocationAccuracy,
+  requestLocationAccuracy,
   checkMultiple,
   requestMultiple,
 };

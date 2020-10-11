@@ -82,6 +82,8 @@ PODS:
     - RNPermissions
   - Permission-FaceID (3.0.0-alpha.0):
     - RNPermissions
+  - Permission-LocationAccuracy (3.0.0-alpha.0):
+    - RNPermissions
   - Permission-LocationAlways (3.0.0-alpha.0):
     - RNPermissions
   - Permission-LocationWhenInUse (3.0.0-alpha.0):
@@ -369,6 +371,7 @@ DEPENDENCIES:
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - Permission-Contacts (from `../node_modules/react-native-permissions/ios/Contacts`)
   - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID`)
+  - Permission-LocationAccuracy (from `../node_modules/react-native-permissions/ios/LocationAccuracy`)
   - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways`)
   - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse`)
   - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
@@ -444,6 +447,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/Contacts"
   Permission-FaceID:
     :path: "../node_modules/react-native-permissions/ios/FaceID"
+  Permission-LocationAccuracy:
+    :path: "../node_modules/react-native-permissions/ios/LocationAccuracy"
   Permission-LocationAlways:
     :path: "../node_modules/react-native-permissions/ios/LocationAlways"
   Permission-LocationWhenInUse:
@@ -536,6 +541,7 @@ SPEC CHECKSUMS:
   Permission-Camera: 1ef5155ca8bbd0b078160c32132b6e64302b7b40
   Permission-Contacts: 1cd050a230486f3e894a95fdb5b3fc36d11be0d0
   Permission-FaceID: 2d71630943a2e7782b2b9a882eb8fca85df6277f
+  Permission-LocationAccuracy: 1c14cb2cc0c290105dad51e300bee490e7666340
   Permission-LocationAlways: a77804c5f0b9ea3cf158f8ec923fc12d9df2de66
   Permission-LocationWhenInUse: 77040d77c9e3b4d33f3496abc4e4bc0419703bc0
   Permission-MediaLibrary: 562b546033ae1df1fc98f745927f41ccd2ed965c
@@ -572,6 +578,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b0473ea99a0243aa5f3262b9dba9f00443873919
+PODFILE CHECKSUM: fae6aa2774be401bb7085f00f30a7fbd3604ddb4
 
 COCOAPODS: 1.9.3

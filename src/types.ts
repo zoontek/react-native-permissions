@@ -10,9 +10,11 @@ export type Permission = AndroidPermission | IOSPermission;
 
 export type PermissionStatus = Values<typeof RESULTS>;
 
-export type FullLocationAccuracyOptions = {
+export type LocationAccuracyOptions = {
   purposeKey: string;
 };
+
+export type LocationAccuracy = 'full' | 'reduced';
 
 export type NotificationOption =
   | 'alert'

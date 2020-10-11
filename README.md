@@ -39,6 +39,7 @@ target 'YourAwesomeProject' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
+  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
@@ -117,7 +118,7 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 #### Workaround for `use_frameworks!` issues
 
-If you use `use_frameworks!`, add this at the top of your `Podfile`:
+If you use `use_frameworks!`, add this at the top of your `Podfile`, and uncomment the line corresponding to your CocoaPods version:
 
 ```ruby
 use_frameworks!
@@ -129,7 +130,7 @@ pre_install do |installer|
   installer.pod_targets.each do |pod|
     if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
       def pod.build_type;
-        # Uncomment one line depending on your CocoaPods version
+        # Uncomment the line corresponding to your CocoaPods version
         # Pod::BuildType.static_library # >= 1.9
         # Pod::Target::BuildType.static_library # < 1.9
       end
@@ -416,8 +417,8 @@ Permission checks and requests resolve into one of these statuses:
 | `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)  |
 | `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
 | `RESULTS.GRANTED`     | The permission is granted                                         |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
 | `RESULTS.LIMITED`     | The permission is granted but with limitations                    |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
 
 ### Methods
 
@@ -426,9 +427,9 @@ Permission checks and requests resolve into one of these statuses:
 type PermissionStatus =
   | 'unavailable'
   | 'denied'
-  | 'blocked'
   | 'limited'
-  | 'granted';
+  | 'granted'
+  | 'blocked';
 ```
 
 #### check
@@ -455,14 +456,14 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
           'The permission has not been requested / is denied but requestable',
         );
         break;
+      case RESULTS.LIMITED:
+        console.log('The permission is limited: some actions are possible');
+        break;
       case RESULTS.GRANTED:
         console.log('The permission is granted');
         break;
       case RESULTS.BLOCKED:
         console.log('The permission is denied and not requestable anymore');
-        break;
-      case RESULTS.LIMITED:
-        console.log('The permission is limited: some actions are possible');
         break;
     }
   })
@@ -643,30 +644,48 @@ openSettings().catch(() => console.warn('cannot open settings'));
 
 ---
 
-#### askForFullLocationAccuracy (iOS 14+)
+#### checkLocationAccuracy (iOS 14+)
 
-When `LocationWhenInUse` or `LocationAlways` is granted, ask the user to use his precise location. Will resolve immediately if already accorded.
+When `LocationAlways` or `LocationWhenInUse` is `granted`, allow checking if the user share his precise location.
 
 ```ts
-type FullLocationAccuracyOptions = {
-  purposeKey: string;
-};
+type LocationAccuracy = 'full' | 'reduced';
 
-function askForFullLocationAccuracy(
-  options: FullLocationAccuracyOptions,
-): Promise<boolean>;
+function checkLocationAccuracy(): Promise<LocationAccuracy>;
 ```
 
 ```js
-import {askForFullLocationAccuracy} from 'react-native-permissions';
+import {checkLocationAccuracy} from 'react-native-permissions';
 
-askForFullLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
-  .then((accorded) => {
-    console.log(`Full accuracy accorded: ${accorded}`);
-  })
-  .catch(() => {
-    console.warn('Cannot ask full location accuracy');
-  });
+checkLocationAccuracy()
+  .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
+  .catch(() => console.warn('Cannot check location accuracy'));
+```
+
+---
+
+#### requestLocationAccuracy (iOS 14+)
+
+When `LocationAlways` or `LocationWhenInUse` is `granted`, allow requesting the user for his precise location. Will resolve immediately if `full` accuracy is already authorized.
+
+```ts
+type LocationAccuracyOptions = {
+  purposeKey: string;
+};
+
+type LocationAccuracy = 'full' | 'reduced';
+
+function requestLocationAccuracy(
+  options: LocationAccuracyOptions,
+): Promise<LocationAccuracy>;
+```
+
+```js
+import {requestLocationAccuracy} from 'react-native-permissions';
+
+requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
+  .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
+  .catch(() => console.warn('Cannot request location accuracy'));
 ```
 
 ---

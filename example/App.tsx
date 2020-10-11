@@ -124,9 +124,9 @@ export default class App extends React.Component<{}, State> {
           <Appbar.Action
             icon="crosshairs-question"
             onPress={() => {
-              RNPermissions.askForFullLocationAccuracy({
+              RNPermissions.requestLocationAccuracy({
                 purposeKey: 'full-accuracy',
-              }).then((accorded) => console.warn({accorded}));
+              }).then((accuracy) => console.warn({accuracy}));
             }}
           />
 
