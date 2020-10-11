@@ -13,8 +13,7 @@ import RNPermissions, {
   Permission,
   PERMISSIONS,
   PermissionStatus,
-  RESULTS,
-} from 'react-native-permissions';
+} from './src';
 import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -154,7 +153,7 @@ export default class App extends React.Component<{}, State> {
             }}>
             <>
               <List.Item
-                title="ios.permission.NOTIFICATIONS"
+                title="NOTIFICATIONS"
                 right={() => (
                   <List.Icon
                     color={colors[notifications.status]}
@@ -163,16 +162,18 @@ export default class App extends React.Component<{}, State> {
                 )}
               />
 
-              <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
-                {`alert: ${settings.alert}\n`}
-                {`badge: ${settings.badge}\n`}
-                {`sound: ${settings.sound}\n`}
-                {`carPlay: ${settings.carPlay}\n`}
-                {`criticalAlert: ${settings.criticalAlert}\n`}
-                {`provisional: ${settings.provisional}\n`}
-                {`lockScreen: ${settings.lockScreen}\n`}
-                {`notificationCenter: ${settings.notificationCenter}\n`}
-              </Text>
+              {Platform.OS === 'ios' && (
+                <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
+                  {`alert: ${settings.alert}\n`}
+                  {`badge: ${settings.badge}\n`}
+                  {`sound: ${settings.sound}\n`}
+                  {`carPlay: ${settings.carPlay}\n`}
+                  {`criticalAlert: ${settings.criticalAlert}\n`}
+                  {`provisional: ${settings.provisional}\n`}
+                  {`lockScreen: ${settings.lockScreen}\n`}
+                  {`notificationCenter: ${settings.notificationCenter}\n`}
+                </Text>
+              )}
             </>
           </TouchableRipple>
         </ScrollView>
