@@ -21,8 +21,8 @@ RNPermissions supports autolinking. Just call: `npm i react-native-permissions -
 
 ## Module development
 
-If you want to contribute to this module Windows implementation, first you must install the [Windows Development Dependencies](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies).
+If you want to contribute to this module Windows implementation, first you must install the [Windows Development Dependencies](https://aka.ms/rnw-deps).
 
-You must temporary install `react-native-windows` package. Versions of `react-native-windows` and `react-native` must match. E.g. if the moudule uses `react-native@0.62`, install `npm i react-native-windows@^0.62 --dev`.
+You must temporarily install the `react-native-windows` package. Versions of `react-native-windows` and `react-native` must match, e.g. if the module uses `react-native@0.62`, install `npm i react-native-windows@^0.62 --dev`.
 
 Now, you will be able to open corresponding `RNPermissions...sln` file, e.g. `RNPermissions62.sln` for `react-native-windows@0.62`.
