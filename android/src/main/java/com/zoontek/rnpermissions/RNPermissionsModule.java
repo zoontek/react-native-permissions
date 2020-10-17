@@ -1,73 +1,55 @@
 package com.zoontek.rnpermissions;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Process;
 import android.provider.Settings;
+import android.util.SparseArray;
 
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
 @ReactModule(name = RNPermissionsModule.MODULE_NAME)
-public class RNPermissionsModule extends ReactContextBaseJavaModule {
+public class RNPermissionsModule extends ReactContextBaseJavaModule implements PermissionListener {
 
   private static final String ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY";
   public static final String MODULE_NAME = "RNPermissions";
   private static final String SETTING_NAME = "@RNPermissions:NonRequestables";
 
-  private static final String[][] PERMISSIONS = new String[][] {
-    { "ACCEPT_HANDOVER", "android.permission.ACCEPT_HANDOVER" },
-    { "ACCESS_BACKGROUND_LOCATION", "android.permission.ACCESS_BACKGROUND_LOCATION" },
-    { "ACCESS_COARSE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION" },
-    { "ACCESS_FINE_LOCATION", "android.permission.ACCESS_FINE_LOCATION" },
-    { "ACTIVITY_RECOGNITION", "android.permission.ACTIVITY_RECOGNITION" },
-    { "ADD_VOICEMAIL", "com.android.voicemail.permission.ADD_VOICEMAIL" },
-    { "ANSWER_PHONE_CALLS", "android.permission.ANSWER_PHONE_CALLS" },
-    { "BODY_SENSORS", "android.permission.BODY_SENSORS" },
-    { "CALL_PHONE", "android.permission.CALL_PHONE" },
-    { "CAMERA", "android.permission.CAMERA" },
-    { "GET_ACCOUNTS", "android.permission.GET_ACCOUNTS" },
-    { "PROCESS_OUTGOING_CALLS", "android.permission.PROCESS_OUTGOING_CALLS" },
-    { "READ_CALENDAR", "android.permission.READ_CALENDAR" },
-    { "READ_CALL_LOG", "android.permission.READ_CALL_LOG" },
-    { "READ_CONTACTS", "android.permission.READ_CONTACTS" },
-    { "READ_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE" },
-    { "READ_PHONE_NUMBERS", "android.permission.READ_PHONE_NUMBERS" },
-    { "READ_PHONE_STATE", "android.permission.READ_PHONE_STATE" },
-    { "READ_SMS", "android.permission.READ_SMS" },
-    { "RECEIVE_MMS", "android.permission.RECEIVE_MMS" },
-    { "RECEIVE_SMS", "android.permission.RECEIVE_SMS" },
-    { "RECEIVE_WAP_PUSH", "android.permission.RECEIVE_WAP_PUSH" },
-    { "RECORD_AUDIO", "android.permission.RECORD_AUDIO" },
-    { "SEND_SMS", "android.permission.SEND_SMS" },
-    { "USE_SIP", "android.permission.USE_SIP" },
-    { "WRITE_CALENDAR", "android.permission.WRITE_CALENDAR" },
-    { "WRITE_CALL_LOG", "android.permission.WRITE_CALL_LOG" },
-    { "WRITE_CONTACTS", "android.permission.WRITE_CONTACTS" },
-    { "WRITE_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE" },
-  };
-
-  private final SharedPreferences sharedPrefs;
+  private final SharedPreferences mSharedPrefs;
+  private final SparseArray<Request> mRequests;
+  private int mRequestCode = 0;
+  private final String GRANTED = "granted";
+  private final String DENIED = "denied";
+  private final String UNAVAILABLE = "unavailable";
+  private final String BLOCKED = "blocked";
 
   public RNPermissionsModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    sharedPrefs = reactContext.getSharedPreferences(SETTING_NAME, Context.MODE_PRIVATE);
+    mSharedPrefs = reactContext.getSharedPreferences(SETTING_NAME, Context.MODE_PRIVATE);
+    mRequests = new SparseArray<Request>();
   }
 
   @Override
@@ -75,58 +57,92 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
     return MODULE_NAME;
   }
 
-  private boolean fieldExists(final String fieldName) {
+  private class Request {
+
+    public boolean[] rationaleStatuses;
+    public Callback callback;
+
+    public Request(boolean[] rationaleStatuses, Callback callback) {
+      this.rationaleStatuses = rationaleStatuses;
+      this.callback = callback;
+    }
+  }
+
+  private @Nullable String getFieldName(final String permission) {
+    if (permission.equals("android.permission.ACCEPT_HANDOVER"))
+      return "ACCEPT_HANDOVER";
+    if (permission.equals("android.permission.ACCESS_BACKGROUND_LOCATION"))
+      return "ACCESS_BACKGROUND_LOCATION";
+    if (permission.equals("android.permission.ACCESS_COARSE_LOCATION"))
+      return "ACCESS_COARSE_LOCATION";
+    if (permission.equals("android.permission.ACCESS_FINE_LOCATION"))
+      return "ACCESS_FINE_LOCATION";
+    if (permission.equals("com.android.voicemail.permission.ADD_VOICEMAIL"))
+      return "ADD_VOICEMAIL";
+    if (permission.equals("android.permission.ACTIVITY_RECOGNITION"))
+      return "ACTIVITY_RECOGNITION";
+    if (permission.equals("android.permission.ANSWER_PHONE_CALLS"))
+      return "ANSWER_PHONE_CALLS";
+    if (permission.equals("android.permission.BODY_SENSORS"))
+      return "BODY_SENSORS";
+    if (permission.equals("android.permission.CALL_PHONE"))
+      return "CALL_PHONE";
+    if (permission.equals("android.permission.CAMERA"))
+      return "CAMERA";
+    if (permission.equals("android.permission.GET_ACCOUNTS"))
+      return "GET_ACCOUNTS";
+    if (permission.equals("android.permission.PROCESS_OUTGOING_CALLS"))
+      return "PROCESS_OUTGOING_CALLS";
+    if (permission.equals("android.permission.READ_CALENDAR"))
+      return "READ_CALENDAR";
+    if (permission.equals("android.permission.READ_CALL_LOG"))
+      return "READ_CALL_LOG";
+    if (permission.equals("android.permission.READ_CONTACTS"))
+      return "READ_CONTACTS";
+    if (permission.equals("android.permission.READ_EXTERNAL_STORAGE"))
+      return "READ_EXTERNAL_STORAGE";
+    if (permission.equals("android.permission.READ_PHONE_NUMBERS"))
+      return "READ_PHONE_NUMBERS";
+    if (permission.equals("android.permission.READ_PHONE_STATE"))
+      return "READ_PHONE_STATE";
+    if (permission.equals("android.permission.READ_SMS"))
+      return "READ_SMS";
+    if (permission.equals("android.permission.RECEIVE_MMS"))
+      return "RECEIVE_MMS";
+    if (permission.equals("android.permission.RECEIVE_SMS"))
+      return "RECEIVE_SMS";
+    if (permission.equals("android.permission.RECEIVE_WAP_PUSH"))
+      return "RECEIVE_WAP_PUSH";
+    if (permission.equals("android.permission.RECORD_AUDIO"))
+      return "RECORD_AUDIO";
+    if (permission.equals("android.permission.SEND_SMS"))
+      return "SEND_SMS";
+    if (permission.equals("android.permission.USE_SIP"))
+      return "USE_SIP";
+    if (permission.equals("android.permission.WRITE_CALENDAR"))
+      return "WRITE_CALENDAR";
+    if (permission.equals("android.permission.WRITE_CALL_LOG"))
+      return "WRITE_CALL_LOG";
+    if (permission.equals("android.permission.WRITE_CONTACTS"))
+      return "WRITE_CONTACTS";
+    if (permission.equals("android.permission.WRITE_EXTERNAL_STORAGE"))
+      return "WRITE_EXTERNAL_STORAGE";
+
+    return null;
+  }
+
+  private boolean permissionExists(final String permission) {
+    String fieldName = getFieldName(permission);
+
+    if (fieldName == null)
+      return false;
+
     try {
       Manifest.permission.class.getField(fieldName);
       return true;
     } catch (NoSuchFieldException ignored) {
       return false;
     }
-  }
-
-  @Override
-  public @Nullable Map<String, Object> getConstants() {
-    HashMap<String, Object> constants = new HashMap<>();
-    WritableArray available = Arguments.createArray();
-
-    for (String[] permission : PERMISSIONS) {
-      if (fieldExists(permission[0]))
-        available.pushString(permission[1]);
-    }
-
-    constants.put("available", available);
-    return constants;
-  }
-
-  @ReactMethod
-  public void isNonRequestable(final String permission, final Promise promise) {
-    promise.resolve(sharedPrefs.getBoolean(permission, false));
-  }
-
-  @ReactMethod
-  public void getNonRequestables(final Promise promise) {
-    WritableArray output = Arguments.createArray();
-    Map<String, ?> entries = sharedPrefs.getAll();
-
-    for (Map.Entry<String, ?> entry : entries.entrySet())
-      output.pushString(entry.getKey());
-
-    promise.resolve(output);
-  }
-
-  @ReactMethod
-  public void setNonRequestable(final String permission, final Promise promise) {
-    promise.resolve(sharedPrefs.edit().putBoolean(permission, true).commit());
-  }
-
-  @ReactMethod
-  public void setNonRequestables(final ReadableArray permissions, final Promise promise) {
-    SharedPreferences.Editor editor = sharedPrefs.edit();
-
-    for (int i = 0; i < permissions.size(); i++)
-      editor.putBoolean(permissions.getString(i), true);
-
-    promise.resolve(editor.commit());
   }
 
   @ReactMethod
@@ -162,5 +178,259 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule {
     } catch (Exception e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
+  }
+
+  /**
+   * Check if the app has the permission given. successCallback is called with true if the
+   * permission had been granted, false otherwise. See {@link Activity#checkSelfPermission}.
+   */
+  @ReactMethod
+  public void checkPermission(final String permission, final Promise promise) {
+    if (!permissionExists(permission)) {
+      promise.resolve(UNAVAILABLE);
+      return;
+    }
+
+    Context context = getReactApplicationContext().getBaseContext();
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
+        == PackageManager.PERMISSION_GRANTED
+        ? GRANTED
+        : BLOCKED);
+      return;
+    }
+
+    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      promise.resolve(GRANTED);
+    } else if (mSharedPrefs.getBoolean(permission, false)) {
+      promise.resolve(BLOCKED);
+    } else {
+      promise.resolve(DENIED);
+    }
+  }
+
+  /**
+   * Check whether the app should display a message explaining why a certain permission is needed.
+   * successCallback is called with true if the app should display a message, false otherwise. This
+   * message is only displayed if the user has revoked this permission once before, and if the
+   * permission dialog will be shown to the user (the user can choose to not be shown that dialog
+   * again). For devices before Android M, this always returns false. See {@link
+   * Activity#shouldShowRequestPermissionRationale}.
+   */
+  @ReactMethod
+  public void shouldShowRequestPermissionRationale(final String permission, final Promise promise) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      promise.resolve(false);
+      return;
+    }
+    try {
+      promise.resolve(
+        getPermissionAwareActivity().shouldShowRequestPermissionRationale(permission));
+    } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
+    }
+  }
+
+  /**
+   * Request the given permission. successCallback is called with GRANTED if the permission had been
+   * granted, DENIED or NEVER_ASK_AGAIN otherwise. For devices before Android M, this checks if the
+   * user has the permission given or not and resolves with GRANTED or DENIED. See {@link
+   * Activity#checkSelfPermission}.
+   */
+  @ReactMethod
+  public void requestPermission(final String permission, final Promise promise) {
+    if (!permissionExists(permission)) {
+      promise.resolve(UNAVAILABLE);
+      return;
+    }
+
+    Context context = getReactApplicationContext().getBaseContext();
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
+        == PackageManager.PERMISSION_GRANTED
+        ? GRANTED
+        : BLOCKED);
+      return;
+    }
+
+    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      promise.resolve(GRANTED);
+      return;
+    } else if (mSharedPrefs.getBoolean(permission, false)) {
+      promise.resolve(BLOCKED); // not supporting reset the permission with "Ask me every time"
+      return;
+    }
+
+    try {
+      PermissionAwareActivity activity = getPermissionAwareActivity();
+      boolean[] rationaleStatuses = new boolean[1];
+      rationaleStatuses[0] = activity.shouldShowRequestPermissionRationale(permission);
+
+      mRequests.put(mRequestCode, new Request(
+        rationaleStatuses,
+        new Callback() {
+          @Override
+          public void invoke(Object... args) {
+            int[] results = (int[]) args[0];
+
+            if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) {
+              promise.resolve(GRANTED);
+            } else {
+              PermissionAwareActivity activity = (PermissionAwareActivity) args[1];
+              boolean[] rationaleStatuses = (boolean[]) args[2];
+
+              if (rationaleStatuses[0] &&
+                !activity.shouldShowRequestPermissionRationale(permission)) {
+                mSharedPrefs.edit().putBoolean(permission, true).commit(); // enforce sync
+                promise.resolve(BLOCKED);
+              } else {
+                promise.resolve(DENIED);
+              }
+            }
+          }
+        }));
+
+      activity.requestPermissions(new String[] {permission}, mRequestCode, this);
+      mRequestCode++;
+    } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
+    }
+  }
+
+  @ReactMethod
+  public void checkMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+    final WritableMap output = new WritableNativeMap();
+    Context context = getReactApplicationContext().getBaseContext();
+
+    for (int i = 0; i < permissions.size(); i++) {
+      String permission = permissions.getString(i);
+
+      if (!permissionExists(permission)) {
+        output.putString(permission, UNAVAILABLE);
+      } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        output.putString(
+          permission,
+          context.checkPermission(permission, Process.myPid(), Process.myUid())
+            == PackageManager.PERMISSION_GRANTED
+            ? GRANTED
+            : BLOCKED);
+      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+        output.putString(permission, GRANTED);
+      } else if (mSharedPrefs.getBoolean(permission, false)) {
+        output.putString(permission, BLOCKED); // not supporting reset the permission with "Ask me every time"
+      } else {
+        output.putString(permission, DENIED);
+      }
+    }
+
+    promise.resolve(output);
+  }
+
+  @ReactMethod
+  public void requestMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+    final WritableMap output = new WritableNativeMap();
+    final ArrayList<String> permissionsToCheck = new ArrayList<String>();
+    int checkedPermissionsCount = 0;
+
+    Context context = getReactApplicationContext().getBaseContext();
+
+    for (int i = 0; i < permissions.size(); i++) {
+      String permission = permissions.getString(i);
+
+      if (!permissionExists(permission)) {
+        output.putString(permission, UNAVAILABLE);
+        checkedPermissionsCount++;
+      } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        output.putString(
+          permission,
+          context.checkPermission(permission, Process.myPid(), Process.myUid())
+            == PackageManager.PERMISSION_GRANTED
+            ? GRANTED
+            : BLOCKED);
+
+        checkedPermissionsCount++;
+      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+        output.putString(permission, GRANTED);
+        checkedPermissionsCount++;
+      } else if (mSharedPrefs.getBoolean(permission, false)) {
+        output.putString(permission, BLOCKED); // not supporting reset the permission with "Ask me every time"
+        checkedPermissionsCount++;
+      } else {
+        permissionsToCheck.add(permission);
+      }
+    }
+
+    if (permissions.size() == checkedPermissionsCount) {
+      promise.resolve(output);
+      return;
+    }
+
+    try {
+      PermissionAwareActivity activity = getPermissionAwareActivity();
+      boolean[] rationaleStatuses = new boolean[permissions.size()];
+
+      for (int i = 0; i < permissions.size(); i++) {
+        rationaleStatuses[i] = activity
+          .shouldShowRequestPermissionRationale(permissions.getString(i));
+      }
+
+      mRequests.put(mRequestCode, new Request(
+        rationaleStatuses,
+        new Callback() {
+          @Override
+          public void invoke(Object... args) {
+            int[] results = (int[]) args[0];
+            PermissionAwareActivity activity = (PermissionAwareActivity) args[1];
+            boolean[] rationaleStatuses = (boolean[]) args[2];
+
+            for (int j = 0; j < permissionsToCheck.size(); j++) {
+              String permission = permissionsToCheck.get(j);
+
+              if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
+                output.putString(permission, GRANTED);
+              } else {
+                if (rationaleStatuses[j] &&
+                  !activity.shouldShowRequestPermissionRationale(permission)) {
+                  mSharedPrefs.edit().putBoolean(permission, true).commit(); // enforce sync
+                  output.putString(permission, BLOCKED);
+                } else {
+                  output.putString(permission, DENIED);
+                }
+              }
+            }
+
+            promise.resolve(output);
+          }
+        }));
+
+      activity.requestPermissions(permissionsToCheck.toArray(new String[0]), mRequestCode, this);
+      mRequestCode++;
+    } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
+    }
+  }
+
+  /** Method called by the activity with the result of the permission request. */
+  @Override
+  public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    Request request = mRequests.get(requestCode);
+    request.callback.invoke(grantResults, getPermissionAwareActivity(), request.rationaleStatuses);
+    mRequests.remove(requestCode);
+    return mRequests.size() == 0;
+  }
+
+  private PermissionAwareActivity getPermissionAwareActivity() {
+    Activity activity = getCurrentActivity();
+    if (activity == null) {
+      throw new IllegalStateException(
+        "Tried to use permissions API while not attached to an " + "Activity.");
+    } else if (!(activity instanceof PermissionAwareActivity)) {
+      throw new IllegalStateException(
+        "Tried to use permissions API but the host Activity doesn't"
+          + " implement PermissionAwareActivity.");
+    }
+    return (PermissionAwareActivity) activity;
   }
 }
