@@ -180,10 +180,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     }
   }
 
-  /**
-   * Check if the app has the permission given. successCallback is called with true if the
-   * permission had been granted, false otherwise. See {@link Activity#checkSelfPermission}.
-   */
   @ReactMethod
   public void checkPermission(final String permission, final Promise promise) {
     if (!permissionExists(permission)) {
@@ -210,14 +206,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     }
   }
 
-  /**
-   * Check whether the app should display a message explaining why a certain permission is needed.
-   * successCallback is called with true if the app should display a message, false otherwise. This
-   * message is only displayed if the user has revoked this permission once before, and if the
-   * permission dialog will be shown to the user (the user can choose to not be shown that dialog
-   * again). For devices before Android M, this always returns false. See {@link
-   * Activity#shouldShowRequestPermissionRationale}.
-   */
   @ReactMethod
   public void shouldShowRequestPermissionRationale(final String permission, final Promise promise) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -232,12 +220,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     }
   }
 
-  /**
-   * Request the given permission. successCallback is called with GRANTED if the permission had been
-   * granted, DENIED or NEVER_ASK_AGAIN otherwise. For devices before Android M, this checks if the
-   * user has the permission given or not and resolves with GRANTED or DENIED. See {@link
-   * Activity#checkSelfPermission}.
-   */
   @ReactMethod
   public void requestPermission(final String permission, final Promise promise) {
     if (!permissionExists(permission)) {
@@ -412,7 +394,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     }
   }
 
-  /** Method called by the activity with the result of the permission request. */
   @Override
   public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     Request request = mRequests.get(requestCode);
