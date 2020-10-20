@@ -43,7 +43,7 @@ async function checkMultiple<P extends Permission[]>(
     result[permission] = await promise;
     return promise;
   });
-  Promise.all(promises);
+  await Promise.all(promises);
   return result;
 }
 
