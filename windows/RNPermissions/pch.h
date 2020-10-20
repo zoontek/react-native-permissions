@@ -7,4 +7,5 @@
 #include <winrt/Windows.UI.Notifications.h>
 #include <winrt/Windows.Security.Authorization.AppCapabilityAccess.h>
 #include <string>
+#include <string_view>
 

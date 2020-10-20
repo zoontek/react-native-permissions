@@ -6,6 +6,7 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::UI::Notifications;
 using namespace winrt::Windows::Security::Authorization::AppCapabilityAccess;
+using namespace std::literals;
 
 inline void RNPermissions::RNPermissions::Init(React::ReactContext const& reactContext) noexcept {
   m_reactContext = reactContext;
@@ -49,9 +50,17 @@ void RNPermissions::RNPermissions::CheckNotifications(React::ReactPromise<std::s
   }
 }
 
+std::wstring_view trimmPermission(std::wstring_view permission) {
+  auto prefix = L"windows.permission."sv;
+  if (permission.size() >= prefix.size() &&
+      permission.substr(0, prefix.size()).compare(prefix) == 0)
+    permission.remove_prefix(prefix.size());
+  return permission;
+}
+
 void RNPermissions::RNPermissions::Check(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept {
   try {
-    auto capability = AppCapability::Create(permission);
+    auto capability = AppCapability::Create(trimmPermission(permission));
     switch (capability.CheckAccess()) {
     case AppCapabilityAccessStatus::Allowed:
       promise.Resolve("granted");
@@ -76,7 +85,7 @@ void RNPermissions::RNPermissions::Check(std::wstring permission, React::ReactPr
 
 void RNPermissions::RNPermissions::Request(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept {
   try {
-    auto capability = AppCapability::Create(permission);
+    auto capability = AppCapability::Create(trimmPermission(permission));
     switch (capability.CheckAccess()) {
     case AppCapabilityAccessStatus::Allowed:
       promise.Resolve("granted");
