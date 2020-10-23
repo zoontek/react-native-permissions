@@ -12,6 +12,7 @@
   "keywords": [
     "react-native",
     "react native",
+    "react-native-windows",
     "permission",
     "authorization"
   ],
@@ -22,6 +23,7 @@
     "/android",
     "!/android/build",
     "/ios",
+    "/windows",
     "/src",
     "/lib",
     "/*.podspec",
@@ -59,7 +61,8 @@
   },
   "peerDependencies": {
     "react": ">=16.8.6",
-    "react-native": ">=0.60.0"
+    "react-native": ">=0.60.0",
+    "react-native-windows": ">=0.62"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
