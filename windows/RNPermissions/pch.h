@@ -1,0 +1,11 @@
+#pragma once
+#include <unknwn.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.System.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.UI.Notifications.h>
+#include <winrt/Windows.Security.Authorization.AppCapabilityAccess.h>
+#include <string>
+#include <string_view>
+

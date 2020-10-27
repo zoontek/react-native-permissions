@@ -1,6 +1,6 @@
 .eslintrc.js
 dist/
 example/
+fetchWindowsCapabilites.js
 mock.js
-
 node_modules

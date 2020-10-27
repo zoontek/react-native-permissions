@@ -20,10 +20,14 @@ import theme from './theme';
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
 const PLATFORM_PERMISSIONS = Platform.select<
-  typeof PERMISSIONS_IOS | typeof PERMISSIONS.ANDROID | {}
+  | typeof PERMISSIONS_IOS
+  | typeof PERMISSIONS.ANDROID
+  | typeof PERMISSIONS.WINDOWS
+  | {}
 >({
   ios: PERMISSIONS_IOS,
   android: PERMISSIONS.ANDROID,
+  windows: PERMISSIONS.WINDOWS,
   default: {},
 });
 
@@ -54,7 +58,10 @@ const PermissionRow = ({
   status: string;
   onPress: () => void;
 }) => (
-  <TouchableRipple onPress={onPress}>
+  <TouchableRipple
+    onPress={onPress}
+    accessible={true}
+    accessibilityLabel={`${name}:${status}`}>
     <List.Item
       right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
       title={name}
