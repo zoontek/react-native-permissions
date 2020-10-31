@@ -1,5 +1,5 @@
 import {NativeModules} from 'react-native';
-import {module} from './module';
+import {methods} from './methods';
 import {PERMISSIONS} from './permissions';
 import {RESULTS} from './results';
 
@@ -14,16 +14,16 @@ export {PERMISSIONS} from './permissions';
 export {RESULTS} from './results';
 export * from './types';
 
-export const check = module.check;
-export const checkLocationAccuracy = module.checkLocationAccuracy;
-export const checkMultiple = module.checkMultiple;
-export const checkNotifications = module.checkNotifications;
-export const openLimitedPhotoLibraryPicker = module.openLimitedPhotoLibraryPicker;
-export const openSettings = module.openSettings;
-export const request = module.request;
-export const requestLocationAccuracy = module.requestLocationAccuracy;
-export const requestMultiple = module.requestMultiple;
-export const requestNotifications = module.requestNotifications;
+export const check = methods.check;
+export const checkLocationAccuracy = methods.checkLocationAccuracy;
+export const checkMultiple = methods.checkMultiple;
+export const checkNotifications = methods.checkNotifications;
+export const openLimitedPhotoLibraryPicker = methods.openLimitedPhotoLibraryPicker;
+export const openSettings = methods.openSettings;
+export const request = methods.request;
+export const requestLocationAccuracy = methods.requestLocationAccuracy;
+export const requestMultiple = methods.requestMultiple;
+export const requestNotifications = methods.requestNotifications;
 
 export default {
   PERMISSIONS,

@@ -142,7 +142,7 @@ async function requestMultiple<P extends Permission[]>(
   return output as Record<P[number], PermissionStatus>;
 }
 
-export const module: Contract = {
+export const methods: Contract = {
   check,
   checkLocationAccuracy,
   checkMultiple,

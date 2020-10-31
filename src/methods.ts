@@ -1,6 +1,11 @@
 import type {Contract} from './contract';
 import {RESULTS} from './results';
 import type {NotificationsResponse, Permission, PermissionStatus} from './types';
+import {
+  checkLocationAccuracy,
+  openLimitedPhotoLibraryPicker,
+  requestLocationAccuracy,
+} from './unsupportedPlatformMethods';
 
 async function check(): Promise<PermissionStatus> {
   return RESULTS.UNAVAILABLE;
@@ -19,15 +24,15 @@ async function checkMultiple<P extends Permission[]>(
   }, {} as Record<P[number], PermissionStatus>);
 }
 
-export const module: Contract = {
+export const methods: Contract = {
   check,
-  checkLocationAccuracy: Promise.reject,
+  checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker: Promise.reject,
+  openLimitedPhotoLibraryPicker,
   openSettings: Promise.reject,
   request: check,
-  requestLocationAccuracy: Promise.reject,
+  requestLocationAccuracy,
   requestMultiple: checkMultiple,
   requestNotifications: checkNotifications,
 };

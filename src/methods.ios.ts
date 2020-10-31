@@ -95,7 +95,7 @@ export function requestNotifications(
   return NativeModule.requestNotifications(options);
 }
 
-export const module: Contract = {
+export const methods: Contract = {
   check,
   checkLocationAccuracy,
   checkMultiple,

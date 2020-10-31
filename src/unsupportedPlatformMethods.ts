@@ -1,6 +1,6 @@
 import type {LocationAccuracy, LocationAccuracyOptions} from './types';
 
-const IOS_14 = 'Only supported by iOS 14+';
+const IOS_14 = 'Only supported by iOS 14 and above';
 
 export async function checkLocationAccuracy(): Promise<LocationAccuracy> {
   throw new Error(IOS_14);
