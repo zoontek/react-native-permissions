@@ -1,6 +1,6 @@
-import {RESULTS} from './constants';
-import {Contract} from './contract';
-import {NotificationsResponse, Permission, PermissionStatus} from './types';
+import type {Contract} from './contract';
+import {RESULTS} from './results';
+import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 
 async function check(): Promise<PermissionStatus> {
   return RESULTS.UNAVAILABLE;
@@ -20,14 +20,14 @@ async function checkMultiple<P extends Permission[]>(
 }
 
 export const module: Contract = {
+  check,
+  checkLocationAccuracy: Promise.reject,
+  checkMultiple,
+  checkNotifications,
   openLimitedPhotoLibraryPicker: Promise.reject,
   openSettings: Promise.reject,
-  check,
   request: check,
-  checkNotifications,
-  requestNotifications: checkNotifications,
-  checkLocationAccuracy: Promise.reject,
   requestLocationAccuracy: Promise.reject,
-  checkMultiple,
   requestMultiple: checkMultiple,
+  requestNotifications: checkNotifications,
 };

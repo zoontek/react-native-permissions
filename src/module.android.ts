@@ -4,25 +4,23 @@ import {
   PermissionsAndroid as Core,
   PermissionStatus as CoreStatus,
 } from 'react-native';
-import {RESULTS} from './constants';
-import {Contract} from './contract';
+import type {Contract} from './contract';
+import {RESULTS} from './results';
+import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
-  LocationAccuracy,
-  LocationAccuracyOptions,
-  NotificationsResponse,
-  Permission,
-  PermissionStatus,
-  Rationale,
-} from './types';
+  checkLocationAccuracy,
+  openLimitedPhotoLibraryPicker,
+  requestLocationAccuracy,
+} from './unsupportedPlatformMethods';
 import {uniq} from './utils';
 
-const RNP: {
+const NativeModule: {
   available: Permission[];
 
   checkNotifications: () => Promise<NotificationsResponse>;
-  openSettings: () => Promise<true>;
   getNonRequestables: () => Promise<Permission[]>;
   isNonRequestable: (permission: Permission) => Promise<boolean>;
+  openSettings: () => Promise<true>;
   setNonRequestable: (permission: Permission) => Promise<true>;
   setNonRequestables: (permissions: Permission[]) => Promise<true>;
 } = NativeModules.RNPermissions;
@@ -40,57 +38,6 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
-async function openLimitedPhotoLibraryPicker(): Promise<void> {
-  throw new Error('Only available on iOS 14 or higher');
-}
-
-async function checkLocationAccuracy(): Promise<LocationAccuracy> {
-  throw new Error('Only available on iOS 14 or higher');
-}
-
-async function requestLocationAccuracy(
-  _options: LocationAccuracyOptions,
-): Promise<LocationAccuracy> {
-  throw new Error('Only available on iOS 14 or higher');
-}
-
-async function openSettings(): Promise<void> {
-  await RNP.openSettings();
-}
-
-async function check(permission: Permission): Promise<PermissionStatus> {
-  if (!RNP.available.includes(permission)) {
-    return RESULTS.UNAVAILABLE;
-  }
-
-  if (await Core.check(permission as CorePermission)) {
-    return RESULTS.GRANTED;
-  }
-
-  return (await RNP.isNonRequestable(permission))
-    ? RESULTS.BLOCKED
-    : RESULTS.DENIED;
-}
-
-async function request(
-  permission: Permission,
-  rationale?: Rationale,
-): Promise<PermissionStatus> {
-  if (!RNP.available.includes(permission)) {
-    return RESULTS.UNAVAILABLE;
-  }
-
-  const status = coreStatusToStatus(
-    await Core.request(permission as CorePermission, rationale),
-  );
-
-  if (status === RESULTS.BLOCKED) {
-    await RNP.setNonRequestable(permission);
-  }
-
-  return status;
-}
-
 function splitByAvailability<P extends Permission[]>(
   permissions: P,
 ): {
@@ -103,7 +50,7 @@ function splitByAvailability<P extends Permission[]>(
   for (let index = 0; index < permissions.length; index++) {
     const permission: P[number] = permissions[index];
 
-    if (RNP.available.includes(permission)) {
+    if (NativeModule.available.includes(permission)) {
       available.push(permission);
     } else {
       unavailable[permission] = RESULTS.UNAVAILABLE;
@@ -113,8 +60,16 @@ function splitByAvailability<P extends Permission[]>(
   return {unavailable, available};
 }
 
-function checkNotifications(): Promise<NotificationsResponse> {
-  return RNP.checkNotifications();
+async function check(permission: Permission): Promise<PermissionStatus> {
+  if (!NativeModule.available.includes(permission)) {
+    return RESULTS.UNAVAILABLE;
+  }
+
+  if (await Core.check(permission as CorePermission)) {
+    return RESULTS.GRANTED;
+  }
+
+  return (await NativeModule.isNonRequestable(permission)) ? RESULTS.BLOCKED : RESULTS.DENIED;
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -122,7 +77,7 @@ async function checkMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>> {
   const dedup = uniq(permissions);
   const {unavailable: output, available} = splitByAvailability(dedup);
-  const blocklist = await RNP.getNonRequestables();
+  const blocklist = await NativeModule.getNonRequestables();
 
   await Promise.all(
     available.map(async (permission: P[number]) => {
@@ -139,6 +94,28 @@ async function checkMultiple<P extends Permission[]>(
   return output as Record<P[number], PermissionStatus>;
 }
 
+function checkNotifications(): Promise<NotificationsResponse> {
+  return NativeModule.checkNotifications();
+}
+
+async function openSettings(): Promise<void> {
+  await NativeModule.openSettings();
+}
+
+async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
+  if (!NativeModule.available.includes(permission)) {
+    return RESULTS.UNAVAILABLE;
+  }
+
+  const status = coreStatusToStatus(await Core.request(permission as CorePermission, rationale));
+
+  if (status === RESULTS.BLOCKED) {
+    await NativeModule.setNonRequestable(permission);
+  }
+
+  return status;
+}
+
 async function requestMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
@@ -148,31 +125,32 @@ async function requestMultiple<P extends Permission[]>(
   const statuses = await Core.requestMultiple(available as CorePermission[]);
 
   for (const permission in statuses) {
-    if (statuses.hasOwnProperty(permission)) {
+    if (Object.prototype.hasOwnProperty.call(statuses, permission)) {
       const status = coreStatusToStatus(statuses[permission as CorePermission]);
       output[permission as P[number]] = status;
 
-      status === RESULTS.BLOCKED &&
+      if (status === RESULTS.BLOCKED) {
         toSetAsNonRequestable.push(permission as Permission);
+      }
     }
   }
 
   if (toSetAsNonRequestable.length > 0) {
-    await RNP.setNonRequestables(toSetAsNonRequestable);
+    await NativeModule.setNonRequestables(toSetAsNonRequestable);
   }
 
   return output as Record<P[number], PermissionStatus>;
 }
 
 export const module: Contract = {
+  check,
+  checkLocationAccuracy,
+  checkMultiple,
+  checkNotifications,
   openLimitedPhotoLibraryPicker,
   openSettings,
-  check,
   request,
-  checkNotifications,
-  requestNotifications: checkNotifications,
-  checkLocationAccuracy,
   requestLocationAccuracy,
-  checkMultiple,
   requestMultiple,
+  requestNotifications: checkNotifications,
 };

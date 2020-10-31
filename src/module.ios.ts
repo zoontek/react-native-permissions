@@ -1,7 +1,7 @@
 import {NativeModules} from 'react-native';
-import {RESULTS} from './constants';
-import {Contract} from './contract';
-import {
+import type {Contract} from './contract';
+import {RESULTS} from './results';
+import type {
   LocationAccuracy,
   LocationAccuracyOptions,
   NotificationOption,
@@ -11,62 +11,27 @@ import {
 } from './types';
 import {uniq} from './utils';
 
-const RNP: {
+const NativeModule: {
   available: Permission[];
 
-  checkNotifications: () => Promise<NotificationsResponse>;
-  requestNotifications: (
-    options: NotificationOption[],
-  ) => Promise<NotificationsResponse>;
+  check: (permission: Permission) => Promise<PermissionStatus>;
   checkLocationAccuracy: () => Promise<LocationAccuracy>;
-  requestLocationAccuracy: (purposeKey: string) => Promise<LocationAccuracy>;
+  checkNotifications: () => Promise<NotificationsResponse>;
   openLimitedPhotoLibraryPicker: () => Promise<true>;
   openSettings: () => Promise<true>;
-  check: (permission: Permission) => Promise<PermissionStatus>;
-  request: (
-    permission: Permission,
-    options?: object,
-  ) => Promise<PermissionStatus>;
+  request: (permission: Permission, options?: object) => Promise<PermissionStatus>;
+  requestLocationAccuracy: (purposeKey: string) => Promise<LocationAccuracy>;
+  requestNotifications: (options: NotificationOption[]) => Promise<NotificationsResponse>;
 } = NativeModules.RNPermissions;
 
-async function openLimitedPhotoLibraryPicker(): Promise<void> {
-  await RNP.openLimitedPhotoLibraryPicker();
+async function check(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.available.includes(permission)
+    ? NativeModule.check(permission)
+    : RESULTS.UNAVAILABLE;
 }
 
 function checkLocationAccuracy(): Promise<LocationAccuracy> {
-  return RNP.checkLocationAccuracy();
-}
-
-function requestLocationAccuracy(
-  options: LocationAccuracyOptions,
-): Promise<LocationAccuracy> {
-  return RNP.requestLocationAccuracy(options.purposeKey);
-}
-
-async function openSettings(): Promise<void> {
-  await RNP.openSettings();
-}
-
-async function check(permission: Permission): Promise<PermissionStatus> {
-  return RNP.available.includes(permission)
-    ? RNP.check(permission)
-    : RESULTS.UNAVAILABLE;
-}
-
-async function request(permission: Permission): Promise<PermissionStatus> {
-  return RNP.available.includes(permission)
-    ? RNP.request(permission)
-    : RESULTS.UNAVAILABLE;
-}
-
-export function checkNotifications(): Promise<NotificationsResponse> {
-  return RNP.checkNotifications();
-}
-
-export function requestNotifications(
-  options: NotificationOption[],
-): Promise<NotificationsResponse> {
-  return RNP.requestNotifications(options);
+  return NativeModule.checkLocationAccuracy();
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -86,6 +51,28 @@ async function checkMultiple<P extends Permission[]>(
   return output as Output;
 }
 
+export function checkNotifications(): Promise<NotificationsResponse> {
+  return NativeModule.checkNotifications();
+}
+
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
+  await NativeModule.openLimitedPhotoLibraryPicker();
+}
+
+async function openSettings(): Promise<void> {
+  await NativeModule.openSettings();
+}
+
+async function request(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.available.includes(permission)
+    ? NativeModule.request(permission)
+    : RESULTS.UNAVAILABLE;
+}
+
+function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy> {
+  return NativeModule.requestLocationAccuracy(options.purposeKey);
+}
+
 async function requestMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
@@ -102,15 +89,21 @@ async function requestMultiple<P extends Permission[]>(
   return output as Output;
 }
 
+export function requestNotifications(
+  options: NotificationOption[],
+): Promise<NotificationsResponse> {
+  return NativeModule.requestNotifications(options);
+}
+
 export const module: Contract = {
+  check,
+  checkLocationAccuracy,
+  checkMultiple,
+  checkNotifications,
   openLimitedPhotoLibraryPicker,
   openSettings,
-  check,
   request,
-  checkNotifications,
-  requestNotifications,
-  checkLocationAccuracy,
   requestLocationAccuracy,
-  checkMultiple,
   requestMultiple,
+  requestNotifications,
 };

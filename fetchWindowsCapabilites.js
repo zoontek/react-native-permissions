@@ -26,10 +26,7 @@ function parsePage(data) {
   const names = new Set();
   for (const match of data.match(/<strong>[a-z]+[a-zA-Z\.]*<\/strong>/gm)) {
     names.add(
-      match.substr(
-        '<strong>'.length,
-        match.length - '<strong>'.length - '</strong>'.length,
-      ),
+      match.substr('<strong>'.length, match.length - '<strong>'.length - '</strong>'.length),
     );
   }
   const results = [];

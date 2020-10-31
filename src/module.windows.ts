@@ -1,70 +1,78 @@
 import {NativeModules} from 'react-native';
-import {Contract} from './contract';
-import {NotificationsResponse, Permission, PermissionStatus} from './types';
+import type {Contract} from './contract';
+import type {NotificationsResponse, Permission, PermissionStatus} from './types';
+import {
+  checkLocationAccuracy,
+  openLimitedPhotoLibraryPicker,
+  requestLocationAccuracy,
+} from './unsupportedPlatformMethods';
 import {uniq} from './utils';
 
-const RNP: {
-  OpenSettings: () => Promise<void>;
-  CheckNotifications: () => Promise<PermissionStatus>;
+const NativeModule: {
   Check: (permission: Permission) => Promise<PermissionStatus>;
+  CheckNotifications: () => Promise<PermissionStatus>;
+  OpenSettings: () => Promise<void>;
   Request: (permission: Permission) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
-async function openSettings(): Promise<void> {
-  return RNP.OpenSettings();
-}
-
-async function check(permission: Permission): Promise<PermissionStatus> {
-  return RNP.Check(permission);
-}
-
-async function request(permission: Permission): Promise<PermissionStatus> {
-  return RNP.Request(permission);
-}
-
-async function checkNotifications(): Promise<NotificationsResponse> {
-  const status = await RNP.CheckNotifications();
-  return {status, settings: {}};
-}
-
-async function requestNotifications(): Promise<NotificationsResponse> {
-  // There is no way to request notifications on Windows if they are
-  // disabled.
-  return checkNotifications();
+function check(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.Check(permission);
 }
 
 async function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
-  const result = {} as Record<P[number], PermissionStatus>;
+  type Output = Record<P[number], PermissionStatus>;
+
+  const output: Partial<Output> = {};
   const dedup = uniq(permissions);
-  const promises = dedup.map(async (permission: P[number]) => {
-    const promise = check(permission);
-    result[permission] = await promise;
-    return promise;
-  });
-  await Promise.all(promises);
-  return result;
+
+  await Promise.all(
+    dedup.map(async (permission: P[number]) => {
+      output[permission] = await check(permission);
+    }),
+  );
+
+  return output as Output;
+}
+
+async function checkNotifications(): Promise<NotificationsResponse> {
+  return {status: await NativeModule.CheckNotifications(), settings: {}};
+}
+
+async function openSettings(): Promise<void> {
+  await NativeModule.OpenSettings();
+}
+
+function request(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.Request(permission);
 }
 
 async function requestMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
-  const result = {} as Record<P[number], PermissionStatus>;
+  type Output = Record<P[number], PermissionStatus>;
+
+  const output: Partial<Output> = {};
   const dedup = uniq(permissions);
-  for (let idx = 0; idx < dedup.length; ++idx) {
-    const permission: P[number] = dedup[idx];
-    result[permission] = await request(permission);
+
+  for (let index = 0; index < dedup.length; index++) {
+    const permission: P[number] = dedup[index];
+    output[permission] = await request(permission);
   }
-  return result;
+
+  return output as Output;
 }
 
 export const module: Contract = {
-  openSettings,
   check,
-  request,
-  checkNotifications,
-  requestNotifications,
+  checkLocationAccuracy,
   checkMultiple,
+  checkNotifications,
+  openLimitedPhotoLibraryPicker,
+  openSettings,
+  request,
+  requestLocationAccuracy,
   requestMultiple,
+  requestNotifications: checkNotifications,
 };

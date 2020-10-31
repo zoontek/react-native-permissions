@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  AppState,
-  Platform,
-  ScrollView,
-  StatusBar,
-  Text,
-  View,
-} from 'react-native';
+import {AppState, Platform, ScrollView, StatusBar, Text, View} from 'react-native';
 import {Appbar, List, TouchableRipple} from 'react-native-paper';
 import RNPermissions, {
   NotificationsResponse,
@@ -20,10 +13,7 @@ import theme from './theme';
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
 const PLATFORM_PERMISSIONS = Platform.select<
-  | typeof PERMISSIONS_IOS
-  | typeof PERMISSIONS.ANDROID
-  | typeof PERMISSIONS.WINDOWS
-  | {}
+  typeof PERMISSIONS_IOS | typeof PERMISSIONS.ANDROID | typeof PERMISSIONS.WINDOWS | {}
 >({
   ios: PERMISSIONS_IOS,
   android: PERMISSIONS.ANDROID,
@@ -58,10 +48,7 @@ const PermissionRow = ({
   status: string;
   onPress: () => void;
 }) => (
-  <TouchableRipple
-    onPress={onPress}
-    accessible={true}
-    accessibilityLabel={`${name}:${status}`}>
+  <TouchableRipple onPress={onPress} accessible={true} accessibilityLabel={`${name}:${status}`}>
     <List.Item
       right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
       title={name}
@@ -107,16 +94,10 @@ export default class App extends React.Component<{}, State> {
 
     return (
       <View style={{flex: 1, backgroundColor: theme.colors.background}}>
-        <StatusBar
-          backgroundColor={theme.colors.primary}
-          barStyle="light-content"
-        />
+        <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
 
         <Appbar.Header>
-          <Appbar.Content
-            title="react-native-permissions"
-            subtitle="Example application"
-          />
+          <Appbar.Content title="react-native-permissions" subtitle="Example application" />
 
           <Appbar.Action onPress={this.refresh} icon="refresh" />
 
@@ -147,10 +128,7 @@ export default class App extends React.Component<{}, State> {
         <ScrollView>
           {PERMISSIONS_VALUES.map(this.renderPermissionItem)}
 
-          <View
-            style={{backgroundColor: '#e0e0e0', height: 1}}
-            accessibilityRole="none"
-          />
+          <View style={{backgroundColor: '#e0e0e0', height: 1}} accessibilityRole="none" />
 
           <TouchableRipple
             onPress={() => {

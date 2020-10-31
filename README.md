@@ -529,12 +529,7 @@ Permission checks and requests resolve into one of these statuses:
 
 ```ts
 // type used in usage examples
-type PermissionStatus =
-  | 'unavailable'
-  | 'denied'
-  | 'limited'
-  | 'granted'
-  | 'blocked';
+type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'blocked';
 ```
 
 #### check
@@ -552,14 +547,10 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   .then((result) => {
     switch (result) {
       case RESULTS.UNAVAILABLE:
-        console.log(
-          'This feature is not available (on this device / in this context)',
-        );
+        console.log('This feature is not available (on this device / in this context)');
         break;
       case RESULTS.DENIED:
-        console.log(
-          'The permission has not been requested / is denied but requestable',
-        );
+        console.log('The permission has not been requested / is denied but requestable');
         break;
       case RESULTS.LIMITED:
         console.log('The permission is limited: some actions are possible');
@@ -592,10 +583,7 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
-function request(
-  permission: string,
-  rationale?: Rationale,
-): Promise<PermissionStatus>;
+function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
 ```
 
 ```js
@@ -650,13 +638,7 @@ You cannot request notifications permissions on Windows. Disabling or enabling n
 
 ```ts
 // only used on iOS
-type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'criticalAlert'
-  | 'carPlay'
-  | 'provisional';
+type NotificationOption = 'alert' | 'badge' | 'sound' | 'criticalAlert' | 'carPlay' | 'provisional';
 
 type NotificationSettings = {
   // properties only available on iOS
@@ -702,12 +684,10 @@ function checkMultiple<P extends Permission[]>(
 ```js
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
-checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
-  (statuses) => {
-    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
-  },
-);
+checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+});
 ```
 
 ---
@@ -725,12 +705,10 @@ function requestMultiple<P extends Permission[]>(
 ```js
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
-requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
-  (statuses) => {
-    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
-  },
-);
+requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+});
 ```
 
 ---
@@ -782,9 +760,7 @@ type LocationAccuracyOptions = {
 
 type LocationAccuracy = 'full' | 'reduced';
 
-function requestLocationAccuracy(
-  options: LocationAccuracyOptions,
-): Promise<LocationAccuracy>;
+function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
 ```
 
 ```js
