@@ -10,6 +10,8 @@ A unified permissions API for React Native on iOS, Android and Windows.
 
 For Windows only builds 18362 and later are supported.
 
+**👉 Try and give feedbacks about [the next major version (3.0.0)](https://github.com/zoontek/react-native-permissions/tree/3.0.0)!**
+
 ## Support
 
 | version | react-native version |
