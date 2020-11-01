@@ -1,11 +1,5 @@
-import {
-  NativeModules,
-  Permission as CorePermission,
-  PermissionsAndroid as Core,
-  PermissionStatus as CoreStatus,
-} from 'react-native';
+import {Alert, AlertButton, NativeModules} from 'react-native';
 import type {Contract} from './contract';
-import {RESULTS} from './results';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
@@ -15,131 +9,73 @@ import {
 import {uniq} from './utils';
 
 const NativeModule: {
-  available: Permission[];
-
+  checkPermission: (permission: Permission) => Promise<PermissionStatus>;
+  requestPermission: (permission: Permission) => Promise<PermissionStatus>;
   checkNotifications: () => Promise<NotificationsResponse>;
-  getNonRequestables: () => Promise<Permission[]>;
-  isNonRequestable: (permission: Permission) => Promise<boolean>;
   openSettings: () => Promise<true>;
-  setNonRequestable: (permission: Permission) => Promise<true>;
-  setNonRequestables: (permissions: Permission[]) => Promise<true>;
+  shouldShowRequestPermissionRationale: (permission: Permission) => Promise<boolean>;
+
+  checkMultiplePermissions: (
+    permissions: Permission[],
+  ) => Promise<Record<Permission, PermissionStatus>>;
+  requestMultiplePermissions: (
+    permissions: Permission[],
+  ) => Promise<Record<Permission, PermissionStatus>>;
 } = NativeModules.RNPermissions;
 
-function coreStatusToStatus(status: CoreStatus): PermissionStatus {
-  switch (status) {
-    case 'granted':
-      return RESULTS.GRANTED;
-    case 'denied':
-      return RESULTS.DENIED;
-    case 'never_ask_again':
-      return RESULTS.BLOCKED;
-    default:
-      return RESULTS.UNAVAILABLE;
-  }
+async function openSettings(): Promise<void> {
+  await NativeModule.openSettings();
 }
 
-function splitByAvailability<P extends Permission[]>(
-  permissions: P,
-): {
-  unavailable: Partial<Record<P[number], PermissionStatus>>;
-  available: P[number][];
-} {
-  const unavailable: Partial<Record<P[number], PermissionStatus>> = {};
-  const available: P[number][] = [];
+function check(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.checkPermission(permission);
+}
 
-  for (let index = 0; index < permissions.length; index++) {
-    const permission: P[number] = permissions[index];
+async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
+  if (rationale) {
+    const shouldShowRationale = await NativeModule.shouldShowRequestPermissionRationale(permission);
 
-    if (NativeModule.available.includes(permission)) {
-      available.push(permission);
-    } else {
-      unavailable[permission] = RESULTS.UNAVAILABLE;
+    if (shouldShowRationale) {
+      const {title, message, buttonPositive, buttonNegative, buttonNeutral} = rationale;
+
+      return new Promise((resolve) => {
+        const buttons: AlertButton[] = [];
+
+        if (buttonNegative) {
+          const onPress = () => resolve(NativeModule.checkPermission(permission));
+          buttonNeutral && buttons.push({text: buttonNeutral, onPress});
+          buttons.push({text: buttonNegative, onPress});
+        }
+
+        buttons.push({
+          text: buttonPositive,
+          onPress: () => resolve(NativeModule.requestPermission(permission)),
+        });
+
+        Alert.alert(title, message, buttons, {cancelable: false});
+      });
     }
   }
 
-  return {unavailable, available};
-}
-
-async function check(permission: Permission): Promise<PermissionStatus> {
-  if (!NativeModule.available.includes(permission)) {
-    return RESULTS.UNAVAILABLE;
-  }
-
-  if (await Core.check(permission as CorePermission)) {
-    return RESULTS.GRANTED;
-  }
-
-  return (await NativeModule.isNonRequestable(permission)) ? RESULTS.BLOCKED : RESULTS.DENIED;
-}
-
-async function checkMultiple<P extends Permission[]>(
-  permissions: P,
-): Promise<Record<P[number], PermissionStatus>> {
-  const dedup = uniq(permissions);
-  const {unavailable: output, available} = splitByAvailability(dedup);
-  const blocklist = await NativeModule.getNonRequestables();
-
-  await Promise.all(
-    available.map(async (permission: P[number]) => {
-      const granted = await Core.check(permission as CorePermission);
-
-      output[permission] = granted
-        ? RESULTS.GRANTED
-        : blocklist.includes(permission)
-        ? RESULTS.BLOCKED
-        : RESULTS.DENIED;
-    }),
-  );
-
-  return output as Record<P[number], PermissionStatus>;
+  return NativeModule.requestPermission(permission);
 }
 
 function checkNotifications(): Promise<NotificationsResponse> {
   return NativeModule.checkNotifications();
 }
 
-async function openSettings(): Promise<void> {
-  await NativeModule.openSettings();
-}
-
-async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
-  if (!NativeModule.available.includes(permission)) {
-    return RESULTS.UNAVAILABLE;
-  }
-
-  const status = coreStatusToStatus(await Core.request(permission as CorePermission, rationale));
-
-  if (status === RESULTS.BLOCKED) {
-    await NativeModule.setNonRequestable(permission);
-  }
-
-  return status;
-}
-
-async function requestMultiple<P extends Permission[]>(
+function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
-  const toSetAsNonRequestable: Permission[] = [];
   const dedup = uniq(permissions);
-  const {unavailable: output, available} = splitByAvailability(dedup);
-  const statuses = await Core.requestMultiple(available as CorePermission[]);
+  return NativeModule.checkMultiplePermissions(dedup);
+}
 
-  for (const permission in statuses) {
-    if (Object.prototype.hasOwnProperty.call(statuses, permission)) {
-      const status = coreStatusToStatus(statuses[permission as CorePermission]);
-      output[permission as P[number]] = status;
-
-      if (status === RESULTS.BLOCKED) {
-        toSetAsNonRequestable.push(permission as Permission);
-      }
-    }
-  }
-
-  if (toSetAsNonRequestable.length > 0) {
-    await NativeModule.setNonRequestables(toSetAsNonRequestable);
-  }
-
-  return output as Record<P[number], PermissionStatus>;
+function requestMultiple<P extends Permission[]>(
+  permissions: P,
+): Promise<Record<P[number], PermissionStatus>> {
+  const dedup = uniq(permissions);
+  return NativeModule.requestMultiplePermissions(dedup);
 }
 
 export const methods: Contract = {

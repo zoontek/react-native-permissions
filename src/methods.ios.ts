@@ -24,14 +24,42 @@ const NativeModule: {
   requestNotifications: (options: NotificationOption[]) => Promise<NotificationsResponse>;
 } = NativeModules.RNPermissions;
 
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
+  await NativeModule.openLimitedPhotoLibraryPicker();
+}
+
+async function openSettings(): Promise<void> {
+  await NativeModule.openSettings();
+}
+
 async function check(permission: Permission): Promise<PermissionStatus> {
   return NativeModule.available.includes(permission)
     ? NativeModule.check(permission)
     : RESULTS.UNAVAILABLE;
 }
 
+async function request(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.available.includes(permission)
+    ? NativeModule.request(permission)
+    : RESULTS.UNAVAILABLE;
+}
+
 function checkLocationAccuracy(): Promise<LocationAccuracy> {
   return NativeModule.checkLocationAccuracy();
+}
+
+function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy> {
+  return NativeModule.requestLocationAccuracy(options.purposeKey);
+}
+
+export function checkNotifications(): Promise<NotificationsResponse> {
+  return NativeModule.checkNotifications();
+}
+
+export function requestNotifications(
+  options: NotificationOption[],
+): Promise<NotificationsResponse> {
+  return NativeModule.requestNotifications(options);
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -51,28 +79,6 @@ async function checkMultiple<P extends Permission[]>(
   return output as Output;
 }
 
-export function checkNotifications(): Promise<NotificationsResponse> {
-  return NativeModule.checkNotifications();
-}
-
-async function openLimitedPhotoLibraryPicker(): Promise<void> {
-  await NativeModule.openLimitedPhotoLibraryPicker();
-}
-
-async function openSettings(): Promise<void> {
-  await NativeModule.openSettings();
-}
-
-async function request(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.available.includes(permission)
-    ? NativeModule.request(permission)
-    : RESULTS.UNAVAILABLE;
-}
-
-function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy> {
-  return NativeModule.requestLocationAccuracy(options.purposeKey);
-}
-
 async function requestMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
@@ -87,12 +93,6 @@ async function requestMultiple<P extends Permission[]>(
   }
 
   return output as Output;
-}
-
-export function requestNotifications(
-  options: NotificationOption[],
-): Promise<NotificationsResponse> {
-  return NativeModule.requestNotifications(options);
 }
 
 export const methods: Contract = {

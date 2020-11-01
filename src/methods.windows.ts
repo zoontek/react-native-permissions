@@ -11,12 +11,24 @@ import {uniq} from './utils';
 const NativeModule: {
   Check: (permission: Permission) => Promise<PermissionStatus>;
   CheckNotifications: () => Promise<PermissionStatus>;
-  OpenSettings: () => Promise<void>;
   Request: (permission: Permission) => Promise<PermissionStatus>;
+  OpenSettings: () => Promise<void>;
 } = NativeModules.RNPermissions;
+
+async function openSettings(): Promise<void> {
+  await NativeModule.OpenSettings();
+}
 
 function check(permission: Permission): Promise<PermissionStatus> {
   return NativeModule.Check(permission);
+}
+
+function request(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.Request(permission);
+}
+
+async function checkNotifications(): Promise<NotificationsResponse> {
+  return {status: await NativeModule.CheckNotifications(), settings: {}};
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -34,18 +46,6 @@ async function checkMultiple<P extends Permission[]>(
   );
 
   return output as Output;
-}
-
-async function checkNotifications(): Promise<NotificationsResponse> {
-  return {status: await NativeModule.CheckNotifications(), settings: {}};
-}
-
-async function openSettings(): Promise<void> {
-  await NativeModule.OpenSettings();
-}
-
-function request(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.Request(permission);
 }
 
 async function requestMultiple<P extends Permission[]>(

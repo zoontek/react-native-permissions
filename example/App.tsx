@@ -6,17 +6,17 @@ import RNPermissions, {
   Permission,
   PERMISSIONS,
   PermissionStatus,
-} from './src';
+} from 'react-native-permissions';
 import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
 const PLATFORM_PERMISSIONS = Platform.select<
-  typeof PERMISSIONS_IOS | typeof PERMISSIONS.ANDROID | typeof PERMISSIONS.WINDOWS | {}
+  typeof PERMISSIONS.ANDROID | typeof PERMISSIONS_IOS | typeof PERMISSIONS.WINDOWS | {}
 >({
-  ios: PERMISSIONS_IOS,
   android: PERMISSIONS.ANDROID,
+  ios: PERMISSIONS_IOS,
   windows: PERMISSIONS.WINDOWS,
   default: {},
 });

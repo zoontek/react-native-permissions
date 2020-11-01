@@ -1,6 +1,7 @@
 package com.zoontek.rnpermissions;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Process;
 import android.provider.Settings;
 import android.util.SparseArray;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.react.bridge.Arguments;
@@ -28,8 +30,6 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
-
-import javax.annotation.Nullable;
 
 @ReactModule(name = RNPermissionsModule.MODULE_NAME)
 public class RNPermissionsModule extends ReactContextBaseJavaModule implements PermissionListener {
@@ -182,7 +182,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void checkPermission(final String permission, final Promise promise) {
-    if (!permissionExists(permission)) {
+    if (permission == null || !permissionExists(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
     }
@@ -208,7 +208,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void shouldShowRequestPermissionRationale(final String permission, final Promise promise) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+    if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(false);
       return;
     }
@@ -222,7 +222,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void requestPermission(final String permission, final Promise promise) {
-    if (!permissionExists(permission)) {
+    if (permission == null || !permissionExists(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
     }
@@ -253,6 +253,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       mRequests.put(mRequestCode, new Request(
         rationaleStatuses,
         new Callback() {
+          @SuppressLint("ApplySharedPref")
           @Override
           public void invoke(Object... args) {
             int[] results = (int[]) args[0];
@@ -361,6 +362,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       mRequests.put(mRequestCode, new Request(
         rationaleStatuses,
         new Callback() {
+          @SuppressLint("ApplySharedPref")
           @Override
           public void invoke(Object... args) {
             int[] results = (int[]) args[0];
