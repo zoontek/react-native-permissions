@@ -35,7 +35,13 @@
       return resolve(RNPermissionStatusNotDetermined);
     case kCLAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case kCLAuthorizationStatusAuthorizedWhenInUse:
+    case kCLAuthorizationStatusAuthorizedWhenInUse: {
+      BOOL requestedBefore = [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]];
+      if (requestedBefore) {
+        return resolve(RNPermissionStatusDenied);
+      }
+      return resolve(RNPermissionStatusNotDetermined);
+    }
     case kCLAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
     case kCLAuthorizationStatusAuthorizedAlways:
@@ -48,7 +54,11 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+  
+  CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+  BOOL requestedBefore = [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]];
+  
+  if (authorizationStatus != kCLAuthorizationStatusNotDetermined && (authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse && requestedBefore)) {
     return [self checkWithResolver:resolve rejecter:reject];
   }
 
@@ -58,10 +68,11 @@
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
   [_locationManager requestAlwaysAuthorization];
+  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined) {
+  if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
     [_locationManager setDelegate:nil];
     [self checkWithResolver:_resolve rejecter:_reject];
   }
