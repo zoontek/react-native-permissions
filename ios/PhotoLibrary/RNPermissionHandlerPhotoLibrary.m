@@ -66,7 +66,7 @@
     }
 
     UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
+    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:topViewController];
 
     resolve(@(true));
   } else {
