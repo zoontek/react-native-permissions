@@ -56,6 +56,14 @@
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
     }
+    
+    UIViewController* topViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
+    UIViewController* presentedViewController = topViewController.presentedViewController;
+
+    while (presentedViewController = topViewController.presentedViewController) {
+      topViewController = presentedViewController;
+      presentedViewController = topViewController.presentedViewController;
+    }
 
     UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
     [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
