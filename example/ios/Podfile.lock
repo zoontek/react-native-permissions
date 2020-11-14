@@ -70,41 +70,41 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
-  - Permission-AppTrackingTransparency (3.0.0-alpha.0):
+  - Permission-AppTrackingTransparency (3.0.0-beta.1):
     - RNPermissions
-  - Permission-BluetoothPeripheral (3.0.0-alpha.0):
+  - Permission-BluetoothPeripheral (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Calendars (3.0.0-alpha.0):
+  - Permission-Calendars (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Camera (3.0.0-alpha.0):
+  - Permission-Camera (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Contacts (3.0.0-alpha.0):
+  - Permission-Contacts (3.0.0-beta.1):
     - RNPermissions
-  - Permission-FaceID (3.0.0-alpha.0):
+  - Permission-FaceID (3.0.0-beta.1):
     - RNPermissions
-  - Permission-LocationAccuracy (3.0.0-alpha.0):
+  - Permission-LocationAccuracy (3.0.0-beta.1):
     - RNPermissions
-  - Permission-LocationAlways (3.0.0-alpha.0):
+  - Permission-LocationAlways (3.0.0-beta.1):
     - RNPermissions
-  - Permission-LocationWhenInUse (3.0.0-alpha.0):
+  - Permission-LocationWhenInUse (3.0.0-beta.1):
     - RNPermissions
-  - Permission-MediaLibrary (3.0.0-alpha.0):
+  - Permission-MediaLibrary (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Microphone (3.0.0-alpha.0):
+  - Permission-Microphone (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Motion (3.0.0-alpha.0):
+  - Permission-Motion (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Notifications (3.0.0-alpha.0):
+  - Permission-Notifications (3.0.0-beta.1):
     - RNPermissions
-  - Permission-PhotoLibrary (3.0.0-alpha.0):
+  - Permission-PhotoLibrary (3.0.0-beta.1):
     - RNPermissions
-  - Permission-PhotoLibraryAddOnly (3.0.0-alpha.0):
+  - Permission-PhotoLibraryAddOnly (3.0.0-beta.1):
     - RNPermissions
-  - Permission-Reminders (3.0.0-alpha.0):
+  - Permission-Reminders (3.0.0-beta.1):
     - RNPermissions
-  - Permission-SpeechRecognition (3.0.0-alpha.0):
+  - Permission-SpeechRecognition (3.0.0-beta.1):
     - RNPermissions
-  - Permission-StoreKit (3.0.0-alpha.0):
+  - Permission-StoreKit (3.0.0-beta.1):
     - RNPermissions
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
@@ -332,7 +332,7 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNPermissions (3.0.0-alpha.0):
+  - RNPermissions (3.0.0-beta.1):
     - React-Core
   - RNVectorIcons (7.1.0):
     - React-Core
@@ -535,24 +535,24 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
-  Permission-AppTrackingTransparency: 2b00bff16fb19fc6ddf30715c1bae4c006ddde4e
-  Permission-BluetoothPeripheral: b53e5a7d462a82499e4215d196e16f300d01ae40
-  Permission-Calendars: 077f4fbf6a706323d498faa830c2a5b8d796e33c
-  Permission-Camera: 1ef5155ca8bbd0b078160c32132b6e64302b7b40
-  Permission-Contacts: 1cd050a230486f3e894a95fdb5b3fc36d11be0d0
-  Permission-FaceID: 2d71630943a2e7782b2b9a882eb8fca85df6277f
-  Permission-LocationAccuracy: 1c14cb2cc0c290105dad51e300bee490e7666340
-  Permission-LocationAlways: a77804c5f0b9ea3cf158f8ec923fc12d9df2de66
-  Permission-LocationWhenInUse: 77040d77c9e3b4d33f3496abc4e4bc0419703bc0
-  Permission-MediaLibrary: 562b546033ae1df1fc98f745927f41ccd2ed965c
-  Permission-Microphone: 3bdb2ab4e3c40fc91edf49b1fad5dfba2eda4a9d
-  Permission-Motion: e9081d9c05bd2cb39a5f0cdc039ac56c876aa3ad
-  Permission-Notifications: 1fa10f02f6fa0667bbe3da1721602fbd76262858
-  Permission-PhotoLibrary: 66f32707de3f161166bbc7ce01ad0c18e5d6fc88
-  Permission-PhotoLibraryAddOnly: 6dd4a3a1654531ee30b8f5835405cee17f3301ae
-  Permission-Reminders: f7a43e16a88e7c175f011d5313941d626db3568c
-  Permission-SpeechRecognition: 93adc045d1640baa8d15479b8b9750147f7241d2
-  Permission-StoreKit: 4ebdb51db958f58b74c526cf5cf215bfa1800db9
+  Permission-AppTrackingTransparency: 7994d73f9c61dab0c1f9660771caa362a120ecef
+  Permission-BluetoothPeripheral: ce101bd4f6d77928060baf86f31fa849b9a19157
+  Permission-Calendars: 35dcd6a9419ab74b3290de44655946fb348e2aa6
+  Permission-Camera: 46344ca6cd2527e224f757fda07f7990a9f21cc1
+  Permission-Contacts: 40e09c364ba72c52f52a7b6c39615b73f2e58ed8
+  Permission-FaceID: c65924957f27b9489d5afe2d539ac9d4119ad869
+  Permission-LocationAccuracy: 37c00c2c6d7f205472880ef1dee06302a2f5db8e
+  Permission-LocationAlways: 810a40d185ab6f69aefd1c618def16ed8a0f63e0
+  Permission-LocationWhenInUse: 43910ad0ede56498820447f16d5099823695b298
+  Permission-MediaLibrary: f22a8b38fa933fa0886247d07c247a0d207e9418
+  Permission-Microphone: de81b75470f3508adfe91dc8dfda47951ba04316
+  Permission-Motion: 55c273f77f481ae6f7098e5349614f73366a6530
+  Permission-Notifications: 1a2c580683849a2e5c5b67c4c65fa5923872e170
+  Permission-PhotoLibrary: e0b4f5bf557d412815f6bbfe4339817bda7c0d81
+  Permission-PhotoLibraryAddOnly: 32c4329d88514852aec8092d5fdc7674700b22cd
+  Permission-Reminders: 9b719cd7a8cea73c7a52bc0d27e83483b41ea9f3
+  Permission-SpeechRecognition: 57892b46d9aacf571ebf7c8b6ff3b0411b6d9933
+  Permission-StoreKit: 29606e989f8e588ee08b31dd4436be05e4771df2
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   React: f36e90f3ceb976546e97df3403e37d226f79d0e3
@@ -573,7 +573,7 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNPermissions: d15d154fa2da0c8fe6c7dbd80ec0f346b35901ac
+  RNPermissions: dfba6c26edc8f817b4e18499d81e201beced2c85
   RNVectorIcons: ec4602418567919017a2756d2113e0c9c6366ad3
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

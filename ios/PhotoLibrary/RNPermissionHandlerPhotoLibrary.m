@@ -57,9 +57,9 @@
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
     }
-    
-    UIViewController *topViewController = RCTPresentedViewController();
-    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:topViewController];
+
+    UIViewController *presentedViewController = RCTPresentedViewController();
+    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:presentedViewController];
 
     resolve(@(true));
   } else {
