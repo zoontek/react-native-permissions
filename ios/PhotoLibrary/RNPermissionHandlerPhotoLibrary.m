@@ -1,4 +1,5 @@
 #import "RNPermissionHandlerPhotoLibrary.h"
+#import <React/RCTUtils.h>
 
 @import Photos;
 @import PhotosUI;
@@ -56,9 +57,9 @@
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
     }
-
-    UIViewController* rootViewController = [[UIApplication sharedApplication].keyWindow rootViewController];
-    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:rootViewController];
+    
+    UIViewController *topViewController = RCTPresentedViewController();
+    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:topViewController];
 
     resolve(@(true));
   } else {
