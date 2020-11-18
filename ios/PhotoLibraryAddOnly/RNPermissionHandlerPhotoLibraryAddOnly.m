@@ -5,7 +5,7 @@
 @implementation RNPermissionHandlerPhotoLibraryAddOnly
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSPhotoLibraryUsageDescription"];
+  return @[@"NSPhotoLibraryAddUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
@@ -14,25 +14,21 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  PHAuthorizationStatus status;
-
   if (@available(iOS 14.0, *)) {
-    status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly];
+    switch ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly]) {
+      case PHAuthorizationStatusNotDetermined:
+        return resolve(RNPermissionStatusNotDetermined);
+      case PHAuthorizationStatusRestricted:
+        return resolve(RNPermissionStatusRestricted);
+      case PHAuthorizationStatusDenied:
+        return resolve(RNPermissionStatusDenied);
+      case PHAuthorizationStatusLimited:
+        return resolve(RNPermissionStatusLimited);
+      case PHAuthorizationStatusAuthorized:
+        return resolve(RNPermissionStatusAuthorized);
+    }
   } else {
-    status = [PHPhotoLibrary authorizationStatus];
-  }
-
-  switch (status) {
-    case PHAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
-    case PHAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
-    case PHAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
-    case PHAuthorizationStatusLimited:
-      return resolve(RNPermissionStatusLimited);
-    case PHAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+    return resolve(RNPermissionStatusNotAvailable);
   }
 }
 
@@ -43,9 +39,7 @@
       [self checkWithResolver:resolve rejecter:reject];
     }];
   } else {
-    [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
-      [self checkWithResolver:resolve rejecter:reject];
-    }];
+    return resolve(RNPermissionStatusNotAvailable);
   }
 }
 
