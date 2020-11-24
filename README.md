@@ -719,7 +719,7 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
 Open application settings.
 
 ```ts
-function openSettings(): Promise<void>;
+function openSettings(): Promise<true>;
 ```
 
 ```js

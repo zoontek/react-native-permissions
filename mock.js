@@ -1,7 +1,7 @@
 const {PERMISSIONS, RESULTS} = require('./lib/commonjs/constants');
 export {PERMISSIONS, RESULTS};
 
-export const openSettings = jest.fn(async () => {});
+export const openSettings = jest.fn(async () => true);
 export const check = jest.fn(async (permission) => RESULTS.GRANTED);
 export const request = jest.fn(async (permission) => RESULTS.GRANTED);
 

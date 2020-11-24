@@ -12,12 +12,12 @@ inline void RNPermissions::RNPermissions::Init(React::ReactContext const& reactC
   m_reactContext = reactContext;
 }
 
-inline void RNPermissions::RNPermissions::OpenSettings(React::ReactPromise<void>&& promise) noexcept {
+inline void RNPermissions::RNPermissions::OpenSettings(React::ReactPromise<std::true_type>&& promise) noexcept {
   m_reactContext.UIDispatcher().Post([promise]() {
     Launcher::LaunchUriAsync(Uri(L"ms-settings:appsfeatures-app"))
       .Completed([promise](const auto&, const auto& status) {
         if (status == AsyncStatus::Completed) {
-          promise.Resolve();
+          promise.Resolve(true);
         }
         else {
           promise.Reject("Failure");

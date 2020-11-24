@@ -7,7 +7,7 @@ import {
 } from './types';
 
 export interface Contract {
-  openSettings(): Promise<void>;
+  openSettings(): Promise<true>;
 
   check(permission: Permission): Promise<PermissionStatus>;
 

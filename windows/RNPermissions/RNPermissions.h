@@ -13,7 +13,7 @@ namespace RNPermissions
     void Init(React::ReactContext const& reactContext) noexcept;
 
     REACT_METHOD(OpenSettings);
-    void OpenSettings(React::ReactPromise<void>&& promise) noexcept;
+    void OpenSettings(React::ReactPromise<std::true_type>&& promise) noexcept;
 
     REACT_METHOD(CheckNotifications);
     void CheckNotifications(React::ReactPromise<std::string>&& promise) noexcept;

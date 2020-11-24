@@ -4,13 +4,13 @@ import {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {uniq} from './utils';
 
 const RNP: {
-  OpenSettings: () => Promise<void>;
+  OpenSettings: () => Promise<true>;
   CheckNotifications: () => Promise<PermissionStatus>;
   Check: (permission: Permission) => Promise<PermissionStatus>;
   Request: (permission: Permission) => Promise<PermissionStatus>;
 } = NativeModules.RNPermissions;
 
-async function openSettings(): Promise<void> {
+function openSettings() {
   return RNP.OpenSettings();
 }
 

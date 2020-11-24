@@ -34,8 +34,8 @@ function coreStatusToStatus(status: CoreStatus): PermissionStatus {
   }
 }
 
-async function openSettings(): Promise<void> {
-  await RNP.openSettings();
+function openSettings() {
+  return RNP.openSettings();
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
