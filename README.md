@@ -16,14 +16,14 @@ For Windows only builds 18362 and later are supported.
 
 | version | react-native version |
 | ------- | -------------------- |
-| 2.0.0+  | 0.60.2+              |
+| 3.0.0+  | 0.63.0+              |
 
 ## Setup
 
 ```bash
-$ npm install --save react-native-permissions
+$ npm install --save react-native-permissions@next
 # --- or ---
-$ yarn add react-native-permissions
+$ yarn add react-native-permissions@next
 ```
 
 ### iOS
@@ -37,23 +37,25 @@ target 'YourAwesomeProject' do
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 
-  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency.podspec"
-  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
-  pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars.podspec"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
-  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
-  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID.podspec"
-  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways.podspec"
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
-  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
-  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
-  pod 'Permission-Motion', :path => "#{permissions_path}/Motion.podspec"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
-  pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
-  pod 'Permission-Siri', :path => "#{permissions_path}/Siri.podspec"
-  pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition.podspec"
-  pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit.podspec"
+  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
+  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
+  pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars"
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
+  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
+  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
+  pod 'Permission-Motion', :path => "#{permissions_path}/Motion"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
+  pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders"
+  pod 'Permission-Siri', :path => "#{permissions_path}/Siri"
+  pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition"
+  pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit"
 
 end
 ```
@@ -88,6 +90,11 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSLocationAlwaysUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <dict>
+    <key>YOUR-PURPOSE-KEY</key>
+    <string>YOUR TEXT</string>
+  </dict>
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSMicrophoneUsageDescription</key>
@@ -95,6 +102,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <key>NSMotionUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSPhotoLibraryUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSRemindersUsageDescription</key>
   <string>YOUR TEXT</string>
@@ -113,17 +122,19 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 #### Workaround for `use_frameworks!` issues
 
-If you use `use_frameworks!`, add this at the top of your `Podfile`:
+If you use `use_frameworks!`, add this at the top of your `Podfile`, and uncomment the line corresponding to your CocoaPods version:
 
 ```ruby
 use_frameworks!
 
 # Convert all permission pods into static libraries
 pre_install do |installer|
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+
   installer.pod_targets.each do |pod|
     if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
       def pod.build_type;
-        # Uncomment one line depending on your CocoaPods version
+        # Uncomment the line corresponding to your CocoaPods version
         # Pod::BuildType.static_library # >= 1.9
         # Pod::Target::BuildType.static_library # < 1.9
       end
@@ -183,7 +194,7 @@ Open the project solution file from the `windows` folder. In the app project ope
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.60.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions. You also need to manual link the module on Windows when using React Native Windows prior to 0.63:
+Because this package targets React Native 0.63.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions. You also need to manual link the module on Windows when using React Native Windows prior to 0.63:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
@@ -220,7 +231,7 @@ dependencies {
 3. Add the import and link the package in `MainApplication.java`:
 
 ```java
-import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
+import com.zoontek.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -243,14 +254,14 @@ public class MainApplication extends Application implements ReactApplication {
 
 1. In `windows/myapp.sln` add the `RNCConfig` project to your solution:
 
-   - Open the solution in Visual Studio 2019
-   - Right-click Solution icon in Solution Explorer > Add > Existing Project
-   - Select `node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj`
+- Open the solution in Visual Studio 2019
+- Right-click Solution icon in Solution Explorer > Add > Existing Project
+- Select `node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj`
 
 2. In `windows/myapp/myapp.vcxproj` ad a reference to `RNPermissions` to your main application project. From Visual Studio 2019:
 
-   - Right-click main application project > Add > Reference...
-   - Check `RNPermissions` from Solution Projects.
+- Right-click main application project > Add > Reference...
+- Check `RNPermissions` from Solution Projects.
 
 3. In `pch.h` add `#include "winrt/RNPermissions.h"`.
 
@@ -286,6 +297,7 @@ As permissions are not handled in the same way on iOS and Android, this library 
                 ╔═════╗                            ▼
                 ║ YES ║                  ┌───────────────────┐
                 ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │ RESULTS.LIMITED / │
                    │                     │  RESULTS.GRANTED  │
                    ▼                     └───────────────────┘
           ┌────────────────┐
@@ -416,10 +428,11 @@ As permissions are not handled in the same way on iOS and Android, this library 
 
 ### Supported permissions
 
+<details>
+  <summary><b>Android permissions</b></summary>
+
 ```js
 import {PERMISSIONS} from 'react-native-permissions';
-
-// Android permissions
 
 PERMISSIONS.ANDROID.ACCEPT_HANDOVER;
 PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION;
@@ -450,8 +463,15 @@ PERMISSIONS.ANDROID.WRITE_CALENDAR;
 PERMISSIONS.ANDROID.WRITE_CALL_LOG;
 PERMISSIONS.ANDROID.WRITE_CONTACTS;
 PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
+```
 
-// iOS permissions
+</details>
+
+<details>
+  <summary><b>iOS permissions</b></summary>
+
+```js
+import {PERMISSIONS} from 'react-native-permissions';
 
 PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY;
 PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL;
@@ -465,43 +485,166 @@ PERMISSIONS.IOS.MEDIA_LIBRARY;
 PERMISSIONS.IOS.MICROPHONE;
 PERMISSIONS.IOS.MOTION;
 PERMISSIONS.IOS.PHOTO_LIBRARY;
+PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY;
 PERMISSIONS.IOS.REMINDERS;
 PERMISSIONS.IOS.SIRI;
 PERMISSIONS.IOS.SPEECH_RECOGNITION;
 PERMISSIONS.IOS.STOREKIT;
+```
 
-// Windows permissions
+</details>
 
+<details>
+  <summary><b>Windows permissions</b></summary>
+
+```js
+import {PERMISSIONS} from 'react-native-permissions';
+
+PERMISSIONS.WINDOWS.ACCESSORY_MANAGER;
+PERMISSIONS.WINDOWS.ACTIVITY;
+PERMISSIONS.WINDOWS.ALLOW_ELEVATION;
+PERMISSIONS.WINDOWS.ALL_APP_MODS;
+PERMISSIONS.WINDOWS.ALL_JOYN;
 PERMISSIONS.WINDOWS.APPOINTMENTS;
+PERMISSIONS.WINDOWS.APPOINTMENTS_SYSTEM;
+PERMISSIONS.WINDOWS.APP_BROADCAST_SERVICES;
+PERMISSIONS.WINDOWS.APP_CAPTURE_SERVICES;
+PERMISSIONS.WINDOWS.APP_CAPTURE_SETTINGS;
+PERMISSIONS.WINDOWS.APP_DIAGNOSTICS;
+PERMISSIONS.WINDOWS.APP_LICENSING;
+PERMISSIONS.WINDOWS.AUDIO_DEVICE_CONFIGURATION;
+PERMISSIONS.WINDOWS.BACKGROUND_MEDIA_PLAYBACK;
+PERMISSIONS.WINDOWS.BACKGROUND_MEDIA_RECORDING;
+PERMISSIONS.WINDOWS.BACKGROUND_SPATIAL_PERCEPTION;
+PERMISSIONS.WINDOWS.BACKGROUND_VOIP;
 PERMISSIONS.WINDOWS.BLOCKED_CHAT_MESSAGES;
-PERMISSIONS.WINDOWS.BLUETOOTH_GATT;
-PERMISSIONS.WINDOWS.BLUETOOTH_RFCOMM;
-PERMISSIONS.WINDOWS.CHAT;
+PERMISSIONS.WINDOWS.BLUETOOTH;
+PERMISSIONS.WINDOWS.BROAD_FILE_SYSTEM_ACCESS;
+PERMISSIONS.WINDOWS.CAMERA_PROCESSING_EXTENSION;
+PERMISSIONS.WINDOWS.CELLULAR_DEVICE_CONTROL;
+PERMISSIONS.WINDOWS.CELLULAR_DEVICE_IDENTITY;
+PERMISSIONS.WINDOWS.CELLULAR_MESSAGING;
+PERMISSIONS.WINDOWS.CHAT_SYSTEM;
 PERMISSIONS.WINDOWS.CODE_GENERATION;
+PERMISSIONS.WINDOWS.CONFIRM_APP_CLOSE;
 PERMISSIONS.WINDOWS.CONTACTS;
+PERMISSIONS.WINDOWS.CONTACTS_SYSTEM;
+PERMISSIONS.WINDOWS.CORTANA_PERMISSIONS;
+PERMISSIONS.WINDOWS.CORTANA_SPEECH_ACCESSORY;
+PERMISSIONS.WINDOWS.CUSTOM_INSTALL_ACTIONS;
+PERMISSIONS.WINDOWS.DEVELOPMENT_MODE_NETWORK;
+PERMISSIONS.WINDOWS.DEVICE_MANAGEMENT_DM_ACCOUNT;
+PERMISSIONS.WINDOWS.DEVICE_MANAGEMENT_EMAIL_ACCOUNT;
+PERMISSIONS.WINDOWS.DEVICE_MANAGEMENT_FOUNDATION;
+PERMISSIONS.WINDOWS.DEVICE_MANAGEMENT_WAP_SECURITY_POLICIES;
+PERMISSIONS.WINDOWS.DEVICE_PORTAL_PROVIDER;
+PERMISSIONS.WINDOWS.DEVICE_UNLOCK;
 PERMISSIONS.WINDOWS.DOCUMENTS_LIBRARY;
+PERMISSIONS.WINDOWS.DUAL_SIM_TILES;
+PERMISSIONS.WINDOWS.EMAIL;
+PERMISSIONS.WINDOWS.EMAIL_SYSTEM;
 PERMISSIONS.WINDOWS.ENTERPRISE_AUTHENTICATION;
-PERMISSIONS.WINDOWS.HUMAN_INTERFACE_DEVICE;
+PERMISSIONS.WINDOWS.ENTERPRISE_CLOUD_S_S_O;
+PERMISSIONS.WINDOWS.ENTERPRISE_DATA_POLICY;
+PERMISSIONS.WINDOWS.ENTERPRISE_DEVICE_LOCKDOWN;
+PERMISSIONS.WINDOWS.EXPANDED_RESOURCES;
+PERMISSIONS.WINDOWS.EXTENDED_BACKGROUND_TASK_TIME;
+PERMISSIONS.WINDOWS.EXTENDED_EXECUTION_BACKGROUND_AUDIO;
+PERMISSIONS.WINDOWS.EXTENDED_EXECUTION_CRITICAL;
+PERMISSIONS.WINDOWS.EXTENDED_EXECUTION_UNCONSTRAINED;
+PERMISSIONS.WINDOWS.FIRST_SIGN_IN_SETTINGS;
+PERMISSIONS.WINDOWS.GAME_BAR_SERVICES;
+PERMISSIONS.WINDOWS.GAME_LIST;
+PERMISSIONS.WINDOWS.GAME_MONITOR;
+PERMISSIONS.WINDOWS.GAZE_INPUT;
+PERMISSIONS.WINDOWS.GLOBAL_MEDIA_CONTROL;
+PERMISSIONS.WINDOWS.HUMANINTERFACEDEVICE;
+PERMISSIONS.WINDOWS.INPUT_FOREGROUND_OBSERVATION;
+PERMISSIONS.WINDOWS.INPUT_INJECTION_BROKERED;
+PERMISSIONS.WINDOWS.INPUT_OBSERVATION;
+PERMISSIONS.WINDOWS.INPUT_SUPPRESSION;
 PERMISSIONS.WINDOWS.INTERNET_CLIENT;
 PERMISSIONS.WINDOWS.INTERNET_CLIENT_SERVER;
+PERMISSIONS.WINDOWS.INTEROP_SERVICES;
+PERMISSIONS.WINDOWS.IOT;
+PERMISSIONS.WINDOWS.LOCAL_SYSTEM_SERVICES;
 PERMISSIONS.WINDOWS.LOCATION;
+PERMISSIONS.WINDOWS.LOCATION_HISTORY;
+PERMISSIONS.WINDOWS.LOCATION_SYSTEM;
+PERMISSIONS.WINDOWS.LOW_LEVEL;
+PERMISSIONS.WINDOWS.LOW_LEVEL_DEVICES;
 PERMISSIONS.WINDOWS.MICROPHONE;
+PERMISSIONS.WINDOWS.MOBILE;
+PERMISSIONS.WINDOWS.MODIFIABLE_APP;
 PERMISSIONS.WINDOWS.MUSIC_LIBRARY;
-PERMISSIONS.WINDOWS.OBJECTS_3D;
+PERMISSIONS.WINDOWS.NETWORKING_VPN_PROVIDER;
+PERMISSIONS.WINDOWS.NETWORK_CONNECTION_MANAGER_PROVISIONING;
+PERMISSIONS.WINDOWS.NETWORK_DATA_PLAN_PROVISIONING;
+PERMISSIONS.WINDOWS.NETWORK_DATA_USAGE_MANAGEMENT;
+PERMISSIONS.WINDOWS.OEM_DEPLOYMENT;
+PERMISSIONS.WINDOWS.OEM_PUBLIC_DIRECTORY;
+PERMISSIONS.WINDOWS.ONE_PROCESS_VOIP;
+PERMISSIONS.WINDOWS.OPTICAL;
+PERMISSIONS.WINDOWS.PACKAGED_SERVICES;
+PERMISSIONS.WINDOWS.PACKAGES_SERVICES;
+PERMISSIONS.WINDOWS.PACKAGE_MANAGEMENT;
+PERMISSIONS.WINDOWS.PACKAGE_POLICY_SYSTEM;
+PERMISSIONS.WINDOWS.PACKAGE_QUERY;
+PERMISSIONS.WINDOWS.PACKAGE_WRITE_REDIRECTION_COMPATIBILITY_SHIM;
 PERMISSIONS.WINDOWS.PHONE_CALL;
-PERMISSIONS.WINDOWS.PHOTO_LIBRARY;
+PERMISSIONS.WINDOWS.PHONE_CALL_HISTORY;
+PERMISSIONS.WINDOWS.PHONE_CALL_HISTORY_SYSTEM;
+PERMISSIONS.WINDOWS.PHONE_LINE_TRANSPORT_MANAGEMENT;
+PERMISSIONS.WINDOWS.PICTURES_LIBRARY;
 PERMISSIONS.WINDOWS.POINT_OF_SERVICE;
+PERMISSIONS.WINDOWS.PREVIEW_INK_WORKSPACE;
+PERMISSIONS.WINDOWS.PREVIEW_PEN_WORKSPACE;
+PERMISSIONS.WINDOWS.PREVIEW_STORE;
+PERMISSIONS.WINDOWS.PREVIEW_UI_COMPOSITION;
 PERMISSIONS.WINDOWS.PRIVATE_NETWORK_CLIENT_SERVER;
+PERMISSIONS.WINDOWS.PROTECTED_APP;
 PERMISSIONS.WINDOWS.PROXIMITY;
+PERMISSIONS.WINDOWS.RADIOS;
 PERMISSIONS.WINDOWS.RECORDED_CALLS_FOLDER;
+PERMISSIONS.WINDOWS.REMOTE_PASSPORT_AUTHENTICATION;
+PERMISSIONS.WINDOWS.REMOTE_SYSTEM;
 PERMISSIONS.WINDOWS.REMOVABLE_STORAGE;
+PERMISSIONS.WINDOWS.RESCAP;
+PERMISSIONS.WINDOWS.RUN_FULL_TRUST;
+PERMISSIONS.WINDOWS.SCREEN_DUPLICATION;
+PERMISSIONS.WINDOWS.SECONDARY_AUTHENTICATION_FACTOR;
+PERMISSIONS.WINDOWS.SECURE_ASSESSMENT;
+PERMISSIONS.WINDOWS.SERIALCOMMUNICATION;
 PERMISSIONS.WINDOWS.SHARED_USER_CERTIFICATES;
+PERMISSIONS.WINDOWS.SLAPI_QUERY_LICENSE_VALUE;
+PERMISSIONS.WINDOWS.SMBIOS;
+PERMISSIONS.WINDOWS.SMS_SEND;
+PERMISSIONS.WINDOWS.SPATIAL_PERCEPTION;
+PERMISSIONS.WINDOWS.START_SCREEN_MANAGEMENT;
+PERMISSIONS.WINDOWS.STORE_LICENSE_MANAGEMENT;
+PERMISSIONS.WINDOWS.SYSTEM_MANAGEMENT;
+PERMISSIONS.WINDOWS.TARGETED_CONTENT;
+PERMISSIONS.WINDOWS.TEAM_EDITION_DEVICE_CREDENTIAL;
+PERMISSIONS.WINDOWS.TEAM_EDITION_EXPERIENCE;
+PERMISSIONS.WINDOWS.TEAM_EDITION_VIEW;
+PERMISSIONS.WINDOWS.UAP;
+PERMISSIONS.WINDOWS.UI_AUTOMATION;
+PERMISSIONS.WINDOWS.UNVIRTUALIZED_RESOURCES;
 PERMISSIONS.WINDOWS.USB;
 PERMISSIONS.WINDOWS.USER_ACCOUNT_INFORMATION;
+PERMISSIONS.WINDOWS.USER_DATA_ACCOUNTS_PROVIDER;
+PERMISSIONS.WINDOWS.USER_DATA_SYSTEM;
+PERMISSIONS.WINDOWS.USER_PRINCIPAL_NAME;
+PERMISSIONS.WINDOWS.USER_SYSTEM_ID;
 PERMISSIONS.WINDOWS.VIDEOS_LIBRARY;
 PERMISSIONS.WINDOWS.VOIP_CALL;
+PERMISSIONS.WINDOWS.WALLET_SYSTEM;
 PERMISSIONS.WINDOWS.WEBCAM;
+PERMISSIONS.WINDOWS.WIFI_CONTROL;
+PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 ```
+
+</details>
 
 ### Permissions statuses
 
@@ -512,13 +655,14 @@ Permission checks and requests resolve into one of these statuses:
 | `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)  |
 | `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
 | `RESULTS.GRANTED`     | The permission is granted                                         |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations                    |
 | `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
 
 ### Methods
 
 ```ts
 // type used in usage examples
-type PermissionStatus = 'unavailable' | 'denied' | 'blocked' | 'granted';
+type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'blocked';
 ```
 
 #### check
@@ -536,14 +680,13 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   .then((result) => {
     switch (result) {
       case RESULTS.UNAVAILABLE:
-        console.log(
-          'This feature is not available (on this device / in this context)',
-        );
+        console.log('This feature is not available (on this device / in this context)');
         break;
       case RESULTS.DENIED:
-        console.log(
-          'The permission has not been requested / is denied but requestable',
-        );
+        console.log('The permission has not been requested / is denied but requestable');
+        break;
+      case RESULTS.LIMITED:
+        console.log('The permission is limited: some actions are possible');
         break;
       case RESULTS.GRANTED:
         console.log('The permission is granted');
@@ -573,10 +716,7 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
-function request(
-  permission: string,
-  rationale?: Rationale,
-): Promise<PermissionStatus>;
+function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
 ```
 
 ```js
@@ -594,17 +734,18 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 Check notifications permission status and get notifications settings values.
 
 ```ts
-interface NotificationSettings {
-  // properties only availables on iOS
+type NotificationSettings = {
+  // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
-  lockScreen?: boolean;
   carPlay?: boolean;
-  notificationCenter?: boolean;
   criticalAlert?: boolean;
-}
+  provisional?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
+};
 
 function checkNotifications(): Promise<{
   status: PermissionStatus;
@@ -630,25 +771,20 @@ You cannot request notifications permissions on Windows. Disabling or enabling n
 
 ```ts
 // only used on iOS
-type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'criticalAlert'
-  | 'carPlay'
-  | 'provisional';
+type NotificationOption = 'alert' | 'badge' | 'sound' | 'criticalAlert' | 'carPlay' | 'provisional';
 
-interface NotificationSettings {
-  // properties only availables on iOS
+type NotificationSettings = {
+  // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
-  lockScreen?: boolean;
   carPlay?: boolean;
-  notificationCenter?: boolean;
   criticalAlert?: boolean;
-}
+  provisional?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
+};
 
 function requestNotifications(
   options: NotificationOption[],
@@ -681,12 +817,10 @@ function checkMultiple<P extends Permission[]>(
 ```js
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
-checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
-  (statuses) => {
-    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
-  },
-);
+checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+});
 ```
 
 ---
@@ -704,12 +838,10 @@ function requestMultiple<P extends Permission[]>(
 ```js
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
-requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then(
-  (statuses) => {
-    console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-    console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
-  },
-);
+requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+});
 ```
 
 ---
@@ -726,6 +858,68 @@ function openSettings(): Promise<void>;
 import {openSettings} from 'react-native-permissions';
 
 openSettings().catch(() => console.warn('cannot open settings'));
+```
+
+---
+
+#### openLimitedPhotoLibraryPicker (iOS 14+)
+
+Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
+
+```ts
+function openLimitedPhotoLibraryPicker(): Promise<void>;
+```
+
+```js
+import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
+
+openLimitedPhotoLibraryPicker().catch(() => {
+  console.warn('Cannot open photo library picker');
+});
+```
+
+---
+
+#### checkLocationAccuracy (iOS 14+)
+
+When `LocationAlways` or `LocationWhenInUse` is `granted`, allow checking if the user share his precise location.
+
+```ts
+type LocationAccuracy = 'full' | 'reduced';
+
+function checkLocationAccuracy(): Promise<LocationAccuracy>;
+```
+
+```js
+import {checkLocationAccuracy} from 'react-native-permissions';
+
+checkLocationAccuracy()
+  .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
+  .catch(() => console.warn('Cannot check location accuracy'));
+```
+
+---
+
+#### requestLocationAccuracy (iOS 14+)
+
+When `LocationAlways` or `LocationWhenInUse` is `granted`, allow requesting the user for his precise location. Will resolve immediately if `full` accuracy is already authorized.
+
+```ts
+type LocationAccuracyOptions = {
+  purposeKey: string;
+};
+
+type LocationAccuracy = 'full' | 'reduced';
+
+function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
+```
+
+```js
+import {requestLocationAccuracy} from 'react-native-permissions';
+
+requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
+  .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
+  .catch(() => console.warn('Cannot request location accuracy'));
 ```
 
 ## Migrating from v1.x.x

@@ -57,10 +57,17 @@
 	<string>Let me use your location, even in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Let me use your location when the app is opened</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>full-accuracy</key>
+		<string>Let me use your precise location temporarily</string>
+	</dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Let me use the microphone</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Let me use your motion data</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Let me add photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let me use your photo library</string>
 	<key>NSRemindersUsageDescription</key>

@@ -1,15 +1,24 @@
-import {ANDROID, IOS, WINDOWS, RESULTS} from './constants';
+import type {AndroidPermissionMap} from './permissions.android';
+import type {IOSPermissionMap} from './permissions.ios';
+import type {WindowsPermissionMap} from './permissions.windows';
+import {ResultMap} from './results';
 
 type Values<T extends object> = T[keyof T];
 
-export {Rationale} from 'react-native';
+export type {Rationale} from 'react-native';
 
-export type AndroidPermission = Values<typeof ANDROID>;
-export type IOSPermission = Values<typeof IOS>;
-export type WindowsPermission = Values<typeof WINDOWS>;
+export type AndroidPermission = Values<AndroidPermissionMap>;
+export type IOSPermission = Values<IOSPermissionMap>;
+export type WindowsPermission = Values<WindowsPermissionMap>;
 export type Permission = AndroidPermission | IOSPermission | WindowsPermission;
 
-export type PermissionStatus = Values<typeof RESULTS>;
+export type PermissionStatus = Values<ResultMap>;
+
+export type LocationAccuracyOptions = {
+  purposeKey: string;
+};
+
+export type LocationAccuracy = 'full' | 'reduced';
 
 export type NotificationOption =
   | 'alert'
@@ -19,17 +28,18 @@ export type NotificationOption =
   | 'criticalAlert'
   | 'provisional';
 
-export interface NotificationSettings {
+export type NotificationSettings = {
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
   carPlay?: boolean;
   criticalAlert?: boolean;
+  provisional?: boolean;
   lockScreen?: boolean;
   notificationCenter?: boolean;
-}
+};
 
-export interface NotificationsResponse {
+export type NotificationsResponse = {
   status: PermissionStatus;
   settings: NotificationSettings;
-}
+};

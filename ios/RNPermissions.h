@@ -51,6 +51,9 @@ typedef NS_ENUM(NSInteger, RNPermission) {
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   RNPermissionAppTrackingTransparency = 16,
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  RNPermissionPhotoLibraryAddOnly = 17,
+#endif
 };
 
 @interface RCTConvert (RNPermission)
@@ -62,6 +65,7 @@ typedef enum {
   RNPermissionStatusRestricted = 2,
   RNPermissionStatusDenied = 3,
   RNPermissionStatusAuthorized = 4,
+  RNPermissionStatusLimited = 5,
 } RNPermissionStatus;
 
 @protocol RNPermissionHandler <NSObject>

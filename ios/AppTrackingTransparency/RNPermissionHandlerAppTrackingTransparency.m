@@ -27,12 +27,10 @@
         return resolve(RNPermissionStatusAuthorized);
     }
   } else {
-    NSString *idfaString = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-
-    if ([idfaString isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
-      resolve(RNPermissionStatusDenied);
-    } else {
+    if ([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
       resolve(RNPermissionStatusAuthorized);
+    } else {
+      resolve(RNPermissionStatusDenied);
     }
   }
 }

@@ -6,39 +6,11 @@
     "appium": "appium",
     "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
     "clean": "rm -rf ./node_modules ./ios/Pods",
-    "postinstall": "yarn clean-modules && yarn pod-update",
+    "postinstall": "patch-package && yarn clean-modules && yarn pod-update",
     "pod-update": "cd ./ios && pod update && cd ..",
     "start": "react-native start",
     "reinstall": "yarn clean && yarn install",
     "test:windows": "yarn jest --setupFiles=./jest-setups/jest.setup.windows.js"
-  },
-  "dependencies": {
-    "react": "16.11.0",
-    "react-native": "0.62.2",
-    "react-native-paper": "3.8.0",
-    "react-native-permissions": "../",
-    "react-native-vector-icons": "6.6.0",
-    "react-native-windows": "^0.62.0-0"
-  },
-  "devDependencies": {
-    "@babel/core": "7.9.0",
-    "@babel/runtime": "7.9.2",
-    "@react-native-community/eslint-config": "^1.0.0",
-    "@types/jest": "^24.0.24",
-    "@types/react": "16.9.34",
-    "@types/react-native": "0.62.2",
-    "@types/react-test-renderer": "16.9.2",
-    "@typescript-eslint/parser": "^2.27.0",
-    "appium": "1.18.2",
-    "babel-jest": "^24.9.0",
-    "eslint": "^6.5.1",
-    "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "0.59.0",
-    "prettier": "^2.0.4",
-    "react-test-renderer": "16.11.0",
-    "selenium-appium": "0.0.15",
-    "selenium-webdriver": "4.0.0-alpha.7",
-    "typescript": "3.8.3"
   },
   "jest": {
     "preset": "react-native",
@@ -50,5 +22,32 @@
       "json",
       "node"
     ]
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-native": "0.63.3",
+    "react-native-paper": "4.4.0",
+    "react-native-permissions": "../",
+    "react-native-vector-icons": "7.1.0",
+    "react-native-windows": "^0.62.0-0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.3",
+    "@babel/runtime": "7.12.5",
+    "@types/jest": "24.9.1",
+    "@types/react": "16.9.56",
+    "@types/react-native": "0.63.34",
+    "@types/react-test-renderer": "16.9.3",
+    "appium": "1.18.3",
+    "babel-jest": "24.9.0",
+    "jest": "24.9.0",
+    "metro-react-native-babel-preset": "0.59.0",
+    "patch-package": "6.2.2",
+    "postinstall-postinstall": "2.1.0",
+    "prettier": "2.1.2",
+    "react-test-renderer": "16.11.0",
+    "selenium-appium": "0.0.16",
+    "selenium-webdriver": "4.0.0-alpha.7",
+    "typescript": "4.0.5"
   }
 }

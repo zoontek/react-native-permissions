@@ -52,6 +52,12 @@
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
 #import "RNPermissionHandlerAppTrackingTransparency.h"
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+#import "RNPermissionHandlerPhotoLibraryAddOnly.h"
+#endif
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+#import "RNPermissionHandlerLocationAccuracy.h"
+#endif
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
@@ -105,6 +111,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   [RNPermissionHandlerAppTrackingTransparency handlerUniqueId]: @(RNPermissionAppTrackingTransparency),
+#endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionPhotoLibraryAddOnly),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -182,6 +191,12 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
   [available addObject:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]];
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  [available addObject:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [available addObject:[RNPermissionHandlerLocationAccuracy handlerUniqueId]];
+#endif
 
 #if RCT_DEV
   if ([available count] == 0) {
@@ -197,6 +212,17 @@ RCT_EXPORT_MODULE();
 #endif
 
   return @{ @"available": available };
+}
+
+- (void)checkUsageDescriptionKeys:(NSArray<NSString *> * _Nonnull)keys {
+#if RCT_DEV
+  for (NSString *key in keys) {
+    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
+      RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file", key);
+      return;
+    }
+  }
+#endif
 }
 
 - (id<RNPermissionHandler> _Nullable)handlerForPermission:(RNPermission)permission {
@@ -283,19 +309,16 @@ RCT_EXPORT_MODULE();
       handler = [RNPermissionHandlerAppTrackingTransparency new];
       break;
 #endif
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+    case RNPermissionPhotoLibraryAddOnly:
+      handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
+      break;
+#endif
     case RNPermissionUnknown:
       break; // RCTConvert prevents this case
   }
 
-#if RCT_DEV
-  for (NSString *key in [[handler class] usageDescriptionKeys]) {
-    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
-      RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file", key);
-      return nil;
-    }
-  }
-#endif
-
+  [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
   return handler;
 }
 
@@ -308,6 +331,8 @@ RCT_EXPORT_MODULE();
       return @"denied";
     case RNPermissionStatusDenied:
       return @"blocked";
+    case RNPermissionStatusLimited:
+      return @"limited";
     case RNPermissionStatusAuthorized:
       return @"granted";
   }
@@ -356,18 +381,13 @@ RCT_REMAP_METHOD(openSettings,
   UIApplication *sharedApplication = [UIApplication sharedApplication];
   NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
 
-  if (@available(iOS 10.0, *)) {
-    [sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
-      if (success) {
-        resolve(@(true));
-      } else {
-        reject(@"cannot_open_settings", @"Cannot open application settings", nil);
-      }
-    }];
-  } else {
-    [sharedApplication openURL:url];
-    resolve(@(true));
-  }
+  [sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
+    if (success) {
+      resolve(@(true));
+    } else {
+      reject(@"cannot_open_settings", @"Cannot open application settings", nil);
+    }
+  }];
 }
 
 RCT_REMAP_METHOD(check,
@@ -438,6 +458,44 @@ RCT_REMAP_METHOD(requestNotifications,
   } options:options];
 #else
   reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+#endif
+}
+
+RCT_REMAP_METHOD(openLimitedPhotoLibraryPicker,
+                 openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerPhotoLibrary.h")
+  RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
+  [handler openLimitedPhotoLibraryPickerWithResolver:resolve rejecter:reject];
+#else
+  reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
+#endif
+}
+
+RCT_REMAP_METHOD(checkLocationAccuracy,
+                 checkLocationAccuracyWithResolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+
+  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  [handler checkWithResolver:resolve rejecter:reject];
+#else
+  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+#endif
+}
+
+RCT_REMAP_METHOD(requestLocationAccuracy,
+                 requestLocationAccuracyWithPurposeKey:(NSString * _Nonnull)purposeKey
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject) {
+#if __has_include("RNPermissionHandlerLocationAccuracy.h")
+  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+
+  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  [handler requestWithPurposeKey:purposeKey resolver:resolve rejecter:reject];
+#else
+  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
 #endif
 }
 

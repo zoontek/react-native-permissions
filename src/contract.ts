@@ -1,4 +1,6 @@
-import {
+import type {
+  LocationAccuracy,
+  LocationAccuracyOptions,
   NotificationOption,
   NotificationsResponse,
   Permission,
@@ -6,27 +8,20 @@ import {
   Rationale,
 } from './types';
 
-export interface Contract {
-  openSettings(): Promise<void>;
-
+export type Contract = {
   check(permission: Permission): Promise<PermissionStatus>;
-
-  request(
-    permission: Permission,
-    rationale?: Rationale,
-  ): Promise<PermissionStatus>;
-
+  checkLocationAccuracy(): Promise<LocationAccuracy>;
   checkNotifications(): Promise<NotificationsResponse>;
-
-  requestNotifications(
-    options: NotificationOption[],
-  ): Promise<NotificationsResponse>;
+  openLimitedPhotoLibraryPicker(): Promise<void>;
+  openSettings(): Promise<void>;
+  request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
+  requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
+  requestNotifications(options: NotificationOption[]): Promise<NotificationsResponse>;
 
   checkMultiple<P extends Permission[]>(
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
-
   requestMultiple<P extends Permission[]>(
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
-}
+};

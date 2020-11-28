@@ -17,19 +17,15 @@
 #if TARGET_OS_SIMULATOR
   resolve(RNPermissionStatusNotAvailable);
 #else
-  if (@available(iOS 9.3, *)) {
-    switch ([MPMediaLibrary authorizationStatus]) {
-      case MPMediaLibraryAuthorizationStatusNotDetermined:
-        return resolve(RNPermissionStatusNotDetermined);
-      case MPMediaLibraryAuthorizationStatusRestricted:
-        return resolve(RNPermissionStatusRestricted);
-      case MPMediaLibraryAuthorizationStatusDenied:
-        return resolve(RNPermissionStatusDenied);
-      case MPMediaLibraryAuthorizationStatusAuthorized:
-        return resolve(RNPermissionStatusAuthorized);
-    }
-  } else {
-    resolve(RNPermissionStatusAuthorized);
+  switch ([MPMediaLibrary authorizationStatus]) {
+    case MPMediaLibraryAuthorizationStatusNotDetermined:
+      return resolve(RNPermissionStatusNotDetermined);
+    case MPMediaLibraryAuthorizationStatusRestricted:
+      return resolve(RNPermissionStatusRestricted);
+    case MPMediaLibraryAuthorizationStatusDenied:
+      return resolve(RNPermissionStatusDenied);
+    case MPMediaLibraryAuthorizationStatusAuthorized:
+      return resolve(RNPermissionStatusAuthorized);
   }
 #endif
 }
@@ -39,13 +35,9 @@
 #if TARGET_OS_SIMULATOR
   resolve(RNPermissionStatusNotAvailable);
 #else
-  if (@available(iOS 9.3, *)) {
-    [MPMediaLibrary requestAuthorization:^(__unused MPMediaLibraryAuthorizationStatus status) {
-      [self checkWithResolver:resolve rejecter:reject];
-    }];
-  } else {
-    resolve(RNPermissionStatusAuthorized);
-  }
+  [MPMediaLibrary requestAuthorization:^(__unused MPMediaLibraryAuthorizationStatus status) {
+    [self checkWithResolver:resolve rejecter:reject];
+  }];
 #endif
 }
 

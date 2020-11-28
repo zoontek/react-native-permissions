@@ -1,18 +1,16 @@
-const {PERMISSIONS, RESULTS} = require('./lib/commonjs/constants');
+const {PERMISSIONS} = require('./dist/commonjs/permissions');
+const {RESULTS} = require('./dist/commonjs/results');
+
 export {PERMISSIONS, RESULTS};
 
+export const openLimitedPhotoLibraryPicker = jest.fn(async () => {});
 export const openSettings = jest.fn(async () => {});
 export const check = jest.fn(async (permission) => RESULTS.GRANTED);
 export const request = jest.fn(async (permission) => RESULTS.GRANTED);
+export const checkLocationAccuracy = jest.fn(async () => 'full');
+export const requestLocationAccuracy = jest.fn(async (options) => 'full');
 
-const notificationOptions = [
-  'alert',
-  'badge',
-  'sound',
-  'criticalAlert',
-  'carPlay',
-  // 'provisional', // excluded as it's not included in NotificationSettings
-];
+const notificationOptions = ['alert', 'badge', 'sound', 'carPlay', 'criticalAlert', 'provisional'];
 
 const notificationSettings = {
   alert: true,
@@ -20,6 +18,7 @@ const notificationSettings = {
   sound: true,
   carPlay: true,
   criticalAlert: true,
+  provisional: true,
   lockScreen: true,
   notificationCenter: true,
 };
@@ -56,11 +55,15 @@ export const requestMultiple = jest.fn(async (permissions) =>
 export default {
   PERMISSIONS,
   RESULTS,
-  openSettings,
+
   check,
-  request,
-  checkNotifications,
-  requestNotifications,
+  checkLocationAccuracy,
   checkMultiple,
+  checkNotifications,
+  openLimitedPhotoLibraryPicker,
+  openSettings,
+  request,
+  requestLocationAccuracy,
   requestMultiple,
+  requestNotifications,
 };

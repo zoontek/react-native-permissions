@@ -14,12 +14,8 @@ afterAll(() => {
 
 describe('Test App', () => {
   test('Permissions present', async () => {
-    await driver.wait(
-      until.elementLocated(By2.nativeName('CODE_GENERATION:granted')),
-    );
-    await driver.wait(
-      until.elementLocated(By2.nativeName('DOCUMENTS_LIBRARY:unavailable')),
-    );
+    await driver.wait(until.elementLocated(By2.nativeName('CODE_GENERATION:granted')));
+    await driver.wait(until.elementLocated(By2.nativeName('DOCUMENTS_LIBRARY:unavailable')));
     await driver.wait(until.elementLocated(By2.nativeName('CONTACTS:denied')));
     await driver.wait(until.elementLocated(By2.nativeName('LOCATION:blocked')));
   });
