@@ -26,28 +26,28 @@
   "dependencies": {
     "react": "16.13.1",
     "react-native": "0.63.3",
-    "react-native-paper": "4.4.0",
+    "react-native-paper": "4.4.1",
     "react-native-permissions": "../",
     "react-native-vector-icons": "7.1.0",
     "react-native-windows": "^0.62.0-0"
   },
   "devDependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.12.9",
     "@babel/runtime": "7.12.5",
     "@types/jest": "24.9.1",
-    "@types/react": "16.9.56",
-    "@types/react-native": "0.63.34",
-    "@types/react-test-renderer": "16.9.3",
-    "appium": "1.18.3",
+    "@types/react": "16.14.2",
+    "@types/react-native": "0.63.37",
+    "@types/react-test-renderer": "16.9.4",
+    "appium": "1.19.1",
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.59.0",
     "patch-package": "6.2.2",
     "postinstall-postinstall": "2.1.0",
-    "prettier": "2.1.2",
+    "prettier": "2.2.1",
     "react-test-renderer": "16.11.0",
     "selenium-appium": "0.0.16",
     "selenium-webdriver": "4.0.0-alpha.7",
-    "typescript": "4.0.5"
+    "typescript": "4.1.2"
   }
 }
