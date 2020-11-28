@@ -919,26 +919,3 @@ requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
   .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
   .catch(() => console.warn('Cannot request location accuracy'));
 ```
-
-## Migrating from v1.x.x
-
-If you are currently using the version `1.x.x` and would like to switch to `v2.x.x`, the only thing you really need to know is that it's now required to select the wanted permission **per platform**.
-
-```js
-// v1.x.x
-import Permissions from 'react-native-permissions';
-
-Permissions.request('location', {type: 'whenInUse'});
-
-// v2.x.x
-import {Platform} from 'react-native';
-import {PERMISSIONS, request} from 'react-native-permissions';
-
-request(
-  Platform.select({
-    android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-    ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-    windows: PERMISSIONS.WINDOWS.LOCATION,
-  }),
-);
-```
