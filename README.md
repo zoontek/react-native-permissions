@@ -12,9 +12,9 @@ For Windows only builds 18362 and later are supported.
 
 ## Support
 
-| version | react-native version |
-| ------- | -------------------- |
-| 3.0.0+  | 0.63.0+              |
+| version | react-native version | Xcode version |
+| ------- | -------------------- | ------------- |
+| 3.0.0+  | 0.63.0+              | 12+           |
 
 ## Setup
 
