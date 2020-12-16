@@ -3,6 +3,8 @@ package com.zoontek.rnpermissions;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +32,7 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @ReactModule(name = RNPermissionsModule.MODULE_NAME)
 public class RNPermissionsModule extends ReactContextBaseJavaModule implements PermissionListener {
@@ -145,10 +148,27 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     }
   }
 
+  private boolean areNotificationsEnabled() {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        NotificationManager manager = (NotificationManager) getReactApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (!manager.areNotificationsEnabled()) {
+          return false;
+        }
+        List<NotificationChannel> channels = manager.getNotificationChannels();
+        for (NotificationChannel channel : channels) {
+          if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return NotificationManagerCompat.from(getReactApplicationContext()).areNotificationsEnabled();
+      }
+    }
+
   @ReactMethod
   public void checkNotifications(final Promise promise) {
-    final boolean enabled = NotificationManagerCompat
-      .from(getReactApplicationContext()).areNotificationsEnabled();
+    final boolean enabled = areNotificationsEnabled();
     final WritableMap output = Arguments.createMap();
     final WritableMap settings = Arguments.createMap();
 
