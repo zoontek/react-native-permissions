@@ -725,6 +725,17 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 });
 ```
 
+##### Things to consider when using LOCATION_ALWAYS on iOS
+
+If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Allow always` Button
+in the Dialog. Only `Allow Once`, `Allow While Using App` and `Don't allow`. This is expected behaviour,
+check the [Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736).
+When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS` and you choose `Allow While Using App` in the dialog, a Provisional `PERMISSIONS.IOS.LOCATION_ALWAYS` will be granted. The user will see `While Using` in the settings, and later will be prompted that your App is using the location in background. That looks like this:
+
+![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 "Screenshot")
+
+Subsequently, if you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there is no need to request `PERMISSIONS.IOS.LOCATION_WHEN_IN_USE`. If the user accepts `PERMISSIONS.IOS.LOCATION_ALWAYS`, `PERMISSIONS.IOS.LOCATION_WHEN_IN_USE` is granted. If the user denies `PERMISSIONS.IOS.LOCATION_ALWAYS`, `PERMISSIONS.IOS.LOCATION_WHEN_IN_USE` is denied too. 
+
 ---
 
 #### checkNotifications
