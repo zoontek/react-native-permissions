@@ -929,3 +929,17 @@ When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow Whi
 ![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 "Screenshot")
 
 Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too. 
+
+### Testing with Jest
+
+If you don't already have have a Jest setup file configured, please add the following to your Jest configuration file and create the new `jest.setup.js` file in project root:
+
+```js
+setupFiles: ['<rootDir>/jest.setup.js']
+```
+
+You can then add the following line to that setup file to mock the `NativeModule.RNPermissions`:
+
+```js
+jest.mock('react-native-permissions', () => require('react-native-permissions/mock'))
+```
