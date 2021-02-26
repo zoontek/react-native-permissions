@@ -932,7 +932,7 @@ Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no ne
 
 ### Testing with Jest
 
-If you don't already have have a Jest setup file configured, please add the following to your Jest configuration file and create the new `jest.setup.js` file in project root:
+If you don't already have a Jest setup file configured, please add the following to your Jest configuration file and create the new `jest.setup.js` file in project root:
 
 ```js
 setupFiles: ['<rootDir>/jest.setup.js']
