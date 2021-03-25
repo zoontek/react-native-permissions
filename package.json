@@ -4,10 +4,10 @@
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS and Android",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
-  "homepage": "https://github.com/react-native-community/react-native-permissions#readme",
+  "homepage": "https://github.com/zoontek/react-native-permissions#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-native-community/react-native-permissions.git"
+    "url": "https://github.com/zoontek/react-native-permissions.git"
   },
   "keywords": [
     "react-native",
