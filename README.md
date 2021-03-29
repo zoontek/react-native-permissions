@@ -1,7 +1,7 @@
 # ☝🏼 React Native Permissions
 
 <a href="https://github.com/sponsors/zoontek">
-  <img align="right" width="180" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+  <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
 </a>
 
 A unified permissions API for React Native on iOS, Android and Windows.<br>
