@@ -1,14 +1,17 @@
 <a href="https://github.com/sponsors/zoontek">
-  <img align="right" width="200" alt="Philosopher’s stone, logo of PostCSS" src=".github/funding-octocat.svg">
+  <img align="right" width="200" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
 </a>
 
 # ☝🏼 React Native Permissions
 
 [![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
 [![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
-![Platform - Android, iOS and Windows](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Windows-yellow.svg)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg?style=flat&logo=android)
+![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)
+![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)
+
 
 A unified permissions API for React Native on iOS, Android and Windows.<br>
 (For Windows only builds 18362 and later are supported)
