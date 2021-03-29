@@ -12,7 +12,6 @@
 ![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)
 ![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)
 
-
 A unified permissions API for React Native on iOS, Android and Windows.<br>
 (For Windows only builds 18362 and later are supported)
 
