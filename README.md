@@ -1,4 +1,4 @@
-# ☝🏼 React native permissions
+# ☝🏼 react-native-permissions
 
 <a href="https://github.com/sponsors/zoontek">
   <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
