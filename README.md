@@ -1,3 +1,5 @@
+<img align="right" width="200" alt="Philosopher’s stone, logo of PostCSS" src=".github/funding-octocat.svg">
+
 # ☝🏼 React Native Permissions
 
 [![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
@@ -6,9 +8,8 @@
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-A unified permissions API for React Native on iOS, Android and Windows.
-
-For Windows only builds 18362 and later are supported.
+A unified permissions API for React Native on iOS, Android and Windows.<br>
+(For Windows only builds 18362 and later are supported)
 
 ## Support
 
