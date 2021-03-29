@@ -1,4 +1,6 @@
-<img align="right" width="200" alt="Philosopher’s stone, logo of PostCSS" src=".github/funding-octocat.svg">
+<a href="https://github.com/sponsors/zoontek">
+  <img align="right" width="200" alt="Philosopher’s stone, logo of PostCSS" src=".github/funding-octocat.svg">
+</a>
 
 # ☝🏼 React Native Permissions
 
