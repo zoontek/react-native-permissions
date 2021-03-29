@@ -1,5 +1,12 @@
 # ☝🏼 React Native Permissions
 
+<a href="https://github.com/sponsors/zoontek">
+  <img align="right" width="200" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+</a>
+
+A unified permissions API for React Native on iOS, Android and Windows.<br>
+(For Windows only builds 18362 and later are supported)
+
 [![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 [![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
@@ -7,16 +14,6 @@
 ![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg?style=flat&logo=android)
 ![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)
 ![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)
-
-<a href="https://github.com/sponsors/zoontek">
-  <img align="right" width="180" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
-</a>
-
-A unified permissions API for React Native on iOS, Android and Windows.<br>
-(For Windows only builds 18362 and later are supported)
-
-<br>
-<br>
 
 ## Support
 
