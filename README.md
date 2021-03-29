@@ -5,8 +5,8 @@
 # ☝🏼 React Native Permissions
 
 [![npm version](https://badge.fury.io/js/react-native-permissions.svg)](https://badge.fury.io/js/react-native-permissions)
-[![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
+[![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
 <br />
 ![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg?style=flat&logo=android)
 ![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)
