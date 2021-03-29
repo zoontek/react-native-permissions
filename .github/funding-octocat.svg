@@ -158,9 +158,9 @@
           Apple Color Emoji, Segoe UI Emoji;
         color: #6a737d;
         display: block;
-        font-size: 18px;
+        font-size: 19px;
         line-height: 1.5;
-        padding-top: 60%;
+        padding-top: 62%;
         text-align: center;
         word-wrap: break-word;
       }
