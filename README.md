@@ -8,9 +8,9 @@
 [![npm](https://img.shields.io/npm/dt/react-native-permissions.svg)](https://www.npmjs.org/package/react-native-permissions)
 ![MIT](https://img.shields.io/dub/l/vibe-d.svg)
 
-![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg)
-![Platform - iOS](https://img.shields.io/badge/platform-iOS-f5f5f7.svg)
-![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg)
+![Platform - Android](https://img.shields.io/badge/platform-Android-3ddc84.svg?style=flat&logo=android)
+![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)
+![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)
 
 
 A unified permissions API for React Native on iOS, Android and Windows.<br>
