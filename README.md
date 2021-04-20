@@ -166,6 +166,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.CALL_PHONE" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
   <uses-permission android:name="android.permission.READ_CALENDAR" />
   <uses-permission android:name="android.permission.READ_CALL_LOG" />

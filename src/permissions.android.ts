@@ -13,6 +13,7 @@ const ANDROID = Object.freeze({
   CALL_PHONE: 'android.permission.CALL_PHONE',
   CAMERA: 'android.permission.CAMERA',
   GET_ACCOUNTS: 'android.permission.GET_ACCOUNTS',
+  MANAGE_EXTERNAL_STORAGE: 'android.permission.MANAGE_EXTERNAL_STORAGE',
   PROCESS_OUTGOING_CALLS: 'android.permission.PROCESS_OUTGOING_CALLS',
   READ_CALENDAR: 'android.permission.READ_CALENDAR',
   READ_CALL_LOG: 'android.permission.READ_CALL_LOG',
