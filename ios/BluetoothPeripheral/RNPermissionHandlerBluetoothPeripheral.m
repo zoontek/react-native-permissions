@@ -29,8 +29,8 @@
   return resolve(RNPermissionStatusNotAvailable);
 #else
 
-  if (@available(iOS 13.0, *)) {
-    switch ([[CBManager new] authorization]) {
+  if (@available(iOS 13.1, *)) {
+    switch ([CBManager authorization]) {
       case CBManagerAuthorizationNotDetermined:
         return resolve(RNPermissionStatusNotDetermined);
       case CBManagerAuthorizationRestricted:
