@@ -315,6 +315,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
   public void requestMultiplePermissions(final ReadableArray permissions, final Promise promise) {
     final WritableMap output = new WritableNativeMap();
     final ArrayList<String> permissionsToCheck = new ArrayList<String>();
+    int checkedPermissionsCount = 0;
 
     Context context = getReactApplicationContext().getBaseContext();
 
@@ -323,6 +324,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
       if (!permissionExists(permission)) {
         output.putString(permission, UNAVAILABLE);
+        checkedPermissionsCount++;
       } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         output.putString(
           permission,
@@ -330,16 +332,20 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
             == PackageManager.PERMISSION_GRANTED
             ? GRANTED
             : BLOCKED);
+
+        checkedPermissionsCount++;
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
+        checkedPermissionsCount++;
       } else if (mSharedPrefs.getBoolean(permission, false)) {
         output.putString(permission, BLOCKED); // not supporting reset the permission with "Ask me every time"
+        checkedPermissionsCount++;
       } else {
         permissionsToCheck.add(permission);
       }
     }
 
-    if (permissionsToCheck.isEmpty()) {
+    if (permissions.size() == checkedPermissionsCount) {
       promise.resolve(output);
       return;
     }
