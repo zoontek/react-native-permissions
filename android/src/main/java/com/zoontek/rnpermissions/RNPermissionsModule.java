@@ -352,11 +352,11 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
     try {
       PermissionAwareActivity activity = getPermissionAwareActivity();
-      boolean[] rationaleStatuses = new boolean[permissions.size()];
+      boolean[] rationaleStatuses = new boolean[permissionsToCheck.size()];
 
-      for (int i = 0; i < permissions.size(); i++) {
+      for (int i = 0; i < permissionsToCheck.size(); i++) {
         rationaleStatuses[i] = activity
-          .shouldShowRequestPermissionRationale(permissions.getString(i));
+          .shouldShowRequestPermissionRationale(permissionsToCheck.get(i));
       }
 
       mRequests.put(mRequestCode, new Request(
