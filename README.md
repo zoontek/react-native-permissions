@@ -770,7 +770,8 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.
+You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.    
+You cannot request notifications permissions on Android. `requestNotifications` is the same than `checkNotifications` on this platform.
 
 ```ts
 // only used on iOS
