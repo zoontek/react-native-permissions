@@ -1,6 +1,15 @@
-const {PERMISSIONS} = require('./dist/commonjs/permissions');
+const {
+  PERMISSIONS: {ANDROID},
+} = require('./dist/commonjs/permissions.android');
+const {
+  PERMISSIONS: {IOS},
+} = require('./dist/commonjs/permissions.ios');
+const {
+  PERMISSIONS: {WINDOWS},
+} = require('./dist/commonjs/permissions.windows');
 const {RESULTS} = require('./dist/commonjs/results');
 
+const PERMISSIONS = {ANDROID, IOS, WINDOWS};
 export {PERMISSIONS, RESULTS};
 
 export const openLimitedPhotoLibraryPicker = jest.fn(async () => {});
