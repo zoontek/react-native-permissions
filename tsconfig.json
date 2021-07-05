@@ -2,7 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react-native",
-    "lib": ["es2015"],
+    "lib": ["es2016"],
     "moduleResolution": "node",
     "strict": true,
     "target": "es5"

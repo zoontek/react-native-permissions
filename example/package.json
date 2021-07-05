@@ -24,28 +24,28 @@
     ]
   },
   "dependencies": {
-    "react": "17.0.1",
-    "react-native": "0.64.0",
-    "react-native-paper": "4.8.1",
+    "react": "17.0.2",
+    "react-native": "0.64.2",
+    "react-native-paper": "4.9.2",
     "react-native-permissions": "../",
     "react-native-vector-icons": "8.1.0",
     "react-native-windows": "^0.62.0-0"
   },
   "devDependencies": {
-    "@babel/core": "7.13.16",
-    "@babel/runtime": "7.13.17",
+    "@babel/core": "7.14.6",
+    "@babel/runtime": "7.14.6",
     "@types/jest": "26.0.23",
-    "@types/react": "17.0.4",
-    "@types/react-native": "0.64.4",
+    "@types/react": "17.0.13",
+    "@types/react-native": "0.64.10",
     "@types/react-test-renderer": "17.0.1",
-    "appium": "1.20.2",
-    "babel-jest": "26.6.3",
-    "jest": "26.6.3",
+    "appium": "1.21.0",
+    "babel-jest": "27.0.6",
+    "jest": "27.0.6",
     "metro-react-native-babel-preset": "0.66.0",
-    "prettier": "2.2.1",
-    "react-test-renderer": "17.0.1",
-    "selenium-appium": "0.0.16",
-    "selenium-webdriver": "4.0.0-beta.3",
-    "typescript": "4.2.4"
+    "prettier": "2.3.2",
+    "react-test-renderer": "17.0.2",
+    "selenium-appium": "1.0.2",
+    "selenium-webdriver": "4.0.0-beta.4",
+    "typescript": "4.3.5"
   }
 }
