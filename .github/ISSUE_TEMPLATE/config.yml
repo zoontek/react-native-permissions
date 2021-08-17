@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ➡ Expo issues
+    url: https://github.com/expo/expo/issues
+    about: If your issue is specific to usage with Expo, please open it on their repository.
+  - name: ❓ Stack Overflow
+    url: https://stackoverflow.com
+    about: If this library works as promised but you need help, please ask questions there.
