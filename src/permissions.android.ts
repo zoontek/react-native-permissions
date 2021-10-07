@@ -31,6 +31,9 @@ const ANDROID = Object.freeze({
   WRITE_CALL_LOG: 'android.permission.WRITE_CALL_LOG',
   WRITE_CONTACTS: 'android.permission.WRITE_CONTACTS',
   WRITE_EXTERNAL_STORAGE: 'android.permission.WRITE_EXTERNAL_STORAGE',
+  BLUETOOTH_CONNECT: "android.permission.BLUETOOTH_CONNECT",
+  BLUETOOTH_SCAN: "android.permission.BLUETOOTH_SCAN",
+  BLUETOOTH_ADVERTISE: "android.permission.BLUETOOTH_ADVERTISE"
 } as const);
 
 export type AndroidPermissionMap = typeof ANDROID;
