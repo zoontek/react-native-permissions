@@ -79,5 +79,10 @@
     "react": "16.13.1",
     "react-native": "0.63.3",
     "typescript": "^4.3.5"
+  },
+  "peerDependenciesMeta": {
+    "react-native-windows": {
+      "optional": true
+    }
   }
 }
