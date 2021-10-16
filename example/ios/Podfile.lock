@@ -11,41 +11,41 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.66.0)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - Permission-AppTrackingTransparency (3.0.5):
+  - Permission-AppTrackingTransparency (3.0.6):
     - RNPermissions
-  - Permission-BluetoothPeripheral (3.0.5):
+  - Permission-BluetoothPeripheral (3.0.6):
     - RNPermissions
-  - Permission-Calendars (3.0.5):
+  - Permission-Calendars (3.0.6):
     - RNPermissions
-  - Permission-Camera (3.0.5):
+  - Permission-Camera (3.0.6):
     - RNPermissions
-  - Permission-Contacts (3.0.5):
+  - Permission-Contacts (3.0.6):
     - RNPermissions
-  - Permission-FaceID (3.0.5):
+  - Permission-FaceID (3.0.6):
     - RNPermissions
-  - Permission-LocationAccuracy (3.0.5):
+  - Permission-LocationAccuracy (3.0.6):
     - RNPermissions
-  - Permission-LocationAlways (3.0.5):
+  - Permission-LocationAlways (3.0.6):
     - RNPermissions
-  - Permission-LocationWhenInUse (3.0.5):
+  - Permission-LocationWhenInUse (3.0.6):
     - RNPermissions
-  - Permission-MediaLibrary (3.0.5):
+  - Permission-MediaLibrary (3.0.6):
     - RNPermissions
-  - Permission-Microphone (3.0.5):
+  - Permission-Microphone (3.0.6):
     - RNPermissions
-  - Permission-Motion (3.0.5):
+  - Permission-Motion (3.0.6):
     - RNPermissions
-  - Permission-Notifications (3.0.5):
+  - Permission-Notifications (3.0.6):
     - RNPermissions
-  - Permission-PhotoLibrary (3.0.5):
+  - Permission-PhotoLibrary (3.0.6):
     - RNPermissions
-  - Permission-PhotoLibraryAddOnly (3.0.5):
+  - Permission-PhotoLibraryAddOnly (3.0.6):
     - RNPermissions
-  - Permission-Reminders (3.0.5):
+  - Permission-Reminders (3.0.6):
     - RNPermissions
-  - Permission-SpeechRecognition (3.0.5):
+  - Permission-SpeechRecognition (3.0.6):
     - RNPermissions
-  - Permission-StoreKit (3.0.5):
+  - Permission-StoreKit (3.0.6):
     - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -310,7 +310,7 @@ PODS:
     - React-jsi (= 0.66.0)
     - React-logger (= 0.66.0)
     - React-perflogger (= 0.66.0)
-  - RNPermissions (3.0.5):
+  - RNPermissions (3.0.6):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
@@ -531,4 +531,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: dccbc51e172e6676726e547a1885eebc1aec8b9b
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
