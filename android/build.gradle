@@ -8,23 +8,23 @@ buildscript {
     // module dependency in an application project.
     if (project == rootProject) {
         repositories {
-            mavenCentral()
             google()
+            mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.5.3'
+            classpath("com.android.tools.build:gradle:4.2.2")
         }
     }
 }
 
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 29)
-    buildToolsVersion safeExtGet('buildToolsVersion', '29.0.3')
+    compileSdkVersion safeExtGet("compileSdkVersion", 30)
+    buildToolsVersion safeExtGet("buildToolsVersion", "30.0.2")
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 16)
-        targetSdkVersion safeExtGet('targetSdkVersion', 29)
+        minSdkVersion safeExtGet("minSdkVersion", 21)
+        targetSdkVersion safeExtGet("targetSdkVersion", 30)
     }
     lintOptions {
         abortOnError false
@@ -47,5 +47,5 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+' // From node_modules
+    implementation "com.facebook.react:react-native:+" // From node_modules
 }
