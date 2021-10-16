@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {AppState, Platform, ScrollView, StatusBar, Text, View} from 'react-native';
 import {Appbar, List, TouchableRipple} from 'react-native-paper';
 import RNPermissions, {
@@ -39,75 +39,48 @@ const icons: {[key: string]: string} = {
   limited: 'alpha-l-circle',
 };
 
-const PermissionRow = ({
-  name,
-  status,
-  onPress,
-}: {
-  name: string;
-  status: string;
-  onPress: () => void;
-}) => (
-  <TouchableRipple onPress={onPress} accessible={true} accessibilityLabel={`${name}:${status}`}>
-    <List.Item
-      right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
-      title={name}
-      description={status}
-    />
-  </TouchableRipple>
-);
+export const App = () => {
+  const [statuses, setStatuses] = React.useState<Partial<Record<Permission, PermissionStatus>>>({});
+  const [notifications, setNotifications] = React.useState<NotificationsResponse>({
+    settings: {},
+    status: 'unavailable',
+  });
 
-type State = {
-  statuses: Partial<Record<Permission, PermissionStatus>>;
-  notifications: NotificationsResponse;
-};
-
-export default class App extends React.Component<{}, State> {
-  state: State = {
-    statuses: {},
-    notifications: {status: 'unavailable', settings: {}},
-  };
-
-  check = () =>
+  const check = React.useCallback(() => {
     RNPermissions.checkMultiple(PERMISSIONS_VALUES)
-      .then((statuses) => this.setState({statuses}))
+      .then(setStatuses)
       .then(() => RNPermissions.checkNotifications())
-      .then((notifications) => this.setState({notifications}))
+      .then(setNotifications)
       .catch((error) => console.warn(error));
+  }, []);
 
-  refresh = () => {
-    this.setState({statuses: {}}, this.check);
-  };
+  React.useEffect(() => {
+    const {remove} = AppState.addEventListener(
+      'change',
+      (status) => status === 'active' && check(),
+    );
 
-  componentDidMount() {
-    this.check();
-    AppState.addEventListener('change', this.check);
-  }
+    return remove;
+  }, [check]);
 
-  componentWillUnmount() {
-    AppState.removeEventListener('change', this.check);
-  }
+  return (
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
 
-  render() {
-    const {notifications} = this.state;
-    const {settings} = notifications;
+      <Appbar.Header>
+        <Appbar.Content title="react-native-permissions" subtitle="Example application" />
+        <Appbar.Action onPress={check} icon="refresh" />
 
-    return (
-      <View style={{flex: 1, backgroundColor: theme.colors.background}}>
-        <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
-
-        <Appbar.Header>
-          <Appbar.Content title="react-native-permissions" subtitle="Example application" />
-
-          <Appbar.Action onPress={this.refresh} icon="refresh" />
-
+        {Platform.OS === 'ios' && (
           <Appbar.Action
             icon="image-multiple"
             onPress={() => {
               RNPermissions.openLimitedPhotoLibraryPicker();
             }}
           />
+        )}
 
+        {Platform.OS === 'ios' && (
           <Appbar.Action
             icon="crosshairs-question"
             onPress={() => {
@@ -116,75 +89,78 @@ export default class App extends React.Component<{}, State> {
               }).then((accuracy) => console.warn({accuracy}));
             }}
           />
+        )}
 
-          <Appbar.Action
-            icon="cellphone-cog"
-            onPress={() => {
-              RNPermissions.openSettings();
-            }}
-          />
-        </Appbar.Header>
+        <Appbar.Action
+          icon="cellphone-cog"
+          onPress={() => {
+            RNPermissions.openSettings();
+          }}
+        />
+      </Appbar.Header>
 
-        <ScrollView>
-          {PERMISSIONS_VALUES.map(this.renderPermissionItem)}
+      <ScrollView>
+        {PERMISSIONS_VALUES.map((item, index) => {
+          const value = PERMISSIONS_VALUES[index];
+          const status = statuses[value];
 
-          <View style={{backgroundColor: '#e0e0e0', height: 1}} accessibilityRole="none" />
+          if (!status) {
+            return null;
+          }
 
-          <TouchableRipple
-            onPress={() => {
-              RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
-                .then(() => this.check())
-                .catch((error) => console.error(error));
-            }}>
-            <>
+          return (
+            <TouchableRipple
+              key={item}
+              onPress={() => {
+                RNPermissions.request(value)
+                  .then(check)
+                  .catch((error) => console.error(error));
+              }}
+            >
               <List.Item
-                title="NOTIFICATIONS"
-                right={() => (
-                  <List.Icon
-                    color={colors[notifications.status]}
-                    icon={icons[notifications.status]}
-                  />
-                )}
+                right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
+                title={item}
+                description={status}
               />
+            </TouchableRipple>
+          );
+        })}
 
-              {Platform.OS === 'ios' && (
-                <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
-                  {`alert: ${settings.alert}\n`}
-                  {`badge: ${settings.badge}\n`}
-                  {`sound: ${settings.sound}\n`}
-                  {`carPlay: ${settings.carPlay}\n`}
-                  {`criticalAlert: ${settings.criticalAlert}\n`}
-                  {`provisional: ${settings.provisional}\n`}
-                  {`lockScreen: ${settings.lockScreen}\n`}
-                  {`notificationCenter: ${settings.notificationCenter}\n`}
-                </Text>
+        <View style={{backgroundColor: '#e0e0e0', height: 1}} />
+
+        <TouchableRipple
+          onPress={() => {
+            RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
+              .then(check)
+              .catch((error) => console.error(error));
+          }}
+        >
+          <>
+            <List.Item
+              title="NOTIFICATIONS"
+              right={() => (
+                <List.Icon
+                  color={colors[notifications.status]}
+                  icon={icons[notifications.status]}
+                />
               )}
-            </>
-          </TouchableRipple>
-        </ScrollView>
-      </View>
-    );
-  }
+            />
 
-  renderPermissionItem = (item: Permission, index: number) => {
-    const value = PERMISSIONS_VALUES[index];
-    const status = this.state.statuses[value];
-
-    if (!status) {
-      return null;
-    }
-
-    return (
-      <PermissionRow
-        status={status}
-        key={item}
-        name={item}
-        onPress={() => {
-          RNPermissions.request(value)
-            .then(() => this.check())
-            .catch((error) => console.error(error));
-        }}
-      />
-    );
-  };
-}
+            {Platform.OS === 'ios' && (
+              <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
+                {`alert: ${notifications.settings.alert}\n`}
+                {`badge: ${notifications.settings.badge}\n`}
+                {`sound: ${notifications.settings.sound}\n`}
+                {`carPlay: ${notifications.settings.carPlay}\n`}
+                {`criticalAlert: ${notifications.settings.criticalAlert}\n`}
+                {`provisional: ${notifications.settings.provisional}\n`}
+                {`lockScreen: ${notifications.settings.lockScreen}\n`}
+                {`notificationCenter: ${notifications.settings.notificationCenter}\n`}
+              </Text>
+            )}
+          </>
+        </TouchableRipple>
+      </ScrollView>
+    </View>
+  );
+};
