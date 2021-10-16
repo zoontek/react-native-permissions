@@ -146,24 +146,6 @@ pre_install do |installer|
 end
 ```
 
-#### Workaround for "App Tracking Transparency not requestable on mount, starting at iOS 15.0" issue:
-
-On iOS 15.0+ requesting App Tracking Transparency does not seem to work on mount (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). We can work around this by listening for app state change, and then requesting it when the app becomes `'active'`:
-
-```js
-useEffect(() => {
-  const listener = AppState.addEventListener("change", (status) => {
-    if (Platform.OS === "ios" && status === "active") {
-      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-        .then((result) => console.log(result))
-        .catch((error) => console.log(error));
-    }
-  });
-
-  return listener.remove;
-}, []);
-```
-
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
@@ -490,7 +472,6 @@ PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
 PERMISSIONS.ANDROID.BLUETOOTH_CONNECT;
 PERMISSIONS.ANDROID.BLUETOOTH_SCAN;
 PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE;
-
 ```
 
 </details>
@@ -949,7 +930,7 @@ requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
   .catch(() => console.warn('Cannot request location accuracy'));
 ```
 
-### About iOS LOCATION_ALWAYS permission
+### About iOS `LOCATION_ALWAYS` permission
 
 If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Always Allow` button in the system dialog. Only `Allow Once`, `Allow While Using App` and `Don't Allow`. This is expected behaviour, check the [Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736).
 
@@ -958,6 +939,24 @@ When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow Whi
 ![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 'Screenshot')
 
 Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
+
+### How to request "App Tracking Transparency" permission on iOS
+
+Since iOS 15.0, it's impossible to request this this permission if the app isn't `active` (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). A good solution is to use `AppState` to make sure this is the case:
+
+```js
+useEffect(() => {
+  const listener = AppState.addEventListener('change', (status) => {
+    if (Platform.OS === 'ios' && status === 'active') {
+      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
+    }
+  });
+
+  return listener.remove;
+}, []);
+```
 
 ### Testing with Jest
 
