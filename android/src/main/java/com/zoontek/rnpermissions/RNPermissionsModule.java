@@ -127,6 +127,12 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "WRITE_CONTACTS";
     if (permission.equals("android.permission.WRITE_EXTERNAL_STORAGE"))
       return "WRITE_EXTERNAL_STORAGE";
+    if (permission.equals("android.permission.BLUETOOTH_CONNECT"))
+      return "BLUETOOTH_CONNECT";
+    if (permission.equals("android.permission.BLUETOOTH_SCAN"))
+      return "BLUETOOTH_SCAN";
+    if (permission.equals("android.permission.BLUETOOTH_ADVERTISE"))
+      return "BLUETOOTH_ADVERTISE";
 
     return null;
   }

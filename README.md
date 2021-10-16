@@ -162,6 +162,9 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
   <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
   <uses-permission android:name="android.permission.BODY_SENSORS" />
   <uses-permission android:name="android.permission.CALL_PHONE" />
   <uses-permission android:name="android.permission.CAMERA" />
@@ -466,6 +469,10 @@ PERMISSIONS.ANDROID.WRITE_CALENDAR;
 PERMISSIONS.ANDROID.WRITE_CALL_LOG;
 PERMISSIONS.ANDROID.WRITE_CONTACTS;
 PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
+PERMISSIONS.ANDROID.BLUETOOTH_CONNECT;
+PERMISSIONS.ANDROID.BLUETOOTH_SCAN;
+PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE;
+
 ```
 
 </details>
