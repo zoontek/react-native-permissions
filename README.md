@@ -146,6 +146,24 @@ pre_install do |installer|
 end
 ```
 
+#### Workaround for "App Tracking Transparency not requestable on mount, starting at iOS 15.0" issue:
+
+On iOS 15.0+ requesting App Tracking Transparency does not seem to work on mount (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). We can work around this by listening for app state change, and then requesting it when the app becomes `'active'`:
+
+```js
+useEffect(() => {
+  const listener = AppState.addEventListener("change", (status) => {
+    if (Platform.OS === "ios" && status === "active") {
+      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
+    }
+  });
+
+  return listener.remove;
+}, []);
+```
+
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
@@ -777,7 +795,7 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.  
+You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.
 You cannot request notifications permissions on Android. `requestNotifications` is the same than `checkNotifications` on this platform.
 
 ```ts
