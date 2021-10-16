@@ -9,6 +9,9 @@ const ANDROID = Object.freeze({
   ACTIVITY_RECOGNITION: 'android.permission.ACTIVITY_RECOGNITION',
   ADD_VOICEMAIL: 'com.android.voicemail.permission.ADD_VOICEMAIL',
   ANSWER_PHONE_CALLS: 'android.permission.ANSWER_PHONE_CALLS',
+  BLUETOOTH_ADVERTISE: 'android.permission.BLUETOOTH_ADVERTISE',
+  BLUETOOTH_CONNECT: 'android.permission.BLUETOOTH_CONNECT',
+  BLUETOOTH_SCAN: 'android.permission.BLUETOOTH_SCAN',
   BODY_SENSORS: 'android.permission.BODY_SENSORS',
   CALL_PHONE: 'android.permission.CALL_PHONE',
   CAMERA: 'android.permission.CAMERA',
@@ -31,9 +34,6 @@ const ANDROID = Object.freeze({
   WRITE_CALL_LOG: 'android.permission.WRITE_CALL_LOG',
   WRITE_CONTACTS: 'android.permission.WRITE_CONTACTS',
   WRITE_EXTERNAL_STORAGE: 'android.permission.WRITE_EXTERNAL_STORAGE',
-  BLUETOOTH_CONNECT: "android.permission.BLUETOOTH_CONNECT",
-  BLUETOOTH_SCAN: "android.permission.BLUETOOTH_SCAN",
-  BLUETOOTH_ADVERTISE: "android.permission.BLUETOOTH_ADVERTISE"
 } as const);
 
 export type AndroidPermissionMap = typeof ANDROID;
