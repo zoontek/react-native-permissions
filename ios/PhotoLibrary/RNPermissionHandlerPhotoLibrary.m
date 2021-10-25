@@ -16,6 +16,9 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_TV
+    return reject(@"cannot_open_limited_picker", @"Photo Library not available on tvOS", nil);
+#elif
   PHAuthorizationStatus status;
 
   if (@available(iOS 14.0, *)) {
@@ -36,6 +39,7 @@
     case PHAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
   }
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
@@ -53,6 +57,9 @@
 
 - (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                                          rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
+#if TARGET_OS_TV
+    return reject(@"cannot_open_limited_picker", @"Photo Library not available on tvOS", nil);
+#elif
   if (@available(iOS 14, *)) {
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
@@ -65,6 +72,7 @@
   } else {
     reject(@"cannot_open_limited_picker", @"Only available on iOS 14 or higher", nil);
   }
+#endif
 }
 
 @end

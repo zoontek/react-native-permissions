@@ -18,6 +18,13 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
                  rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject {
+#if TARGET_OS_TV
+    NSError * error = [[NSError alloc]
+                       initWithDomain:@"RNPermissions"
+                       code:1
+                       userInfo:@{NSLocalizedDescriptionKey: @"Notifications not available on tvOS"}];
+    return reject(error);
+#elif
   [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
     NSMutableDictionary *result = [NSMutableDictionary new];
 
@@ -68,6 +75,7 @@
         return resolve(RNPermissionStatusAuthorized, result);
     }
   }];
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
