@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es2015"],
-    "moduleResolution": "node",
-    "noEmit": true,
+    "lib": ["ES2016"],
+    "moduleResolution": "Node",
+    "target": "ESNext",
+
     "strict": true,
-    "target": "esnext"
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
