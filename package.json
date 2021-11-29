@@ -30,13 +30,13 @@
     "mock.js"
   ],
   "scripts": {
-    "start": "react-native start",
-    "prepare": "bob build",
     "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
     "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "prepare": "yarn setup-hooks && bob build",
+    "setup-hooks": "git config --local core.hooksPath .hooks",
     "tscheck": "tsc --project ./ --noEmit"
   },
-  "@react-native-community/bob": {
+  "react-native-builder-bob": {
     "source": "src",
     "output": "dist",
     "targets": [
@@ -54,11 +54,6 @@
       "prettier --write"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "peerDependencies": {
     "react": ">=16.13.1",
     "react-native": ">=0.63.3",
@@ -70,19 +65,18 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@react-native-community/bob": "^0.17.1",
-    "@types/react-native": "^0.63.53",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.0.1",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^4.3.8",
-    "lint-staged": "^11.2.3",
-    "prettier": "^2.4.1",
-    "react": "16.13.1",
-    "react-native": "0.63.3",
-    "typescript": "^4.4.4"
+    "@types/react-native": "^0.66.6",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "lint-staged": "^12.1.2",
+    "prettier": "^2.5.0",
+    "prettier-plugin-organize-imports": "^2.3.4",
+    "react": "17.0.2",
+    "react-native": "0.66.3",
+    "react-native-builder-bob": "^0.18.2",
+    "typescript": "^4.5.2"
   }
 }

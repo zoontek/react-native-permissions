@@ -1,4 +1,4 @@
-import {driver, By2} from 'selenium-appium';
+import {By2, driver} from 'selenium-appium';
 import {until} from 'selenium-webdriver';
 
 const setup = require('../jest-setups/jest.setup');

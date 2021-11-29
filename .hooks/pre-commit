@@ -1,0 +1,4 @@
+#!/bin/sh
+# https://git-scm.com/docs/githooks
+
+yarn lint-staged
