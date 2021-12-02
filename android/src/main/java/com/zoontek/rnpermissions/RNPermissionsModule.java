@@ -77,6 +77,8 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "ACCESS_COARSE_LOCATION";
     if (permission.equals("android.permission.ACCESS_FINE_LOCATION"))
       return "ACCESS_FINE_LOCATION";
+    if (permission.equals("android.permission.ACCESS_MEDIA_LOCATION"))
+      return "ACCESS_MEDIA_LOCATION";
     if (permission.equals("com.android.voicemail.permission.ADD_VOICEMAIL"))
       return "ADD_VOICEMAIL";
     if (permission.equals("android.permission.ACTIVITY_RECOGNITION"))

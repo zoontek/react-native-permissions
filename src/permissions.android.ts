@@ -6,6 +6,7 @@ const ANDROID = Object.freeze({
   ACCESS_BACKGROUND_LOCATION: 'android.permission.ACCESS_BACKGROUND_LOCATION',
   ACCESS_COARSE_LOCATION: 'android.permission.ACCESS_COARSE_LOCATION',
   ACCESS_FINE_LOCATION: 'android.permission.ACCESS_FINE_LOCATION',
+  ACCESS_MEDIA_LOCATION: 'android.permission.ACCESS_MEDIA_LOCATION',
   ACTIVITY_RECOGNITION: 'android.permission.ACTIVITY_RECOGNITION',
   ADD_VOICEMAIL: 'com.android.voicemail.permission.ADD_VOICEMAIL',
   ANSWER_PHONE_CALLS: 'android.permission.ANSWER_PHONE_CALLS',
