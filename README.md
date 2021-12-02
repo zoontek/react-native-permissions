@@ -19,7 +19,7 @@ A unified permissions API for React Native on iOS, Android and Windows.<br>
 
 | version | react-native version | Xcode version |
 | ------- | -------------------- | ------------- |
-| 3.0.0+  | 0.63.0+              | 12+           |
+| 3.2.0+  | 0.63.0+              | 12+           |
 
 ## Setup
 
@@ -160,6 +160,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
   <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
@@ -444,6 +445,7 @@ PERMISSIONS.ANDROID.ACCEPT_HANDOVER;
 PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION;
 PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION;
 PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION;
 PERMISSIONS.ANDROID.ACTIVITY_RECOGNITION;
 PERMISSIONS.ANDROID.ADD_VOICEMAIL;
 PERMISSIONS.ANDROID.ANSWER_PHONE_CALLS;
