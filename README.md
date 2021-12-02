@@ -19,7 +19,7 @@ A unified permissions API for React Native on iOS, Android and Windows.<br>
 
 | version | react-native version | Xcode version |
 | ------- | -------------------- | ------------- |
-| 3.2.0+  | 0.63.0+              | 12+           |
+| 3.0.0+  | 0.63.0+              | 12+           |
 
 ## Setup
 
