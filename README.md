@@ -692,6 +692,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
     switch (result) {
       case RESULTS.UNAVAILABLE:
         console.log('This feature is not available (on this device / in this context)');
+        console.log('This can happen e.g. if "Privacy" => "Location Services" is turned off')
         break;
       case RESULTS.DENIED:
         console.log('The permission has not been requested / is denied but requestable');
