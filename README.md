@@ -756,6 +756,7 @@ type NotificationSettings = {
   provisional?: boolean;
   lockScreen?: boolean;
   notificationCenter?: boolean;
+  providesAppNotificationSettings?: boolean;
 };
 
 function checkNotifications(): Promise<{
@@ -783,7 +784,7 @@ You cannot request notifications permissions on Android. `requestNotifications` 
 
 ```ts
 // only used on iOS
-type NotificationOption = 'alert' | 'badge' | 'sound' | 'criticalAlert' | 'carPlay' | 'provisional';
+type NotificationOption = 'alert' | 'badge' | 'sound' | 'criticalAlert' | 'carPlay' | 'provisional' | 'providesAppNotificationSettings';
 
 type NotificationSettings = {
   // properties only available on iOS
@@ -796,6 +797,7 @@ type NotificationSettings = {
   provisional?: boolean;
   lockScreen?: boolean;
   notificationCenter?: boolean;
+  providesAppNotificationSettings?: boolean;
 };
 
 function requestNotifications(options: NotificationOption[]): Promise<{
