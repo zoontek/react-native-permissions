@@ -130,7 +130,7 @@ export const App = () => {
 
         <TouchableRipple
           onPress={() => {
-            RNPermissions.requestNotifications(['alert', 'badge', 'sound'])
+            RNPermissions.requestNotifications(['alert', 'badge', 'sound', 'providesAppNotificationSettings'])
               .then(check)
               .catch((error) => console.error(error));
           }}
@@ -156,6 +156,7 @@ export const App = () => {
                 {`provisional: ${notifications.settings.provisional}\n`}
                 {`lockScreen: ${notifications.settings.lockScreen}\n`}
                 {`notificationCenter: ${notifications.settings.notificationCenter}\n`}
+                {`providesAppNotificationSettings: ${notifications.settings.providesAppNotificationSettings}\n`}
               </Text>
             )}
           </>
