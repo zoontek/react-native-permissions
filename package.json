@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -65,18 +65,18 @@
     }
   },
   "devDependencies": {
-    "@types/react-native": "^0.66.8",
-    "@typescript-eslint/eslint-plugin": "^5.6.0",
-    "@typescript-eslint/parser": "^5.6.0",
-    "eslint": "^8.4.1",
-    "eslint-plugin-react": "^7.27.1",
+    "@types/react-native": "^0.66.16",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "eslint": "^8.9.0",
+    "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "lint-staged": "^12.1.2",
+    "lint-staged": "^12.3.4",
     "prettier": "^2.5.1",
     "prettier-plugin-organize-imports": "^2.3.4",
     "react": "17.0.2",
-    "react-native": "0.66.4",
+    "react-native": "0.67.3",
     "react-native-builder-bob": "^0.18.2",
-    "typescript": "^4.5.3"
+    "typescript": "^4.5.5"
   }
 }

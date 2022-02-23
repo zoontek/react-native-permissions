@@ -47,17 +47,15 @@
     }
 
     if (@available(iOS 12.0, *)) {
+      bool providesAppSettingsValue = settings.providesAppNotificationSettings == true;
       bool provisionalValue = settings.authorizationStatus == UNAuthorizationStatusProvisional;
+
+      [result setValue:@(providesAppSettingsValue) forKey:@"providesAppSettings"];
       [result setValue:@(provisionalValue) forKey:@"provisional"];
 
       if (settings.criticalAlertSetting != UNNotificationSettingNotSupported) {
         bool value = settings.criticalAlertSetting == UNNotificationSettingEnabled;
         [result setValue:@(value) forKey:@"criticalAlert"];
-      }
-
-      {
-        bool value = settings.providesAppNotificationSettings == TRUE;
-        [result setValue:@(value) forKey:@"providesAppNotificationSettings"];
       }
     }
 
@@ -84,7 +82,7 @@
   bool criticalAlert = [options containsObject:@"criticalAlert"];
   bool carPlay = [options containsObject:@"carPlay"];
   bool provisional = [options containsObject:@"provisional"];
-  bool providesAppNotificationSettings = [options containsObject:@"providesAppNotificationSettings"];
+  bool providesAppSettings = [options containsObject:@"providesAppSettings"];
 
   UNAuthorizationOptions types = UNAuthorizationOptionNone;
 
@@ -108,7 +106,7 @@
     if (provisional) {
       types += UNAuthorizationOptionProvisional;
     }
-    if (providesAppNotificationSettings) {
+    if (providesAppSettings) {
       types += UNAuthorizationOptionProvidesAppNotificationSettings;
     }
   }
@@ -119,7 +117,7 @@
       !criticalAlert &&
       !carPlay &&
       !provisional &&
-      !providesAppNotificationSettings) {
+      !providesAppSettings) {
     types += UNAuthorizationOptionAlert;
     types += UNAuthorizationOptionBadge;
     types += UNAuthorizationOptionSound;
