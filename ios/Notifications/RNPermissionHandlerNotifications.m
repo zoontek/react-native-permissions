@@ -54,6 +54,11 @@
         bool value = settings.criticalAlertSetting == UNNotificationSettingEnabled;
         [result setValue:@(value) forKey:@"criticalAlert"];
       }
+
+      {
+        bool value = settings.providesAppNotificationSettings == TRUE;
+        [result setValue:@(value) forKey:@"providesAppNotificationSettings"];
+      }
     }
 
     switch (settings.authorizationStatus) {
@@ -79,6 +84,7 @@
   bool criticalAlert = [options containsObject:@"criticalAlert"];
   bool carPlay = [options containsObject:@"carPlay"];
   bool provisional = [options containsObject:@"provisional"];
+  bool providesAppNotificationSettings = [options containsObject:@"providesAppNotificationSettings"];
 
   UNAuthorizationOptions types = UNAuthorizationOptionNone;
 
@@ -102,6 +108,9 @@
     if (provisional) {
       types += UNAuthorizationOptionProvisional;
     }
+    if (providesAppNotificationSettings) {
+      types += UNAuthorizationOptionProvidesAppNotificationSettings;
+    }
   }
 
   if (!alert &&
@@ -109,7 +118,8 @@
       !sound &&
       !criticalAlert &&
       !carPlay &&
-      !provisional) {
+      !provisional &&
+      !providesAppNotificationSettings) {
     types += UNAuthorizationOptionAlert;
     types += UNAuthorizationOptionBadge;
     types += UNAuthorizationOptionSound;
