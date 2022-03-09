@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",

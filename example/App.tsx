@@ -154,9 +154,9 @@ export const App = () => {
                 {`carPlay: ${notifications.settings.carPlay}\n`}
                 {`criticalAlert: ${notifications.settings.criticalAlert}\n`}
                 {`provisional: ${notifications.settings.provisional}\n`}
+                {`providesAppSettings: ${notifications.settings.providesAppSettings}\n`}
                 {`lockScreen: ${notifications.settings.lockScreen}\n`}
                 {`notificationCenter: ${notifications.settings.notificationCenter}\n`}
-                {`providesAppSettings: ${notifications.settings.providesAppSettings}\n`}
               </Text>
             )}
           </>
