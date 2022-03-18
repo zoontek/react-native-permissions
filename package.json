@@ -33,7 +33,6 @@
     "format": "prettier '**/*.{js,json,md,ts,tsx}' --write",
     "lint": "eslint \"./**/*.{js,ts,tsx}\"",
     "prepare": "yarn setup-hooks && bob build",
-    "setup-hooks": "git config --local core.hooksPath .hooks",
     "tscheck": "tsc --project ./ --noEmit"
   },
   "react-native-builder-bob": {
