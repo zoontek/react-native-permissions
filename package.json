@@ -7,7 +7,7 @@
   "homepage": "https://github.com/zoontek/react-native-permissions#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ziphr/react-native-permissions"
+    "url": "https://github.com/ziphr/react-native-permissions.git"
   },
   "keywords": [
     "react-native",
