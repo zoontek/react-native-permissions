@@ -15,7 +15,7 @@ A unified permissions API for React Native on iOS, Android and Windows.<br>
 ## Funding
 
 <a href="https://github.com/sponsors/zoontek">
-  <img align="right" width="110" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+  <img align="right" width="150" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
 </a>
 
 This module is provided **as is**, I work on it in my free time.
