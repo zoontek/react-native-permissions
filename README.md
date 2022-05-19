@@ -50,6 +50,7 @@ _📌  Note that these commands must be re-executed each time you update this 
     "Camera",
     "Contacts",
     "FaceID",
+    "LocalNetworkPrivacy",
     "LocationAccuracy",
     "LocationAlways",
     "LocationWhenInUse",
@@ -488,6 +489,7 @@ PERMISSIONS.IOS.CALENDARS;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
+PERMISSIONS.IOS.LOCAL_NETWORK_PRIVACY;
 PERMISSIONS.IOS.LOCATION_ALWAYS;
 PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
 PERMISSIONS.IOS.MEDIA_LIBRARY;

@@ -35,6 +35,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_lnp._tcp.</string>
+	</array>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Let me use your media library</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
@@ -49,6 +53,8 @@
 	<string>Let me use your contacts</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Let me use FaceID</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Let me use your local network</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Let me use your location, even in background</string>
 	<key>NSLocationAlwaysUsageDescription</key>

@@ -17,6 +17,7 @@
     "Camera",
     "Contacts",
     "FaceID",
+    "LocalNetworkPrivacy",
     "LocationAccuracy",
     "LocationAlways",
     "LocationWhenInUse",
