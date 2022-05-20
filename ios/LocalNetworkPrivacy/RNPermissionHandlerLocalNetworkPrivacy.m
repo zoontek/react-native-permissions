@@ -1,5 +1,5 @@
 #import "RNPermissionHandlerLocalNetworkPrivacy.h"
-#import "Permission_LocalNetworkPrivacy-Swift.h"
+#import "LocalNetworkPrivacy.h"
 
 @implementation RNPermissionHandlerLocalNetworkPrivacy
 
@@ -26,7 +26,7 @@
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   LocalNetworkPrivacy *local = [LocalNetworkPrivacy new];
-  [local checkAccessStateWithCompletion:^(BOOL granted) {
+  [local checkAccessState:^(BOOL granted) {
       [self checkWithResolver:resolve rejecter:reject];
   }];
 }
