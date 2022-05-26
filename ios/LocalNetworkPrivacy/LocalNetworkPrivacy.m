@@ -7,13 +7,10 @@
 @property (nonatomic) void (^completion)(BOOL);
 @property (nonatomic) NSTimer *timer;
 @property (nonatomic) BOOL publishing;
-@property (class, nonatomic) OptionalBool granted;
 
 @end
 
 @implementation LocalNetworkPrivacy
-
-static OptionalBool granted = OptionalBoolNone;
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -26,28 +23,16 @@ static OptionalBool granted = OptionalBoolNone;
     [self.service stop];
 }
 
-+ (OptionalBool)authorizationStatus {
-    return granted;
-}
-
 - (void)checkAccessState:(void (^)(BOOL))completion {
     self.completion = completion;
 
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:2 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        if (UIApplication.sharedApplication.applicationState != UIApplicationStateActive) {
-            return;
-        }
+    self.publishing = YES;
+    self.service.delegate = self;
+    [self.service publish];
 
-        if (self.publishing) {
-            granted = OptionalBoolNo;
-            [self.timer invalidate];
-            self.completion(NO);
-        }
-        else {
-            self.publishing = YES;
-            self.service.delegate = self;
-            [self.service publish];
-        }
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer * _Nonnull timer) {
+        [self.timer invalidate];
+        self.completion(NO);
     }];
 }
 
@@ -55,7 +40,6 @@ static OptionalBool granted = OptionalBoolNone;
 #pragma mark - NSNetServiceDelegate
 
 - (void)netServiceDidPublish:(NSNetService *)sender {
-    granted = OptionalBoolYes;
     [self.timer invalidate];
     self.completion(YES);
 }

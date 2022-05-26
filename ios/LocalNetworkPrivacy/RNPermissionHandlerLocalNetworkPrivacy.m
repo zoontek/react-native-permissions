@@ -13,21 +13,20 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([LocalNetworkPrivacy authorizationStatus]) {
-    case OptionalBoolNone:
-      return resolve(RNPermissionStatusNotDetermined);
-    case OptionalBoolNo:
-      return resolve(RNPermissionStatusDenied);
-    case OptionalBoolYes:
-      return resolve(RNPermissionStatusAuthorized);
+  if (![RNPermissionsHelper isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+    return resolve(RNPermissionStatusNotDetermined);
   }
+
+  [self requestWithResolver:resolve rejecter:reject];
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+  [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
+
   LocalNetworkPrivacy *local = [LocalNetworkPrivacy new];
   [local checkAccessState:^(BOOL granted) {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve(granted ? RNPermissionStatusAuthorized : RNPermissionStatusDenied);
   }];
 }
 
