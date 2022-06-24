@@ -11,7 +11,6 @@ A unified permissions API for React Native on iOS, Android and Windows.<br>
 [![Platform - iOS](https://img.shields.io/badge/platform-iOS-000.svg?style=flat&logo=apple)](https://developer.apple.com/ios)
 [![Platform - Windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?style=flat&logo=windows)](https://www.microsoft.com/en-us/windows)
 
-
 ## Funding
 
 <a href="https://github.com/sponsors/zoontek">
