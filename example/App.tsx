@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Alert, Platform, ScrollView, StatusBar, View} from 'react-native';
-import {Appbar, Divider, List, TouchableRipple} from 'react-native-paper';
+import {Platform, ScrollView, StatusBar, View} from 'react-native';
+import {Appbar, Divider, List, Snackbar, TouchableRipple} from 'react-native-paper';
 import RNPermissions, {NotificationOption, Permission, PERMISSIONS} from 'react-native-permissions';
 import theme from './theme';
 
@@ -19,18 +19,12 @@ const PLATFORM_PERMISSIONS = Platform.select<
 const PERMISSIONS_VALUES: Permission[] = Object.values(PLATFORM_PERMISSIONS);
 
 export const App = () => {
-  // const [notifications, setNotifications] = React.useState<NotificationsResponse>({
-  //   settings: {},
-  //   status: 'unavailable',
-  // });
+  const [snackbarContent, setSnackbarContent] = React.useState<string>();
 
-  // React.useEffect(() => {
-  //   RNPermissions.checkMultiple(PERMISSIONS_VALUES)
-  //     .then(setStatuses)
-  //     .then(() => RNPermissions.checkNotifications())
-  //     .then(setNotifications)
-  //     .catch((error) => console.warn(error));
-  // }, []);
+  const showSnackbar = (title: string, response: unknown) =>
+    setSnackbarContent(title + '\n\n' + JSON.stringify(response, null, 2));
+
+  const hideSnackbar = () => setSnackbarContent(undefined);
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -78,15 +72,13 @@ export const App = () => {
               <List.Item
                 title={name}
                 titleNumberOfLines={1}
-                description={item}
-                descriptionNumberOfLines={1}
                 right={() => (
                   <View style={{flexDirection: 'row'}}>
                     <TouchableRipple
                       onPress={() => {
                         RNPermissions.check(value)
                           .then((response) => {
-                            Alert.alert(`check(${name})`, JSON.stringify(response, null, 2));
+                            showSnackbar(`check(${name})`, response);
                           })
                           .catch((error) => {
                             console.error(error);
@@ -100,7 +92,7 @@ export const App = () => {
                       onPress={() => {
                         RNPermissions.request(value)
                           .then((response) => {
-                            Alert.alert(`request(${name})`, JSON.stringify(response, null, 2));
+                            showSnackbar(`request(${name})`, response);
                           })
                           .catch((error) => {
                             console.error(error);
@@ -127,7 +119,7 @@ export const App = () => {
                 onPress={() => {
                   RNPermissions.checkNotifications()
                     .then((response) => {
-                      Alert.alert('checkNotifications()', JSON.stringify(response, null, 2));
+                      showSnackbar('checkNotifications()', response);
                     })
                     .catch((error) => {
                       console.error(error);
@@ -143,11 +135,11 @@ export const App = () => {
 
                   RNPermissions.requestNotifications(options)
                     .then((response) => {
-                      Alert.alert(
+                      showSnackbar(
                         `requestNotifications([${options
                           .map((option) => `"${option}"`)
                           .join(', ')}])`,
-                        JSON.stringify(response, null, 2),
+                        response,
                       );
                     })
                     .catch((error) => {
@@ -161,6 +153,19 @@ export const App = () => {
           )}
         />
       </ScrollView>
+
+      <Snackbar
+        visible={snackbarContent != null}
+        duration={10000}
+        onDismiss={hideSnackbar}
+        action={{
+          color: '#607d8b',
+          label: 'Hide',
+          onPress: hideSnackbar,
+        }}
+      >
+        {snackbarContent}
+      </Snackbar>
     </View>
   );
 };
