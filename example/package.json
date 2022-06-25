@@ -28,7 +28,7 @@
     "react-native": "0.69.0",
     "react-native-paper": "4.12.1",
     "react-native-permissions": "../",
-    "react-native-vector-icons": "9.1.0",
+    "react-native-vector-icons": "9.2.0",
     "react-native-windows": "0.68.6"
   },
   "devDependencies": {
