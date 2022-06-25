@@ -1,12 +1,7 @@
 import * as React from 'react';
-import {AppState, Platform, ScrollView, StatusBar, Text, View} from 'react-native';
-import {Appbar, List, TouchableRipple} from 'react-native-paper';
-import RNPermissions, {
-  NotificationsResponse,
-  Permission,
-  PERMISSIONS,
-  PermissionStatus,
-} from 'react-native-permissions';
+import {Alert, Platform, ScrollView, StatusBar, View} from 'react-native';
+import {Appbar, Divider, List, TouchableRipple} from 'react-native-paper';
+import RNPermissions, {NotificationOption, Permission, PERMISSIONS} from 'react-native-permissions';
 import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,45 +18,19 @@ const PLATFORM_PERMISSIONS = Platform.select<
 
 const PERMISSIONS_VALUES: Permission[] = Object.values(PLATFORM_PERMISSIONS);
 
-const colors: {[key: string]: string} = {
-  unavailable: '#cfd8dc',
-  denied: '#ff9800',
-  granted: '#43a047',
-  blocked: '#e53935',
-  limited: '#a1887f',
-};
-
-const icons: {[key: string]: string} = {
-  unavailable: 'circle',
-  denied: 'alert-circle',
-  granted: 'check-circle',
-  blocked: 'close-circle',
-  limited: 'alpha-l-circle',
-};
-
 export const App = () => {
-  const [statuses, setStatuses] = React.useState<Partial<Record<Permission, PermissionStatus>>>({});
-  const [notifications, setNotifications] = React.useState<NotificationsResponse>({
-    settings: {},
-    status: 'unavailable',
-  });
+  // const [notifications, setNotifications] = React.useState<NotificationsResponse>({
+  //   settings: {},
+  //   status: 'unavailable',
+  // });
 
-  const check = React.useCallback(() => {
-    RNPermissions.checkMultiple(PERMISSIONS_VALUES)
-      .then(setStatuses)
-      .then(() => RNPermissions.checkNotifications())
-      .then(setNotifications)
-      .catch((error) => console.warn(error));
-  }, []);
-
-  React.useEffect(() => {
-    const {remove} = AppState.addEventListener(
-      'change',
-      (status) => status === 'active' && check(),
-    );
-
-    return remove;
-  }, [check]);
+  // React.useEffect(() => {
+  //   RNPermissions.checkMultiple(PERMISSIONS_VALUES)
+  //     .then(setStatuses)
+  //     .then(() => RNPermissions.checkNotifications())
+  //     .then(setNotifications)
+  //     .catch((error) => console.warn(error));
+  // }, []);
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -69,7 +38,6 @@ export const App = () => {
 
       <Appbar.Header>
         <Appbar.Content title="react-native-permissions" subtitle="Example application" />
-        <Appbar.Action onPress={check} icon="refresh" />
 
         {Platform.OS === 'ios' && (
           <Appbar.Action
@@ -102,65 +70,96 @@ export const App = () => {
       <ScrollView>
         {PERMISSIONS_VALUES.map((item, index) => {
           const value = PERMISSIONS_VALUES[index];
-          const status = statuses[value];
-
-          if (!status) {
-            return null;
-          }
+          const parts = item.split('.');
+          const name = parts[parts.length - 1];
 
           return (
-            <TouchableRipple
-              key={item}
-              onPress={() => {
-                RNPermissions.request(value)
-                  .then(check)
-                  .catch((error) => console.error(error));
-              }}
-            >
+            <React.Fragment key={item}>
               <List.Item
-                right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
-                title={item}
-                description={status}
+                title={name}
+                titleNumberOfLines={1}
+                description={item}
+                descriptionNumberOfLines={1}
+                right={() => (
+                  <View style={{flexDirection: 'row'}}>
+                    <TouchableRipple
+                      onPress={() => {
+                        RNPermissions.check(value)
+                          .then((response) => {
+                            Alert.alert(`check(${name})`, JSON.stringify(response, null, 2));
+                          })
+                          .catch((error) => {
+                            console.error(error);
+                          });
+                      }}
+                    >
+                      <List.Icon color="#90a4ae" icon="alpha-c-box" />
+                    </TouchableRipple>
+
+                    <TouchableRipple
+                      onPress={() => {
+                        RNPermissions.request(value)
+                          .then((response) => {
+                            Alert.alert(`request(${name})`, JSON.stringify(response, null, 2));
+                          })
+                          .catch((error) => {
+                            console.error(error);
+                          });
+                      }}
+                    >
+                      <List.Icon color="#90a4ae" icon="alpha-r-box" />
+                    </TouchableRipple>
+                  </View>
+                )}
               />
-            </TouchableRipple>
+
+              <Divider />
+            </React.Fragment>
           );
         })}
 
-        <View style={{backgroundColor: '#e0e0e0', height: 1}} />
+        <List.Item
+          title="NOTIFICATIONS"
+          titleNumberOfLines={1}
+          right={() => (
+            <View style={{flexDirection: 'row'}}>
+              <TouchableRipple
+                onPress={() => {
+                  RNPermissions.checkNotifications()
+                    .then((response) => {
+                      Alert.alert('checkNotifications()', JSON.stringify(response, null, 2));
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                    });
+                }}
+              >
+                <List.Icon color="#90a4ae" icon="alpha-c-box" />
+              </TouchableRipple>
 
-        <TouchableRipple
-          onPress={() => {
-            RNPermissions.requestNotifications(['alert', 'badge', 'sound', 'providesAppSettings'])
-              .then(check)
-              .catch((error) => console.error(error));
-          }}
-        >
-          <>
-            <List.Item
-              title="NOTIFICATIONS"
-              right={() => (
-                <List.Icon
-                  color={colors[notifications.status]}
-                  icon={icons[notifications.status]}
-                />
-              )}
-            />
+              <TouchableRipple
+                onPress={() => {
+                  const options: NotificationOption[] = ['alert', 'badge', 'sound'];
 
-            {Platform.OS === 'ios' && (
-              <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
-                {`alert: ${notifications.settings.alert}\n`}
-                {`badge: ${notifications.settings.badge}\n`}
-                {`sound: ${notifications.settings.sound}\n`}
-                {`carPlay: ${notifications.settings.carPlay}\n`}
-                {`criticalAlert: ${notifications.settings.criticalAlert}\n`}
-                {`provisional: ${notifications.settings.provisional}\n`}
-                {`providesAppSettings: ${notifications.settings.providesAppSettings}\n`}
-                {`lockScreen: ${notifications.settings.lockScreen}\n`}
-                {`notificationCenter: ${notifications.settings.notificationCenter}\n`}
-              </Text>
-            )}
-          </>
-        </TouchableRipple>
+                  RNPermissions.requestNotifications(options)
+                    .then((response) => {
+                      Alert.alert(
+                        `requestNotifications([${options
+                          .map((option) => `"${option}"`)
+                          .join(', ')}])`,
+                        JSON.stringify(response, null, 2),
+                      );
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                    });
+                }}
+              >
+                <List.Icon color="#90a4ae" icon="alpha-r-box" />
+              </TouchableRipple>
+            </View>
+          )}
+        />
       </ScrollView>
     </View>
   );
