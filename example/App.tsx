@@ -37,7 +37,9 @@ export const App = () => {
           <Appbar.Action
             icon="image-multiple"
             onPress={() => {
-              RNPermissions.openLimitedPhotoLibraryPicker();
+              RNPermissions.openLimitedPhotoLibraryPicker().catch((error) => {
+                console.error(error);
+              });
             }}
           />
         )}
@@ -48,7 +50,9 @@ export const App = () => {
             onPress={() => {
               RNPermissions.requestLocationAccuracy({
                 purposeKey: 'full-accuracy',
-              }).then((accuracy) => console.warn({accuracy}));
+              }).then((accuracy) => {
+                console.warn({accuracy});
+              });
             }}
           />
         )}
@@ -77,8 +81,8 @@ export const App = () => {
                     <TouchableRipple
                       onPress={() => {
                         RNPermissions.check(value)
-                          .then((response) => {
-                            showSnackbar(`check(${name})`, response);
+                          .then((status) => {
+                            showSnackbar(`check(${name})`, status);
                           })
                           .catch((error) => {
                             console.error(error);
@@ -91,8 +95,8 @@ export const App = () => {
                     <TouchableRipple
                       onPress={() => {
                         RNPermissions.request(value)
-                          .then((response) => {
-                            showSnackbar(`request(${name})`, response);
+                          .then((status) => {
+                            showSnackbar(`request(${name})`, status);
                           })
                           .catch((error) => {
                             console.error(error);
