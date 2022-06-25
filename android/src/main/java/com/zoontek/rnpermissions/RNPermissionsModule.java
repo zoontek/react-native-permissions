@@ -1,11 +1,9 @@
 package com.zoontek.rnpermissions;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -36,9 +34,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   private static final String ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY";
   public static final String MODULE_NAME = "RNPermissions";
-  private static final String SETTING_NAME = "@RNPermissions:NonRequestables";
 
-  private final SharedPreferences mSharedPrefs;
   private final SparseArray<Request> mRequests;
   private int mRequestCode = 0;
   private final String GRANTED = "granted";
@@ -48,7 +44,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   public RNPermissionsModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    mSharedPrefs = reactContext.getSharedPreferences(SETTING_NAME, Context.MODE_PRIVATE);
     mRequests = new SparseArray<Request>();
   }
 
@@ -79,10 +74,10 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "ACCESS_FINE_LOCATION";
     if (permission.equals("android.permission.ACCESS_MEDIA_LOCATION"))
       return "ACCESS_MEDIA_LOCATION";
-    if (permission.equals("com.android.voicemail.permission.ADD_VOICEMAIL"))
-      return "ADD_VOICEMAIL";
     if (permission.equals("android.permission.ACTIVITY_RECOGNITION"))
       return "ACTIVITY_RECOGNITION";
+    if (permission.equals("com.android.voicemail.permission.ADD_VOICEMAIL"))
+      return "ADD_VOICEMAIL";
     if (permission.equals("android.permission.ANSWER_PHONE_CALLS"))
       return "ANSWER_PHONE_CALLS";
     if (permission.equals("android.permission.BLUETOOTH_ADVERTISE"))
@@ -127,6 +122,8 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "SEND_SMS";
     if (permission.equals("android.permission.USE_SIP"))
       return "USE_SIP";
+    if (permission.equals("android.permission.UWB_RANGING"))
+      return "UWB_RANGING";
     if (permission.equals("android.permission.WRITE_CALENDAR"))
       return "WRITE_CALENDAR";
     if (permission.equals("android.permission.WRITE_CALL_LOG"))
@@ -207,8 +204,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
-    } else if (mSharedPrefs.getBoolean(permission, false)) {
-      promise.resolve(BLOCKED);
     } else {
       promise.resolve(DENIED);
     }
@@ -248,9 +243,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
       return;
-    } else if (mSharedPrefs.getBoolean(permission, false)) {
-      promise.resolve(BLOCKED); // not supporting reset the permission with "Ask me every time"
-      return;
     }
 
     try {
@@ -261,7 +253,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       mRequests.put(mRequestCode, new Request(
         rationaleStatuses,
         new Callback() {
-          @SuppressLint("ApplySharedPref")
           @Override
           public void invoke(Object... args) {
             int[] results = (int[]) args[0];
@@ -274,7 +265,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
               if (rationaleStatuses[0] &&
                 !activity.shouldShowRequestPermissionRationale(permission)) {
-                mSharedPrefs.edit().putBoolean(permission, true).commit(); // enforce sync
                 promise.resolve(BLOCKED);
               } else {
                 promise.resolve(DENIED);
@@ -309,8 +299,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
             : BLOCKED);
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
-      } else if (mSharedPrefs.getBoolean(permission, false)) {
-        output.putString(permission, BLOCKED); // not supporting reset the permission with "Ask me every time"
       } else {
         output.putString(permission, DENIED);
       }
@@ -345,9 +333,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
         checkedPermissionsCount++;
-      } else if (mSharedPrefs.getBoolean(permission, false)) {
-        output.putString(permission, BLOCKED); // not supporting reset the permission with "Ask me every time"
-        checkedPermissionsCount++;
       } else {
         permissionsToCheck.add(permission);
       }
@@ -370,7 +355,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       mRequests.put(mRequestCode, new Request(
         rationaleStatuses,
         new Callback() {
-          @SuppressLint("ApplySharedPref")
           @Override
           public void invoke(Object... args) {
             int[] results = (int[]) args[0];
@@ -385,7 +369,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
               } else {
                 if (rationaleStatuses[j] &&
                   !activity.shouldShowRequestPermissionRationale(permission)) {
-                  mSharedPrefs.edit().putBoolean(permission, true).commit(); // enforce sync
                   output.putString(permission, BLOCKED);
                 } else {
                   output.putString(permission, DENIED);
