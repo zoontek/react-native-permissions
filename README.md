@@ -369,18 +369,18 @@ As permissions are not handled in the same way on iOS and Android, this library 
           └────────────────┘                       │
                    │                               │
                    ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
+┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
                    │                               │
          Does the user accept                      │
             the request ?                          │
                    │           ╔════╗      Is the permission
-                   ├───────────║ NO ║─────still requestable ?
+                   ├───────────║ NO ║──── still requestable ?
                    │           ╚════╝              │
-                ╔═════╗                         ╔═════╗
-                ║ YES ║                         ║ YES ║
-                ╚═════╝                         ╚═════╝
+                ╔═════╗                         ╔════╗
+                ║ YES ║                         ║ NO ║
+                ╚═════╝                         ╚════╝
                    │                               │
                    ▼                               ▼
           ┌─────────────────┐             ┌─────────────────┐
