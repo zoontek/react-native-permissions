@@ -355,15 +355,15 @@ As permissions are not handled in the same way on iOS and Android, this library 
                 ╚═════╝                 │ RESULTS.UNAVAILABLE │
                    │                    └─────────────────────┘
            Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
+           already granted ?
+                   │           ╔═════╗
+                   ├───────────║ YES ║─────────────┐
+                   │           ╚═════╝             │
+                ╔════╗                             ▼
+                ║ NO ║                   ┌───────────────────┐
+                ╚════╝                   │  RESULTS.GRANTED  │
+                   │                     └───────────────────┘
+                   ▼
           ┌────────────────┐
           │ RESULTS.DENIED │◀──────────────────────┐
           └────────────────┘                       │
@@ -375,8 +375,8 @@ As permissions are not handled in the same way on iOS and Android, this library 
                    │                               │
          Does the user accept                      │
             the request ?                          │
-                   │           ╔════╗     Does the user check
-                   ├───────────║ NO ║─────"Never ask again" ?
+                   │           ╔════╗      Is the permission
+                   ├───────────║ NO ║─────still requestable ?
                    │           ╚════╝              │
                 ╔═════╗                         ╔═════╗
                 ║ YES ║                         ║ YES ║
