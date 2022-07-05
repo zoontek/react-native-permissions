@@ -31,6 +31,7 @@ const ANDROID = Object.freeze({
   RECORD_AUDIO: 'android.permission.RECORD_AUDIO',
   SEND_SMS: 'android.permission.SEND_SMS',
   USE_SIP: 'android.permission.USE_SIP',
+  UWB_RANGING: 'android.permission.UWB_RANGING',
   WRITE_CALENDAR: 'android.permission.WRITE_CALENDAR',
   WRITE_CALL_LOG: 'android.permission.WRITE_CALL_LOG',
   WRITE_CONTACTS: 'android.permission.WRITE_CONTACTS',

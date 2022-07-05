@@ -1,12 +1,7 @@
 import * as React from 'react';
-import {AppState, Platform, ScrollView, StatusBar, Text, View} from 'react-native';
-import {Appbar, List, TouchableRipple} from 'react-native-paper';
-import RNPermissions, {
-  NotificationsResponse,
-  Permission,
-  PERMISSIONS,
-  PermissionStatus,
-} from 'react-native-permissions';
+import {Platform, ScrollView, StatusBar, View} from 'react-native';
+import {Appbar, Button, Divider, Snackbar, Text} from 'react-native-paper';
+import RNPermissions, {NotificationOption, Permission, PERMISSIONS} from 'react-native-permissions';
 import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,45 +18,13 @@ const PLATFORM_PERMISSIONS = Platform.select<
 
 const PERMISSIONS_VALUES: Permission[] = Object.values(PLATFORM_PERMISSIONS);
 
-const colors: {[key: string]: string} = {
-  unavailable: '#cfd8dc',
-  denied: '#ff9800',
-  granted: '#43a047',
-  blocked: '#e53935',
-  limited: '#a1887f',
-};
-
-const icons: {[key: string]: string} = {
-  unavailable: 'circle',
-  denied: 'alert-circle',
-  granted: 'check-circle',
-  blocked: 'close-circle',
-  limited: 'alpha-l-circle',
-};
-
 export const App = () => {
-  const [statuses, setStatuses] = React.useState<Partial<Record<Permission, PermissionStatus>>>({});
-  const [notifications, setNotifications] = React.useState<NotificationsResponse>({
-    settings: {},
-    status: 'unavailable',
-  });
+  const [snackbarContent, setSnackbarContent] = React.useState<string>();
 
-  const check = React.useCallback(() => {
-    RNPermissions.checkMultiple(PERMISSIONS_VALUES)
-      .then(setStatuses)
-      .then(() => RNPermissions.checkNotifications())
-      .then(setNotifications)
-      .catch((error) => console.warn(error));
-  }, []);
+  const showSnackbar = (title: string, response: unknown) =>
+    setSnackbarContent(title + '\n\n' + JSON.stringify(response, null, 2));
 
-  React.useEffect(() => {
-    const {remove} = AppState.addEventListener(
-      'change',
-      (status) => status === 'active' && check(),
-    );
-
-    return remove;
-  }, [check]);
+  const hideSnackbar = () => setSnackbarContent(undefined);
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -69,13 +32,14 @@ export const App = () => {
 
       <Appbar.Header>
         <Appbar.Content title="react-native-permissions" subtitle="Example application" />
-        <Appbar.Action onPress={check} icon="refresh" />
 
         {Platform.OS === 'ios' && (
           <Appbar.Action
             icon="image-multiple"
             onPress={() => {
-              RNPermissions.openLimitedPhotoLibraryPicker();
+              RNPermissions.openLimitedPhotoLibraryPicker().catch((error) => {
+                console.error(error);
+              });
             }}
           />
         )}
@@ -86,7 +50,9 @@ export const App = () => {
             onPress={() => {
               RNPermissions.requestLocationAccuracy({
                 purposeKey: 'full-accuracy',
-              }).then((accuracy) => console.warn({accuracy}));
+              }).then((accuracy) => {
+                console.warn({accuracy});
+              });
             }}
           />
         )}
@@ -102,66 +68,140 @@ export const App = () => {
       <ScrollView>
         {PERMISSIONS_VALUES.map((item, index) => {
           const value = PERMISSIONS_VALUES[index];
-          const status = statuses[value];
-
-          if (!status) {
-            return null;
-          }
+          const parts = item.split('.');
+          const name = parts[parts.length - 1];
 
           return (
-            <TouchableRipple
-              key={item}
-              onPress={() => {
-                RNPermissions.request(value)
-                  .then(check)
-                  .catch((error) => console.error(error));
-              }}
-            >
-              <List.Item
-                right={() => <List.Icon color={colors[status]} icon={icons[status]} />}
-                title={item}
-                description={status}
-              />
-            </TouchableRipple>
+            <React.Fragment key={item}>
+              <View style={{padding: 20}}>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.87)',
+                    fontWeight: '400',
+                    fontSize: 16,
+                    textAlign: 'left',
+                  }}
+                >
+                  {name}
+                </Text>
+
+                <View style={{flexDirection: 'row', marginTop: 12}}>
+                  <Button
+                    compact={true}
+                    icon="eye-outline"
+                    mode="outlined"
+                    onPress={() => {
+                      RNPermissions.check(value)
+                        .then((status) => {
+                          showSnackbar(`check(${name})`, status);
+                        })
+                        .catch((error) => {
+                          console.error(error);
+                        });
+                    }}
+                  >
+                    Check
+                  </Button>
+
+                  <View style={{width: 8}} />
+
+                  <Button
+                    compact={true}
+                    icon="help-circle-outline"
+                    mode="outlined"
+                    onPress={() => {
+                      RNPermissions.request(value)
+                        .then((status) => {
+                          showSnackbar(`request(${name})`, status);
+                        })
+                        .catch((error) => {
+                          console.error(error);
+                        });
+                    }}
+                  >
+                    Request
+                  </Button>
+                </View>
+              </View>
+
+              <Divider />
+            </React.Fragment>
           );
         })}
 
-        <View style={{backgroundColor: '#e0e0e0', height: 1}} />
+        <View style={{padding: 20, paddingBottom: 32}}>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: 'rgba(0, 0, 0, 0.87)',
+              fontWeight: '400',
+              fontSize: 16,
+              textAlign: 'left',
+            }}
+          >
+            NOTIFICATIONS
+          </Text>
 
-        <TouchableRipple
-          onPress={() => {
-            RNPermissions.requestNotifications(['alert', 'badge', 'sound', 'providesAppSettings'])
-              .then(check)
-              .catch((error) => console.error(error));
-          }}
-        >
-          <>
-            <List.Item
-              title="NOTIFICATIONS"
-              right={() => (
-                <List.Icon
-                  color={colors[notifications.status]}
-                  icon={icons[notifications.status]}
-                />
-              )}
-            />
+          <View style={{flexDirection: 'row', marginTop: 12}}>
+            <Button
+              compact={true}
+              icon="eye-outline"
+              mode="outlined"
+              onPress={() => {
+                RNPermissions.checkNotifications()
+                  .then((response) => {
+                    showSnackbar('checkNotifications()', response);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              }}
+            >
+              Check
+            </Button>
 
-            {Platform.OS === 'ios' && (
-              <Text style={{margin: 15, marginTop: -24, color: '#777'}}>
-                {`alert: ${notifications.settings.alert}\n`}
-                {`badge: ${notifications.settings.badge}\n`}
-                {`sound: ${notifications.settings.sound}\n`}
-                {`carPlay: ${notifications.settings.carPlay}\n`}
-                {`criticalAlert: ${notifications.settings.criticalAlert}\n`}
-                {`provisional: ${notifications.settings.provisional}\n`}
-                {`providesAppSettings: ${notifications.settings.providesAppSettings}\n`}
-                {`lockScreen: ${notifications.settings.lockScreen}\n`}
-                {`notificationCenter: ${notifications.settings.notificationCenter}\n`}
-              </Text>
-            )}
-          </>
-        </TouchableRipple>
+            <View style={{width: 8}} />
+
+            <Button
+              compact={true}
+              icon="help-circle-outline"
+              mode="outlined"
+              onPress={() => {
+                const options: NotificationOption[] = ['alert', 'badge', 'sound'];
+
+                RNPermissions.requestNotifications(options)
+                  .then((response) => {
+                    showSnackbar(
+                      `requestNotifications([${options
+                        .map((option) => `"${option}"`)
+                        .join(', ')}])`,
+                      response,
+                    );
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              }}
+            >
+              Request
+            </Button>
+          </View>
+        </View>
       </ScrollView>
+
+      <Snackbar
+        visible={snackbarContent != null}
+        duration={10000}
+        onDismiss={hideSnackbar}
+        action={{
+          color: '#607d8b',
+          label: 'Hide',
+          onPress: hideSnackbar,
+        }}
+      >
+        {snackbarContent}
+      </Snackbar>
     </View>
   );
 };

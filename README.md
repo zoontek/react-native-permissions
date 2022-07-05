@@ -190,6 +190,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.SEND_SMS" />
   <uses-permission android:name="android.permission.USE_SIP" />
+  <uses-permission android:name="android.permission.UWB_RANGING" />
   <uses-permission android:name="android.permission.WRITE_CALENDAR" />
   <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -354,32 +355,32 @@ As permissions are not handled in the same way on iOS and Android, this library 
                 ╚═════╝                 │ RESULTS.UNAVAILABLE │
                    │                    └─────────────────────┘
            Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
+           already granted ?
+                   │           ╔═════╗
+                   ├───────────║ YES ║─────────────┐
+                   │           ╚═════╝             │
+                ╔════╗                             ▼
+                ║ NO ║                   ┌───────────────────┐
+                ╚════╝                   │  RESULTS.GRANTED  │
+                   │                     └───────────────────┘
+                   ▼
           ┌────────────────┐
           │ RESULTS.DENIED │◀──────────────────────┐
           └────────────────┘                       │
                    │                               │
                    ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ NO ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚════╝
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
+┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
                    │                               │
          Does the user accept                      │
             the request ?                          │
-                   │           ╔════╗     Does the user check
-                   ├───────────║ NO ║─────"Never ask again" ?
+                   │           ╔════╗      Is the permission
+                   ├───────────║ NO ║──── still requestable ?
                    │           ╚════╝              │
-                ╔═════╗                         ╔═════╗
-                ║ YES ║                         ║ YES ║
-                ╚═════╝                         ╚═════╝
+                ╔═════╗                         ╔════╗
+                ║ YES ║                         ║ NO ║
+                ╚═════╝                         ╚════╝
                    │                               │
                    ▼                               ▼
           ┌─────────────────┐             ┌─────────────────┐
@@ -476,6 +477,7 @@ PERMISSIONS.ANDROID.RECEIVE_WAP_PUSH;
 PERMISSIONS.ANDROID.RECORD_AUDIO;
 PERMISSIONS.ANDROID.SEND_SMS;
 PERMISSIONS.ANDROID.USE_SIP;
+PERMISSIONS.ANDROID.UWB_RANGING;
 PERMISSIONS.ANDROID.WRITE_CALENDAR;
 PERMISSIONS.ANDROID.WRITE_CALL_LOG;
 PERMISSIONS.ANDROID.WRITE_CONTACTS;
