@@ -463,6 +463,7 @@ PERMISSIONS.ANDROID.BODY_SENSORS;
 PERMISSIONS.ANDROID.CALL_PHONE;
 PERMISSIONS.ANDROID.CAMERA;
 PERMISSIONS.ANDROID.GET_ACCOUNTS;
+PERMISSIONS.ANDROID.POST_NOTIFICATIONS;
 PERMISSIONS.ANDROID.PROCESS_OUTGOING_CALLS;
 PERMISSIONS.ANDROID.READ_CALENDAR;
 PERMISSIONS.ANDROID.READ_CALL_LOG;
@@ -788,7 +789,7 @@ checkNotifications().then(({status, settings}) => {
 Request notifications permission status and get notifications settings values.
 
 You cannot request notifications permissions on Windows. Disabling or enabling notifications can only be done through the App Settings.
-You cannot request notifications permissions on Android. `requestNotifications` is the same than `checkNotifications` on this platform.
+`requestNotifications` is iOS-only. To request notifications permissions on Android, use `request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS)`
 
 ```ts
 // only used on iOS
