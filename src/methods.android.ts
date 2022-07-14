@@ -6,7 +6,9 @@ import {
   openLimitedPhotoLibraryPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
-import {uniq} from './utils';
+import {platformVersion, uniq} from './utils';
+
+const TIRAMISU_VERSION_CODE = 33;
 
 const NativeModule: {
   checkPermission: (permission: Permission) => Promise<PermissionStatus>;
@@ -60,11 +62,20 @@ async function request(permission: Permission, rationale?: Rationale): Promise<P
   return NativeModule.requestPermission(permission);
 }
 
-function checkNotifications(): Promise<NotificationsResponse> {
-  return NativeModule.checkNotifications();
+async function checkNotifications(): Promise<NotificationsResponse> {
+  if (platformVersion < TIRAMISU_VERSION_CODE) {
+    return NativeModule.checkNotifications();
+  }
+
+  const status = await check('android.permission.POST_NOTIFICATIONS');
+  return {status, settings: {}};
 }
 
 async function requestNotifications(): Promise<NotificationsResponse> {
+  if (platformVersion < TIRAMISU_VERSION_CODE) {
+    return NativeModule.checkNotifications();
+  }
+
   const status = await request('android.permission.POST_NOTIFICATIONS');
   return {status, settings: {}};
 }

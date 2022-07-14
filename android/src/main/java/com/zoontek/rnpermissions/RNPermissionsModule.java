@@ -143,20 +143,16 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void checkNotifications(final Promise promise) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-      final boolean enabled = NotificationManagerCompat
-        .from(getReactApplicationContext()).areNotificationsEnabled();
+    final boolean enabled = NotificationManagerCompat
+      .from(getReactApplicationContext()).areNotificationsEnabled();
 
-      final WritableMap output = Arguments.createMap();
-      final WritableMap settings = Arguments.createMap();
+    final WritableMap output = Arguments.createMap();
+    final WritableMap settings = Arguments.createMap();
 
-      output.putString("status", enabled ? GRANTED : BLOCKED);
-      output.putMap("settings", settings);
+    output.putString("status", enabled ? GRANTED : BLOCKED);
+    output.putMap("settings", settings);
 
-      promise.resolve(output);
-    } else {
-      this.checkPermission("android.permission.POST_NOTIFICATIONS", promise);
-    }
+    promise.resolve(output);
   }
 
   @ReactMethod
