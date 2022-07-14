@@ -64,6 +64,11 @@ function checkNotifications(): Promise<NotificationsResponse> {
   return NativeModule.checkNotifications();
 }
 
+async function requestNotifications(): Promise<NotificationsResponse> {
+  const status = await request('android.permission.POST_NOTIFICATIONS');
+  return {status, settings: {}};
+}
+
 function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
@@ -88,5 +93,5 @@ export const methods: Contract = {
   request,
   requestLocationAccuracy,
   requestMultiple,
-  requestNotifications: checkNotifications,
+  requestNotifications,
 };
