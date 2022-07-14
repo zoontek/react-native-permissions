@@ -143,13 +143,20 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void checkNotifications(final Promise promise) {
-    if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-      this.checkNotificationsCompat(promise);
-      return;
-    }
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+      final boolean enabled = NotificationManagerCompat
+        .from(getReactApplicationContext()).areNotificationsEnabled();
 
-    String fieldName = this.getFieldName("android.permission.POST_NOTIFICATIONS");
-    this.checkPermission(fieldName, promise);
+      final WritableMap output = Arguments.createMap();
+      final WritableMap settings = Arguments.createMap();
+
+      output.putString("status", enabled ? GRANTED : BLOCKED);
+      output.putMap("settings", settings);
+
+      promise.resolve(output);
+    } else {
+      this.checkPermission("android.permission.POST_NOTIFICATIONS", promise);
+    }
   }
 
   @ReactMethod
@@ -365,19 +372,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
     mCallbacks.remove(requestCode);
     return mCallbacks.size() == 0;
-  }
-
-  private void checkNotificationsCompat(final Promise promise) {
-    final boolean enabled = NotificationManagerCompat
-      .from(getReactApplicationContext()).areNotificationsEnabled();
-
-    final WritableMap output = Arguments.createMap();
-    final WritableMap settings = Arguments.createMap();
-
-    output.putString("status", enabled ? GRANTED : BLOCKED);
-    output.putMap("settings", settings);
-
-    promise.resolve(output);
   }
 
   private PermissionAwareActivity getPermissionAwareActivity() {
