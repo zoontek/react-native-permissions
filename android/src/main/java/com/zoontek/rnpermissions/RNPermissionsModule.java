@@ -83,10 +83,10 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "CAMERA";
     if (permission.equals("android.permission.GET_ACCOUNTS"))
       return "GET_ACCOUNTS";
-    if (permission.equals("android.permission.PROCESS_OUTGOING_CALLS"))
-      return "PROCESS_OUTGOING_CALLS";
     if (permission.equals("android.permission.POST_NOTIFICATIONS"))
       return "POST_NOTIFICATIONS";
+    if (permission.equals("android.permission.PROCESS_OUTGOING_CALLS"))
+      return "PROCESS_OUTGOING_CALLS";
     if (permission.equals("android.permission.READ_CALENDAR"))
       return "READ_CALENDAR";
     if (permission.equals("android.permission.READ_CALL_LOG"))
@@ -143,13 +143,16 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @ReactMethod
   public void checkNotifications(final Promise promise) {
-    if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-      this.checkNotificationsCompat(promise);
-      return;
-    }
+    final boolean enabled = NotificationManagerCompat
+      .from(getReactApplicationContext()).areNotificationsEnabled();
 
-    String fieldName = this.getFieldName("android.permission.POST_NOTIFICATIONS");
-    this.checkPermission(fieldName, promise);
+    final WritableMap output = Arguments.createMap();
+    final WritableMap settings = Arguments.createMap();
+
+    output.putString("status", enabled ? GRANTED : BLOCKED);
+    output.putMap("settings", settings);
+
+    promise.resolve(output);
   }
 
   @ReactMethod
@@ -365,19 +368,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
     mCallbacks.remove(requestCode);
     return mCallbacks.size() == 0;
-  }
-
-  private void checkNotificationsCompat(final Promise promise) {
-    final boolean enabled = NotificationManagerCompat
-      .from(getReactApplicationContext()).areNotificationsEnabled();
-
-    final WritableMap output = Arguments.createMap();
-    final WritableMap settings = Arguments.createMap();
-
-    output.putString("status", enabled ? GRANTED : BLOCKED);
-    output.putMap("settings", settings);
-
-    promise.resolve(output);
   }
 
   private PermissionAwareActivity getPermissionAwareActivity() {
