@@ -789,7 +789,7 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-- You have to target at least SDK 33 to perform request on Android 13+. The permission is always granted for prior versions.
+- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+. The permission is always granted for prior versions.
 - You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the App Settings.
 
 ```ts
