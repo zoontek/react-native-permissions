@@ -6,6 +6,7 @@
     "appium": "appium",
     "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
     "clean": "rm -rf ./node_modules ./ios/Pods",
+    "preinstall": "cd .. && yarn prepack && cd example",
     "postinstall": "yarn clean-modules && yarn pod-update",
     "pod-update": "cd ./ios && pod update && cd ..",
     "start": "react-native start",
