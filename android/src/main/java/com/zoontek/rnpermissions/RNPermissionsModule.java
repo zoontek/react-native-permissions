@@ -77,12 +77,16 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "BLUETOOTH_SCAN";
     if (permission.equals("android.permission.BODY_SENSORS"))
       return "BODY_SENSORS";
+    if (permission.equals("android.permission.BODY_SENSORS_BACKGROUND"))
+      return "BODY_SENSORS_BACKGROUND";
     if (permission.equals("android.permission.CALL_PHONE"))
       return "CALL_PHONE";
     if (permission.equals("android.permission.CAMERA"))
       return "CAMERA";
     if (permission.equals("android.permission.GET_ACCOUNTS"))
       return "GET_ACCOUNTS";
+    if (permission.equals("android.permission.NEARBY_WIFI_DEVICES"))
+      return "NEARBY_WIFI_DEVICES";
     if (permission.equals("android.permission.POST_NOTIFICATIONS"))
       return "POST_NOTIFICATIONS";
     if (permission.equals("android.permission.PROCESS_OUTGOING_CALLS"))
@@ -95,6 +99,12 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "READ_CONTACTS";
     if (permission.equals("android.permission.READ_EXTERNAL_STORAGE"))
       return "READ_EXTERNAL_STORAGE";
+    if (permission.equals("android.permission.READ_MEDIA_AUDIO"))
+      return "READ_MEDIA_AUDIO";
+    if (permission.equals("android.permission.READ_MEDIA_IMAGES"))
+      return "READ_MEDIA_IMAGES";
+    if (permission.equals("android.permission.READ_MEDIA_VIDEO"))
+      return "READ_MEDIA_VIDEO";
     if (permission.equals("android.permission.READ_PHONE_NUMBERS"))
       return "READ_PHONE_NUMBERS";
     if (permission.equals("android.permission.READ_PHONE_STATE"))
