@@ -32,9 +32,9 @@
   "scripts": {
     "format": "prettier '**/*' -u -w",
     "lint": "eslint \"./**/*.{js,ts,tsx}\"",
-    "prepack": "yarn setup-hooks && bob build",
-    "setup-hooks": "git config --local core.hooksPath .hooks",
-    "tscheck": "tsc --project ./ --noEmit"
+    "postinstall": "git config --local core.hooksPath .hooks",
+    "prepack": "bob build",
+    "typecheck": "tsc --project ./ --noEmit"
   },
   "react-native-builder-bob": {
     "source": "src",
