@@ -700,6 +700,8 @@ type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'bloc
 
 Check one permission status.
 
+_⚠️  Android will never return `blocked` after a `check`, you have to request the permission to get the info._
+
 ```ts
 function check(permission: string): Promise<PermissionStatus>;
 ```
@@ -846,6 +848,8 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 #### checkMultiple
 
 Check multiples permissions in parallel.
+
+_⚠️  Android will never return `blocked` after a `check`, you have to request the permission to get the info._
 
 ```ts
 function checkMultiple<P extends Permission[]>(
