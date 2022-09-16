@@ -74,9 +74,9 @@
   // won't trigger the locationManager:didChangeAuthorizationStatus: delegate method. This means we
   // can't know when the user has responded to the permission prompt directly.
   //
-  // We can get around this by listening for UIApplicationDidBecomeActiveNotification event which posts
+  // We can get around this by listening for the UIApplicationDidBecomeActiveNotification event which posts
   // when the application regains focus from the permission prompt. When this happens we'll
-  // trigger the applicationDidBecomeActive method on this class, and we'll check the status and
+  // trigger the applicationDidBecomeActive method on this class, and we'll check the authorization status and
   // resolve the promise there -- letting us stay consistent with our promise-based API.
   //
   // References:
