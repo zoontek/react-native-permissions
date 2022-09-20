@@ -3,9 +3,8 @@
 @import CoreLocation;
 @import UIKit;
 
-@interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
+@interface RNPermissionHandlerLocationAlways()
 
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
 @property (nonatomic, strong) void (^reject)(NSError *error);
 
@@ -58,17 +57,12 @@
   CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
   BOOL requestedBefore = [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]];
   
-  if (authorizationStatus != kCLAuthorizationStatusNotDetermined
-      && (authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse
-          && requestedBefore)) {
+  if (authorizationStatus != kCLAuthorizationStatusNotDetermined && !(authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse && !requestedBefore)) {
     return [self checkWithResolver:resolve rejecter:reject];
   }
   
   _resolve = resolve;
   _reject = reject;
-  
-  _locationManager = [CLLocationManager new];
-  [_locationManager setDelegate:self];
   
   // When we request location always permission, if the user selects "Keep Only While Using", iOS
   // won't trigger the locationManager:didChangeAuthorizationStatus: delegate method. This means we
@@ -94,24 +88,14 @@
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
   
-  [_locationManager requestAlwaysAuthorization];
+  [[CLLocationManager new] requestAlwaysAuthorization];
   [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
 }
 
-- (void)resolveWithNewAuthorizationStatusAndCleanup {
+- (void)applicationDidBecomeActive {
   [self checkWithResolver:_resolve rejecter:_reject];
-  [_locationManager setDelegate:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:UIApplicationDidBecomeActiveNotification
-                                                object:nil];
-}
-
-- (void)applicationDidBecomeActive {
-  [self resolveWithNewAuthorizationStatusAndCleanup];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  [self resolveWithNewAuthorizationStatusAndCleanup];
-}
+                                                object:nil];}
 
 @end
