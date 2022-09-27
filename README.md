@@ -981,14 +981,16 @@ Since iOS 15.0, it's impossible to request this this permission if the app isn't
 
 ```js
 useEffect(() => {
-  const listener = AppState.addEventListener('change', (status) => {
-    if (Platform.OS === 'ios' && status === 'active') {
+  const callback = (status: AppStateStatus) => {
+    if (status === "active") {
       request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
     }
-  });
+  };
 
+  callback(AppState.currentState); // initial call
+  const listener = AppState.addEventListener("change", callback);
   return listener.remove;
 }, []);
 ```
