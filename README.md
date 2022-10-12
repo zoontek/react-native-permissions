@@ -977,7 +977,7 @@ Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no ne
 
 ### How to request "App Tracking Transparency" permission on iOS
 
-Since iOS 15.0, it's impossible to request this this permission if the app isn't `active` (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). A good solution is to use `AppState` to make sure this is the case:
+Since iOS 15.0, it's impossible to request this permission if the app isn't `active` (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). A good solution is to use `AppState` to make sure this is the case:
 
 ```js
 useEffect(() => {
