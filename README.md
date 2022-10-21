@@ -738,7 +738,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 
 #### request
 
-Request one permission.  
+Request one permission.
 
 The Rationale is available and read on Android only.  
 On iOS, update your `Info.plist` with wanted permissions usage descriptions.
