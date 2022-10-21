@@ -740,8 +740,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 
 Request one permission.
 
-The Rationale is available and read on Android only.  
-On iOS, update your `Info.plist` with wanted permissions usage descriptions.
+Note that the `rationale` parameter is only available and used on Android.
 
 ```ts
 type Rationale = {
