@@ -740,6 +740,8 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 
 Request one permission.
 
+Note that the `rationale` parameter is only available and used on Android.
+
 ```ts
 type Rationale = {
   title: string;
