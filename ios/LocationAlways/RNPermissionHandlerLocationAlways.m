@@ -36,6 +36,7 @@
     case kCLAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
     case kCLAuthorizationStatusAuthorizedWhenInUse:
+      return resolve(RNPermissionStatusNotDetermined);
     case kCLAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
     case kCLAuthorizationStatusAuthorizedAlways:
@@ -48,7 +49,7 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+  if (([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) && ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse)) {
     return [self checkWithResolver:resolve rejecter:reject];
   }
 
