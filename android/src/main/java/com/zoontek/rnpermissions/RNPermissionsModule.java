@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
 import android.util.SparseArray;
+import android.os.PowerManager;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
@@ -119,6 +120,8 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return "RECEIVE_WAP_PUSH";
     if (permission.equals("android.permission.RECORD_AUDIO"))
       return "RECORD_AUDIO";
+    if (permission.equals("android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"))
+      return "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS";
     if (permission.equals("android.permission.SEND_SMS"))
       return "SEND_SMS";
     if (permission.equals("android.permission.USE_SIP"))
@@ -369,6 +372,33 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       activity.requestPermissions(permissionsToCheck.toArray(new String[0]), mRequestCode, this);
       mRequestCode++;
     } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
+    }
+  }
+
+  @ReactMethod
+  public void checkBatteryOptimizationPermission(final Promise promise) {
+    Context context = getReactApplicationContext().getBaseContext();
+    String packageName = context.getPackageName();
+    PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+    promise.resolve(pm.isIgnoringBatteryOptimizations(packageName));
+  }
+
+  @ReactMethod
+  public void triggerBatteryOptimizationNativeDialog(final Promise promise) {
+    try {
+      Context context = getReactApplicationContext().getBaseContext();
+      Intent intent = new Intent();
+      String packageName = context.getPackageName();
+      PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+      if (!pm.isIgnoringBatteryOptimizations(packageName)){
+        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+      }
+      promise.resolve(true);
+    } catch (Exception e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
   }

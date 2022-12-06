@@ -1,6 +1,7 @@
 import {NativeModules} from 'react-native';
 import type {Contract} from './contract';
 import {RESULTS} from './results';
+import { checkBatteryOptimizationPermission, triggerBatteryOptimizationNativeDialog } from './unsupportedPlatformMethods';
 import type {
   LocationAccuracy,
   LocationAccuracyOptions,
@@ -97,6 +98,8 @@ async function requestMultiple<P extends Permission[]>(
 
 export const methods: Contract = {
   check,
+  checkBatteryOptimizationPermission,
+  triggerBatteryOptimizationNativeDialog,
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,

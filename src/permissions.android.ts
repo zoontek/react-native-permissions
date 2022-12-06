@@ -35,6 +35,7 @@ const ANDROID = Object.freeze({
   RECEIVE_SMS: 'android.permission.RECEIVE_SMS',
   RECEIVE_WAP_PUSH: 'android.permission.RECEIVE_WAP_PUSH',
   RECORD_AUDIO: 'android.permission.RECORD_AUDIO',
+  REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: 'android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS',
   SEND_SMS: 'android.permission.SEND_SMS',
   USE_SIP: 'android.permission.USE_SIP',
   UWB_RANGING: 'android.permission.UWB_RANGING',

@@ -11,6 +11,8 @@ import {platformVersion, uniq} from './utils';
 const TIRAMISU_VERSION_CODE = 33;
 
 const NativeModule: {
+  checkBatteryOptimizationPermission: () => Promise<Boolean>;
+  triggerBatteryOptimizationNativeDialog:() => Promise<void>;
   checkPermission: (permission: Permission) => Promise<PermissionStatus>;
   requestPermission: (permission: Permission) => Promise<PermissionStatus>;
   checkNotifications: () => Promise<NotificationsResponse>;
@@ -31,6 +33,14 @@ async function openSettings(): Promise<void> {
 
 function check(permission: Permission): Promise<PermissionStatus> {
   return NativeModule.checkPermission(permission);
+}
+
+function checkBatteryOptimizationPermission() {
+  return NativeModule.checkBatteryOptimizationPermission();
+}
+
+function triggerBatteryOptimizationNativeDialog() {
+  return NativeModule.triggerBatteryOptimizationNativeDialog();
 }
 
 async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
@@ -96,6 +106,8 @@ function requestMultiple<P extends Permission[]>(
 
 export const methods: Contract = {
   check,
+  checkBatteryOptimizationPermission,
+  triggerBatteryOptimizationNativeDialog,
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
