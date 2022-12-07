@@ -5,7 +5,6 @@ import {
   checkLocationAccuracy,
   openLimitedPhotoLibraryPicker,
   requestLocationAccuracy,
-  checkBatteryOptimizationPermission,
   triggerBatteryOptimizationNativeDialog,
 } from './unsupportedPlatformMethods';
 
@@ -28,7 +27,6 @@ async function checkMultiple<P extends Permission[]>(
 
 export const methods: Contract = {
   check,
-  checkBatteryOptimizationPermission,
   triggerBatteryOptimizationNativeDialog,
   checkLocationAccuracy,
   checkMultiple,

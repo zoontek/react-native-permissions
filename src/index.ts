@@ -15,7 +15,6 @@ export {RESULTS} from './results';
 export * from './types';
 
 export const check = methods.check;
-export const checkBatteryOptimizationPermission = methods.checkBatteryOptimizationPermission;
 export const triggerBatteryOptimizationNativeDialog = methods.triggerBatteryOptimizationNativeDialog;
 export const checkLocationAccuracy = methods.checkLocationAccuracy;
 export const checkMultiple = methods.checkMultiple;
@@ -32,7 +31,6 @@ export default {
   RESULTS,
 
   check,
-  checkBatteryOptimizationPermission,
   triggerBatteryOptimizationNativeDialog,
   checkLocationAccuracy,
   checkMultiple,

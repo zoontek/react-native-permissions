@@ -203,6 +203,17 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
       return;
     }
 
+    if (permission.equals("android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS")){
+      String packageName = context.getPackageName();
+      PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+      if (pm.isIgnoringBatteryOptimizations(packageName)) {
+        promise.resolve(GRANTED);
+      } else {
+        promise.resolve(DENIED);
+      }
+      return;
+    }
+
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
     } else {
@@ -374,14 +385,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     } catch (IllegalStateException e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
-  }
-
-  @ReactMethod
-  public void checkBatteryOptimizationPermission(final Promise promise) {
-    Context context = getReactApplicationContext().getBaseContext();
-    String packageName = context.getPackageName();
-    PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-    promise.resolve(pm.isIgnoringBatteryOptimizations(packageName));
   }
 
   @ReactMethod

@@ -10,7 +10,6 @@ import type {
 
 export type Contract = {
   check(permission: Permission): Promise<PermissionStatus>;
-  checkBatteryOptimizationPermission: () => Promise<Boolean>;
   triggerBatteryOptimizationNativeDialog:() => Promise<void>;
   checkLocationAccuracy(): Promise<LocationAccuracy>;
   checkNotifications(): Promise<NotificationsResponse>;

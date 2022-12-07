@@ -17,10 +17,6 @@ export async function openLimitedPhotoLibraryPicker(): Promise<void> {
   throw new Error(IOS_14);
 }
 
-export async function checkBatteryOptimizationPermission(): Promise<Boolean> {
-  throw new Error(ANDROID_23);
-}
-
 export async function triggerBatteryOptimizationNativeDialog(): Promise<void> {
   throw new Error(ANDROID_23);
 }
