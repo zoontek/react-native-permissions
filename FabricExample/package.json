@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.71.2"
+    "react-native": "0.71.2",
+    "react-native-paper": "4.12.3",
+    "react-native-permissions": "link:../",
+    "react-native-vector-icons": "9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -35,8 +35,54 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Let me use your media library</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Let me use bluetooth</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Let me use bluetooth</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Let me use your calendars</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Let me use the camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Let me use your contacts</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Let me use FaceID</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Let me use your location, even in background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Let me use your location, even in background</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>full-accuracy</key>
+		<string>Let me use your precise location temporarily</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Let me use your location when the app is opened</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Let me use the microphone</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Let me use your motion data</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Let me add photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Let me use your photo library</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Let me use your reminders</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Let me use speech recognition</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Let me use your ad identifier</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialCommunityIcons.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -46,8 +92,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
