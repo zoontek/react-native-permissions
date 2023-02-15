@@ -28,12 +28,13 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-@ReactModule(name = RNPermissionsModule.MODULE_NAME)
-public class RNPermissionsModule extends ReactContextBaseJavaModule implements PermissionListener {
+@ReactModule(name = RNPermissionsModule.NAME)
+public class RNPermissionsModule extends NativePermissionsModuleSpec implements PermissionListener {
 
   private static final String ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY";
-  public static final String MODULE_NAME = "RNPermissions";
+  public static final String NAME = "RNPermissionsModule";
 
   private final SparseArray<Callback> mCallbacks;
   private int mRequestCode = 0;
@@ -49,7 +50,7 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
 
   @Override
   public String getName() {
-    return MODULE_NAME;
+    return NAME;
   }
 
   private @Nullable String getFieldName(final String permission) {
@@ -371,6 +372,41 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
     } catch (IllegalStateException e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
+  }
+
+  @Override
+  protected Map<String, Object> getTypedExportedConstants() {
+    return null;
+  }
+
+  @Override
+  public void check(double permission, Promise promise) {
+    promise.reject("Permissions:check", "check is not supported on Android");
+  }
+
+  @Override
+  public void checkLocationAccuracy(Promise promise) {
+    promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
+  }
+
+  @Override
+  public void request(double permission, Promise promise) {
+    promise.reject("Permissions:request", "request is not supported on Android");
+  }
+
+  @Override
+  public void requestLocationAccuracy(String purposeKey, Promise promise) {
+    promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
+  }
+
+  @Override
+  public void requestNotifications(ReadableArray options, Promise promise) {
+    promise.reject("Permissions:requestNotifications", "requestNotifications is not supported on Android");
+  }
+
+  @Override
+  public void openLimitedPhotoLibraryPicker(Promise promise) {
+    promise.reject("Permissions:openLimitedPhotoLibraryPicker", "openLimitedPhotoLibraryPicker is not supported on Android");
   }
 
   @Override
