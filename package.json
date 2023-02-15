@@ -59,6 +59,10 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "cosmiconfig": "^8.0.0",
+    "picocolors": "^1.0.0"
+  },
   "devDependencies": {
     "@types/react-native": "^0.71.3",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
