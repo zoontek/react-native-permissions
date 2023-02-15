@@ -1,4 +1,4 @@
-import {Alert, AlertButton, NativeModules} from 'react-native';
+import {Alert, AlertButton} from 'react-native';
 import type {Contract} from './contract';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
@@ -7,23 +7,8 @@ import {
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 import {platformVersion, uniq} from './utils';
-
+import NativeModule from './NativePermissionsModule';
 const TIRAMISU_VERSION_CODE = 33;
-
-const NativeModule: {
-  checkPermission: (permission: Permission) => Promise<PermissionStatus>;
-  requestPermission: (permission: Permission) => Promise<PermissionStatus>;
-  checkNotifications: () => Promise<NotificationsResponse>;
-  openSettings: () => Promise<true>;
-  shouldShowRequestPermissionRationale: (permission: Permission) => Promise<boolean>;
-
-  checkMultiplePermissions: (
-    permissions: Permission[],
-  ) => Promise<Record<Permission, PermissionStatus>>;
-  requestMultiplePermissions: (
-    permissions: Permission[],
-  ) => Promise<Record<Permission, PermissionStatus>>;
-} = NativeModules.RNPermissions;
 
 async function openSettings(): Promise<void> {
   await NativeModule.openSettings();

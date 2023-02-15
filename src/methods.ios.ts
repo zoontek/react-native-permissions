@@ -1,4 +1,3 @@
-import {NativeModules} from 'react-native';
 import type {Contract} from './contract';
 import {RESULTS} from './results';
 import type {
@@ -10,19 +9,9 @@ import type {
   PermissionStatus,
 } from './types';
 import {uniq} from './utils';
+import NativeModule from './NativePermissionsModule';
 
-const NativeModule: {
-  available: Permission[];
-
-  check: (permission: Permission) => Promise<PermissionStatus>;
-  checkLocationAccuracy: () => Promise<LocationAccuracy>;
-  checkNotifications: () => Promise<NotificationsResponse>;
-  openLimitedPhotoLibraryPicker: () => Promise<true>;
-  openSettings: () => Promise<true>;
-  request: (permission: Permission, options?: object) => Promise<PermissionStatus>;
-  requestLocationAccuracy: (purposeKey: string) => Promise<LocationAccuracy>;
-  requestNotifications: (options: NotificationOption[]) => Promise<NotificationsResponse>;
-} = NativeModules.RNPermissions;
+const available = NativeModule.getConstants().available;
 
 async function openLimitedPhotoLibraryPicker(): Promise<void> {
   await NativeModule.openLimitedPhotoLibraryPicker();
@@ -33,13 +22,13 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.available.includes(permission)
+  return available.includes(permission)
     ? NativeModule.check(permission)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.available.includes(permission)
+  return available.includes(permission)
     ? NativeModule.request(permission)
     : RESULTS.UNAVAILABLE;
 }
