@@ -41,7 +41,7 @@
         return resolve(RNPermissionStatusNotAvailable);
     }
 
-    if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+    if (![RNPermissionsHelper isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
       return resolve(RNPermissionStatusNotDetermined);
     }
 
@@ -100,7 +100,7 @@
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
 
-  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+  [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
   [self checkWithResolver:_resolve rejecter:_reject];
 }
 

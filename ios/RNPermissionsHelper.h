@@ -1,5 +1,4 @@
-#import <React/RCTBridgeModule.h>
-#import <React/RCTConvert.h>
+#import <React/RCTBridge.h>
 
 typedef NS_ENUM(NSInteger, RNPermission) {
   RNPermissionUnknown = 0,
@@ -56,9 +55,6 @@ typedef NS_ENUM(NSInteger, RNPermission) {
 #endif
 };
 
-@interface RCTConvert (RNPermission)
-@end
-
 typedef enum {
   RNPermissionStatusNotAvailable = 0,
   RNPermissionStatusNotDetermined = 1,
@@ -84,7 +80,8 @@ typedef enum {
 
 @end
 
-@interface RNPermissions : NSObject <RCTBridgeModule>
+
+@interface RNPermissionsHelper : NSObject
 
 + (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId;
 
