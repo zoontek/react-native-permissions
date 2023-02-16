@@ -12,7 +12,8 @@ module.exports = {
   commands: [
     {
       name: 'setup-ios-permissions',
-      description: 'Update react-native-permissions to link additional permission handlers.',
+      description:
+        'Update react-native-permissions podspec to link additional permission handlers.',
       func: async () => {
         const explorer = await cosmiconfig('iosPermissions');
         const result = await explorer.search();
