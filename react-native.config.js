@@ -5,7 +5,7 @@ const pc = require('picocolors');
 
 const log = {
   error: (text) => console.log(pc.red(text)),
-  warning: (text) => console.log('⚠️ ' + pc.yellow(text)),
+  warning: (text) => console.log(pc.yellow(text)),
 };
 
 module.exports = {
