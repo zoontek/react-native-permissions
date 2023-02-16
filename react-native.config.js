@@ -3,31 +3,33 @@ const fs = require('fs/promises');
 const path = require('path');
 const pc = require('picocolors');
 
-// TODO: Improve wording (description, errors)
+const log = {
+  error: (text) => console.log(pc.red(text)),
+  warning: (text) => console.log('⚠️ ' + pc.yellow(text)),
+};
 
 module.exports = {
   commands: [
     {
       name: 'setup-ios-permissions',
-      description: 'No description',
+      description: 'Update react-native-permissions to link additional permission handlers.',
       func: async () => {
         const explorer = await cosmiconfig('iosPermissions');
         const result = await explorer.search();
 
         if (!result) {
-          console.log(pc.red('No config detected'));
+          log.error(
+            'No config detected. In order to setup iOS permissions, you first need to add an "iosPermissions" array in your package.json.',
+          );
+
           process.exit(1);
         }
 
         const {config} = result;
 
-        if (!Array.isArray(config)) {
-          console.log(pc.red('Invalid config'));
+        if (!Array.isArray(config) || config.length === 0) {
+          log.error('Invalid "iosPermissions" config detected. It must be a non-empty array.');
           process.exit(1);
-        }
-
-        if (config.length === 0) {
-          console.log(pc.yellow('Empty config'));
         }
 
         const iosDirPath = path.join(__dirname, 'ios');
@@ -45,7 +47,7 @@ module.exports = {
           .map((name) => `"${name}"`);
 
         if (unknownPermissions.length > 0) {
-          console.log(pc.yellow(`Unknown permissions: ${unknownPermissions.join(', ')}`));
+          log.warning(`Unknown iOS permissions: ${unknownPermissions.join(', ')}`);
         }
 
         const sourceFiles = [
