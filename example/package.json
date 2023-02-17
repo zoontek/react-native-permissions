@@ -11,7 +11,7 @@
     "start": "react-native start",
     "reinstall": "yarn clean && yarn install"
   },
-  "iosPermissions": [
+  "reactNativePermissionsIOS": [
     "AppTrackingTransparency",
     "BluetoothPeripheral",
     "Calendars",

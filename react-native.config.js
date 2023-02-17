@@ -3,6 +3,8 @@ const fs = require('fs/promises');
 const path = require('path');
 const pc = require('picocolors');
 
+const CONFIG_KEY = 'reactNativePermissionsIOS';
+
 const log = {
   error: (text) => console.log(pc.red(text)),
   warning: (text) => console.log(pc.yellow(text)),
@@ -15,12 +17,12 @@ module.exports = {
       description:
         'Update react-native-permissions podspec to link additional permission handlers.',
       func: async () => {
-        const explorer = await cosmiconfig('iosPermissions');
+        const explorer = await cosmiconfig(CONFIG_KEY);
         const result = await explorer.search();
 
         if (!result) {
           log.error(
-            'No config detected. In order to setup iOS permissions, you first need to add an "iosPermissions" array in your package.json.',
+            `No config detected. In order to setup iOS permissions, you first need to add an "${CONFIG_KEY}" array in your package.json.`,
           );
 
           process.exit(1);
@@ -29,7 +31,7 @@ module.exports = {
         const {config} = result;
 
         if (!Array.isArray(config) || config.length === 0) {
-          log.error('Invalid "iosPermissions" config detected. It must be a non-empty array.');
+          log.error(`Invalid "${CONFIG_KEY}" config detected. It must be a non-empty array.`);
           process.exit(1);
         }
 
