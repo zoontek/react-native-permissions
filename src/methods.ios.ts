@@ -11,7 +11,14 @@ import type {
 } from './types';
 import {uniq} from './utils';
 
-const available = NativeModule.getConstants().available;
+let available: string[] | undefined = undefined;
+
+function getAvailable() {
+  if (available === undefined) {
+    available = NativeModule.getConstants().available;
+  }
+  return available;
+}
 
 async function openLimitedPhotoLibraryPicker(): Promise<void> {
   await NativeModule.openLimitedPhotoLibraryPicker();
@@ -22,13 +29,13 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return available?.includes(permission)
+  return getAvailable()?.includes(permission)
     ? (NativeModule.check(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return available?.includes(permission)
+  return getAvailable()?.includes(permission)
     ? (NativeModule.request(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
