@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import <rnpermissions/rnpermissions.h>
+#import <rnpermission/rnpermission.h>
 #else
 #import <React/RCTBridge.h>
 #endif

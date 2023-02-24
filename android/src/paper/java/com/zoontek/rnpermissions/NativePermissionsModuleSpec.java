@@ -62,7 +62,7 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
 
   @ReactMethod
   @DoNotStrip
-  public abstract void check(double permission, Promise promise);
+  public abstract void check(String permission, Promise promise);
 
   @ReactMethod
   @DoNotStrip
@@ -70,7 +70,7 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
 
   @ReactMethod
   @DoNotStrip
-  public abstract void request(double permission, Promise promise);
+  public abstract void request(String permission, Promise promise);
 
   @ReactMethod
   @DoNotStrip
@@ -91,10 +91,10 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
   public final @Nullable Map<String, Object> getConstants() {
     Map<String, Object> constants = getTypedExportedConstants();
     if (ReactBuildConfig.DEBUG || ReactBuildConfig.IS_INTERNAL_BUILD) {
-      Set<String> obligatoryFlowConstants = new HashSet<>(Arrays.asList(
+      Set<String> obligatoryFlowConstants = new HashSet<>();
+      Set<String> optionalFlowConstants = new HashSet<>(Arrays.asList(
           "available"
       ));
-      Set<String> optionalFlowConstants = new HashSet<>();
       Set<String> undeclaredConstants = new HashSet<>(constants.keySet());
       undeclaredConstants.removeAll(obligatoryFlowConstants);
       undeclaredConstants.removeAll(optionalFlowConstants);

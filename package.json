@@ -76,7 +76,7 @@
     "typescript": "^4.7.4"
   },
   "codegenConfig": {
-    "name": "rnpermissions",
+    "name": "rnpermission",
     "type": "modules",
     "jsSrcsDir": "./src",
     "android": {

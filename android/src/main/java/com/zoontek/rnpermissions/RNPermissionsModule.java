@@ -18,7 +18,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -28,6 +27,7 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @ReactModule(name = RNPermissionsModule.NAME)
@@ -376,11 +376,11 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
 
   @Override
   protected Map<String, Object> getTypedExportedConstants() {
-    return null;
+    return new HashMap<>();
   }
 
   @Override
-  public void check(double permission, Promise promise) {
+  public void check(String permission, Promise promise) {
     promise.reject("Permissions:check", "check is not supported on Android");
   }
 
@@ -390,7 +390,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @Override
-  public void request(double permission, Promise promise) {
+  public void request(String permission, Promise promise) {
     promise.reject("Permissions:request", "request is not supported on Android");
   }
 
