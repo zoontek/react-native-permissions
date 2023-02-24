@@ -22,13 +22,13 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return available.includes(permission)
+  return available?.includes(permission)
     ? (NativeModule.check(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return available.includes(permission)
+  return available?.includes(permission)
     ? (NativeModule.request(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
