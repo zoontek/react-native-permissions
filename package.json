@@ -60,18 +60,18 @@
     }
   },
   "devDependencies": {
-    "@types/react-native": "^0.69.3",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "eslint": "^8.20.0",
-    "eslint-plugin-react": "^7.30.1",
+    "@types/react-native": "^0.71.3",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.35.0",
+    "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^3.0.0",
-    "react": "^18.0.0",
-    "react-native": "^0.69.2",
-    "react-native-builder-bob": "^0.18.3",
-    "typescript": "^4.7.4"
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "react": "^18.2.0",
+    "react-native": "^0.71.3",
+    "react-native-builder-bob": "^0.20.3",
+    "typescript": "^4.9.5"
   }
 }
