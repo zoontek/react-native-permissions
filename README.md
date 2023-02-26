@@ -157,8 +157,7 @@ end
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
 
 ```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.myawesomeapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <!-- 🚨 Keep only the permissions used in your app 🚨 -->
 
@@ -984,7 +983,7 @@ Since iOS 15.0, it's impossible to request this permission if the app isn't `act
 ```js
 useEffect(() => {
   const callback = (status: AppStateStatus) => {
-    if (status === "active") {
+    if (status === 'active') {
       request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
@@ -992,7 +991,7 @@ useEffect(() => {
   };
 
   callback(AppState.currentState); // initial call
-  const listener = AppState.addEventListener("change", callback);
+  const listener = AppState.addEventListener('change', callback);
   return listener.remove;
 }, []);
 ```

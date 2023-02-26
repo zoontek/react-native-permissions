@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Platform, ScrollView, StatusBar, View} from 'react-native';
 import {Appbar, Button, Divider, Snackbar, Text} from 'react-native-paper';
 import RNPermissions, {NotificationOption, Permission, PERMISSIONS} from 'react-native-permissions';
-import theme from './theme';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
@@ -27,11 +26,11 @@ export const App = () => {
   const hideSnackbar = () => setSnackbarContent(undefined);
 
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
-      <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
+    <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" />
 
       <Appbar.Header>
-        <Appbar.Content title="react-native-permissions" subtitle="Example application" />
+        <Appbar.Content title="Permissions app" />
 
         {Platform.OS === 'ios' && (
           <Appbar.Action
@@ -74,23 +73,14 @@ export const App = () => {
           return (
             <React.Fragment key={item}>
               <View style={{padding: 20}}>
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    color: 'rgba(0, 0, 0, 0.87)',
-                    fontWeight: '400',
-                    fontSize: 16,
-                    textAlign: 'left',
-                  }}
-                >
+                <Text numberOfLines={1} variant="bodyMedium">
                   {name}
                 </Text>
 
                 <View style={{flexDirection: 'row', marginTop: 12}}>
                   <Button
-                    compact={true}
                     icon="eye-outline"
-                    mode="outlined"
+                    mode="contained"
                     onPress={() => {
                       RNPermissions.check(value)
                         .then((status) => {
@@ -107,9 +97,8 @@ export const App = () => {
                   <View style={{width: 8}} />
 
                   <Button
-                    compact={true}
                     icon="help-circle-outline"
-                    mode="outlined"
+                    mode="contained"
                     onPress={() => {
                       RNPermissions.request(value)
                         .then((status) => {
@@ -131,23 +120,14 @@ export const App = () => {
         })}
 
         <View style={{padding: 20, paddingBottom: 32}}>
-          <Text
-            numberOfLines={1}
-            style={{
-              color: 'rgba(0, 0, 0, 0.87)',
-              fontWeight: '400',
-              fontSize: 16,
-              textAlign: 'left',
-            }}
-          >
+          <Text numberOfLines={1} variant="bodyMedium">
             NOTIFICATIONS
           </Text>
 
           <View style={{flexDirection: 'row', marginTop: 12}}>
             <Button
-              compact={true}
               icon="eye-outline"
-              mode="outlined"
+              mode="contained"
               onPress={() => {
                 RNPermissions.checkNotifications()
                   .then((response) => {
@@ -164,9 +144,8 @@ export const App = () => {
             <View style={{width: 8}} />
 
             <Button
-              compact={true}
               icon="help-circle-outline"
-              mode="outlined"
+              mode="contained"
               onPress={() => {
                 const options: NotificationOption[] = ['alert', 'badge', 'sound'];
 
@@ -195,7 +174,6 @@ export const App = () => {
         duration={10000}
         onDismiss={hideSnackbar}
         action={{
-          color: '#607d8b',
           label: 'Hide',
           onPress: hideSnackbar,
         }}
