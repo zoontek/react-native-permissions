@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "appium": "appium",
     "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
     "clean": "rm -rf ./node_modules ./ios/Pods",
     "preinstall": "cd .. && yarn prepack && cd example",
