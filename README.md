@@ -37,39 +37,41 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
+By default no permission handler is installed. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install`.
 
-```ruby
-target 'YourAwesomeProject' do
+_📌  Note that these commands must be re-executed each time you update this config, delete the `node_modules` directory or update this library. An useful trick to cover a lot of these cases is running them on `postinstall` and just run `yarn` or `npm install` manually when needed._
 
-  # …
-
-  permissions_path = '../node_modules/react-native-permissions/ios'
-
-  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
-  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
-  pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
-  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
-  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
-  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
-  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
-  pod 'Permission-Motion', :path => "#{permissions_path}/Motion"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
-  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
-  pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders"
-  pod 'Permission-Siri', :path => "#{permissions_path}/Siri"
-  pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition"
-  pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit"
-
-end
+```json
+{
+  "reactNativePermissionsIOS": [
+    "AppTrackingTransparency",
+    "BluetoothPeripheral",
+    "Calendars",
+    "Camera",
+    "Contacts",
+    "FaceID",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "Motion",
+    "Notifications",
+    "PhotoLibrary",
+    "PhotoLibraryAddOnly",
+    "Reminders",
+    "Siri",
+    "SpeechRecognition",
+    "StoreKit"
+  ],
+  "devDependencies": {
+    "pod-install": "0.1.38"
+  },
+  "scripts": {
+    "postinstall": "react-native setup-ios-permissions && pod-install"
+  }
+}
 ```
-
-> :warning: If you see a **No permission handler detected** error: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be cleared (`Xcode -> Product -> Clean Build Folder`)
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
@@ -127,29 +129,6 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 </dict>
 </plist>
-```
-
-#### Workaround for `use_frameworks!` issues
-
-If you use `use_frameworks!`, add this at the top of your `Podfile`, and uncomment the line corresponding to your CocoaPods version:
-
-```ruby
-use_frameworks!
-
-# Convert all permission pods into static libraries
-pre_install do |installer|
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-
-  installer.pod_targets.each do |pod|
-    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
-      def pod.build_type;
-        # Uncomment the line corresponding to your CocoaPods version
-        # Pod::BuildType.static_library # >= 1.9
-        # Pod::Target::BuildType.static_library # < 1.9
-      end
-    end
-  end
-end
 ```
 
 ### Android
