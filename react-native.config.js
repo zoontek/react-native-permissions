@@ -54,11 +54,11 @@ module.exports = {
         }
 
         const sourceFiles = [
-          '"ios/*.{h,m}"',
-          ...directories.map((name) => `"ios/${name}/*.{h,m}"`),
+          '"ios/*.{h,m,mm}"',
+          ...directories.map((name) => `"ios/${name}/*.{h,m,mm}"`),
         ];
 
-        const podspecContent = podspec.replace(/"ios\/\*\.{h,m}".*/, sourceFiles.join(', '));
+        const podspecContent = podspec.replace(/"ios\/\*\.{h,m,mm}".*/, sourceFiles.join(', '));
         return fs.writeFile(podspecPath, podspecContent, 'utf-8');
       },
     },
