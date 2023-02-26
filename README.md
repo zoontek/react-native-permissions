@@ -955,26 +955,6 @@ When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow Whi
 
 Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
 
-### How to request "App Tracking Transparency" permission on iOS
-
-Since iOS 15.0, it's impossible to request this permission if the app isn't `active` (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). A good solution is to use `AppState` to make sure this is the case:
-
-```js
-useEffect(() => {
-  const callback = (status: AppStateStatus) => {
-    if (status === 'active') {
-      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-        .then((result) => console.log(result))
-        .catch((error) => console.log(error));
-    }
-  };
-
-  callback(AppState.currentState); // initial call
-  const listener = AppState.addEventListener('change', callback);
-  return listener.remove;
-}, []);
-```
-
 ### Testing with Jest
 
 If you don't already have a Jest setup file configured, please add the following to your Jest configuration file and create the new `jest.setup.js` file in project root:
