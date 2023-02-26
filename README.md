@@ -129,29 +129,6 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 </plist>
 ```
 
-#### Workaround for `use_frameworks!` issues
-
-If you use `use_frameworks!`, add this at the top of your `Podfile`, and uncomment the line corresponding to your CocoaPods version:
-
-```ruby
-use_frameworks!
-
-# Convert all permission pods into static libraries
-pre_install do |installer|
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-
-  installer.pod_targets.each do |pod|
-    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
-      def pod.build_type;
-        # Uncomment the line corresponding to your CocoaPods version
-        # Pod::BuildType.static_library # >= 1.9
-        # Pod::Target::BuildType.static_library # < 1.9
-      end
-    end
-  end
-end
-```
-
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
