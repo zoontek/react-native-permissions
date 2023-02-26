@@ -1,6 +1,6 @@
 # ☝🏼 react-native-permissions
 
-A unified permissions API for React Native on iOS, Android and Windows.<br>
+An unified permissions API for React Native on iOS, Android and Windows.<br>
 (For Windows only builds 18362 and later are supported)
 
 [![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/zoontek/react-native-permissions/blob/main/LICENSE)
