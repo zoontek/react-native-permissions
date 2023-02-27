@@ -1,4 +1,4 @@
-const cosmiconfig = require('cosmiconfig');
+const { cosmiconfig } = require('cosmiconfig');
 const fs = require('fs/promises');
 const path = require('path');
 const pc = require('picocolors');
