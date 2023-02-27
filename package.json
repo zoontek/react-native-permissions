@@ -27,6 +27,7 @@
     "/windows",
     "/src",
     "/*.podspec",
+    "react-native.config.js",
     "mock.js"
   ],
   "scripts": {
