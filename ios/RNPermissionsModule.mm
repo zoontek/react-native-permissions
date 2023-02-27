@@ -201,9 +201,8 @@ RCT_EXPORT_MODULE();
     NSMutableString *message = [NSMutableString new];
 
     [message appendString:@"⚠  No permission handler detected.\n\n"];
-    [message appendString:@"• Check that you link at least one permission handler in your Podfile.\n"];
-    [message appendString:@"• Uninstall this app, delete your Xcode DerivedData folder and rebuild it.\n"];
-    [message appendString:@"• If you use `use_frameworks!`, follow the workaround guide in the project README."];
+    [message appendString:@"• Check that you added at least one permission handler in your package.json reactNativePermissionsIOS config.\n"];
+    [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
 
     RCTLogError(@"%@", message);
   }

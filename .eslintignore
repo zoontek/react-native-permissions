@@ -4,3 +4,4 @@ example/
 fetchWindowsCapabilites.js
 mock.js
 node_modules
+react-native.config.js

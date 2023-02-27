@@ -1,6 +1,6 @@
 # ☝🏼 react-native-permissions
 
-A unified permissions API for React Native on iOS, Android and Windows.<br>
+An unified permissions API for React Native on iOS, Android and Windows.<br>
 (For Windows only builds 18362 and later are supported)
 
 [![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/zoontek/react-native-permissions/blob/main/LICENSE)
@@ -37,39 +37,41 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is installed. Update your `Podfile` by choosing the ones you want to check or request, then run `pod install`.
+By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install`.
 
-```ruby
-target 'YourAwesomeProject' do
+_📌  Note that these commands must be re-executed each time you update this config, delete the `node_modules` directory or update this library. An useful trick to cover a lot of these cases is running them on `postinstall` and just run `yarn` or `npm install` manually when needed._
 
-  # …
-
-  permissions_path = '../node_modules/react-native-permissions/ios'
-
-  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
-  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
-  pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
-  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
-  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
-  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
-  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
-  pod 'Permission-Motion', :path => "#{permissions_path}/Motion"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
-  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
-  pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders"
-  pod 'Permission-Siri', :path => "#{permissions_path}/Siri"
-  pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition"
-  pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit"
-
-end
+```json
+{
+  "reactNativePermissionsIOS": [
+    "AppTrackingTransparency",
+    "BluetoothPeripheral",
+    "Calendars",
+    "Camera",
+    "Contacts",
+    "FaceID",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "Motion",
+    "Notifications",
+    "PhotoLibrary",
+    "PhotoLibraryAddOnly",
+    "Reminders",
+    "Siri",
+    "SpeechRecognition",
+    "StoreKit"
+  ],
+  "devDependencies": {
+    "pod-install": "0.1.38"
+  },
+  "scripts": {
+    "postinstall": "react-native setup-ios-permissions && pod-install"
+  }
+}
 ```
-
-> :warning: If you see a **No permission handler detected** error: Make sure that you have at least one permission handler set up. In some cases the Xcode cache needs to be cleared (`Xcode -> Product -> Clean Build Folder`)
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
@@ -127,29 +129,6 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
 
 </dict>
 </plist>
-```
-
-#### Workaround for `use_frameworks!` issues
-
-If you use `use_frameworks!`, add this at the top of your `Podfile`, and uncomment the line corresponding to your CocoaPods version:
-
-```ruby
-use_frameworks!
-
-# Convert all permission pods into static libraries
-pre_install do |installer|
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-
-  installer.pod_targets.each do |pod|
-    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
-      def pod.build_type;
-        # Uncomment the line corresponding to your CocoaPods version
-        # Pod::BuildType.static_library # >= 1.9
-        # Pod::Target::BuildType.static_library # < 1.9
-      end
-    end
-  end
-end
 ```
 
 ### Android
@@ -975,26 +954,6 @@ When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow Whi
 ![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 'Screenshot')
 
 Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
-
-### How to request "App Tracking Transparency" permission on iOS
-
-Since iOS 15.0, it's impossible to request this permission if the app isn't `active` (see [#648](https://github.com/zoontek/react-native-permissions/issues/648)). A good solution is to use `AppState` to make sure this is the case:
-
-```js
-useEffect(() => {
-  const callback = (status: AppStateStatus) => {
-    if (status === 'active') {
-      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-        .then((result) => console.log(result))
-        .catch((error) => console.log(error));
-    }
-  };
-
-  callback(AppState.currentState); // initial call
-  const listener = AppState.addEventListener('change', callback);
-  return listener.remove;
-}, []);
-```
 
 ### Testing with Jest
 

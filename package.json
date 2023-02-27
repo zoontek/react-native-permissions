@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "3.6.1",
+  "version": "3.7.2",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -28,6 +28,7 @@
     "/windows",
     "/src",
     "/*.podspec",
+    "react-native.config.js",
     "mock.js"
   ],
   "scripts": {
@@ -60,8 +61,12 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "picocolors": "^1.0.0",
+    "read-pkg": "^5.2.0"
+  },
   "devDependencies": {
-    "@types/react-native": "^0.71.3",
+    "@types/react": "^18.0.28",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.35.0",

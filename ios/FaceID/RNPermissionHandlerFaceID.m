@@ -76,7 +76,7 @@
     _laContext = context;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(UIApplicationDidBecomeActiveNotification:)
+                                             selector:@selector(onApplicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 
@@ -95,7 +95,7 @@
   [_laContext invalidate];
 }
 
-- (void)UIApplicationDidBecomeActiveNotification:(__unused NSNotification *)notification {
+- (void)onApplicationDidBecomeActive:(__unused NSNotification *)notification {
   [[NSNotificationCenter defaultCenter] removeObserver:self
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
