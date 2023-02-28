@@ -37,7 +37,7 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install`.
+By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install` (`reactNativePermissionsIOS.json` is also supported).
 
 _📌  Note that these commands must be re-executed each time you update this config, delete the `node_modules` directory or update this library. An useful trick to cover a lot of these cases is running them on `postinstall` and just run `yarn` or `npm install` manually when needed._
 

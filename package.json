@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "3.7.2",
+  "version": "3.7.3",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "picocolors": "^1.0.0",
-    "read-pkg": "^5.2.0"
+    "pkg-dir": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

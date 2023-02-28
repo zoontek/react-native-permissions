@@ -1,7 +1,8 @@
+const {existsSync} = require('fs');
 const fs = require('fs/promises');
 const path = require('path');
 const pc = require('picocolors');
-const readPkg = require('read-pkg');
+const pkgDir = require('pkg-dir');
 
 const CONFIG_KEY = 'reactNativePermissionsIOS';
 
@@ -17,8 +18,17 @@ module.exports = {
       description:
         'Update react-native-permissions podspec to link additional permission handlers.',
       func: async () => {
-        const pkg = await readPkg();
-        const config = pkg[CONFIG_KEY];
+        const rootDir = pkgDir.sync() || process.cwd();
+        const pkgPath = path.join(rootDir, 'package.json');
+        const pkg = await fs.readFile(pkgPath, 'utf-8');
+        const jsonPath = path.join(rootDir, `${CONFIG_KEY}.json`);
+
+        let config = JSON.parse(pkg)[CONFIG_KEY];
+
+        if (!config && existsSync(jsonPath)) {
+          const text = await fs.readFile(jsonPath, 'utf-8');
+          config = JSON.parse(text);
+        }
 
         if (!config) {
           log.error(
