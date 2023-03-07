@@ -793,7 +793,9 @@ type NotificationOption =
   | 'criticalAlert'
   | 'carPlay'
   | 'provisional'
-  | 'providesAppSettings';
+  | 'providesAppSettings'
+  | 'lockScreen'
+  | 'notificationCenter';
 
 type NotificationSettings = {
   // properties only available on iOS
