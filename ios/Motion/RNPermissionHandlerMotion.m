@@ -38,7 +38,7 @@
     }
   }
 
-  if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+  if (![RNPermissionsHelper isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
     return resolve(RNPermissionStatusNotDetermined);
   }
 
@@ -65,7 +65,7 @@
       return reject(error);
     }
 
-    [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+    [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
 
     if (error != nil) {
       return resolve(RNPermissionStatusDenied);

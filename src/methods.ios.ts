@@ -1,5 +1,5 @@
-import {NativeModules} from 'react-native';
 import type {Contract} from './contract';
+import NativeModule from './NativePermissionsModule';
 import {RESULTS} from './results';
 import type {
   LocationAccuracy,
@@ -11,18 +11,14 @@ import type {
 } from './types';
 import {uniq} from './utils';
 
-const NativeModule: {
-  available: Permission[];
+let available: string[] | undefined = undefined;
 
-  check: (permission: Permission) => Promise<PermissionStatus>;
-  checkLocationAccuracy: () => Promise<LocationAccuracy>;
-  checkNotifications: () => Promise<NotificationsResponse>;
-  openLimitedPhotoLibraryPicker: () => Promise<true>;
-  openSettings: () => Promise<true>;
-  request: (permission: Permission, options?: object) => Promise<PermissionStatus>;
-  requestLocationAccuracy: (purposeKey: string) => Promise<LocationAccuracy>;
-  requestNotifications: (options: NotificationOption[]) => Promise<NotificationsResponse>;
-} = NativeModules.RNPermissions;
+function getAvailable() {
+  if (available === undefined) {
+    available = NativeModule.getConstants().available;
+  }
+  return available;
+}
 
 async function openLimitedPhotoLibraryPicker(): Promise<void> {
   await NativeModule.openLimitedPhotoLibraryPicker();
@@ -33,33 +29,33 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.available.includes(permission)
-    ? NativeModule.check(permission)
+  return getAvailable()?.includes(permission)
+    ? (NativeModule.check(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.available.includes(permission)
-    ? NativeModule.request(permission)
+  return getAvailable()?.includes(permission)
+    ? (NativeModule.request(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 function checkLocationAccuracy(): Promise<LocationAccuracy> {
-  return NativeModule.checkLocationAccuracy();
+  return NativeModule.checkLocationAccuracy() as Promise<LocationAccuracy>;
 }
 
 function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy> {
-  return NativeModule.requestLocationAccuracy(options.purposeKey);
+  return NativeModule.requestLocationAccuracy(options.purposeKey) as Promise<LocationAccuracy>;
 }
 
 export function checkNotifications(): Promise<NotificationsResponse> {
-  return NativeModule.checkNotifications();
+  return NativeModule.checkNotifications() as Promise<NotificationsResponse>;
 }
 
 export function requestNotifications(
   options: NotificationOption[],
 ): Promise<NotificationsResponse> {
-  return NativeModule.requestNotifications(options);
+  return NativeModule.requestNotifications(options) as Promise<NotificationsResponse>;
 }
 
 async function checkMultiple<P extends Permission[]>(

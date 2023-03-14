@@ -1,4 +1,4 @@
-#import "RNPermissions.h"
+#import "RNPermissionsHelper.h"
 
 @interface RNPermissionHandlerMicrophone : NSObject<RNPermissionHandler>
 
