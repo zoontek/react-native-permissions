@@ -8,6 +8,7 @@ import {
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 import {platformVersion, uniq} from './utils';
+
 const TIRAMISU_VERSION_CODE = 33;
 
 async function openSettings(): Promise<void> {
@@ -31,6 +32,7 @@ async function request(permission: Permission, rationale?: Rationale): Promise<P
         if (buttonNegative) {
           const onPress = () =>
             resolve(NativeModule.checkPermission(permission) as Promise<PermissionStatus>);
+
           buttonNeutral && buttons.push({text: buttonNeutral, onPress});
           buttons.push({text: buttonNegative, onPress});
         }

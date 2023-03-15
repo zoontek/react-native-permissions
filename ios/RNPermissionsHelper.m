@@ -4,8 +4,6 @@
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
-
-
 + (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId {
   NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
   return requested == nil ? false : [requested containsObject:handlerId];

@@ -196,8 +196,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
         == PackageManager.PERMISSION_GRANTED
-        ? GRANTED
-        : BLOCKED);
+          ? GRANTED
+          : BLOCKED);
       return;
     }
 
@@ -214,6 +214,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       promise.resolve(false);
       return;
     }
+
     try {
       promise.resolve(
         getPermissionAwareActivity().shouldShowRequestPermissionRationale(permission));
@@ -307,7 +308,6 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     final WritableMap output = new WritableNativeMap();
     final ArrayList<String> permissionsToCheck = new ArrayList<String>();
     int checkedPermissionsCount = 0;
-
     Context context = getReactApplicationContext().getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
@@ -418,6 +418,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
 
   private PermissionAwareActivity getPermissionAwareActivity() {
     Activity activity = getCurrentActivity();
+
     if (activity == null) {
       throw new IllegalStateException(
         "Tried to use permissions API while not attached to an " + "Activity.");
@@ -426,6 +427,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
         "Tried to use permissions API but the host Activity doesn't"
           + " implement PermissionAwareActivity.");
     }
+
     return (PermissionAwareActivity) activity;
   }
 }

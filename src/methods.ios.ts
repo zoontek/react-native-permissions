@@ -13,10 +13,11 @@ import {uniq} from './utils';
 
 let available: string[] | undefined = undefined;
 
-function getAvailable() {
-  if (available === undefined) {
+function getAvailable(): string[] | undefined {
+  if (available == null) {
     available = NativeModule.getConstants().available;
   }
+
   return available;
 }
 

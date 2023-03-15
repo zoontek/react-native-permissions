@@ -368,20 +368,18 @@ RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
 
 RCT_EXPORT_METHOD(check:
 #ifdef RCT_NEW_ARCH_ENABLED
-                  (NSString *)
+                  (NSString *)permission
 #else
-                  (RNPermission)
+                  (RNPermission)permission
 #endif
-                 permission
-                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
-  id<RNPermissionHandler> handler = [self handlerForPermission:
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
 #ifdef RCT_NEW_ARCH_ENABLED
-                                     [RCTConvert RNPermission:permission]
+  id<RNPermissionHandler> handler = [self handlerForPermission:[RCTConvert RNPermission:permission]];
 #else
-                                     permission
+  id<RNPermissionHandler> handler = [self handlerForPermission:permission];
 #endif
-                                     ];
+
   NSString *lockId = [self lockHandler:handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status) {
@@ -395,20 +393,18 @@ RCT_EXPORT_METHOD(check:
 
 RCT_EXPORT_METHOD(request:
 #ifdef RCT_NEW_ARCH_ENABLED
-                  (NSString *)
+                  (NSString *)permission
 #else
-                  (RNPermission)
+                  (RNPermission)permission
 #endif
-                 permission
-                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
-    id<RNPermissionHandler> handler = [self handlerForPermission:
-  #ifdef RCT_NEW_ARCH_ENABLED
-                                       [RCTConvert RNPermission:permission]
-  #else
-                                       permission
-  #endif
-                                       ];
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+#ifdef RCT_NEW_ARCH_ENABLED
+  id<RNPermissionHandler> handler = [self handlerForPermission:[RCTConvert RNPermission:permission]];
+#else
+  id<RNPermissionHandler> handler = [self handlerForPermission:permission];
+#endif
+
   NSString *lockId = [self lockHandler:handler];
 
   [handler requestWithResolver:^(RNPermissionStatus status) {
@@ -421,7 +417,7 @@ RCT_EXPORT_METHOD(request:
 }
 
 RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
+                  reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
@@ -439,8 +435,8 @@ RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
-                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerNotifications.h")
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
@@ -458,7 +454,7 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
 }
 
 RCT_EXPORT_METHOD(openLimitedPhotoLibraryPicker:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
+                  reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
   RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
   [handler openLimitedPhotoLibraryPickerWithResolver:resolve rejecter:reject];
@@ -468,7 +464,7 @@ RCT_EXPORT_METHOD(openLimitedPhotoLibraryPicker:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(checkLocationAccuracy:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
+                  reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
   [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
 
@@ -480,8 +476,8 @@ RCT_EXPORT_METHOD(checkLocationAccuracy:(RCTPromiseResolveBlock)resolve
 }
 
 RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
-                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject) {
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
   [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
 
@@ -492,38 +488,47 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
 #endif
 }
 
-- (void)checkMultiplePermissions:(NSArray *)permissions resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-    reject(@"RNPermissions:checkMultiplePermissions", @"checkMultiplePermissions is not supported on iOS", nil);
+- (void)checkMultiplePermissions:(NSArray *)permissions
+                         resolve:(RCTPromiseResolveBlock)resolve
+                          reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:checkMultiplePermissions", @"checkMultiplePermissions is not supported on iOS", nil);
 }
 
-- (void)checkPermission:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-    reject(@"RNPermissions:checkPermission", @"checkPermission is not supported on iOS", nil);
+- (void)checkPermission:(NSString *)permission
+                resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:checkPermission", @"checkPermission is not supported on iOS", nil);
 }
 
-- (void)requestMultiplePermissions:(NSArray *)permissions resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-    reject(@"RNPermissions:requestMultiplePermissions", @"requestMultiplePermissions is not supported on iOS", nil);
+- (void)requestMultiplePermissions:(NSArray *)permissions
+                           resolve:(RCTPromiseResolveBlock)resolve
+                            reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:requestMultiplePermissions", @"requestMultiplePermissions is not supported on iOS", nil);
 }
 
-- (void)requestPermission:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-    reject(@"RNPermissions:requestPermission", @"requestPermission is not supported on iOS", nil);
+- (void)requestPermission:(NSString *)permission
+                  resolve:(RCTPromiseResolveBlock)resolve
+                   reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:requestPermission", @"requestPermission is not supported on iOS", nil);
 }
 
-- (void)shouldShowRequestPermissionRationale:(NSString *)permission resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-    reject(@"RNPermissions:shouldShowRequestPermissionRationale", @"shouldShowRequestPermissionRationale is not supported on iOS", nil);
+- (void)shouldShowRequestPermissionRationale:(NSString *)permission
+                                     resolve:(RCTPromiseResolveBlock)resolve
+                                      reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:shouldShowRequestPermissionRationale", @"shouldShowRequestPermissionRationale is not supported on iOS", nil);
 }
-
 
 #if RCT_NEW_ARCH_ENABLED
 
 - (facebook::react::ModuleConstants<JS::NativePermissionsModule::Constants::Builder>)getConstants {
-    return [self constantsToExport];
+  return [self constantsToExport];
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
+    (const facebook::react::ObjCTurboModule::InitParams &)params {
   return std::make_shared<facebook::react::NativePermissionsModuleSpecJSI>(params);
 }
+
 #endif
 
 @end

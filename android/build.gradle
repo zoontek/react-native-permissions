@@ -20,8 +20,7 @@ buildscript {
 apply plugin: "com.android.library"
 
 def resolveReactNativeDirectory() {
-    // monorepo workaround
-    // react-native can be hoisted or in project's own node_modules
+    // monorepo workaround (react-native can be hoisted or in project's own node_modules)
     def reactNativeFromProjectNodeModules = file("${rootProject.projectDir}/../node_modules/react-native")
     if (reactNativeFromProjectNodeModules.exists()) {
         return reactNativeFromProjectNodeModules
@@ -33,9 +32,9 @@ def resolveReactNativeDirectory() {
     }
 
     throw new Exception(
-            "[react-native-clipboard] Unable to resolve react-native location in " +
-                    "node_modules. You should add project extension property (in app/build.gradle) " +
-                    "`REACT_NATIVE_NODE_MODULES_DIR` with path to react-native."
+        "[react-native-permissions] Unable to resolve react-native location in " +
+            "node_modules. You should add project extension property (in app/build.gradle) " +
+            "`REACT_NATIVE_NODE_MODULES_DIR` with path to react-native."
     )
 }
 
@@ -60,7 +59,6 @@ if (isNewArchitectureEnabled()) {
 }
 
 android {
-
     // Used to override the NDK path/version on internal CI or by allowing
     // users to customize the NDK path/version from their root project (e.g. for M1 support)
     if (rootProject.hasProperty("ndkPath")) {
@@ -79,7 +77,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
 
     sourceSets.main {
         java {

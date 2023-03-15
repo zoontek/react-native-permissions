@@ -1,10 +1,5 @@
 package com.zoontek.rnpermissions;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.facebook.react.TurboReactPackage;
 import com.facebook.react.ViewManagerOnDemandReactPackage;
 import com.facebook.react.bridge.ModuleSpec;
@@ -16,6 +11,11 @@ import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
 import com.facebook.react.turbomodule.core.interfaces.TurboModule;
 import com.facebook.react.uimanager.ViewManager;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,8 +62,7 @@ public class RNPermissionsPackage extends TurboReactPackage implements ViewManag
         Class.forName("com.zoontek.rnpermissions.RNPermissionsPackage$$ReactModuleInfoProvider");
       return (ReactModuleInfoProvider) reactModuleInfoProviderClass.newInstance();
     } catch (ClassNotFoundException e) {
-      // ReactModuleSpecProcessor does not run at build-time. Create this ReactModuleInfoProvider by
-      // hand.
+      // ReactModuleSpecProcessor does not run at build-time. Create this ReactModuleInfoProvider by hand.
       return new ReactModuleInfoProvider() {
         @Override
         public Map<String, ReactModuleInfo> getReactModuleInfos() {
