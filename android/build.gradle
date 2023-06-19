@@ -58,6 +58,27 @@ if (isNewArchitectureEnabled()) {
     apply plugin: "com.facebook.react"
 }
 
+def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+def shouldUseNameSpace = agpVersion >= 7
+def PACKAGE_PROP = "package=\"com.zoontek.rnpermissions\""
+def manifestOutFile = file("${projectDir}/src/main/AndroidManifest.xml")
+def manifestContent = manifestOutFile.getText()
+if(shouldUseNameSpace){
+      manifestContent = manifestContent.replaceAll(
+        PACKAGE_PROP,
+        ''
+    )  
+} else {
+    if(!manifestContent.contains("$PACKAGE_PROP")){
+        manifestContent = manifestContent.replace(
+            '<manifest',
+            "<manifest $PACKAGE_PROP "
+        )
+    }
+}
+manifestContent.replaceAll("  ", " ")
+manifestOutFile.write(manifestContent)
+
 android {
     // Used to override the NDK path/version on internal CI or by allowing
     // users to customize the NDK path/version from their root project (e.g. for M1 support)
@@ -66,6 +87,9 @@ android {
     }
     if (rootProject.hasProperty("ndkVersion")) {
         ndkVersion rootProject.ext.ndkVersion
+    }
+    if (shouldUseNameSpace){
+        namespace = "com.zoontek.rnpermissions"
     }
 
     compileSdkVersion safeExtGet("compileSdkVersion", 33)
