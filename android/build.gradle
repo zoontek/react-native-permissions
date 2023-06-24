@@ -60,6 +60,7 @@ if (isNewArchitectureEnabled()) {
 
 android {
     namespace = "com.zoontek.rnpermissions"
+
     // Used to override the NDK path/version on internal CI or by allowing
     // users to customize the NDK path/version from their root project (e.g. for M1 support)
     if (rootProject.hasProperty("ndkPath")) {
@@ -71,6 +72,7 @@ android {
 
     compileSdkVersion safeExtGet("compileSdkVersion", 33)
     buildToolsVersion safeExtGet("buildToolsVersion", "33.0.0")
+
     defaultConfig {
         minSdkVersion safeExtGet("minSdkVersion", 21)
         targetSdkVersion safeExtGet("targetSdkVersion", 33)
@@ -78,7 +80,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
     sourceSets.main {
         java {
             if (!isNewArchitectureEnabled()) {
