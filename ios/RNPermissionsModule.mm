@@ -348,7 +348,7 @@ RCT_EXPORT_MODULE();
 
 - (void)unlockHandler:(NSString * _Nonnull)lockId {
   if (_handlers != nil) {
-    [self.handlers removeObjectForKey:lockId];
+    [_handlers removeObjectForKey:lockId];
   }
 }
 
