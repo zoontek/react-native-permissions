@@ -1,18 +1,12 @@
 require 'fileutils'
 require 'json'
 
-def colorize(value, color)
-  case color
-    when :black then "\e[30m" + value.to_s + "\e[0m"
-    when :red then "\e[31m" + value.to_s + "\e[0m"
-    when :green then "\e[32m" + value.to_s + "\e[0m"
-    when :yellow then "\e[33m" + value.to_s + "\e[0m"
-    when :blue then "\e[34m" + value.to_s + "\e[0m"
-    when :magenta then "\e[35m" + value.to_s + "\e[0m"
-    when :cyan then "\e[36m" + value.to_s + "\e[0m"
-    when :white then "\e[37m" + value.to_s + "\e[0m"
-    else value.to_s
-  end
+def log_warning(message)
+  puts "\e[31m#{message}\e[0m"
+end
+
+def log_error(message)
+  puts "\e[33m#{message}\e[0m"
 end
 
 def find_project_root_up(from_path)
@@ -20,7 +14,7 @@ def find_project_root_up(from_path)
   pkg_path = File.join(parent_path, 'package.json')
 
   if parent_path == '/'
-    puts colorize('Cannot find project root directory.', :red)
+    log_error('Cannot find project root directory.')
     exit(1)
   elsif File.exist?(pkg_path)
     return parent_path
@@ -45,12 +39,12 @@ def prepare_react_native_permissions!
   end
 
   if config.nil?
-    puts colorize("No config detected. In order to set up iOS permissions, you first need to add a \"#{config_key}\" array in your package.json.", :red)
+    log_error("No config detected. In order to set up iOS permissions, you first need to add a \"#{config_key}\" array in your package.json.")
     exit(1)
   end
 
   unless config.is_a?(Array) && !config.empty?
-    puts colorize("Invalid \"#{config_key}\" config detected. It must be a non-empty array.", :red)
+    log_error("Invalid \"#{config_key}\" config detected. It must be a non-empty array.")
     exit(1)
   end
 
@@ -72,7 +66,7 @@ def prepare_react_native_permissions!
     .map { |name| "\"#{name}\"" }
 
   unless unknown_permissions.empty?
-    puts colorize("Unknown iOS permissions: #{unknown_permissions.join(', ')}", :yellow)
+    log_warning("Unknown iOS permissions: #{unknown_permissions.join(', ')}")
   end
 
   podspec_path = File.join(library_root, 'RNPermissions.podspec')
