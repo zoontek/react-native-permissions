@@ -25,6 +25,7 @@
     "!/android/build",
     "/dist",
     "/ios",
+    "/scripts",
     "/windows",
     "/src",
     "/*.podspec",

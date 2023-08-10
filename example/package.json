@@ -9,7 +9,7 @@
     "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
     "clean": "rm -rf ./node_modules ./ios/Pods",
     "preinstall": "cd .. && yarn prepack && cd example",
-    "postinstall": "yarn clean-modules && react-native setup-ios-permissions && pod-install",
+    "postinstall": "yarn clean-modules && pod-install",
     "start": "react-native start",
     "reinstall": "yarn clean && yarn install"
   },
