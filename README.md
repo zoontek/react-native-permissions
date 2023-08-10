@@ -26,9 +26,21 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install` (`reactNativePermissionsIOS.json` is also supported).
+First, update your `Podfile` to add a `prepare_react_native_permissions!` call:
 
-_📌  Note that these commands must be re-executed each time you update this config, delete the `node_modules` directory or update this library. An useful trick to cover a lot of these cases is running them on `postinstall` and just run `yarn` or `npm install` manually when needed._
+```diff
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
++ require_relative '../node_modules/react-native-permissions/scripts/permissions_setup'
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
++ prepare_react_native_permissions!
+```
+
+By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app (`reactNativePermissionsIOS.json` is also supported). Then run `pod install`.
+
+_📌  Note that `pod install` must be re-executed each time you update this config._
 
 ```json
 {
@@ -52,13 +64,7 @@ _📌  Note that these commands must be re-executed each time you update this 
     "Siri",
     "SpeechRecognition",
     "StoreKit"
-  ],
-  "devDependencies": {
-    "pod-install": "0.1.38"
-  },
-  "scripts": {
-    "postinstall": "react-native setup-ios-permissions && pod-install"
-  }
+  ]
 }
 ```
 
