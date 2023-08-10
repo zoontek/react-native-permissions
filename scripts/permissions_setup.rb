@@ -1,44 +1,44 @@
-require 'fileutils'
 require 'json'
+require 'fileutils'
 
-def log_warning(message)
-  puts "\e[31m#{message}\e[0m"
-end
+def pkg_dir(dir)
+  pkg_path = File.join(dir, 'package.json')
 
-def log_error(message)
-  puts "\e[33m#{message}\e[0m"
-end
-
-def find_project_root_up(from_path)
-  parent_path = File.expand_path('..', from_path)
-  pkg_path = File.join(parent_path, 'package.json')
-
-  if parent_path == '/'
-    log_error('Cannot find project root directory.')
-    exit(1)
-  elsif File.exist?(pkg_path)
-    return parent_path
+  if File.exist?(pkg_path)
+    dir
   else
-    return find_project_root_up(parent_path)
+    parent_dir = File.expand_path('..', dir)
+
+    if parent_dir != dir
+      pkg_dir(parent_dir)
+    end
   end
 end
 
-def prepare_react_native_permissions!
-  library_root = File.expand_path('..', __dir__)
-  project_root = find_project_root_up(library_root)
+def log_error(message)
+  puts "\e[31m#{message}\e[0m"
+end
 
+def log_warning(message)
+  puts "\e[33m#{message}\e[0m"
+end
+
+def prepare_react_native_permissions!
   config_key = 'reactNativePermissionsIOS'
 
-  pkg_path = File.join(project_root, 'package.json')
-  config = JSON.parse(File.read(pkg_path))[config_key]
-  json_path = File.join(project_root, "#{config_key}.json")
+  module_dir = File.expand_path('..', __dir__)
+  root_dir = pkg_dir(Dir.pwd) || Dir.pwd
+  pkg_path = File.join(root_dir, 'package.json')
+  json_path = File.join(root_dir, "#{config_key}.json")
 
-  if config.nil? && File.exist?(json_path)
+  config = JSON.parse(File.read(pkg_path))[config_key]
+
+  if !config && File.exist?(json_path)
     text = File.read(json_path)
     config = JSON.parse(text)
   end
 
-  if config.nil?
+  if !config
     log_error("No config detected. In order to set up iOS permissions, you first need to add a \"#{config_key}\" array in your package.json.")
     exit(1)
   end
@@ -48,10 +48,10 @@ def prepare_react_native_permissions!
     exit(1)
   end
 
-  ios_dir_path = File.join(library_root, 'ios')
-  ios_dir_files = Dir.entries(ios_dir_path).map { |entry| File.join(ios_dir_path, entry) }
+  ios_dir = File.join(module_dir, 'ios')
+  ios_dirents = Dir.entries(ios_dir).map { |entry| File.join(ios_dir, entry) }
 
-  directories = ios_dir_files
+  directories = ios_dirents
     .select { |entry| File.directory?(entry) || entry.end_with?('.xcodeproj') }
     .map { |entry| File.basename(entry) }
     .select { |name| config.include?(name) }
@@ -69,7 +69,7 @@ def prepare_react_native_permissions!
     log_warning("Unknown iOS permissions: #{unknown_permissions.join(', ')}")
   end
 
-  podspec_path = File.join(library_root, 'RNPermissions.podspec')
+  podspec_path = File.join(module_dir, 'RNPermissions.podspec')
   podspec = File.read(podspec_path)
   podspec_content = podspec.gsub(/"ios\/\*\.{h,m,mm}".*/, source_files.join(', '))
 

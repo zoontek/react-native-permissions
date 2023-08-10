@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "format": "prettier '**/*' -u -w",
-    "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "lint": "eslint './**/*.{js,ts,tsx}'",
     "setup-hooks": "git config --local core.hooksPath .hooks",
     "prepack": "bob build",
     "typecheck": "tsc --project ./ --noEmit"
@@ -69,10 +69,6 @@
     "react-native-windows": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "picocolors": "^1.0.0",
-    "pkg-dir": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",
