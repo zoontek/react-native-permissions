@@ -31,12 +31,12 @@ By default no permission handler is linked. To add one, call `setup_permissions`
 ```ruby
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-require_relative '../node_modules/react-native-permissions/scripts/permissions_setup' # require the script
+require_relative '../node_modules/react-native-permissions/scripts/permissions_setup' # ⬅️ require this script
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# uncomment wanted permissions (be careful to remove the last comma)
+# ⬇️ uncomment wanted permissions (be careful to remove the last comma)
 setup_permissions([
   # 'AppTrackingTransparency',
   # 'BluetoothPeripheral',
