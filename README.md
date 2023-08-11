@@ -26,47 +26,42 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-First, update your `Podfile` to add a `prepare_react_native_permissions!` call:
+By default no permission handler is linked. To add one, call `setup_permissions` in your `Podfile`. Then run `pod install`.
 
-```diff
+```ruby
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-+ require_relative '../node_modules/react-native-permissions/scripts/permissions_setup'
+require_relative '../node_modules/react-native-permissions/scripts/permissions_setup' # require the script
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
-+ prepare_react_native_permissions!
-```
 
-By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app (`reactNativePermissionsIOS.json` is also supported). Then run `pod install`.
+# uncomment wanted permissions (be careful to remove the last comma)
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'BluetoothPeripheral',
+  # 'Calendars',
+  # 'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  # 'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  # 'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'SpeechRecognition',
+  # 'StoreKit'
+])
+
+# …
+```
 
 _📌  Note that `pod install` must be re-executed each time you update this config._
-
-```json
-{
-  "reactNativePermissionsIOS": [
-    "AppTrackingTransparency",
-    "BluetoothPeripheral",
-    "Calendars",
-    "Camera",
-    "Contacts",
-    "FaceID",
-    "LocationAccuracy",
-    "LocationAlways",
-    "LocationWhenInUse",
-    "MediaLibrary",
-    "Microphone",
-    "Motion",
-    "Notifications",
-    "PhotoLibrary",
-    "PhotoLibraryAddOnly",
-    "Reminders",
-    "Siri",
-    "SpeechRecognition",
-    "StoreKit"
-  ]
-}
-```
 
 Then update your `Info.plist` with wanted permissions usage descriptions:
 
