@@ -45,7 +45,7 @@ module.exports = {
 
         if (!config) {
           logError(
-            `No config detected. In order to setup iOS permissions, you first need to add an "${CONFIG_KEY}" array in your package.json.`,
+            `No config detected. In order to setup iOS permissions, add a "${CONFIG_KEY}" array in your package.json.`,
           );
 
           process.exit(1);
@@ -74,7 +74,7 @@ module.exports = {
           .map((name) => `"${name}"`);
 
         if (unknownPermissions.length > 0) {
-          logWarning(`Unknown iOS permissions: ${unknownPermissions.join(', ')}`);
+          logWarning(`Unknown permissions: ${unknownPermissions.join(', ')}`);
         }
 
         const podspecPath = path.join(__dirname, 'RNPermissions.podspec');
