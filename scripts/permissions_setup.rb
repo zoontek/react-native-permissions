@@ -16,7 +16,7 @@ def pkg_dir(dir)
 end
 
 def log_warning(message)
-  puts "\e[33m[Permissions] #{message}\e[0m"
+  puts "[Permissions] #{message}"
 end
 
 def prepare_react_native_permissions!
@@ -35,11 +35,11 @@ def prepare_react_native_permissions!
   end
 
   if !config
-    return log_warning("No config detected. In order to set up iOS permissions, add a \"#{config_key}\" array in your package.json.")
+    return log_warning("No #{config_key} config found")
   end
 
-  unless config.is_a?(Array) && !config.empty?
-    return log_warning("Invalid \"#{config_key}\" config detected. It must be a non-empty array.")
+  unless config.is_a?(Array)
+    return log_warning("Invalid #{config_key} config")
   end
 
   ios_dir = File.join(module_dir, 'ios')
@@ -55,9 +55,7 @@ def prepare_react_native_permissions!
     *directories.map { |name| "\"ios/#{name}/*.{h,m,mm}\"" }
   ]
 
-  unknown_permissions = config
-    .reject { |name| directories.include?(name) }
-    .map { |name| "\"#{name}\"" }
+  unknown_permissions = config.reject { |name| directories.include?(name) }
 
   unless unknown_permissions.empty?
     log_warning("Unknown permissions: #{unknown_permissions.join(', ')}")

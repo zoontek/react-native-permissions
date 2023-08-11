@@ -44,15 +44,12 @@ module.exports = {
         }
 
         if (!config) {
-          logError(
-            `No config detected. In order to setup iOS permissions, add a "${CONFIG_KEY}" array in your package.json.`,
-          );
-
+          logError(`No ${CONFIG_KEY} config found`);
           process.exit(1);
         }
 
-        if (!Array.isArray(config) || config.length === 0) {
-          logError(`Invalid "${CONFIG_KEY}" config detected. It must be a non-empty array.`);
+        if (!Array.isArray(config)) {
+          logError(`Invalid ${CONFIG_KEY} config`);
           process.exit(1);
         }
 
@@ -69,9 +66,7 @@ module.exports = {
           ...directories.map((name) => `"ios/${name}/*.{h,m,mm}"`),
         ];
 
-        const unknownPermissions = config
-          .filter((name) => !directories.includes(name))
-          .map((name) => `"${name}"`);
+        const unknownPermissions = config.filter((name) => !directories.includes(name));
 
         if (unknownPermissions.length > 0) {
           logWarning(`Unknown permissions: ${unknownPermissions.join(', ')}`);
