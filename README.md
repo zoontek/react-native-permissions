@@ -197,7 +197,7 @@ Open the project solution file from the `windows` folder. In the app project ope
 
 ## 🆘 Manual linking
 
-Because this package targets React Native 0.63.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions. You also need to manual link the module on Windows when using React Native Windows prior to 0.63:
+Because this package targets recent React Native versions, you probably don't need to link it manually. But if you have a special case, follow these additional instructions:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
