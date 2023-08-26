@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Platform, ScrollView, StatusBar, View} from 'react-native';
 import {Appbar, Button, Divider, Snackbar, Text} from 'react-native-paper';
-import RNPermissions, {NotificationOption, Permission, PERMISSIONS} from 'react-native-permissions';
+import RNPermissions, {NotificationOption, PERMISSIONS, Permission} from 'react-native-permissions';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)

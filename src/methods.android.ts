@@ -1,6 +1,6 @@
 import {Alert, AlertButton} from 'react-native';
-import type {Contract} from './contract';
 import NativeModule from './NativePermissionsModule';
+import type {Contract} from './contract';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,

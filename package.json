@@ -74,18 +74,18 @@
     "pkg-dir": "^5.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@typescript-eslint/eslint-plugin": "^5.55.0",
-    "@typescript-eslint/parser": "^5.55.0",
-    "eslint": "^8.36.0",
-    "eslint-plugin-react": "^7.32.2",
+    "@types/react": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "lint-staged": "^13.2.0",
-    "prettier": "^2.8.4",
-    "prettier-plugin-organize-imports": "^3.2.2",
+    "lint-staged": "^14.0.1",
+    "prettier": "^2.8.8",
+    "prettier-plugin-organize-imports": "^3.2.3",
     "react": "^18.2.0",
-    "react-native": "^0.71.4",
-    "react-native-builder-bob": "^0.20.4",
-    "typescript": "^4.9.5"
+    "react-native": "^0.72.4",
+    "react-native-builder-bob": "^0.21.3",
+    "typescript": "^5.2.2"
   }
 }
