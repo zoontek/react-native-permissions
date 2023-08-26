@@ -28,10 +28,25 @@ $ yarn add react-native-permissions
 
 By default no permission handler is linked. To add one, call `setup_permissions` in your `Podfile`. Then run `pod install`.
 
-```ruby
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-require_relative '../node_modules/react-native-permissions/scripts/permissions_setup' # ⬅️ require this script
+```diff
+- # Resolve react_native_pods.rb with node to allow for hoisting
+- require Pod::Executable.execute_command('node', ['-p',
+-   'require.resolve(
+-     "react-native/scripts/react_native_pods.rb",
+-     {paths: [process.argv[1]]},
+-   )', __dir__]).strip
+
++ def node_require(script)
++   # Resolve file with node to allow for hoisting
++   require Pod::Executable.execute_command('node', ['-p',
++     "require.resolve(
++       '#{script}',
++       {paths: [process.argv[1]]},
++     )", __dir__]).strip
++ end
+
++ node_require('react-native/scripts/react_native_pods.rb')
++ node_require('react-native-permissions/scripts/setup.rb') # ⬅️ new script
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
