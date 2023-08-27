@@ -37,7 +37,7 @@ By default no permission handler is linked. To add one, call `setup_permissions`
 -   )', __dir__]).strip
 
 + def node_require(script)
-+   # Resolve file with node to allow for hoisting
++   # Resolve script with node to allow for hoisting
 +   require Pod::Executable.execute_command('node', ['-p',
 +     "require.resolve(
 +       '#{script}',
