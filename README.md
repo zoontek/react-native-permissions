@@ -39,6 +39,7 @@ _📌  Note that these commands must be re-executed each time you update this 
     "Camera",
     "Contacts",
     "FaceID",
+    "LocalNetworkPrivacy",
     "LocationAccuracy",
     "LocationAlways",
     "LocationWhenInUse",
@@ -86,6 +87,8 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSFaceIDUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSLocationAlwaysUsageDescription</key>
@@ -113,6 +116,13 @@ Then update your `Info.plist` with wanted permissions usage descriptions:
   <string>YOUR TEXT</string>
   <key>NSUserTrackingUsageDescription</key>
   <string>YOUR TEXT</string>
+
+  <!-- 🚨 This is required when requesting PERMISSIONS.IOS.LOCAL_NETWORK_PRIVACY 🚨 -->
+
+  <key>NSBonjourServices</key>
+  <array>
+    <string>_lnp._tcp.</string>
+  </array>
 
   <!-- … -->
 
@@ -477,6 +487,7 @@ PERMISSIONS.IOS.CALENDARS;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
+PERMISSIONS.IOS.LOCAL_NETWORK_PRIVACY;
 PERMISSIONS.IOS.LOCATION_ALWAYS;
 PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
 PERMISSIONS.IOS.MEDIA_LIBRARY;
