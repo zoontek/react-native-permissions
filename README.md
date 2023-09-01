@@ -736,7 +736,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 
 Request one permission.
 
-Note that the `rationale` parameter is only available and used on Android.
+Note that the `rationale` parameter is only available and used on Android. You can either use a native alert (by passing an object) or a custom rationale (by resolving with a `boolean`).
 
 ```ts
 type Rationale = {
@@ -747,7 +747,7 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
-function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
+function request(permission: string, rationale?: Rationale | (() => Promise<boolean>): Promise<PermissionStatus>;
 ```
 
 ```js
