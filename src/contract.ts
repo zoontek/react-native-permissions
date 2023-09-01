@@ -14,10 +14,12 @@ export type Contract = {
   checkNotifications(): Promise<NotificationsResponse>;
   openLimitedPhotoLibraryPicker(): Promise<void>;
   openSettings(): Promise<void>;
-  request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
+  request(
+    permission: Permission,
+    rationale?: Rationale | (() => Promise<boolean>),
+  ): Promise<PermissionStatus>;
   requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
   requestNotifications(options: NotificationOption[]): Promise<NotificationsResponse>;
-
   checkMultiple<P extends Permission[]>(
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
