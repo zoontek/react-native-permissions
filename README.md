@@ -749,7 +749,7 @@ type Rationale = {
 
 function request(
   permission: string,
-  rationale?: Rationale | (() => Promise<boolean>,
+  rationale?: Rationale | (() => Promise<boolean>),
 ): Promise<PermissionStatus>;
 ```
 
