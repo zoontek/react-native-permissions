@@ -26,9 +26,10 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-By default no permission handler is linked. To add one, call `setup_permissions` in your `Podfile`. Then run `pod install`.
+1. By default, no permissions are setuped. So first, require the `setup` script in your `Podfile`:
 
 ```diff
+# with react-native >= 0.72
 - # Resolve react_native_pods.rb with node to allow for hoisting
 - require Pod::Executable.execute_command('node', ['-p',
 -   'require.resolve(
@@ -46,12 +47,25 @@ By default no permission handler is linked. To add one, call `setup_permissions`
 + end
 
 + node_require('react-native/scripts/react_native_pods.rb')
-+ node_require('react-native-permissions/scripts/setup.rb') # ⬅️ new script
++ node_require('react-native-permissions/scripts/setup.rb')
+```
+
+```diff
+# with react-native < 0.72
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
++ require_relative '../node_modules/react-native-permissions/scripts/setup'
+```
+
+2. Then in the same file, add a `setup_permissions` call with the wanted permissions:
+
+```ruby
+# …
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# ⬇️ uncomment wanted permissions (be careful to remove the last comma)
+# ⬇️ uncomment wanted permissions (don't forget to remove the last comma)
 setup_permissions([
   # 'AppTrackingTransparency',
   # 'BluetoothPeripheral',
@@ -76,9 +90,9 @@ setup_permissions([
 # …
 ```
 
-_📌  Note that `pod install` must be re-executed each time you update this config._
+3. Then execute `pod install` _(📌  Note that `pod install` must be re-executed each time you update this config)_.
 
-Then update your `Info.plist` with wanted permissions usage descriptions:
+4. Finally, update your `Info.plist` with the wanted permissions usage descriptions:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
