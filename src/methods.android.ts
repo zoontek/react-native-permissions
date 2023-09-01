@@ -19,36 +19,36 @@ function check(permission: Permission): Promise<PermissionStatus> {
   return NativeModule.checkPermission(permission) as Promise<PermissionStatus>;
 }
 
-async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
-  if (rationale) {
-    const shouldShowRationale = await NativeModule.shouldShowRequestPermissionRationale(permission);
+async function showRationaleAlert(rationale: Rationale): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    const {title, message, buttonPositive, buttonNegative, buttonNeutral} = rationale;
+    const buttons: AlertButton[] = [];
 
-    if (shouldShowRationale) {
-      const {title, message, buttonPositive, buttonNegative, buttonNeutral} = rationale;
-
-      return new Promise((resolve) => {
-        const buttons: AlertButton[] = [];
-
-        if (buttonNegative) {
-          const onPress = () =>
-            resolve(NativeModule.checkPermission(permission) as Promise<PermissionStatus>);
-
-          buttonNeutral && buttons.push({text: buttonNeutral, onPress});
-          buttons.push({text: buttonNegative, onPress});
-        }
-
-        buttons.push({
-          text: buttonPositive,
-          onPress: () =>
-            resolve(NativeModule.requestPermission(permission) as Promise<PermissionStatus>),
-        });
-
-        Alert.alert(title, message, buttons, {cancelable: false});
-      });
+    if (buttonNegative) {
+      const onPress = () => resolve(false);
+      buttonNeutral && buttons.push({text: buttonNeutral, onPress});
+      buttons.push({text: buttonNegative, onPress});
     }
+
+    buttons.push({text: buttonPositive, onPress: () => resolve(true)});
+    Alert.alert(title, message, buttons, {cancelable: false});
+  });
+}
+
+async function request(
+  permission: Permission,
+  rationale?: Rationale | (() => Promise<boolean>),
+): Promise<PermissionStatus> {
+  if (rationale == null || !(await NativeModule.shouldShowRequestPermissionRationale(permission))) {
+    return NativeModule.requestPermission(permission) as Promise<PermissionStatus>;
   }
 
-  return NativeModule.requestPermission(permission) as Promise<PermissionStatus>;
+  return (typeof rationale === 'function' ? rationale() : showRationaleAlert(rationale)).then(
+    (shouldRequestPermission) =>
+      (shouldRequestPermission
+        ? NativeModule.requestPermission(permission)
+        : NativeModule.checkPermission(permission)) as Promise<PermissionStatus>,
+  );
 }
 
 async function checkNotifications(): Promise<NotificationsResponse> {
