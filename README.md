@@ -736,7 +736,7 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
 
 Request one permission.
 
-The `rationale` is only available and used on Android. It can be a native alert (an object) or a custom rationale (resolve with a `boolean`).
+The `rationale` is only available and used on Android. It can be a native alert (a `Rationale` object) or a custom implementation (resolve with a `boolean`).
 
 ```ts
 type Rationale = {
