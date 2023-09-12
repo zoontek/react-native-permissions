@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -416,6 +417,10 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       mCallbacks.remove(requestCode);
       return mCallbacks.size() == 0;
     } catch (IllegalStateException e) {
+      FLog.e(
+          "PermissionsModule",
+          e,
+          "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
       return false;
     }
   }
