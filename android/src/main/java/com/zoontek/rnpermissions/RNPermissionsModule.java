@@ -411,9 +411,13 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
 
   @Override
   public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
-    mCallbacks.remove(requestCode);
-    return mCallbacks.size() == 0;
+    try {
+      mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
+      mCallbacks.remove(requestCode);
+      return mCallbacks.size() == 0;
+    } catch (IllegalStateException e) {
+      return false;
+    }
   }
 
   private PermissionAwareActivity getPermissionAwareActivity() {
