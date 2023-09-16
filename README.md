@@ -117,8 +117,6 @@ setup_permissions([
   <string>YOUR TEXT</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>YOUR TEXT</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>YOUR TEXT</string>
   <key>NSLocationTemporaryUsageDescriptionDictionary</key>
   <dict>
     <key>YOUR-PURPOSE-KEY</key>

@@ -51,8 +51,6 @@
 	<string>Let me use FaceID</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Let me use your location, even in background</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Let me use your location, even in background</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>full-accuracy</key>

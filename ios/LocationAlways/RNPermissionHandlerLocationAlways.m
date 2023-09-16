@@ -14,10 +14,7 @@
 @implementation RNPermissionHandlerLocationAlways
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[
-    @"NSLocationAlwaysAndWhenInUseUsageDescription",
-    @"NSLocationAlwaysUsageDescription",
-  ];
+  return @[@"NSLocationAlwaysAndWhenInUseUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
