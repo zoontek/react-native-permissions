@@ -108,6 +108,8 @@ setup_permissions([
   <string>YOUR TEXT</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
   <string>YOUR TEXT</string>
+  <key>NSCalendarsFullAccessUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSCalendarsUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
@@ -134,6 +136,8 @@ setup_permissions([
   <key>NSPhotoLibraryAddUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSRemindersUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSRemindersFullAccessUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
   <string>YOUR TEXT</string>
