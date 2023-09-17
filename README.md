@@ -110,8 +110,6 @@ setup_permissions([
   <string>YOUR TEXT</string>
   <key>NSCalendarsFullAccessUsageDescription</key>
   <string>YOUR TEXT</string>
-  <key>NSCalendarsUsageDescription</key>
-  <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSContactsUsageDescription</key>
@@ -134,8 +132,6 @@ setup_permissions([
   <key>NSPhotoLibraryUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>YOUR TEXT</string>
-  <key>NSRemindersUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSRemindersFullAccessUsageDescription</key>
   <string>YOUR TEXT</string>
