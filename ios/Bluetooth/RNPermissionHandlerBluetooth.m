@@ -1,8 +1,8 @@
-#import "RNPermissionHandlerBluetoothPeripheral.h"
+#import "RNPermissionHandlerBluetooth.h"
 
 @import CoreBluetooth;
 
-@interface RNPermissionHandlerBluetoothPeripheral() <CBPeripheralManagerDelegate>
+@interface RNPermissionHandlerBluetooth() <CBPeripheralManagerDelegate>
 
 @property (nonatomic, strong) CBPeripheralManager* manager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
@@ -10,7 +10,7 @@
 
 @end
 
-@implementation RNPermissionHandlerBluetoothPeripheral
+@implementation RNPermissionHandlerBluetooth
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
   return @[
@@ -20,7 +20,7 @@
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.BLUETOOTH_PERIPHERAL";
+  return @"ios.permission.BLUETOOTH";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve

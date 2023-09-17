@@ -1,8 +1,8 @@
 #import "RNPermissionsModule.h"
 #import <React/RCTLog.h>
 
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-#import "RNPermissionHandlerBluetoothPeripheral.h"
+#if __has_include("RNPermissionHandlerBluetooth.h")
+#import "RNPermissionHandlerBluetooth.h"
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
 #import "RNPermissionHandlerCalendars.h"
@@ -62,8 +62,8 @@
 @implementation RCTConvert(RNPermission)
 
 RCT_ENUM_CONVERTER(RNPermission, (@{
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-  [RNPermissionHandlerBluetoothPeripheral handlerUniqueId]: @(RNPermissionBluetoothPeripheral),
+#if __has_include("RNPermissionHandlerBluetooth.h")
+  [RNPermissionHandlerBluetooth handlerUniqueId]: @(RNPermissionBluetooth),
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
   [RNPermissionHandlerCalendars handlerUniqueId]: @(RNPermissionCalendars),
@@ -138,8 +138,8 @@ RCT_EXPORT_MODULE();
 - (NSDictionary *)constantsToExport {
   NSMutableArray<NSString *> *available = [NSMutableArray new];
 
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-  [available addObject:[RNPermissionHandlerBluetoothPeripheral handlerUniqueId]];
+#if __has_include("RNPermissionHandlerBluetooth.h")
+  [available addObject:[RNPermissionHandlerBluetooth handlerUniqueId]];
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
   [available addObject:[RNPermissionHandlerCalendars handlerUniqueId]];
@@ -226,9 +226,9 @@ RCT_EXPORT_MODULE();
   id<RNPermissionHandler> handler = nil;
 
   switch (permission) {
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-    case RNPermissionBluetoothPeripheral:
-      handler = [RNPermissionHandlerBluetoothPeripheral new];
+#if __has_include("RNPermissionHandlerBluetooth.h")
+    case RNPermissionBluetooth:
+      handler = [RNPermissionHandlerBluetooth new];
       break;
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")

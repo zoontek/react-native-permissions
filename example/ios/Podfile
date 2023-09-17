@@ -15,7 +15,7 @@ prepare_react_native_project!
 
 setup_permissions([
   'AppTrackingTransparency',
-  'BluetoothPeripheral',
+  'Bluetooth',
   'Calendars',
   'Camera',
   'Contacts',

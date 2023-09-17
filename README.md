@@ -68,7 +68,7 @@ prepare_react_native_project!
 # ⬇️ uncomment wanted permissions
 setup_permissions([
   # 'AppTrackingTransparency',
-  # 'BluetoothPeripheral',
+  # 'Bluetooth',
   # 'Calendars',
   # 'Camera',
   # 'Contacts',
@@ -504,7 +504,7 @@ PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
 import {PERMISSIONS} from 'react-native-permissions';
 
 PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY;
-PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL;
+PERMISSIONS.IOS.BLUETOOTH;
 PERMISSIONS.IOS.CALENDARS;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;

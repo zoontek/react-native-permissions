@@ -2,7 +2,7 @@ require 'json'
 package = JSON.parse(File.read('../../package.json'))
 
 Pod::Spec.new do |s|
-  s.name                      = "Permission-BluetoothPeripheral"
+  s.name                      = "Permission-Bluetooth"
   s.dependency                  "RNPermissions"
 
   s.version                   = package["version"]

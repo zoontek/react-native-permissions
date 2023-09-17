@@ -2,8 +2,8 @@
 
 typedef NS_ENUM(NSInteger, RNPermission) {
   RNPermissionUnknown = 0,
-#if __has_include("RNPermissionHandlerBluetoothPeripheral.h")
-  RNPermissionBluetoothPeripheral = 1,
+#if __has_include("RNPermissionHandlerBluetooth.h")
+  RNPermissionBluetooth = 1,
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
   RNPermissionCalendars = 2,
