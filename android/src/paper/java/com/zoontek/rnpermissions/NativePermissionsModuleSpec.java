@@ -21,10 +21,12 @@ import com.facebook.react.bridge.ReactModuleWithSpec;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.build.ReactBuildConfig;
 import com.facebook.react.turbomodule.core.interfaces.TurboModule;
-import java.util.Arrays;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Nullable;
 
 public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaModule implements ReactModuleWithSpec, TurboModule {
@@ -90,23 +92,27 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
   @DoNotStrip
   public final @Nullable Map<String, Object> getConstants() {
     Map<String, Object> constants = getTypedExportedConstants();
+
     if (ReactBuildConfig.DEBUG || ReactBuildConfig.IS_INTERNAL_BUILD) {
       Set<String> obligatoryFlowConstants = new HashSet<>();
-      Set<String> optionalFlowConstants = new HashSet<>(Arrays.asList(
-          "available"
-      ));
+      Set<String> optionalFlowConstants = new HashSet<>(List.of("available"));
       Set<String> undeclaredConstants = new HashSet<>(constants.keySet());
+
       undeclaredConstants.removeAll(obligatoryFlowConstants);
       undeclaredConstants.removeAll(optionalFlowConstants);
+
       if (!undeclaredConstants.isEmpty()) {
         throw new IllegalStateException(String.format("Native Module Flow doesn't declare constants: %s", undeclaredConstants));
       }
+
       undeclaredConstants = obligatoryFlowConstants;
       undeclaredConstants.removeAll(constants.keySet());
+
       if (!undeclaredConstants.isEmpty()) {
         throw new IllegalStateException(String.format("Native Module doesn't fill in constants: %s", undeclaredConstants));
       }
     }
+
     return constants;
   }
 }

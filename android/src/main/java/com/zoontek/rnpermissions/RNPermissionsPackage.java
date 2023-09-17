@@ -1,5 +1,7 @@
 package com.zoontek.rnpermissions;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.TurboReactPackage;
 import com.facebook.react.ViewManagerOnDemandReactPackage;
 import com.facebook.react.bridge.ModuleSpec;
@@ -39,20 +41,15 @@ public class RNPermissionsPackage extends TurboReactPackage implements ViewManag
 
   /** {@inheritDoc} */
   @Override
-  public @Nullable
-  ViewManager createViewManager(
-    ReactApplicationContext reactContext, String viewManagerName) {
+  public @Nullable ViewManager createViewManager(ReactApplicationContext reactContext, String viewManagerName) {
     return null;
   }
 
   @Override
   public NativeModule getModule(String name, @Nonnull ReactApplicationContext reactContext) {
-    switch (name) {
-      case RNPermissionsModule.NAME:
-        return new RNPermissionsModule(reactContext);
-      default:
-        return null;
-    }
+    return name.equals(RNPermissionsModule.NAME)
+      ? new RNPermissionsModule(reactContext)
+      : null;
   }
 
   @Override
@@ -97,11 +94,13 @@ public class RNPermissionsPackage extends TurboReactPackage implements ViewManag
     }
   }
 
+  @NonNull
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
     return Collections.<NativeModule>singletonList(new RNPermissionsModule(reactContext));
   }
 
+  @NonNull
   @Override
   public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
     return Collections.emptyList();

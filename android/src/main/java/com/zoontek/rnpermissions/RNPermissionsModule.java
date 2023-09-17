@@ -199,8 +199,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
         == PackageManager.PERMISSION_GRANTED
-          ? GRANTED
-          : BLOCKED);
+        ? GRANTED
+        : BLOCKED);
       return;
     }
 
@@ -420,9 +420,9 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       return mCallbacks.size() == 0;
     } catch (IllegalStateException e) {
       FLog.e(
-          "PermissionsModule",
-          e,
-          "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
       return false;
     } catch (NullPointerException e) {
       FLog.e(
