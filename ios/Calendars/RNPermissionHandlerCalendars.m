@@ -5,10 +5,7 @@
 @implementation RNPermissionHandlerCalendars
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[
-    @"NSCalendarsFullAccessUsageDescription",
-    @"NSCalendarsUsageDescription",
-  ];
+  return @[@"NSCalendarsFullAccessUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {

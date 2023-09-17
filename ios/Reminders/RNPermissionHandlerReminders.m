@@ -5,10 +5,7 @@
 @implementation RNPermissionHandlerReminders
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[
-    @"NSRemindersFullAccessUsageDescription",
-    @"NSRemindersUsageDescription",
-  ];
+  return @[@"NSRemindersFullAccessUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
