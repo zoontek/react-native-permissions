@@ -53,7 +53,7 @@
 
 - (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                                          rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14, *)) {
+  if (@available(iOS 14.0, *)) {
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
     }

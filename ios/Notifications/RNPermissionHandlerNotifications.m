@@ -22,41 +22,29 @@
     NSMutableDictionary *result = [NSMutableDictionary new];
 
     if (settings.alertSetting != UNNotificationSettingNotSupported) {
-      bool value = settings.alertSetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"alert"];
+      [result setValue:@(settings.alertSetting == UNNotificationSettingEnabled) forKey:@"alert"];
     }
     if (settings.badgeSetting != UNNotificationSettingNotSupported) {
-      bool value = settings.badgeSetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"badge"];
+      [result setValue:@(settings.badgeSetting == UNNotificationSettingEnabled) forKey:@"badge"];
     }
     if (settings.soundSetting != UNNotificationSettingNotSupported) {
-      bool value = settings.soundSetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"sound"];
+      [result setValue:@(settings.soundSetting == UNNotificationSettingEnabled) forKey:@"sound"];
     }
     if (settings.lockScreenSetting != UNNotificationSettingNotSupported) {
-      bool value = settings.lockScreenSetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"lockScreen"];
+      [result setValue:@(settings.lockScreenSetting == UNNotificationSettingEnabled) forKey:@"lockScreen"];
     }
     if (settings.carPlaySetting != UNNotificationSettingNotSupported) {
-      bool value = settings.carPlaySetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"carPlay"];
+      [result setValue:@(settings.carPlaySetting == UNNotificationSettingEnabled) forKey:@"carPlay"];
     }
     if (settings.notificationCenterSetting != UNNotificationSettingNotSupported) {
-      bool value = settings.notificationCenterSetting == UNNotificationSettingEnabled;
-      [result setValue:@(value) forKey:@"notificationCenter"];
+      [result setValue:@(settings.notificationCenterSetting == UNNotificationSettingEnabled) forKey:@"notificationCenter"];
     }
 
-    if (@available(iOS 12.0, *)) {
-      bool providesAppSettingsValue = settings.providesAppNotificationSettings == true;
-      bool provisionalValue = settings.authorizationStatus == UNAuthorizationStatusProvisional;
+    [result setValue:@(settings.providesAppNotificationSettings == true) forKey:@"providesAppSettings"];
+    [result setValue:@(settings.authorizationStatus == UNAuthorizationStatusProvisional) forKey:@"provisional"];
 
-      [result setValue:@(providesAppSettingsValue) forKey:@"providesAppSettings"];
-      [result setValue:@(provisionalValue) forKey:@"provisional"];
-
-      if (settings.criticalAlertSetting != UNNotificationSettingNotSupported) {
-        bool value = settings.criticalAlertSetting == UNNotificationSettingEnabled;
-        [result setValue:@(value) forKey:@"criticalAlert"];
-      }
+    if (settings.criticalAlertSetting != UNNotificationSettingNotSupported) {
+      [result setValue:@(settings.criticalAlertSetting == UNNotificationSettingEnabled) forKey:@"criticalAlert"];
     }
 
     switch (settings.authorizationStatus) {
@@ -98,17 +86,14 @@
   if (carPlay) {
     types += UNAuthorizationOptionCarPlay;
   }
-
-  if (@available(iOS 12.0, *)) {
-    if (criticalAlert) {
-      types += UNAuthorizationOptionCriticalAlert;
-    }
-    if (provisional) {
-      types += UNAuthorizationOptionProvisional;
-    }
-    if (providesAppSettings) {
-      types += UNAuthorizationOptionProvidesAppNotificationSettings;
-    }
+  if (criticalAlert) {
+    types += UNAuthorizationOptionCriticalAlert;
+  }
+  if (provisional) {
+    types += UNAuthorizationOptionProvisional;
+  }
+  if (providesAppSettings) {
+    types += UNAuthorizationOptionProvidesAppNotificationSettings;
   }
 
   if (!alert &&

@@ -11,16 +11,15 @@ Pod::Spec.new do |s|
   s.author       = package["author"]
   s.homepage     = package["homepage"]
 
+  s.platforms  = { :ios => "12.4", :tvos => "12.4" }
   s.requires_arc = true
 
   s.source       = { :git => package["repository"]["url"], :tag => s.version }
   s.source_files = "ios/*.{h,m,mm}"
 
-  if ENV['RCT_NEW_ARCH_ENABLED'] == "1" then
+  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
     install_modules_dependencies(s)
-    s.platforms  = { :ios => "12.4", :tvos => "12.4" }
   else
     s.dependency   "React-Core"
-    s.platforms  = { :ios => "10.0", :tvos => "11.0" }
   end
 end
