@@ -1,4 +1,4 @@
-#import "RNPermissionsHelper.h"
+#import "RNPermissionsModule.h"
 
 @interface RNPermissionHandlerSpeechRecognition : NSObject<RNPermissionHandler>
 

@@ -57,8 +57,6 @@
       return reject(error);
     }
 
-    [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
-
     if (error != nil) {
       return resolve(RNPermissionStatusDenied);
     }

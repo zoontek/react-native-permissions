@@ -3,6 +3,8 @@
 @import LocalAuthentication;
 @import UIKit;
 
+static NSString* SETTING_KEY = @"@RNPermissions:Requested";
+
 @interface RNPermissionHandlerFaceID()
 
 @property (nonatomic, strong) LAContext *laContext;
@@ -40,7 +42,10 @@
       return resolve(RNPermissionStatusNotAvailable);
   }
 
-  if (![RNPermissionsHelper isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+  NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
+  NSString *handlerId = [[self class] handlerUniqueId];
+
+  if (requested != nil && [requested containsObject:handlerId]) {
     return resolve(RNPermissionStatusNotDetermined);
   }
 
@@ -92,7 +97,20 @@
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
 
-  [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSString *handlerId = [[self class] handlerUniqueId];
+  NSMutableArray *requested = [[userDefaults arrayForKey:SETTING_KEY] mutableCopy];
+
+  if (requested == nil) {
+    requested = [NSMutableArray new];
+  }
+
+  if (![requested containsObject:handlerId]) {
+    [requested addObject:handlerId];
+    [userDefaults setObject:requested forKey:SETTING_KEY];
+    [userDefaults synchronize];
+  }
+
   [self checkWithResolver:_resolve rejecter:_reject];
 }
 
