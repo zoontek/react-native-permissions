@@ -45,7 +45,7 @@ static NSString* SETTING_KEY = @"@RNPermissions:Requested";
   NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
   NSString *handlerId = [[self class] handlerUniqueId];
 
-  if (requested != nil && [requested containsObject:handlerId]) {
+  if (requested == nil || ![requested containsObject:handlerId]) {
     return resolve(RNPermissionStatusNotDetermined);
   }
 
