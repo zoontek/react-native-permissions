@@ -14,8 +14,8 @@
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
   return @[
-    @"NSBluetoothPeripheralUsageDescription",
     @"NSBluetoothAlwaysUsageDescription",
+    @"NSBluetoothPeripheralUsageDescription",
   ];
 }
 

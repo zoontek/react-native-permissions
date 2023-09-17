@@ -215,7 +215,7 @@ RCT_EXPORT_MODULE();
 #if RCT_DEV
   for (NSString *key in keys) {
     if (![[NSBundle mainBundle] objectForInfoDictionaryKey:key]) {
-      RCTLogError(@"Cannot check or request permission without the required \"%@\" entry in your app \"Info.plist\" file", key);
+      RCTLogWarn(@"Missing \"%@\" property in \"Info.plist\"", key);
       return;
     }
   }
