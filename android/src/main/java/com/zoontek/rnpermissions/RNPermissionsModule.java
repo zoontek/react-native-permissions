@@ -107,6 +107,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       return "READ_MEDIA_IMAGES";
     if (permission.equals("android.permission.READ_MEDIA_VIDEO"))
       return "READ_MEDIA_VIDEO";
+    if (permission.equals("android.permission.READ_MEDIA_VISUAL_USER_SELECTED"))
+      return "READ_MEDIA_VISUAL_USER_SELECTED";
     if (permission.equals("android.permission.READ_PHONE_NUMBERS"))
       return "READ_PHONE_NUMBERS";
     if (permission.equals("android.permission.READ_PHONE_STATE"))

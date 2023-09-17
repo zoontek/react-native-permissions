@@ -187,6 +187,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+  <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
   <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.READ_SMS" />
@@ -479,6 +480,7 @@ PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
 PERMISSIONS.ANDROID.READ_MEDIA_AUDIO;
 PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
 PERMISSIONS.ANDROID.READ_MEDIA_VIDEO;
+PERMISSIONS.ANDROID.READ_MEDIA_VISUAL_USER_SELECTED;
 PERMISSIONS.ANDROID.READ_PHONE_NUMBERS;
 PERMISSIONS.ANDROID.READ_PHONE_STATE;
 PERMISSIONS.ANDROID.READ_SMS;
