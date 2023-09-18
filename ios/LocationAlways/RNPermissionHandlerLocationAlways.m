@@ -3,9 +3,8 @@
 @import CoreLocation;
 @import UIKit;
 
-@interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
+@interface RNPermissionHandlerLocationAlways()
 
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
 @property (nonatomic, strong) void (^reject)(NSError *error);
 
@@ -26,13 +25,19 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-
+  
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
     case kCLAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case kCLAuthorizationStatusAuthorizedWhenInUse:
+    case kCLAuthorizationStatusAuthorizedWhenInUse: {
+      BOOL requestedBefore = [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]];
+      if (requestedBefore) {
+        return resolve(RNPermissionStatusDenied);
+      }
+      return resolve(RNPermissionStatusNotDetermined);
+    }
     case kCLAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
     case kCLAuthorizationStatusAuthorizedAlways:
@@ -45,23 +50,49 @@
   if (![CLLocationManager locationServicesEnabled]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+  
+  CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+  BOOL requestedBefore = [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]];
+  
+  if (authorizationStatus != kCLAuthorizationStatusNotDetermined && !(authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse && !requestedBefore)) {
     return [self checkWithResolver:resolve rejecter:reject];
   }
-
+  
   _resolve = resolve;
   _reject = reject;
-
-  _locationManager = [CLLocationManager new];
-  [_locationManager setDelegate:self];
-  [_locationManager requestAlwaysAuthorization];
+  
+  // When we request location always permission, if the user selects "Keep Only While Using", iOS
+  // won't trigger the locationManager:didChangeAuthorizationStatus: delegate method. This means we
+  // can't know when the user has responded to the permission prompt directly.
+  //
+  // We can get around this by listening for the UIApplicationDidBecomeActiveNotification event which posts
+  // when the application regains focus from the permission prompt. When this happens we'll
+  // trigger the applicationDidBecomeActive method on this class, and we'll check the authorization status and
+  // resolve the promise there -- letting us stay consistent with our promise-based API.
+  //
+  // References:
+  // ===========
+  // CLLocationManager requestAlwaysAuthorization:
+  // https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization?language=objc
+  //
+  // NSNotificationCenter addObserver:
+  // https://developer.apple.com/documentation/foundation/nsnotificationcenter/1415360-addobserver
+  //
+  // UIApplicationDidBecomeActiveNotification:
+  // https://developer.apple.com/documentation/uikit/uiapplicationdidbecomeactivenotification
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(applicationDidBecomeActive)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+  
+  [[CLLocationManager new] requestAlwaysAuthorization];
+  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined) {
-    [_locationManager setDelegate:nil];
-    [self checkWithResolver:_resolve rejecter:_reject];
-  }
-}
+- (void)applicationDidBecomeActive {
+  [self checkWithResolver:_resolve rejecter:_reject];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:UIApplicationDidBecomeActiveNotification
+                                                object:nil];}
 
 @end
