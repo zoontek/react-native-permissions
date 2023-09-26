@@ -70,6 +70,7 @@ setup_permissions([
   # 'AppTrackingTransparency',
   # 'Bluetooth',
   # 'Calendars',
+  # 'CalendarsWriteOnly',
   # 'Camera',
   # 'Contacts',
   # 'FaceID',
@@ -109,6 +110,8 @@ setup_permissions([
   <key>NSBluetoothPeripheralUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSCalendarsFullAccessUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
   <string>YOUR TEXT</string>
@@ -504,6 +507,7 @@ import {PERMISSIONS} from 'react-native-permissions';
 PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY;
 PERMISSIONS.IOS.BLUETOOTH;
 PERMISSIONS.IOS.CALENDARS;
+PERMISSIONS.IOS.CALENDARS_WRITE_ONLY;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;

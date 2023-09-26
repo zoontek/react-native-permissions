@@ -720,12 +720,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: cc32add98c45c5df18436a6a52a7e1f6edec102c
   React-utils: 7a9918a1ffdd39aba67835d42386f592ea3f8e76
   ReactCommon: 91ece8350ebb3dd2be9cef662abd78b6948233c0
-  RNPermissions: 600393d8a47f9206dcbace50b3ce28d68026bad9
+  RNPermissions: 5d3e98355ce3cd17665bb51b284a2875ee2b7cc7
   RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 99a743e1bb8c10fa3364cbdfce10c7895cb12c45
+PODFILE CHECKSUM: c8d4ab3601ed0ea5e647a1e6210007e53430199c
 
 COCOAPODS: 1.13.0

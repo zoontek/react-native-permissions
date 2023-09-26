@@ -58,6 +58,9 @@
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
 #import "RNPermissionHandlerLocationAccuracy.h"
 #endif
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+#import "RNPermissionHandlerCalendarsWriteOnly.h"
+#endif
 
 @implementation RCTConvert(RNPermission)
 
@@ -112,6 +115,9 @@ RCT_ENUM_CONVERTER(RNPermission, (@{
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
   [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionPhotoLibraryAddOnly),
+#endif
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+  [RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]: @(RNPermissionCalendarsWriteOnly),
 #endif
 }), RNPermissionUnknown, integerValue);
 
@@ -194,6 +200,9 @@ RCT_EXPORT_MODULE();
 #endif
 #if __has_include("RNPermissionHandlerLocationAccuracy.h")
   [available addObject:[RNPermissionHandlerLocationAccuracy handlerUniqueId]];
+#endif
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+  [available addObject:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]];
 #endif
 
 #if RCT_DEV
@@ -309,6 +318,11 @@ RCT_EXPORT_MODULE();
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
     case RNPermissionPhotoLibraryAddOnly:
       handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
+      break;
+#endif
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+    case RNPermissionCalendarsWriteOnly:
+      handler = [RNPermissionHandlerCalendarsWriteOnly new];
       break;
 #endif
     case RNPermissionUnknown:

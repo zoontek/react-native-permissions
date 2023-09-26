@@ -59,6 +59,9 @@ typedef NS_ENUM(NSInteger, RNPermission) {
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
   RNPermissionPhotoLibraryAddOnly = 17,
 #endif
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+  RNPermissionCalendarsWriteOnly = 18,
+#endif
 };
 
 typedef enum {

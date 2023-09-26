@@ -17,6 +17,7 @@ setup_permissions([
   'AppTrackingTransparency',
   'Bluetooth',
   'Calendars',
+  'CalendarsWriteOnly',
   'Camera',
   'Contacts',
   'FaceID',

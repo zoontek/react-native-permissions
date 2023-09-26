@@ -43,6 +43,8 @@
 	<string>Let me use bluetooth</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Let me use your calendars</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Let me use your calendars</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Let me use the camera</string>
 	<key>NSContactsUsageDescription</key>
