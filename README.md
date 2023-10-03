@@ -65,7 +65,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# ⬇️ uncomment wanted permissions (don't forget to remove the last comma)
+# ⬇️ uncomment wanted permissions
 setup_permissions([
   # 'AppTrackingTransparency',
   # 'BluetoothPeripheral',
@@ -84,7 +84,7 @@ setup_permissions([
   # 'PhotoLibraryAddOnly',
   # 'Reminders',
   # 'SpeechRecognition',
-  # 'StoreKit'
+  # 'StoreKit',
 ])
 
 # …

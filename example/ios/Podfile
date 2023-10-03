@@ -31,7 +31,7 @@ setup_permissions([
   'PhotoLibraryAddOnly',
   'Reminders',
   'SpeechRecognition',
-  'StoreKit'
+  'StoreKit',
 ])
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
