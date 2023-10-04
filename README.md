@@ -83,6 +83,7 @@ setup_permissions([
   # 'PhotoLibrary',
   # 'PhotoLibraryAddOnly',
   # 'Reminders',
+  # 'Siri',
   # 'SpeechRecognition',
   # 'StoreKit',
 ])
