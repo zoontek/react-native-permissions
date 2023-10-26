@@ -139,17 +139,17 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     return null;
   }
 
-  private boolean permissionExists(final String permission) {
+  private boolean isPermissionUnavailable(final String permission) {
     String fieldName = getFieldName(permission);
 
     if (fieldName == null)
-      return false;
+      return true;
 
     try {
       Manifest.permission.class.getField(fieldName);
-      return true;
-    } catch (NoSuchFieldException ignored) {
       return false;
+    } catch (NoSuchFieldException ignored) {
+      return true;
     }
   }
 
@@ -187,7 +187,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
 
   @ReactMethod
   public void checkPermission(final String permission, final Promise promise) {
-    if (permission == null || !permissionExists(permission)) {
+    if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
     }
@@ -226,7 +226,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
 
   @ReactMethod
   public void requestPermission(final String permission, final Promise promise) {
-    if (permission == null || !permissionExists(permission)) {
+    if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
     }
@@ -285,7 +285,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
 
-      if (!permissionExists(permission)) {
+      if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
       } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         output.putString(
@@ -314,7 +314,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
 
-      if (!permissionExists(permission)) {
+      if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
         checkedPermissionsCount++;
       } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -421,6 +421,12 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
           "PermissionsModule",
           e,
           "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
+      return false;
+    } catch (NullPointerException e) {
+      FLog.e(
+          "PermissionsModule",
+          e,
+          "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
       return false;
     }
   }
