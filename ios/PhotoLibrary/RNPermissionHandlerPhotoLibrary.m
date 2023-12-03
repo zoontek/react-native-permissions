@@ -58,10 +58,29 @@
       return reject(@"cannot_open_limited_picker", @"Photo library permission isn't limited", nil);
     }
 
-    UIViewController *presentedViewController = RCTPresentedViewController();
-    [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:presentedViewController];
+    UIViewController *viewController = RCTPresentedViewController();
+    PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
 
-    resolve(@(true));
+    if (@available(iOS 15, *)) {
+      [photoLibrary presentLimitedLibraryPickerFromViewController:viewController
+                                                completionHandler:^(__unused NSArray<NSString *> * _Nonnull assets) {
+        resolve(@(true));
+      }];
+    } else {
+      __block bool pickerVisible = false;
+      [photoLibrary presentLimitedLibraryPickerFromViewController:viewController];
+
+      [NSTimer scheduledTimerWithTimeInterval:0.1
+                                      repeats:true
+                                        block:^(NSTimer * _Nonnull timer) {
+        if ([RCTPresentedViewController() class] == [PHPickerViewController class]) {
+          pickerVisible = true;
+        } else if (pickerVisible) {
+          [timer invalidate];
+          resolve(@(true));
+        }
+      }];
+    }
   } else {
     reject(@"cannot_open_limited_picker", @"Only available on iOS 14 or higher", nil);
   }
