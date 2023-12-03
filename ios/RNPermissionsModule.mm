@@ -467,11 +467,11 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
 #endif
 }
 
-RCT_EXPORT_METHOD(openLimitedPhotoLibraryPicker:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(openPhotoPicker:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
   RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
-  [handler openLimitedPhotoLibraryPickerWithResolver:resolve rejecter:reject];
+  [handler openPhotoPickerWithResolver:resolve rejecter:reject];
 #else
   reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
 #endif

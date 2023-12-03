@@ -3,7 +3,7 @@ import {RESULTS} from './results';
 import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 
@@ -32,7 +32,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings: Promise.reject,
   request: check,
   requestLocationAccuracy,

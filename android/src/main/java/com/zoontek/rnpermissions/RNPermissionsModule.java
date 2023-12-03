@@ -320,8 +320,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @Override
-  public void openLimitedPhotoLibraryPicker(Promise promise) {
-    promise.reject("Permissions:openLimitedPhotoLibraryPicker", "openLimitedPhotoLibraryPicker is not supported on Android");
+  public void openPhotoPicker(Promise promise) {
+    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
   }
 
   @Override

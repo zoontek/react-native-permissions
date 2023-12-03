@@ -12,7 +12,7 @@ const {RESULTS} = require('./dist/commonjs/results');
 const PERMISSIONS = {ANDROID, IOS, WINDOWS};
 export {PERMISSIONS, RESULTS};
 
-export const openLimitedPhotoLibraryPicker = jest.fn(async () => {});
+export const openPhotoPicker = jest.fn(async () => {});
 export const openSettings = jest.fn(async () => {});
 export const check = jest.fn(async (permission) => RESULTS.GRANTED);
 export const request = jest.fn(async (permission) => RESULTS.GRANTED);
@@ -72,7 +72,7 @@ export default {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings,
   request,
   requestLocationAccuracy,

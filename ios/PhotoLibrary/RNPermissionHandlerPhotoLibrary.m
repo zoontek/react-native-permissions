@@ -51,7 +51,7 @@
   }
 }
 
-- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+- (void)openPhotoPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                                          rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
   if (@available(iOS 14.0, *)) {
     if ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite] != PHAuthorizationStatusLimited) {

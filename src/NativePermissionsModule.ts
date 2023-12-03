@@ -20,7 +20,7 @@ export interface Spec extends TurboModule {
   check(permission: string): Promise<string>; // TODO: should be number prolly
   checkLocationAccuracy(): Promise<string>;
   getConstants(): {available?: string[]};
-  openLimitedPhotoLibraryPicker(): Promise<boolean>;
+  openPhotoPicker(): Promise<boolean>;
   request(permission: string): Promise<string>; // TODO: should be number prolly
   requestLocationAccuracy(purposeKey: string): Promise<string>;
   requestNotifications(options: string[]): Promise<NotificationsResponse>;

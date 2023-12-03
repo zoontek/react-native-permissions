@@ -21,8 +21,8 @@ function getAvailable(): string[] | undefined {
   return available;
 }
 
-async function openLimitedPhotoLibraryPicker(): Promise<void> {
-  await NativeModule.openLimitedPhotoLibraryPicker();
+async function openPhotoPicker(): Promise<void> {
+  await NativeModule.openPhotoPicker();
 }
 
 async function openSettings(): Promise<void> {
@@ -97,7 +97,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings,
   request,
   requestLocationAccuracy,

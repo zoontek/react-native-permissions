@@ -4,7 +4,7 @@ import type {Contract} from './contract';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 import {platformVersion, uniq} from './utils';
@@ -92,7 +92,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings,
   request,
   requestLocationAccuracy,

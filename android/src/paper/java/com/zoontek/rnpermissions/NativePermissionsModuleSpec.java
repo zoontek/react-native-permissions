@@ -84,7 +84,7 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
 
   @ReactMethod
   @DoNotStrip
-  public abstract void openLimitedPhotoLibraryPicker(Promise promise);
+  public abstract void openPhotoPicker(Promise promise);
 
   protected abstract Map<String, Object> getTypedExportedConstants();
 

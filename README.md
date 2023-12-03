@@ -911,18 +911,18 @@ openSettings().catch(() => console.warn('cannot open settings'));
 
 ---
 
-#### openLimitedPhotoLibraryPicker (iOS 14+)
+#### openPhotoPicker (iOS 14+)
 
 Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
 
 ```ts
-function openLimitedPhotoLibraryPicker(): Promise<void>;
+function openPhotoPicker(): Promise<void>;
 ```
 
 ```js
-import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
+import {openPhotoPicker} from 'react-native-permissions';
 
-openLimitedPhotoLibraryPicker().catch(() => {
+openPhotoPicker().catch(() => {
   console.warn('Cannot open photo library picker');
 });
 ```

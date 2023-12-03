@@ -2,7 +2,7 @@
 
 @interface RNPermissionHandlerPhotoLibrary : NSObject<RNPermissionHandler>
 
-- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+- (void)openPhotoPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                                          rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
 
 @end
