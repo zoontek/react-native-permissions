@@ -25,24 +25,16 @@
     return resolve(RNPermissionStatusNotAvailable);
   }
 
-  if (@available(iOS 11.0, *)) {
-    switch ([CMMotionActivityManager authorizationStatus]) {
-      case CMAuthorizationStatusNotDetermined:
-        return resolve(RNPermissionStatusNotDetermined);
-      case CMAuthorizationStatusRestricted:
-        return resolve(RNPermissionStatusRestricted);
-      case CMAuthorizationStatusDenied:
-        return resolve(RNPermissionStatusDenied);
-      case CMAuthorizationStatusAuthorized:
-        return resolve(RNPermissionStatusAuthorized);
-    }
+  switch ([CMMotionActivityManager authorizationStatus]) {
+    case CMAuthorizationStatusNotDetermined:
+      return resolve(RNPermissionStatusNotDetermined);
+    case CMAuthorizationStatusRestricted:
+      return resolve(RNPermissionStatusRestricted);
+    case CMAuthorizationStatusDenied:
+      return resolve(RNPermissionStatusDenied);
+    case CMAuthorizationStatusAuthorized:
+      return resolve(RNPermissionStatusAuthorized);
   }
-
-  if (![RNPermissionsHelper isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
-    return resolve(RNPermissionStatusNotDetermined);
-  }
-
-  [self requestWithResolver:resolve rejecter:reject];
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
@@ -64,8 +56,6 @@
     if (error != nil && error.code != CMErrorNotAuthorized && error.code != CMErrorMotionActivityNotAuthorized) {
       return reject(error);
     }
-
-    [RNPermissionsHelper flagAsRequested:[[self class] handlerUniqueId]];
 
     if (error != nil) {
       return resolve(RNPermissionStatusDenied);

@@ -28,6 +28,7 @@ const ANDROID = Object.freeze({
   READ_MEDIA_AUDIO: 'android.permission.READ_MEDIA_AUDIO',
   READ_MEDIA_IMAGES: 'android.permission.READ_MEDIA_IMAGES',
   READ_MEDIA_VIDEO: 'android.permission.READ_MEDIA_VIDEO',
+  READ_MEDIA_VISUAL_USER_SELECTED: 'android.permission.READ_MEDIA_VISUAL_USER_SELECTED',
   READ_PHONE_NUMBERS: 'android.permission.READ_PHONE_NUMBERS',
   READ_PHONE_STATE: 'android.permission.READ_PHONE_STATE',
   READ_SMS: 'android.permission.READ_SMS',

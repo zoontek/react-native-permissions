@@ -4,7 +4,7 @@ import type {Contract} from './contract';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 import {platformVersion, uniq} from './utils';
@@ -16,7 +16,7 @@ async function openSettings(): Promise<void> {
 }
 
 function check(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.checkPermission(permission) as Promise<PermissionStatus>;
+  return NativeModule.check(permission) as Promise<PermissionStatus>;
 }
 
 async function showRationaleAlert(rationale: Rationale): Promise<boolean> {
@@ -39,15 +39,15 @@ async function request(
   permission: Permission,
   rationale?: Rationale | (() => Promise<boolean>),
 ): Promise<PermissionStatus> {
-  if (rationale == null || !(await NativeModule.shouldShowRequestPermissionRationale(permission))) {
-    return NativeModule.requestPermission(permission) as Promise<PermissionStatus>;
+  if (rationale == null || !(await NativeModule.shouldShowRequestRationale(permission))) {
+    return NativeModule.request(permission) as Promise<PermissionStatus>;
   }
 
   return (typeof rationale === 'function' ? rationale() : showRationaleAlert(rationale)).then(
-    (shouldRequestPermission) =>
-      (shouldRequestPermission
-        ? NativeModule.requestPermission(permission)
-        : NativeModule.checkPermission(permission)) as Promise<PermissionStatus>,
+    (shouldRequest) =>
+      (shouldRequest
+        ? NativeModule.request(permission)
+        : NativeModule.check(permission)) as Promise<PermissionStatus>,
   );
 }
 
@@ -73,18 +73,14 @@ function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
   const dedup = uniq(permissions);
-  return NativeModule.checkMultiplePermissions(dedup) as Promise<
-    Record<P[number], PermissionStatus>
-  >;
+  return NativeModule.checkMultiple(dedup) as Promise<Record<P[number], PermissionStatus>>;
 }
 
 function requestMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
   const dedup = uniq(permissions);
-  return NativeModule.requestMultiplePermissions(dedup) as Promise<
-    Record<P[number], PermissionStatus>
-  >;
+  return NativeModule.requestMultiple(dedup) as Promise<Record<P[number], PermissionStatus>>;
 }
 
 export const methods: Contract = {
@@ -92,7 +88,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings,
   request,
   requestLocationAccuracy,

@@ -6,7 +6,6 @@
 @interface RNPermissionHandlerAppTrackingTransparency()
 
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -20,19 +19,23 @@
   return @"ios.permission.APP_TRACKING_TRANSPARENCY";
 }
 
+- (RNPermissionStatus)convertStatus:(ATTrackingManagerAuthorizationStatus)status API_AVAILABLE(ios(14)){
+  switch (status) {
+    case ATTrackingManagerAuthorizationStatusNotDetermined:
+      return RNPermissionStatusNotDetermined;
+    case ATTrackingManagerAuthorizationStatusRestricted:
+      return RNPermissionStatusRestricted;
+    case ATTrackingManagerAuthorizationStatusDenied:
+      return RNPermissionStatusDenied;
+    case ATTrackingManagerAuthorizationStatusAuthorized:
+      return RNPermissionStatusAuthorized;
+  }
+}
+
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 14.0, *)) {
-    switch ([ATTrackingManager trackingAuthorizationStatus]) {
-      case ATTrackingManagerAuthorizationStatusNotDetermined:
-        return resolve(RNPermissionStatusNotDetermined);
-      case ATTrackingManagerAuthorizationStatusRestricted:
-        return resolve(RNPermissionStatusRestricted);
-      case ATTrackingManagerAuthorizationStatusDenied:
-        return resolve(RNPermissionStatusDenied);
-      case ATTrackingManagerAuthorizationStatusAuthorized:
-        return resolve(RNPermissionStatusAuthorized);
-    }
+    resolve([self convertStatus:[ATTrackingManager trackingAuthorizationStatus]]);
   } else {
     if ([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
       resolve(RNPermissionStatusAuthorized);
@@ -50,12 +53,11 @@
     }
 
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
-      [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(__unused ATTrackingManagerAuthorizationStatus status) {
-        [self checkWithResolver:resolve rejecter:reject];
+      [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+        resolve([self convertStatus:status]);
       }];
     } else {
       _resolve = resolve;
-      _reject = reject;
 
       [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(onApplicationDidBecomeActive:)
@@ -73,8 +75,8 @@
                                                 object:nil];
 
   if (@available(iOS 14.0, *)) {
-    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(__unused ATTrackingManagerAuthorizationStatus status) {
-      [self checkWithResolver:self->_resolve rejecter:self->_reject];
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      self->_resolve([self convertStatus:status]);
     }];
   }
 }

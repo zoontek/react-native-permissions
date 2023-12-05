@@ -3,8 +3,9 @@ import type {WindowsPermissionMap} from './permissions.windows';
 
 const IOS = Object.freeze({
   APP_TRACKING_TRANSPARENCY: 'ios.permission.APP_TRACKING_TRANSPARENCY',
-  BLUETOOTH_PERIPHERAL: 'ios.permission.BLUETOOTH_PERIPHERAL',
+  BLUETOOTH: 'ios.permission.BLUETOOTH',
   CALENDARS: 'ios.permission.CALENDARS',
+  CALENDARS_WRITE_ONLY: 'ios.permission.CALENDARS_WRITE_ONLY',
   CAMERA: 'ios.permission.CAMERA',
   CONTACTS: 'ios.permission.CONTACTS',
   FACE_ID: 'ios.permission.FACE_ID',

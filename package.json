@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "3.10.1",
+  "version": "4.0.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -61,9 +61,9 @@
     }
   },
   "peerDependencies": {
-    "react": ">=16.13.1",
-    "react-native": ">=0.63.3",
-    "react-native-windows": ">=0.62.0"
+    "react": ">=18.1.0",
+    "react-native": ">=0.70.0",
+    "react-native-windows": ">=0.70.0"
   },
   "peerDependenciesMeta": {
     "react-native-windows": {
@@ -71,18 +71,20 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^18.2.24",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
-    "eslint": "^8.50.0",
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@types/react": "^18.2.42",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "lint-staged": "^14.0.1",
-    "prettier": "^3.0.3",
-    "prettier-plugin-organize-imports": "^3.2.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "react": "^18.2.0",
-    "react-native": "^0.72.5",
-    "react-native-builder-bob": "^0.23.0",
-    "typescript": "^5.2.2"
+    "react-native": "^0.72.7",
+    "react-native-builder-bob": "^0.23.2",
+    "typescript": "^5.3.2"
   }
 }

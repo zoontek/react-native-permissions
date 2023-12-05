@@ -68,8 +68,9 @@ prepare_react_native_project!
 # ⬇️ uncomment wanted permissions
 setup_permissions([
   # 'AppTrackingTransparency',
-  # 'BluetoothPeripheral',
+  # 'Bluetooth',
   # 'Calendars',
+  # 'CalendarsWriteOnly',
   # 'Camera',
   # 'Contacts',
   # 'FaceID',
@@ -108,7 +109,9 @@ setup_permissions([
   <string>YOUR TEXT</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
   <string>YOUR TEXT</string>
-  <key>NSCalendarsUsageDescription</key>
+  <key>NSCalendarsFullAccessUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
   <string>YOUR TEXT</string>
@@ -133,7 +136,7 @@ setup_permissions([
   <string>YOUR TEXT</string>
   <key>NSPhotoLibraryAddUsageDescription</key>
   <string>YOUR TEXT</string>
-  <key>NSRemindersUsageDescription</key>
+  <key>NSRemindersFullAccessUsageDescription</key>
   <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
   <string>YOUR TEXT</string>
@@ -183,6 +186,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+  <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
   <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.READ_SMS" />
@@ -475,6 +479,7 @@ PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
 PERMISSIONS.ANDROID.READ_MEDIA_AUDIO;
 PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
 PERMISSIONS.ANDROID.READ_MEDIA_VIDEO;
+PERMISSIONS.ANDROID.READ_MEDIA_VISUAL_USER_SELECTED;
 PERMISSIONS.ANDROID.READ_PHONE_NUMBERS;
 PERMISSIONS.ANDROID.READ_PHONE_STATE;
 PERMISSIONS.ANDROID.READ_SMS;
@@ -500,8 +505,9 @@ PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
 import {PERMISSIONS} from 'react-native-permissions';
 
 PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY;
-PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL;
+PERMISSIONS.IOS.BLUETOOTH;
 PERMISSIONS.IOS.CALENDARS;
+PERMISSIONS.IOS.CALENDARS_WRITE_ONLY;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
@@ -905,18 +911,18 @@ openSettings().catch(() => console.warn('cannot open settings'));
 
 ---
 
-#### openLimitedPhotoLibraryPicker (iOS 14+)
+#### openPhotoPicker (iOS 14+)
 
 Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
 
 ```ts
-function openLimitedPhotoLibraryPicker(): Promise<void>;
+function openPhotoPicker(): Promise<void>;
 ```
 
 ```js
-import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
+import {openPhotoPicker} from 'react-native-permissions';
 
-openLimitedPhotoLibraryPicker().catch(() => {
+openPhotoPicker().catch(() => {
   console.warn('Cannot open photo library picker');
 });
 ```

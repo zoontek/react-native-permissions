@@ -41,7 +41,9 @@
 	<string>Let me use bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Let me use bluetooth</string>
-	<key>NSCalendarsUsageDescription</key>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Let me use your calendars</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>Let me use your calendars</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Let me use the camera</string>
@@ -66,7 +68,7 @@
 	<string>Let me add photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let me use your photo library</string>
-	<key>NSRemindersUsageDescription</key>
+	<key>NSRemindersFullAccessUsageDescription</key>
 	<string>Let me use your reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Let me use speech recognition</string>

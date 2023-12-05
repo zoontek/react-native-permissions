@@ -6,22 +6,20 @@ type NotificationsResponse = {
 };
 
 export interface Spec extends TurboModule {
+  check(permission: string): Promise<string>;
   checkNotifications(): Promise<NotificationsResponse>;
+  getConstants(): {available?: string[]};
   openSettings(): Promise<void>;
+  request(permission: string): Promise<string>;
 
   // Android only part
-  checkMultiplePermissions(permissions: string[]): Promise<Object>;
-  checkPermission(permission: string): Promise<string>;
-  requestMultiplePermissions(permissions: string[]): Promise<Object>;
-  requestPermission(permission: string): Promise<string>;
-  shouldShowRequestPermissionRationale(permission: string): Promise<boolean>;
+  checkMultiple(permissions: string[]): Promise<Object>;
+  requestMultiple(permissions: string[]): Promise<Object>;
+  shouldShowRequestRationale(permission: string): Promise<boolean>;
 
   // iOS only part
-  check(permission: string): Promise<string>; // TODO: should be number prolly
   checkLocationAccuracy(): Promise<string>;
-  getConstants(): {available?: string[]};
-  openLimitedPhotoLibraryPicker(): Promise<boolean>;
-  request(permission: string): Promise<string>; // TODO: should be number prolly
+  openPhotoPicker(): Promise<boolean>;
   requestLocationAccuracy(purposeKey: string): Promise<string>;
   requestNotifications(options: string[]): Promise<NotificationsResponse>;
 }

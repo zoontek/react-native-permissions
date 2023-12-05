@@ -12,7 +12,7 @@ export type Contract = {
   check(permission: Permission): Promise<PermissionStatus>;
   checkLocationAccuracy(): Promise<LocationAccuracy>;
   checkNotifications(): Promise<NotificationsResponse>;
-  openLimitedPhotoLibraryPicker(): Promise<void>;
+  openPhotoPicker(): Promise<void>;
   openSettings(): Promise<void>;
   request(
     permission: Permission,

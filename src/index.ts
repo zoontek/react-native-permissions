@@ -10,7 +10,7 @@ export const check = methods.check;
 export const checkLocationAccuracy = methods.checkLocationAccuracy;
 export const checkMultiple = methods.checkMultiple;
 export const checkNotifications = methods.checkNotifications;
-export const openLimitedPhotoLibraryPicker = methods.openLimitedPhotoLibraryPicker;
+export const openPhotoPicker = methods.openPhotoPicker;
 export const openSettings = methods.openSettings;
 export const request = methods.request;
 export const requestLocationAccuracy = methods.requestLocationAccuracy;
@@ -25,7 +25,7 @@ export default {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openLimitedPhotoLibraryPicker,
+  openPhotoPicker,
   openSettings,
   request,
   requestLocationAccuracy,

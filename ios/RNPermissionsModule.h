@@ -4,10 +4,28 @@
 #import <React/RCTBridge.h>
 #endif
 
-#import <React/RCTConvert.h>
-#import "RNPermissionsHelper.h"
+typedef enum {
+  RNPermissionStatusNotAvailable = 0,
+  RNPermissionStatusNotDetermined = 1,
+  RNPermissionStatusRestricted = 2,
+  RNPermissionStatusDenied = 3,
+  RNPermissionStatusAuthorized = 4,
+  RNPermissionStatusLimited = 5,
+} RNPermissionStatus;
 
-@interface RCTConvert (RNPermission)
+@protocol RNPermissionHandler <NSObject>
+
+@required
+
++ (NSArray<NSString *> * _Nonnull)usageDescriptionKeys;
+
++ (NSString * _Nonnull)handlerUniqueId;
+
+- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
+                 rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
+
+- (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
+                   rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
 
 @end
 

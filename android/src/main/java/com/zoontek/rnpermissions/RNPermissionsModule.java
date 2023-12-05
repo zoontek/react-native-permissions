@@ -11,7 +11,7 @@ import android.os.Process;
 import android.provider.Settings;
 import android.util.SparseArray;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.common.logging.FLog;
@@ -54,96 +54,10 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     return NAME;
   }
 
-  private @Nullable String getFieldName(final String permission) {
-    if (permission.equals("android.permission.ACCEPT_HANDOVER"))
-      return "ACCEPT_HANDOVER";
-    if (permission.equals("android.permission.ACCESS_BACKGROUND_LOCATION"))
-      return "ACCESS_BACKGROUND_LOCATION";
-    if (permission.equals("android.permission.ACCESS_COARSE_LOCATION"))
-      return "ACCESS_COARSE_LOCATION";
-    if (permission.equals("android.permission.ACCESS_FINE_LOCATION"))
-      return "ACCESS_FINE_LOCATION";
-    if (permission.equals("android.permission.ACCESS_MEDIA_LOCATION"))
-      return "ACCESS_MEDIA_LOCATION";
-    if (permission.equals("android.permission.ACTIVITY_RECOGNITION"))
-      return "ACTIVITY_RECOGNITION";
-    if (permission.equals("com.android.voicemail.permission.ADD_VOICEMAIL"))
-      return "ADD_VOICEMAIL";
-    if (permission.equals("android.permission.ANSWER_PHONE_CALLS"))
-      return "ANSWER_PHONE_CALLS";
-    if (permission.equals("android.permission.BLUETOOTH_ADVERTISE"))
-      return "BLUETOOTH_ADVERTISE";
-    if (permission.equals("android.permission.BLUETOOTH_CONNECT"))
-      return "BLUETOOTH_CONNECT";
-    if (permission.equals("android.permission.BLUETOOTH_SCAN"))
-      return "BLUETOOTH_SCAN";
-    if (permission.equals("android.permission.BODY_SENSORS"))
-      return "BODY_SENSORS";
-    if (permission.equals("android.permission.BODY_SENSORS_BACKGROUND"))
-      return "BODY_SENSORS_BACKGROUND";
-    if (permission.equals("android.permission.CALL_PHONE"))
-      return "CALL_PHONE";
-    if (permission.equals("android.permission.CAMERA"))
-      return "CAMERA";
-    if (permission.equals("android.permission.GET_ACCOUNTS"))
-      return "GET_ACCOUNTS";
-    if (permission.equals("android.permission.NEARBY_WIFI_DEVICES"))
-      return "NEARBY_WIFI_DEVICES";
-    if (permission.equals("android.permission.POST_NOTIFICATIONS"))
-      return "POST_NOTIFICATIONS";
-    if (permission.equals("android.permission.PROCESS_OUTGOING_CALLS"))
-      return "PROCESS_OUTGOING_CALLS";
-    if (permission.equals("android.permission.READ_CALENDAR"))
-      return "READ_CALENDAR";
-    if (permission.equals("android.permission.READ_CALL_LOG"))
-      return "READ_CALL_LOG";
-    if (permission.equals("android.permission.READ_CONTACTS"))
-      return "READ_CONTACTS";
-    if (permission.equals("android.permission.READ_EXTERNAL_STORAGE"))
-      return "READ_EXTERNAL_STORAGE";
-    if (permission.equals("android.permission.READ_MEDIA_AUDIO"))
-      return "READ_MEDIA_AUDIO";
-    if (permission.equals("android.permission.READ_MEDIA_IMAGES"))
-      return "READ_MEDIA_IMAGES";
-    if (permission.equals("android.permission.READ_MEDIA_VIDEO"))
-      return "READ_MEDIA_VIDEO";
-    if (permission.equals("android.permission.READ_PHONE_NUMBERS"))
-      return "READ_PHONE_NUMBERS";
-    if (permission.equals("android.permission.READ_PHONE_STATE"))
-      return "READ_PHONE_STATE";
-    if (permission.equals("android.permission.READ_SMS"))
-      return "READ_SMS";
-    if (permission.equals("android.permission.RECEIVE_MMS"))
-      return "RECEIVE_MMS";
-    if (permission.equals("android.permission.RECEIVE_SMS"))
-      return "RECEIVE_SMS";
-    if (permission.equals("android.permission.RECEIVE_WAP_PUSH"))
-      return "RECEIVE_WAP_PUSH";
-    if (permission.equals("android.permission.RECORD_AUDIO"))
-      return "RECORD_AUDIO";
-    if (permission.equals("android.permission.SEND_SMS"))
-      return "SEND_SMS";
-    if (permission.equals("android.permission.USE_SIP"))
-      return "USE_SIP";
-    if (permission.equals("android.permission.UWB_RANGING"))
-      return "UWB_RANGING";
-    if (permission.equals("android.permission.WRITE_CALENDAR"))
-      return "WRITE_CALENDAR";
-    if (permission.equals("android.permission.WRITE_CALL_LOG"))
-      return "WRITE_CALL_LOG";
-    if (permission.equals("android.permission.WRITE_CONTACTS"))
-      return "WRITE_CONTACTS";
-    if (permission.equals("android.permission.WRITE_EXTERNAL_STORAGE"))
-      return "WRITE_EXTERNAL_STORAGE";
-
-    return null;
-  }
-
-  private boolean isPermissionUnavailable(final String permission) {
-    String fieldName = getFieldName(permission);
-
-    if (fieldName == null)
-      return true;
+  private boolean isPermissionUnavailable(@NonNull final String permission) {
+    String fieldName = permission
+      .replace("android.permission.", "")
+      .replace("com.android.voicemail.permission.", "");
 
     try {
       Manifest.permission.class.getField(fieldName);
@@ -186,7 +100,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void checkPermission(final String permission, final Promise promise) {
+  public void check(final String permission, final Promise promise) {
     if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
@@ -197,8 +111,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
         == PackageManager.PERMISSION_GRANTED
-          ? GRANTED
-          : BLOCKED);
+        ? GRANTED
+        : BLOCKED);
       return;
     }
 
@@ -210,7 +124,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void shouldShowRequestPermissionRationale(final String permission, final Promise promise) {
+  public void shouldShowRequestRationale(final String permission, final Promise promise) {
     if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(false);
       return;
@@ -225,7 +139,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void requestPermission(final String permission, final Promise promise) {
+  public void request(final String permission, final Promise promise) {
     if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
@@ -278,7 +192,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void checkMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+  public void checkMultiple(final ReadableArray permissions, final Promise promise) {
     final WritableMap output = new WritableNativeMap();
     Context context = getReactApplicationContext().getBaseContext();
 
@@ -305,7 +219,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void requestMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+  public void requestMultiple(final ReadableArray permissions, final Promise promise) {
     final WritableMap output = new WritableNativeMap();
     final ArrayList<String> permissionsToCheck = new ArrayList<String>();
     int checkedPermissionsCount = 0;
@@ -381,18 +295,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @Override
-  public void check(String permission, Promise promise) {
-    promise.reject("Permissions:check", "check is not supported on Android");
-  }
-
-  @Override
   public void checkLocationAccuracy(Promise promise) {
     promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
-  }
-
-  @Override
-  public void request(String permission, Promise promise) {
-    promise.reject("Permissions:request", "request is not supported on Android");
   }
 
   @Override
@@ -406,8 +310,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @Override
-  public void openLimitedPhotoLibraryPicker(Promise promise) {
-    promise.reject("Permissions:openLimitedPhotoLibraryPicker", "openLimitedPhotoLibraryPicker is not supported on Android");
+  public void openPhotoPicker(Promise promise) {
+    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
   }
 
   @Override
@@ -418,15 +322,15 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       return mCallbacks.size() == 0;
     } catch (IllegalStateException e) {
       FLog.e(
-          "PermissionsModule",
-          e,
-          "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
       return false;
     } catch (NullPointerException e) {
       FLog.e(
-          "PermissionsModule",
-          e,
-          "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
       return false;
     }
   }

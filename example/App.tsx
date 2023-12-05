@@ -36,7 +36,7 @@ export const App = () => {
           <Appbar.Action
             icon="image-multiple"
             onPress={() => {
-              RNPermissions.openLimitedPhotoLibraryPicker().catch((error) => {
+              RNPermissions.openPhotoPicker().catch((error) => {
                 console.error(error);
               });
             }}

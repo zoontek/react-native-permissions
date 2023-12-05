@@ -12,6 +12,6 @@ export async function requestLocationAccuracy(
   throw new Error(IOS_14);
 }
 
-export async function openLimitedPhotoLibraryPicker(): Promise<void> {
+export async function openPhotoPicker(): Promise<void> {
   throw new Error(IOS_14);
 }
