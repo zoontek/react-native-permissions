@@ -328,9 +328,9 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       return false;
     } catch (NullPointerException e) {
       FLog.e(
-          "PermissionsModule",
-          e,
-          "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
       return false;
     }
   }
