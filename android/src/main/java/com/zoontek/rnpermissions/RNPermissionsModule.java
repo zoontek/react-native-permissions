@@ -100,7 +100,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void checkPermission(final String permission, final Promise promise) {
+  public void check(final String permission, final Promise promise) {
     if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
@@ -124,7 +124,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void shouldShowRequestPermissionRationale(final String permission, final Promise promise) {
+  public void shouldShowRequestRationale(final String permission, final Promise promise) {
     if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(false);
       return;
@@ -139,7 +139,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void requestPermission(final String permission, final Promise promise) {
+  public void request(final String permission, final Promise promise) {
     if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
@@ -192,7 +192,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void checkMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+  public void checkMultiple(final ReadableArray permissions, final Promise promise) {
     final WritableMap output = new WritableNativeMap();
     Context context = getReactApplicationContext().getBaseContext();
 
@@ -219,7 +219,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @ReactMethod
-  public void requestMultiplePermissions(final ReadableArray permissions, final Promise promise) {
+  public void requestMultiple(final ReadableArray permissions, final Promise promise) {
     final WritableMap output = new WritableNativeMap();
     final ArrayList<String> permissionsToCheck = new ArrayList<String>();
     int checkedPermissionsCount = 0;
@@ -295,18 +295,8 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   @Override
-  public void check(String permission, Promise promise) {
-    promise.reject("Permissions:check", "check is not supported on Android");
-  }
-
-  @Override
   public void checkLocationAccuracy(Promise promise) {
     promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
-  }
-
-  @Override
-  public void request(String permission, Promise promise) {
-    promise.reject("Permissions:request", "request is not supported on Android");
   }
 
   @Override

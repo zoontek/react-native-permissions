@@ -44,35 +44,27 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
 
   @ReactMethod
   @DoNotStrip
-  public abstract void checkPermission(String permission, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
-  public abstract void shouldShowRequestPermissionRationale(String permission, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
-  public abstract void requestPermission(String permission, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
-  public abstract void checkMultiplePermissions(ReadableArray permissions, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
-  public abstract void requestMultiplePermissions(ReadableArray permissions, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
   public abstract void check(String permission, Promise promise);
 
   @ReactMethod
   @DoNotStrip
-  public abstract void checkLocationAccuracy(Promise promise);
+  public abstract void shouldShowRequestRationale(String permission, Promise promise);
 
   @ReactMethod
   @DoNotStrip
   public abstract void request(String permission, Promise promise);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void checkMultiple(ReadableArray permissions, Promise promise);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void requestMultiple(ReadableArray permissions, Promise promise);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void checkLocationAccuracy(Promise promise);
 
   @ReactMethod
   @DoNotStrip

@@ -62,67 +62,6 @@
 #import "RNPermissionHandlerCalendarsWriteOnly.h"
 #endif
 
-@implementation RCTConvert(RNPermission)
-
-RCT_ENUM_CONVERTER(RNPermission, (@{
-#if __has_include("RNPermissionHandlerBluetooth.h")
-  [RNPermissionHandlerBluetooth handlerUniqueId]: @(RNPermissionBluetooth),
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
-  [RNPermissionHandlerCalendars handlerUniqueId]: @(RNPermissionCalendars),
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
-  [RNPermissionHandlerCamera handlerUniqueId]: @(RNPermissionCamera),
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
-  [RNPermissionHandlerContacts handlerUniqueId]: @(RNPermissionContacts),
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
-  [RNPermissionHandlerFaceID handlerUniqueId]: @(RNPermissionFaceID),
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-  [RNPermissionHandlerLocationAlways handlerUniqueId]: @(RNPermissionLocationAlways),
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  [RNPermissionHandlerLocationWhenInUse handlerUniqueId]: @(RNPermissionLocationWhenInUse),
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
-  [RNPermissionHandlerMediaLibrary handlerUniqueId]: @(RNPermissionMediaLibrary),
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
-  [RNPermissionHandlerMicrophone handlerUniqueId]: @(RNPermissionMicrophone),
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
-  [RNPermissionHandlerMotion handlerUniqueId]: @(RNPermissionMotion),
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  [RNPermissionHandlerPhotoLibrary handlerUniqueId]: @(RNPermissionPhotoLibrary),
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
-  [RNPermissionHandlerReminders handlerUniqueId]: @(RNPermissionReminders),
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
-  [RNPermissionHandlerSiri handlerUniqueId]: @(RNPermissionSiri),
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  [RNPermissionHandlerSpeechRecognition handlerUniqueId]: @(RNPermissionSpeechRecognition),
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
-  [RNPermissionHandlerStoreKit handlerUniqueId]: @(RNPermissionStoreKit),
-#endif
-#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-  [RNPermissionHandlerAppTrackingTransparency handlerUniqueId]: @(RNPermissionAppTrackingTransparency),
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  [RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]: @(RNPermissionPhotoLibraryAddOnly),
-#endif
-#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-  [RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]: @(RNPermissionCalendarsWriteOnly),
-#endif
-}), RNPermissionUnknown, integerValue);
-
-@end
-
 @interface RNPermissionsModule()
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>> *_Nonnull handlers;
@@ -231,102 +170,102 @@ RCT_EXPORT_MODULE();
 #endif
 }
 
-- (id<RNPermissionHandler> _Nullable)handlerForPermission:(RNPermission)permission {
+- (id<RNPermissionHandler> _Nullable)handlerForPermission:(NSString *)permission {
   id<RNPermissionHandler> handler = nil;
 
-  switch (permission) {
+  if (false) {}
 #if __has_include("RNPermissionHandlerBluetooth.h")
-    case RNPermissionBluetooth:
-      handler = [RNPermissionHandlerBluetooth new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerBluetooth handlerUniqueId]]) {
+    handler = [RNPermissionHandlerBluetooth new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerCalendars.h")
-    case RNPermissionCalendars:
-      handler = [RNPermissionHandlerCalendars new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerCalendars handlerUniqueId]]) {
+    handler = [RNPermissionHandlerCalendars new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerCamera.h")
-    case RNPermissionCamera:
-      handler = [RNPermissionHandlerCamera new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerCamera handlerUniqueId]]) {
+    handler = [RNPermissionHandlerCamera new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerContacts.h")
-    case RNPermissionContacts:
-      handler = [RNPermissionHandlerContacts new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerContacts handlerUniqueId]]) {
+    handler = [RNPermissionHandlerContacts new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerFaceID.h")
-    case RNPermissionFaceID:
-      handler = [RNPermissionHandlerFaceID new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerFaceID handlerUniqueId]]) {
+    handler = [RNPermissionHandlerFaceID new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerLocationAlways.h")
-    case RNPermissionLocationAlways:
-      handler = [RNPermissionHandlerLocationAlways new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerLocationAlways handlerUniqueId]]) {
+    handler = [RNPermissionHandlerLocationAlways new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-    case RNPermissionLocationWhenInUse:
-      handler = [RNPermissionHandlerLocationWhenInUse new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]]) {
+    handler = [RNPermissionHandlerLocationWhenInUse new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerMediaLibrary.h")
-    case RNPermissionMediaLibrary:
-      handler = [RNPermissionHandlerMediaLibrary new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerMediaLibrary handlerUniqueId]]) {
+    handler = [RNPermissionHandlerMediaLibrary new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerMicrophone.h")
-    case RNPermissionMicrophone:
-      handler = [RNPermissionHandlerMicrophone new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerMicrophone handlerUniqueId]]) {
+    handler = [RNPermissionHandlerMicrophone new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerMotion.h")
-    case RNPermissionMotion:
-      handler = [RNPermissionHandlerMotion new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerMotion handlerUniqueId]]) {
+    handler = [RNPermissionHandlerMotion new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibrary.h")
-    case RNPermissionPhotoLibrary:
-      handler = [RNPermissionHandlerPhotoLibrary new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerPhotoLibrary handlerUniqueId]]) {
+    handler = [RNPermissionHandlerPhotoLibrary new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerReminders.h")
-    case RNPermissionReminders:
-      handler = [RNPermissionHandlerReminders new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerReminders handlerUniqueId]]) {
+    handler = [RNPermissionHandlerReminders new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerSiri.h")
-    case RNPermissionSiri:
-      handler = [RNPermissionHandlerSiri new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerSiri handlerUniqueId]]) {
+    handler = [RNPermissionHandlerSiri new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerSpeechRecognition.h")
-    case RNPermissionSpeechRecognition:
-      handler = [RNPermissionHandlerSpeechRecognition new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerSpeechRecognition handlerUniqueId]]) {
+    handler = [RNPermissionHandlerSpeechRecognition new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerStoreKit.h")
-    case RNPermissionStoreKit:
-      handler = [RNPermissionHandlerStoreKit new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerStoreKit handlerUniqueId]]) {
+    handler = [RNPermissionHandlerStoreKit new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-    case RNPermissionAppTrackingTransparency:
-      handler = [RNPermissionHandlerAppTrackingTransparency new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]]) {
+    handler = [RNPermissionHandlerAppTrackingTransparency new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-    case RNPermissionPhotoLibraryAddOnly:
-      handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]]) {
+    handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
+  }
 #endif
 #if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-    case RNPermissionCalendarsWriteOnly:
-      handler = [RNPermissionHandlerCalendarsWriteOnly new];
-      break;
+  else if ([permission isEqualToString:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]]) {
+    handler = [RNPermissionHandlerCalendarsWriteOnly new];
+  }
 #endif
-    case RNPermissionUnknown:
-      break; // RCTConvert prevents this case
+  else {
+    RCTLogError(@"Unknown permission \"%@\"", permission);
   }
 
   [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
@@ -380,20 +319,10 @@ RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
   }];
 }
 
-RCT_EXPORT_METHOD(check:
-#ifdef RCT_NEW_ARCH_ENABLED
-                  (NSString *)permission
-#else
-                  (RNPermission)permission
-#endif
+RCT_EXPORT_METHOD(check:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#ifdef RCT_NEW_ARCH_ENABLED
-  id<RNPermissionHandler> handler = [self handlerForPermission:[RCTConvert RNPermission:permission]];
-#else
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
-#endif
-
   NSString *lockId = [self lockHandler:handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status) {
@@ -405,20 +334,10 @@ RCT_EXPORT_METHOD(check:
   }];
 }
 
-RCT_EXPORT_METHOD(request:
-#ifdef RCT_NEW_ARCH_ENABLED
-                  (NSString *)permission
-#else
-                  (RNPermission)permission
-#endif
+RCT_EXPORT_METHOD(request:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#ifdef RCT_NEW_ARCH_ENABLED
-  id<RNPermissionHandler> handler = [self handlerForPermission:[RCTConvert RNPermission:permission]];
-#else
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
-#endif
-
   NSString *lockId = [self lockHandler:handler];
 
   [handler requestWithResolver:^(RNPermissionStatus status) {
@@ -502,34 +421,22 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
 #endif
 }
 
-- (void)checkMultiplePermissions:(NSArray *)permissions
-                         resolve:(RCTPromiseResolveBlock)resolve
-                          reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:checkMultiplePermissions", @"checkMultiplePermissions is not supported on iOS", nil);
+- (void)checkMultiple:(NSArray *)permissions
+              resolve:(RCTPromiseResolveBlock)resolve
+               reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:checkMultiple", @"checkMultiple is not supported on iOS", nil);
 }
 
-- (void)checkPermission:(NSString *)permission
+- (void)requestMultiple:(NSArray *)permissions
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:checkPermission", @"checkPermission is not supported on iOS", nil);
+  reject(@"RNPermissions:requestMultiple", @"requestMultiple is not supported on iOS", nil);
 }
 
-- (void)requestMultiplePermissions:(NSArray *)permissions
+- (void)shouldShowRequestRationale:(NSString *)permission
                            resolve:(RCTPromiseResolveBlock)resolve
                             reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:requestMultiplePermissions", @"requestMultiplePermissions is not supported on iOS", nil);
-}
-
-- (void)requestPermission:(NSString *)permission
-                  resolve:(RCTPromiseResolveBlock)resolve
-                   reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:requestPermission", @"requestPermission is not supported on iOS", nil);
-}
-
-- (void)shouldShowRequestPermissionRationale:(NSString *)permission
-                                     resolve:(RCTPromiseResolveBlock)resolve
-                                      reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:shouldShowRequestPermissionRationale", @"shouldShowRequestPermissionRationale is not supported on iOS", nil);
+  reject(@"RNPermissions:shouldShowRequestRationale", @"shouldShowRequestRationale is not supported on iOS", nil);
 }
 
 #if RCT_NEW_ARCH_ENABLED
