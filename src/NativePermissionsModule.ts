@@ -11,6 +11,7 @@ export interface Spec extends TurboModule {
   getConstants(): {available?: string[]};
   openSettings(): Promise<void>;
   request(permission: string): Promise<string>;
+  requestNotifications(options: string[]): Promise<NotificationsResponse>;
 
   // Android only part
   checkMultiple(permissions: string[]): Promise<Object>;
@@ -21,7 +22,6 @@ export interface Spec extends TurboModule {
   checkLocationAccuracy(): Promise<string>;
   openPhotoPicker(): Promise<boolean>;
   requestLocationAccuracy(purposeKey: string): Promise<string>;
-  requestNotifications(options: string[]): Promise<NotificationsResponse>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNPermissionsModule');
