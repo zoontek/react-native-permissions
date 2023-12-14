@@ -1,7 +1,13 @@
 import {Alert, AlertButton} from 'react-native';
 import NativeModule from './NativePermissionsModule';
 import type {Contract} from './contract';
-import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
+import type {
+  NotificationOption,
+  NotificationsResponse,
+  Permission,
+  PermissionStatus,
+  Rationale,
+} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
@@ -60,9 +66,9 @@ async function checkNotifications(): Promise<NotificationsResponse> {
   return {status, settings: {}};
 }
 
-async function requestNotifications(): Promise<NotificationsResponse> {
+async function requestNotifications(options: NotificationOption[]): Promise<NotificationsResponse> {
   if (platformVersion < TIRAMISU_VERSION_CODE) {
-    return NativeModule.checkNotifications() as Promise<NotificationsResponse>;
+    return NativeModule.requestNotifications(options) as Promise<NotificationsResponse>;
   }
 
   const status = await request('android.permission.POST_NOTIFICATIONS');

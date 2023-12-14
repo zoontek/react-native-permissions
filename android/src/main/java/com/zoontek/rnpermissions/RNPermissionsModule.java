@@ -67,18 +67,28 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     }
   }
 
-  @ReactMethod
-  public void checkNotifications(final Promise promise) {
+  // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
+  private WritableMap getLegacyNotificationsResponse(String disabledStatus) {
     final boolean enabled = NotificationManagerCompat
       .from(getReactApplicationContext()).areNotificationsEnabled();
 
     final WritableMap output = Arguments.createMap();
     final WritableMap settings = Arguments.createMap();
 
-    output.putString("status", enabled ? GRANTED : BLOCKED);
+    output.putString("status", enabled ? GRANTED : disabledStatus);
     output.putMap("settings", settings);
 
-    promise.resolve(output);
+    return output;
+  }
+
+  @ReactMethod
+  public void checkNotifications(final Promise promise) {
+    promise.resolve(getLegacyNotificationsResponse(DENIED));
+  }
+
+  @Override
+  public void requestNotifications(final ReadableArray options, final Promise promise) {
+    promise.resolve(getLegacyNotificationsResponse(BLOCKED));
   }
 
   @ReactMethod
@@ -302,11 +312,6 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   @Override
   public void requestLocationAccuracy(String purposeKey, Promise promise) {
     promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
-  }
-
-  @Override
-  public void requestNotifications(ReadableArray options, Promise promise) {
-    promise.reject("Permissions:requestNotifications", "requestNotifications is not supported on Android");
   }
 
   @Override

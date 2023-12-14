@@ -44,6 +44,10 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
 
   @ReactMethod
   @DoNotStrip
+  public abstract void requestNotifications(ReadableArray options, Promise promise);
+
+  @ReactMethod
+  @DoNotStrip
   public abstract void check(String permission, Promise promise);
 
   @ReactMethod
@@ -69,10 +73,6 @@ public abstract class NativePermissionsModuleSpec extends ReactContextBaseJavaMo
   @ReactMethod
   @DoNotStrip
   public abstract void requestLocationAccuracy(String purposeKey, Promise promise);
-
-  @ReactMethod
-  @DoNotStrip
-  public abstract void requestNotifications(ReadableArray options, Promise promise);
 
   @ReactMethod
   @DoNotStrip

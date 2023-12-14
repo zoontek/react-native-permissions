@@ -772,6 +772,8 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 
 Check notifications permission status and get notifications settings values.
 
+_⚠️  Android will never return `blocked` after a `checkNotifications`, you have to request the permission to get the info._
+
 ```ts
 type NotificationSettings = {
   // properties only available on iOS
