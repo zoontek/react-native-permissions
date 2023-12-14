@@ -75,7 +75,7 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     final WritableMap output = Arguments.createMap();
     final WritableMap settings = Arguments.createMap();
 
-    output.putString("status", enabled ? GRANTED : BLOCKED);
+    output.putString("status", enabled ? GRANTED : DENIED);
     output.putMap("settings", settings);
 
     promise.resolve(output);
