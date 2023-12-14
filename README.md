@@ -701,7 +701,7 @@ type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'bloc
 
 Check one permission status.
 
-_⚠️  Android will never return `blocked` after `check`, you have to `request` the permission to get the info._
+_⚠️  Android will never return `blocked` on `check`, you have to call `request` to get the info._
 
 ```ts
 function check(permission: string): Promise<PermissionStatus>;
@@ -772,7 +772,7 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 
 Check notifications permission status and get notifications settings values.
 
-_⚠️  Android will never return `blocked` after `checkNotifications`, you have to call `requestNotifications` to get the info._
+_⚠️  Android will never return `blocked` on `checkNotifications`, you have to call `requestNotifications` to get the info._
 
 ```ts
 type NotificationSettings = {
@@ -857,7 +857,7 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 Check multiples permissions in parallel.
 
-_⚠️  Android will never return `blocked` after `check`, you have to request the permission to get the info._
+_⚠️  Android will never return `blocked` on `checkMultiple`, you have to call `requestMultiple` to get the info._
 
 ```ts
 function checkMultiple<P extends Permission[]>(
