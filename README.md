@@ -735,8 +735,6 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   });
 ```
 
----
-
 #### request
 
 Request one permission.
@@ -766,13 +764,9 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 });
 ```
 
----
-
 #### checkNotifications
 
 Check notifications permission status and get notifications settings values.
-
-_⚠️  Android will never return `blocked` on `checkNotifications`, you have to call `requestNotifications` to get the info._
 
 ```ts
 type NotificationSettings = {
@@ -802,8 +796,6 @@ checkNotifications().then(({status, settings}) => {
   // …
 });
 ```
-
----
 
 #### requestNotifications
 
@@ -851,8 +843,6 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 });
 ```
 
----
-
 #### checkMultiple
 
 Check multiples permissions in parallel.
@@ -874,8 +864,6 @@ checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses)
 });
 ```
 
----
-
 #### requestMultiple
 
 Request multiple permissions in sequence.
@@ -895,8 +883,6 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuse
 });
 ```
 
----
-
 #### openSettings
 
 Open application settings.
@@ -910,8 +896,6 @@ import {openSettings} from 'react-native-permissions';
 
 openSettings().catch(() => console.warn('cannot open settings'));
 ```
-
----
 
 #### openPhotoPicker (iOS 14+)
 
@@ -928,8 +912,6 @@ openPhotoPicker().catch(() => {
   console.warn('Cannot open photo library picker');
 });
 ```
-
----
 
 #### checkLocationAccuracy (iOS 14+)
 
@@ -948,8 +930,6 @@ checkLocationAccuracy()
   .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
   .catch(() => console.warn('Cannot check location accuracy'));
 ```
-
----
 
 #### requestLocationAccuracy (iOS 14+)
 
