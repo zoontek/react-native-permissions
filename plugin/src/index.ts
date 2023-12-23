@@ -25,14 +25,40 @@ export function addPodfilePermissionsArray(src: string, permissions: string[]): 
   }).contents;
 }
 
+export type IOSPermission =
+  | 'AppTrackingTransparency'
+  | 'Bluetooth'
+  | 'Calendars'
+  | 'CalendarsWriteOnly'
+  | 'Camera'
+  | 'Contacts'
+  | 'FaceID'
+  | 'LocationAccuracy'
+  | 'LocationAlways'
+  | 'LocationWhileInUse'
+  | 'MediaLibrary'
+  | 'Microphone'
+  | 'Motion'
+  | 'Notifications'
+  | 'PhotoLibrary'
+  | 'PhotoLibraryAddOnly'
+  | 'Reminders'
+  | 'Siri'
+  | 'SpeechRecognition'
+  | 'StoreKit';
+
 export interface IOSPermissions {
   /**
    * Array of iOS permissions for which to setup permissions.
    */
-  iosPermissions: string[];
+  iosPermissions: IOSPermission[];
 }
 
 const withIOSPodfilePermissions: ConfigPlugin<IOSPermissions> = (config, {iosPermissions}) => {
+  if (!iosPermissions || iosPermissions.length === 0) {
+    return config;
+  }
+
   return withDangerousMod(config, [
     'ios',
     async (c) => {
