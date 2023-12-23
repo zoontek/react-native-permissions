@@ -61,12 +61,16 @@
     }
   },
   "peerDependencies": {
+    "expo": ">=49.0.0",
     "react": ">=18.1.0",
     "react-native": ">=0.70.0",
     "react-native-windows": ">=0.70.0"
   },
   "peerDependenciesMeta": {
     "react-native-windows": {
+      "optional": true
+    },
+    "expo": {
       "optional": true
     }
   },
@@ -79,6 +83,8 @@
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "expo": "^49.0.21",
+    "expo-module-scripts": "^3.1.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^3.2.4",
