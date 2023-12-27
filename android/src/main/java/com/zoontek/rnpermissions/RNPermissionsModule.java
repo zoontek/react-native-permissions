@@ -337,6 +337,12 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
         e,
         "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
       return false;
+    } catch (Exception e) {
+      FLog.e(
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult`");
+      return false;
     }
   }
 
