@@ -10,7 +10,7 @@ trim_trailing_whitespace = true
 [*.bat]
 end_of_line = crlf
 
-[*.gradle]
+[*.{gradle,xml}]
 indent_size = 4
 
 [*.md]

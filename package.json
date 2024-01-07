@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -35,9 +35,9 @@
   "scripts": {
     "format": "prettier '**/*' -u -w",
     "lint": "eslint './**/*.{js,ts,tsx}'",
-    "setup-hooks": "git config --local core.hooksPath .hooks",
-    "prepack": "bob build",
-    "typecheck": "tsc --project ./ --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "bob build",
+    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
   },
   "react-native-builder-bob": {
     "source": "src",
@@ -47,10 +47,6 @@
       "module",
       "typescript"
     ]
-  },
-  "lint-staged": {
-    "**/*.{js,ts,tsx}": "eslint",
-    "*": "prettier -u -w"
   },
   "codegenConfig": {
     "name": "rnpermissions",
@@ -73,13 +69,12 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
-    "@types/react": "^18.2.46",
-    "@typescript-eslint/eslint-plugin": "^6.17.0",
-    "@typescript-eslint/parser": "^6.17.0",
+    "@types/react": "^18.2.47",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^3.2.4",
     "react": "^18.2.0",
