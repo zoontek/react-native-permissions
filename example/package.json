@@ -6,6 +6,10 @@
     "node": ">=18"
   },
   "scripts": {
+    "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
+    "pod-restore": "mv ../RNPermissions.podspec.bak ../RNPermissions.podspec",
+    "pod-update": "yarn pod-backup && cd ios && pod update && cd .. && yarn pod-restore",
+    "pod-install": "yarn pod-backup && cd ios && pod install && cd .. && yarn pod-restore",
     "clean": "rm -rf ./node_modules ./ios/Pods",
     "preinstall": "cd .. && yarn && yarn build && cd example",
     "postinstall": "yarn pod-install",
@@ -29,7 +33,6 @@
     "@react-native/metro-config": "^0.73.2",
     "@types/react": "^18.2.47",
     "babel-plugin-module-resolver": "^5.0.0",
-    "pod-install": "0.1.39",
     "typescript": "^5.3.3"
   }
 }

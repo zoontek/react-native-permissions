@@ -4501,11 +4501,6 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-pod-install@0.1.39:
-  version "0.1.39"
-  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.1.39.tgz#853a0585bafbd332c2ca6543854fd4919958cfb3"
-  integrity sha512-0kVvdLYe0CtfJEr+ISvTMxAEB0UF4JMRToPjuu9xAAq1mEqA2Ql5u7uLWX1m45BMM+7NfU4LnBbnfNjmQE9GCw==
-
 pretty-format@^26.5.2, pretty-format@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-26.6.2.tgz#e35c2705f14cb7fe2fe94fa078345b444120fc93"
