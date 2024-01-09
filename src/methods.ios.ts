@@ -85,7 +85,7 @@ async function requestMultiple<P extends Permission[]>(
   const dedup = uniq(permissions);
 
   for (let index = 0; index < dedup.length; index++) {
-    const permission: P[number] = dedup[index];
+    const permission = dedup[index] as P[number];
     output[permission] = await request(permission);
   }
 

@@ -65,8 +65,7 @@ export const App = () => {
       </Appbar.Header>
 
       <ScrollView>
-        {PERMISSIONS_VALUES.map((item, index) => {
-          const value = PERMISSIONS_VALUES[index];
+        {PERMISSIONS_VALUES.map((item) => {
           const parts = item.split('.');
           const name = parts[parts.length - 1];
 
@@ -82,7 +81,7 @@ export const App = () => {
                     icon="eye-outline"
                     mode="contained"
                     onPress={() => {
-                      RNPermissions.check(value)
+                      RNPermissions.check(item)
                         .then((status) => {
                           showSnackbar(`check(${name})`, status);
                         })
@@ -100,7 +99,7 @@ export const App = () => {
                     icon="help-circle-outline"
                     mode="contained"
                     onPress={() => {
-                      RNPermissions.request(value)
+                      RNPermissions.request(item)
                         .then((status) => {
                           showSnackbar(`request(${name})`, status);
                         })

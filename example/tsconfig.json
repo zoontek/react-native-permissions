@@ -1,15 +1,30 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["ES2017"],
     "jsx": "react-native",
-    "lib": ["ES2016"],
     "moduleResolution": "Node",
-    "target": "ESNext",
 
+    "allowJs": false,
     "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "isolatedModules": true
+    "declaration": true,
+    "sourceMap": true,
+    "stripInternal": true,
+    "skipLibCheck": true,
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "paths": {
+      "react-native-permissions": ["../src"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["src"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

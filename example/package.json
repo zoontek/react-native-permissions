@@ -6,19 +6,22 @@
     "node": ">=18"
   },
   "scripts": {
-    "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
+    "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
+    "pod-restore": "mv ../RNPermissions.podspec.bak ../RNPermissions.podspec",
+    "pod-update": "yarn pod-backup && cd ios && pod update && cd .. && yarn pod-restore",
+    "pod-install": "yarn pod-backup && cd ios && pod install && cd .. && yarn pod-restore",
     "clean": "rm -rf ./node_modules ./ios/Pods",
-    "preinstall": "cd .. && yarn prepack && cd example",
-    "postinstall": "yarn clean-modules && pod-install",
+    "preinstall": "cd .. && yarn && yarn build && cd example",
+    "postinstall": "yarn pod-install",
     "start": "react-native start",
     "reinstall": "yarn clean && yarn install"
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.0",
-    "react-native-paper": "^5.11.4",
-    "react-native-permissions": "../",
-    "react-native-safe-area-context": "^4.8.1",
+    "react-native": "0.73.2",
+    "react-native-paper": "^5.11.6",
+    "react-native-permissions": "link:../",
+    "react-native-safe-area-context": "^4.8.2",
     "react-native-vector-icons": "^10.0.3",
     "react-native-windows": "0.73.2"
   },
@@ -26,10 +29,10 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "^0.73.18",
-    "@react-native/metro-config": "^0.73.2",
-    "@types/react": "^18.2.45",
-    "pod-install": "0.1.39",
+    "@react-native/babel-preset": "0.73.19",
+    "@react-native/metro-config": "0.73.3",
+    "@types/react": "^18.2.47",
+    "babel-plugin-module-resolver": "^5.0.0",
     "typescript": "^5.3.3"
   }
 }
