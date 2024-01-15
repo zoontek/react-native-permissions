@@ -325,18 +325,6 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
       mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
       mCallbacks.remove(requestCode);
       return mCallbacks.size() == 0;
-    } catch (IllegalStateException e) {
-      FLog.e(
-        "PermissionsModule",
-        e,
-        "Unexpected invocation of `onRequestPermissionsResult` with invalid current activity");
-      return false;
-    } catch (NullPointerException e) {
-      FLog.e(
-        "PermissionsModule",
-        e,
-        "Unexpected invocation of `onRequestPermissionsResult` with invalid request code");
-      return false;
     } catch (Exception e) {
       FLog.e(
         "PermissionsModule",
