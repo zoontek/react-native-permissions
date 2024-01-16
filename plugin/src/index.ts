@@ -1,5 +1,5 @@
+import {ConfigPlugin, withDangerousMod} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
-import {ConfigPlugin, withDangerousMod} from 'expo/config-plugins';
 import {promises} from 'fs';
 import path from 'path';
 
