@@ -73,6 +73,15 @@ android {
 
     if (project.android.hasProperty("namespace")) {
         namespace "com.zoontek.rnpermissions"
+
+        buildFeatures {
+            buildConfig true
+        }
+        sourceSets {
+            main {
+                manifest.srcFile "src/main/AndroidManifestNew.xml"
+            }
+        }
     }
     defaultConfig {
         minSdkVersion safeExtGet("minSdkVersion", 21)
