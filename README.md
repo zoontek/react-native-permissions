@@ -93,6 +93,25 @@ setup_permissions([
 ```
 
 3. Then execute `pod install` _(📌  Note that it must be re-executed each time you update this config)_.
+
+Tip: If you use Expo and Expo CNG (Continuous Native Generation), you can utilize the built-in Expo Config plugin to perform the work outlined in steps 1 & 2 for you (supported on React Native 0.72+).
+To use the plugin, simply specify the array of the permissions which you want to set up as outlined in step 2 - for example:
+
+```json
+{
+  "name": "my app",
+  "plugins": [
+    [
+      "react-native-permissions",
+      {
+        // ...
+        "iosPermissions": ["Bluetooth"]
+      }
+    ]
+  ]
+}
+```
+
 4. Finally, update your `Info.plist` with the wanted permissions usage descriptions:
 
 ```xml
