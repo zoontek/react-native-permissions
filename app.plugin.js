@@ -1,1 +1,1 @@
-module.exports = require('./plugin/build');
+module.exports = require('./dist/commonjs/expo-plugin/index');
