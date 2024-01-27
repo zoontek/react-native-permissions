@@ -93,7 +93,6 @@ setup_permissions([
 ```
 
 3. Then execute `pod install` _(📌  Note that it must be re-executed each time you update this config)_.
-
 4. Finally, update your `Info.plist` with the wanted permissions usage descriptions:
 
 ```xml
