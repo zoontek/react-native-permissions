@@ -67,7 +67,7 @@ node_require('react-native-permissions/scripts/setup.rb')
 prepare_react_native_project!
 
 setup_permissions([
-  ${iosPermissions.map((permission) => `  '${permission}'`).join(',\n')}
+${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
 ])
 `.trim();
 
