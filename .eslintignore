@@ -1,9 +1,11 @@
 .eslintrc.js
+
 dist/
+node_modules
 example/
 scripts/
+
+app.plugin.js
 fetchWindowsCapabilites.js
 mock.js
-node_modules
 react-native.config.js
-app.plugin.js

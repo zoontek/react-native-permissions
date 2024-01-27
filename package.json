@@ -29,9 +29,9 @@
     "/windows",
     "/src",
     "/*.podspec",
-    "react-native.config.js",
+    "app.plugin.js",
     "mock.js",
-    "app.plugin.js"
+    "react-native.config.js"
   ],
   "scripts": {
     "format": "prettier '**/*' -u -w",
@@ -70,7 +70,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
-    "@expo/config-plugins": "^7.2.5",
+    "@expo/config-plugins": "^7.8.4",
     "@types/react": "^18.2.47",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "@typescript-eslint/parser": "^6.18.0",

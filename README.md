@@ -92,25 +92,50 @@ setup_permissions([
 # …
 ```
 
-3. Then execute `pod install` _(📌  Note that it must be re-executed each time you update this config)_.
+<details>
+  <summary><b>🧩 For expo users, see the plugin instructions</b></summary>
 
-Tip: If you use Expo and Expo CNG (Continuous Native Generation), you can utilize the built-in Expo Config plugin to perform the work outlined in steps 1 & 2 for you (supported on React Native 0.72+).
-To use the plugin, simply specify the array of the permissions which you want to set up as outlined in step 2 - for example:
+If you use expo you can use the built-in expo config plugin to perform the work outlined in steps 1 and 2:
 
 ```json
 {
-  "name": "my app",
+  "name": "My awesome app",
   "plugins": [
     [
       "react-native-permissions",
       {
-        // ...
-        "iosPermissions": ["Bluetooth"]
+        // uncomment wanted permissions
+        "iosPermissions": [
+          // "AppTrackingTransparency",
+          // "Bluetooth"
+          // "Calendars",
+          // "CalendarsWriteOnly",
+          // "Camera",
+          // "Contacts",
+          // "FaceID",
+          // "LocationAccuracy",
+          // "LocationAlways",
+          // "LocationWhenInUse",
+          // "MediaLibrary",
+          // "Microphone",
+          // "Motion",
+          // "Notifications",
+          // "PhotoLibrary",
+          // "PhotoLibraryAddOnly",
+          // "Reminders",
+          // "Siri",
+          // "SpeechRecognition",
+          // "StoreKit"
+        ]
       }
     ]
   ]
 }
 ```
+
+</details>
+
+3. Then execute `pod install` _(📌  Note that it must be re-executed each time you update this config)_.
 
 4. Finally, update your `Info.plist` with the wanted permissions usage descriptions:
 
