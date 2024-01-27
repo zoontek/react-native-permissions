@@ -18,10 +18,10 @@ body:
       label: Before submitting a new issue
       description: Please perform simple checks first.
       options:
-      - label: I tested using the latest release of the library, as maybe the bug has been already fixed.
-        required: true
-      - label: I checked for possible duplicate issues, with possible answers.
-        required: true
+        - label: I tested using the latest release of the library, as maybe the bug has been already fixed.
+          required: true
+        - label: I checked for possible duplicate issues, with possible answers.
+          required: true
   - type: textarea
     id: summary
     attributes:
@@ -36,7 +36,7 @@ body:
     attributes:
       label: Library version
       description: What version of the library are you using?
-      placeholder: "x.x.x"
+      placeholder: 'x.x.x'
     validations:
       required: true
   - type: textarea

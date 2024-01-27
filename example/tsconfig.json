@@ -22,9 +22,9 @@
     "noUnusedParameters": true,
 
     "paths": {
-      "react-native-permissions": ["../src"]
-    }
+      "react-native-permissions": ["../src"],
+    },
   },
   "include": ["src"],
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
 }
