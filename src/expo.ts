@@ -1,4 +1,5 @@
 import {ConfigPlugin, withDangerousMod} from '@expo/config-plugins';
+import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
@@ -27,11 +28,6 @@ type Props = {
   )[];
 };
 
-const requireRegExp =
-  /require Pod::Executable\.execute_command\('node', \['-p',\s*'require\.resolve\(\s*"react-native\/scripts\/react_native_pods\.rb",\s*{paths: \[process\.argv\[1\]]},\s*\)', __dir__\]\)\.strip/;
-
-const prepareRegExp = /prepare_react_native_project!/;
-
 const withPermissions: ConfigPlugin<Props> = (config, {iosPermissions = []}) =>
   withDangerousMod(config, [
     'ios',
@@ -42,41 +38,36 @@ const withPermissions: ConfigPlugin<Props> = (config, {iosPermissions = []}) =>
       if (iosPermissions.length === 0) {
         return config;
       }
-      if (!requireRegExp.test(contents) || !prepareRegExp.test(contents)) {
+
+      const withRequire = mergeContents({
+        tag: 'require',
+        src: contents,
+        anchor:
+          /^require File\.join\(File\.dirname\(`node --print "require\.resolve\('react-native\/package\.json'\)"`\), "scripts\/react_native_pods"\)$/m,
+        newSrc: `require File.join(File.dirname(\`node --print "require.resolve('react-native-permissions/package.json')"\`), "scripts/setup")`,
+        offset: 1,
+        comment: '#',
+      });
+
+      const withSetup = mergeContents({
+        tag: 'setup',
+        src: withRequire.contents,
+        anchor: /^prepare_react_native_project!$/m,
+        newSrc: `setup_permissions([
+${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
+])`,
+        offset: 1,
+        comment: '#',
+      });
+
+      if (!withRequire.didMerge || !withSetup.didMerge) {
         console.error(
           "ERROR: Cannot add react-native-permissions to the project's ios/Podfile because it's malformed. Please report this with a copy of your project Podfile.",
         );
         return config;
       }
 
-      const nodeRequire = `
-def node_require(script)
-  # Resolve script with node to allow for hoisting
-  require Pod::Executable.execute_command('node', ['-p',
-    "require.resolve(
-      '#{script}',
-      {paths: [process.argv[1]]},
-    )", __dir__]).strip
-end
-
-node_require('react-native/scripts/react_native_pods.rb')
-node_require('react-native-permissions/scripts/setup.rb')
-`.trim();
-
-      const setupFunction = `
-prepare_react_native_project!
-
-setup_permissions([
-${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
-])
-`.trim();
-
-      await fs.writeFile(
-        file,
-        contents.replace(requireRegExp, nodeRequire).replace(prepareRegExp, setupFunction),
-        'utf-8',
-      );
-
+      await fs.writeFile(file, withSetup.contents, 'utf-8');
       return config;
     },
   ]);
