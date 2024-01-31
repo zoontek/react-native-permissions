@@ -156,35 +156,19 @@ setup_permissions([
 
 If you use expo you can use the built-in expo config plugin to perform the work outlined in steps 1 and 2:
 
-```js
+```json
 {
   "name": "My awesome app",
   "plugins": [
     [
       "react-native-permissions",
       {
-        // uncomment wanted permissions
         "iosPermissions": [
-          // "AppTrackingTransparency",
-          // "Bluetooth"
-          // "Calendars",
-          // "CalendarsWriteOnly",
-          // "Camera",
-          // "Contacts",
-          // "FaceID",
-          // "LocationAccuracy",
-          // "LocationAlways",
-          // "LocationWhenInUse",
-          // "MediaLibrary",
-          // "Microphone",
-          // "Motion",
-          // "Notifications",
-          // "PhotoLibrary",
-          // "PhotoLibraryAddOnly",
-          // "Reminders",
-          // "Siri",
-          // "SpeechRecognition",
-          // "StoreKit"
+          "AppTrackingTransparency",
+          "Bluetooth",
+          "CalendarsWriteOnly",
+          "Notifications",
+          "SpeechRecognition"
         ]
       }
     ]
