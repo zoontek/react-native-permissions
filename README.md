@@ -154,7 +154,7 @@ setup_permissions([
 <details>
   <summary><b>🧩 For expo users, see the plugin instructions</b></summary>
 
-If you use expo you can use the built-in expo config plugin to perform the work outlined in steps 1 and 2:
+Add wanted permissions (see step 1) to the plugin config:
 
 ```json
 {
