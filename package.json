@@ -80,7 +80,7 @@
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^3.2.4",
     "react": "18.2.0",
-    "react-native": "0.73.2",
+    "react-native": "0.73.4",
     "react-native-builder-bob": "^0.23.2",
     "typescript": "^5.3.3"
   }
