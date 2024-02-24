@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerMediaLibrary.h"
 
-@import MediaPlayer;
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation RNPermissionHandlerMediaLibrary
 

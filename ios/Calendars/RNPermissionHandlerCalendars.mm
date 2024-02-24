@@ -1,26 +1,26 @@
-#import "RNPermissionHandlerReminders.h"
+#import "RNPermissionHandlerCalendars.h"
 
-@import EventKit;
+#import <EventKit/EventKit.h>
 
-@implementation RNPermissionHandlerReminders
+@implementation RNPermissionHandlerCalendars
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSRemindersFullAccessUsageDescription"];
+  return @[@"NSCalendarsFullAccessUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.REMINDERS";
+  return @"ios.permission.CALENDARS";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeReminder]) {
+  switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
     case EKAuthorizationStatusNotDetermined:
+    case EKAuthorizationStatusWriteOnly:
       return resolve(RNPermissionStatusNotDetermined);
     case EKAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
     case EKAuthorizationStatusDenied:
-    case EKAuthorizationStatusWriteOnly:
       return resolve(RNPermissionStatusDenied);
     case EKAuthorizationStatusFullAccess:
       return resolve(RNPermissionStatusAuthorized);
@@ -40,9 +40,9 @@
   };
 
   if (@available(iOS 17.0, *)) {
-    [store requestFullAccessToRemindersWithCompletion:completion];
+    [store requestFullAccessToEventsWithCompletion:completion];
   } else {
-    [store requestAccessToEntityType:EKEntityTypeReminder completion:completion];
+    [store requestAccessToEntityType:EKEntityTypeEvent completion:completion];
   }
 }
 

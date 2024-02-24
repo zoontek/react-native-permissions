@@ -1,7 +1,6 @@
 #import "RNPermissionHandlerNotifications.h"
 
-@import UserNotifications;
-@import UIKit;
+#import <UserNotifications/UserNotifications.h>
 
 @interface RNPermissionHandlerNotifications()
 

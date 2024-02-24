@@ -1,35 +1,34 @@
-#import "RNPermissionHandlerCamera.h"
+#import "RNPermissionHandlerSpeechRecognition.h"
 
-@import AVFoundation;
+#import <Speech/Speech.h>
 
-@implementation RNPermissionHandlerCamera
+@implementation RNPermissionHandlerSpeechRecognition
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSCameraUsageDescription"];
+  return @[@"NSSpeechRecognitionUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.CAMERA";
+  return @"ios.permission.SPEECH_RECOGNITION";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo]) {
-    case AVAuthorizationStatusNotDetermined:
+  switch ([SFSpeechRecognizer authorizationStatus]) {
+    case SFSpeechRecognizerAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
-    case AVAuthorizationStatusRestricted:
+    case SFSpeechRecognizerAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case AVAuthorizationStatusDenied:
+    case SFSpeechRecognizerAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
-    case AVAuthorizationStatusAuthorized:
+    case SFSpeechRecognizerAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
-                           completionHandler:^(__unused BOOL granted) {
+  [SFSpeechRecognizer requestAuthorization:^(__unused SFSpeechRecognizerAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];
 }

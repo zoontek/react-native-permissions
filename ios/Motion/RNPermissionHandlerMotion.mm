@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerMotion.h"
 
-@import CoreMotion;
+#import <CoreMotion/CoreMotion.h>
 
 @interface RNPermissionHandlerMotion()
 

@@ -1,9 +1,8 @@
-#import "RNPermissionHandlerLocationAlways.h"
+#import "RNPermissionHandlerLocationWhenInUse.h"
 
-@import CoreLocation;
-@import UIKit;
+#import <CoreLocation/CoreLocation.h>
 
-@interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
+@interface RNPermissionHandlerLocationWhenInUse() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
@@ -11,14 +10,14 @@
 
 @end
 
-@implementation RNPermissionHandlerLocationAlways
+@implementation RNPermissionHandlerLocationWhenInUse
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSLocationAlwaysAndWhenInUseUsageDescription"];
+  return @[@"NSLocationWhenInUseUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.LOCATION_ALWAYS";
+  return @"ios.permission.LOCATION_WHEN_IN_USE";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
@@ -28,9 +27,9 @@
       return resolve(RNPermissionStatusNotDetermined);
     case kCLAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case kCLAuthorizationStatusAuthorizedWhenInUse:
     case kCLAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
+    case kCLAuthorizationStatusAuthorizedWhenInUse:
     case kCLAuthorizationStatusAuthorizedAlways:
       return resolve(RNPermissionStatusAuthorized);
   }
@@ -47,7 +46,7 @@
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
-  [_locationManager requestAlwaysAuthorization];
+  [_locationManager requestWhenInUseAuthorization];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {

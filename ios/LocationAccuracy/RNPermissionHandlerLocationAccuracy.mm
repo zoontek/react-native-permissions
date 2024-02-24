@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerLocationAccuracy.h"
 
-@import CoreLocation;
+#import <CoreLocation/CoreLocation.h>
 
 @interface RNPermissionHandlerLocationAccuracy() <CLLocationManagerDelegate>
 
