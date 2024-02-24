@@ -1,7 +1,6 @@
 #import "RNPermissionHandlerFaceID.h"
 
-@import LocalAuthentication;
-@import UIKit;
+#import <LocalAuthentication/LocalAuthentication.h>
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 

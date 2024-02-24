@@ -1,7 +1,7 @@
 #import "RNPermissionHandlerAppTrackingTransparency.h"
 
-@import AppTrackingTransparency;
-@import AdSupport;
+#import <AdSupport/AdSupport.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 
 @interface RNPermissionHandlerAppTrackingTransparency()
 

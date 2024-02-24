@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerBluetooth.h"
 
-@import CoreBluetooth;
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface RNPermissionHandlerBluetooth() <CBPeripheralManagerDelegate>
 

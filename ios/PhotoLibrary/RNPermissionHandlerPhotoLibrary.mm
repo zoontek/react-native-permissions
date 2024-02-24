@@ -1,8 +1,8 @@
 #import "RNPermissionHandlerPhotoLibrary.h"
 #import <React/RCTUtils.h>
 
-@import Photos;
-@import PhotosUI;
+#import <Photos/Photos.h>
+#import <PhotosUI/PhotosUI.h>
 
 @implementation RNPermissionHandlerPhotoLibrary
 

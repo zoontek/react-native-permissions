@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerContacts.h"
 
-@import Contacts;
+#import <Contacts/Contacts.h>
 
 @implementation RNPermissionHandlerContacts
 

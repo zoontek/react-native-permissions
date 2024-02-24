@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerPhotoLibraryAddOnly.h"
 
-@import Photos;
+#import <Photos/Photos.h>
 
 @implementation RNPermissionHandlerPhotoLibraryAddOnly
 

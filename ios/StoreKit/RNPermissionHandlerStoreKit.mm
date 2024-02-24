@@ -1,34 +1,38 @@
-#import "RNPermissionHandlerSpeechRecognition.h"
+#import "RNPermissionHandlerStoreKit.h"
 
-@import Speech;
+#import <StoreKit/StoreKit.h>
 
-@implementation RNPermissionHandlerSpeechRecognition
+@implementation RNPermissionHandlerStoreKit
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSSpeechRecognitionUsageDescription"];
+  return @[@"NSAppleMusicUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.SPEECH_RECOGNITION";
+  return @"ios.permission.STOREKIT";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([SFSpeechRecognizer authorizationStatus]) {
-    case SFSpeechRecognizerAuthorizationStatusNotDetermined:
+#if TARGET_OS_SIMULATOR
+  return resolve(RNPermissionStatusNotAvailable);
+#else
+  switch ([SKCloudServiceController authorizationStatus]) {
+    case SKCloudServiceAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
-    case SFSpeechRecognizerAuthorizationStatusRestricted:
+    case SKCloudServiceAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case SFSpeechRecognizerAuthorizationStatusDenied:
+    case SKCloudServiceAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
-    case SFSpeechRecognizerAuthorizationStatusAuthorized:
+    case SKCloudServiceAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
   }
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  [SFSpeechRecognizer requestAuthorization:^(__unused SFSpeechRecognizerAuthorizationStatus status) {
+  [SKCloudServiceController requestAuthorization:^(__unused SKCloudServiceAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];
 }

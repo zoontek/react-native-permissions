@@ -1,38 +1,34 @@
-#import "RNPermissionHandlerStoreKit.h"
+#import "RNPermissionHandlerSiri.h"
 
-@import StoreKit;
+#import <Intents/Intents.h>
 
-@implementation RNPermissionHandlerStoreKit
+@implementation RNPermissionHandlerSiri
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSAppleMusicUsageDescription"];
+  return @[@"NSSiriUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.STOREKIT";
+  return @"ios.permission.SIRI";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-#if TARGET_OS_SIMULATOR
-  return resolve(RNPermissionStatusNotAvailable);
-#else
-  switch ([SKCloudServiceController authorizationStatus]) {
-    case SKCloudServiceAuthorizationStatusNotDetermined:
+  switch ([INPreferences siriAuthorizationStatus]) {
+    case INSiriAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
-    case SKCloudServiceAuthorizationStatusRestricted:
+    case INSiriAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case SKCloudServiceAuthorizationStatusDenied:
+    case INSiriAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
-    case SKCloudServiceAuthorizationStatusAuthorized:
+    case INSiriAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
   }
-#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  [SKCloudServiceController requestAuthorization:^(__unused SKCloudServiceAuthorizationStatus status) {
+  [INPreferences requestSiriAuthorization:^(__unused INSiriAuthorizationStatus status) {
     [self checkWithResolver:resolve rejecter:reject];
   }];
 }

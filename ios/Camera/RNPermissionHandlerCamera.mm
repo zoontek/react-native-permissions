@@ -1,34 +1,35 @@
-#import "RNPermissionHandlerSiri.h"
+#import "RNPermissionHandlerCamera.h"
 
-@import Intents;
+#import <AVFoundation/AVFoundation.h>
 
-@implementation RNPermissionHandlerSiri
+@implementation RNPermissionHandlerCamera
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
-  return @[@"NSSiriUsageDescription"];
+  return @[@"NSCameraUsageDescription"];
 }
 
 + (NSString * _Nonnull)handlerUniqueId {
-  return @"ios.permission.SIRI";
+  return @"ios.permission.CAMERA";
 }
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([INPreferences siriAuthorizationStatus]) {
-    case INSiriAuthorizationStatusNotDetermined:
+  switch ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo]) {
+    case AVAuthorizationStatusNotDetermined:
       return resolve(RNPermissionStatusNotDetermined);
-    case INSiriAuthorizationStatusRestricted:
+    case AVAuthorizationStatusRestricted:
       return resolve(RNPermissionStatusRestricted);
-    case INSiriAuthorizationStatusDenied:
+    case AVAuthorizationStatusDenied:
       return resolve(RNPermissionStatusDenied);
-    case INSiriAuthorizationStatusAuthorized:
+    case AVAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  [INPreferences requestSiriAuthorization:^(__unused INSiriAuthorizationStatus status) {
+  [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
+                           completionHandler:^(__unused BOOL granted) {
     [self checkWithResolver:resolve rejecter:reject];
   }];
 }

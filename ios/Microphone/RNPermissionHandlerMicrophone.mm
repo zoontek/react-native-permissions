@@ -1,6 +1,6 @@
 #import "RNPermissionHandlerMicrophone.h"
 
-@import AVFoundation;
+#import <AVFoundation/AVFoundation.h>
 
 @implementation RNPermissionHandlerMicrophone
 
