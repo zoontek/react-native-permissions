@@ -1113,7 +1113,7 @@ PODS:
     - React-jsi (= 0.73.4)
     - React-logger (= 0.73.4)
     - React-perflogger (= 0.73.4)
-  - RNPermissions (4.1.2):
+  - RNPermissions (4.1.3):
     - React-Core
   - RNVectorIcons (10.0.3):
     - glog
@@ -1382,7 +1382,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: ed48e5faac6751e66ee1261c4bd01643b436f112
   React-utils: 6e5ad394416482ae21831050928ae27348f83487
   ReactCommon: 840a955d37b7f3358554d819446bffcf624b2522
-  RNPermissions: 09766cc679a5bb91aa300d7cbce64db250e1a5c3
+  RNPermissions: 1a0221372ab4c831da7febb92267bfa4c0768949
   RNVectorIcons: 210f910e834e3485af40693ad4615c1ec22fc02b
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 1b901a6d6eeba4e8a2e8f308f708691cdb5db312
