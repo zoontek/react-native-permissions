@@ -1,5 +1,5 @@
 import {Alert, AlertButton} from 'react-native';
-import NativeModule from './NativePermissionsModule';
+import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
 import type {
   NotificationOption,

@@ -1,4 +1,4 @@
-#import "RNPermissionsModule.h"
+#import "RNPermissions.h"
 
 @interface RNPermissionHandlerMediaLibrary : NSObject<RNPermissionHandler>
 

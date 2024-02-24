@@ -1,5 +1,5 @@
 import type {Contract} from './contract';
-import NativeModule from './NativePermissionsModule';
+import NativeModule from './NativeRNPermissions';
 import {RESULTS} from './results';
 import type {
   LocationAccuracy,

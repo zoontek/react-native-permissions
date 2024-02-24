@@ -50,7 +50,7 @@
     ]
   },
   "codegenConfig": {
-    "name": "rnpermissions",
+    "name": "RNPermissionsSpec",
     "type": "modules",
     "jsSrcsDir": "./src",
     "android": {
