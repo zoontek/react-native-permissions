@@ -8,7 +8,7 @@ type NotificationsResponse = {
 
 export interface Spec extends TurboModule {
   getConstants(): {
-    available?: string[];
+    available: string[];
   };
 
   openSettings(): Promise<void>;
