@@ -64,10 +64,9 @@ def setup_permissions(config)
   podspec_path = File.join(module_dir, 'RNPermissions.podspec')
   podspec = File.read(podspec_path)
 
-  podspec_content = podspec.gsub(
-    /"ios\/\*\.{h,mm}".*/,
-    source_files + "\n  s.frameworks = #{frameworks}"
-  )
+  podspec_content = podspec
+    .gsub(/(# *)?s\.source_files *=.*/, "s.source_files = #{source_files}")
+    .gsub(/(# *)?s\.frameworks *=.*/, "s.frameworks = #{frameworks}")
 
   File.write(podspec_path, podspec_content)
 end

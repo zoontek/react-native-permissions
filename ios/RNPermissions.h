@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import <rnpermissions/rnpermissions.h>
+#import <RNPermissionsSpec/RNPermissionsSpec.h>
 #else
 #import <React/RCTBridge.h>
 #endif
@@ -30,9 +30,9 @@ typedef enum {
 @end
 
 #ifdef RCT_NEW_ARCH_ENABLED
-@interface RNPermissionsModule : NSObject<NativePermissionsModuleSpec>
+@interface RNPermissions : NSObject<NativeRNPermissionsSpec>
 #else
-@interface RNPermissionsModule : NSObject<RCTBridgeModule>
+@interface RNPermissions : NSObject<RCTBridgeModule>
 #endif
 
 @end

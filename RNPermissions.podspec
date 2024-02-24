@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => package["repository"]["url"], :tag => s.version }
   s.source_files = "ios/*.{h,mm}"
+  # s.frameworks = <frameworks>
 
   if ENV['RCT_NEW_ARCH_ENABLED'] == "1" then
     install_modules_dependencies(s)

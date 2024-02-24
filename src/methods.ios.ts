@@ -1,5 +1,5 @@
 import type {Contract} from './contract';
-import NativeModule from './NativePermissionsModule';
+import NativeModule from './NativeRNPermissions';
 import {RESULTS} from './results';
 import type {
   LocationAccuracy,
@@ -13,7 +13,7 @@ import {uniq} from './utils';
 
 let available: string[] | undefined = undefined;
 
-function getAvailable(): string[] | undefined {
+function getAvailable(): string[] {
   if (available == null) {
     available = NativeModule.getConstants().available;
   }
@@ -30,13 +30,13 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable()?.includes(permission)
+  return getAvailable().includes(permission)
     ? (NativeModule.check(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable()?.includes(permission)
+  return getAvailable().includes(permission)
     ? (NativeModule.request(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }

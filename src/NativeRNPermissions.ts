@@ -1,4 +1,5 @@
-import {TurboModule, TurboModuleRegistry} from 'react-native';
+import type {TurboModule} from 'react-native';
+import {TurboModuleRegistry} from 'react-native';
 
 type NotificationsResponse = {
   status: Object;
@@ -6,10 +7,13 @@ type NotificationsResponse = {
 };
 
 export interface Spec extends TurboModule {
+  getConstants(): {
+    available: string[];
+  };
+
+  openSettings(): Promise<void>;
   check(permission: string): Promise<string>;
   checkNotifications(): Promise<NotificationsResponse>;
-  getConstants(): {available?: string[]};
-  openSettings(): Promise<void>;
   request(permission: string): Promise<string>;
   requestNotifications(options: string[]): Promise<NotificationsResponse>;
 
@@ -24,4 +28,4 @@ export interface Spec extends TurboModule {
   requestLocationAccuracy(purposeKey: string): Promise<string>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('RNPermissionsModule');
+export default TurboModuleRegistry.getEnforcing<Spec>('RNPermissions');

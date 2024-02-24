@@ -1,4 +1,4 @@
-#import "RNPermissionsModule.h"
+#import "RNPermissions.h"
 #import <React/RCTLog.h>
 
 #if __has_include("RNPermissionHandlerBluetooth.h")
@@ -62,13 +62,13 @@
 #import "RNPermissionHandlerCalendarsWriteOnly.h"
 #endif
 
-@interface RNPermissionsModule()
+@interface RNPermissions()
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>> *_Nonnull handlers;
 
 @end
 
-@implementation RNPermissionsModule
+@implementation RNPermissions
 
 RCT_EXPORT_MODULE();
 
@@ -441,13 +441,12 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
 
 #if RCT_NEW_ARCH_ENABLED
 
-- (facebook::react::ModuleConstants<JS::NativePermissionsModule::Constants::Builder>)getConstants {
-  return [self constantsToExport];
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeRNPermissionsSpecJSI>(params);
 }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params {
-  return std::make_shared<facebook::react::NativePermissionsModuleSpecJSI>(params);
+- (facebook::react::ModuleConstants<JS::NativeRNPermissions::Constants::Builder>)getConstants {
+  return [self constantsToExport];
 }
 
 #endif

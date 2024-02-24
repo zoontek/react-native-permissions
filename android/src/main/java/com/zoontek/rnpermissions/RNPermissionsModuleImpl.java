@@ -19,11 +19,9 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
@@ -31,30 +29,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@ReactModule(name = RNPermissionsModule.NAME)
-public class RNPermissionsModule extends NativePermissionsModuleSpec implements PermissionListener {
+public class RNPermissionsModuleImpl {
 
   private static final String ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY";
-  public static final String NAME = "RNPermissionsModule";
+  public static final String NAME = "RNPermissions";
 
-  private final SparseArray<Callback> mCallbacks;
-  private int mRequestCode = 0;
-  private final String GRANTED = "granted";
-  private final String DENIED = "denied";
-  private final String UNAVAILABLE = "unavailable";
-  private final String BLOCKED = "blocked";
+  private static int mRequestCode = 0;
+  private static final String GRANTED = "granted";
+  private static final String DENIED = "denied";
+  private static final String UNAVAILABLE = "unavailable";
+  private static final String BLOCKED = "blocked";
 
-  public RNPermissionsModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-    mCallbacks = new SparseArray<Callback>();
+  public static Map<String, Object> getConstants() {
+    HashMap<String, Object> constants = new HashMap<>();
+    constants.put("available", Arguments.createArray());
+    return constants;
   }
 
-  @Override
-  public String getName() {
-    return NAME;
-  }
-
-  private boolean isPermissionUnavailable(@NonNull final String permission) {
+  private static boolean isPermissionUnavailable(@NonNull final String permission) {
     String fieldName = permission
       .replace("android.permission.", "")
       .replace("com.android.voicemail.permission.", "");
@@ -68,10 +60,11 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
   }
 
   // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
-  private WritableMap getLegacyNotificationsResponse(String disabledStatus) {
-    final boolean enabled = NotificationManagerCompat
-      .from(getReactApplicationContext()).areNotificationsEnabled();
-
+  private static WritableMap getLegacyNotificationsResponse(
+    final ReactApplicationContext reactContext,
+    final String disabledStatus
+  ) {
+    final boolean enabled = NotificationManagerCompat.from(reactContext).areNotificationsEnabled();
     final WritableMap output = Arguments.createMap();
     final WritableMap settings = Arguments.createMap();
 
@@ -81,20 +74,11 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     return output;
   }
 
-  @ReactMethod
-  public void checkNotifications(final Promise promise) {
-    promise.resolve(getLegacyNotificationsResponse(DENIED));
-  }
-
-  @Override
-  public void requestNotifications(final ReadableArray options, final Promise promise) {
-    promise.resolve(getLegacyNotificationsResponse(BLOCKED));
-  }
-
-  @ReactMethod
-  public void openSettings(final Promise promise) {
+  public static void openSettings(
+    final ReactApplicationContext reactContext,
+    final Promise promise
+  ) {
     try {
-      final ReactApplicationContext reactContext = getReactApplicationContext();
       final Intent intent = new Intent();
       final String packageName = reactContext.getPackageName();
 
@@ -109,14 +93,17 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     }
   }
 
-  @ReactMethod
-  public void check(final String permission, final Promise promise) {
+  public static void check(
+    final ReactApplicationContext reactContext,
+    final String permission,
+    final Promise promise
+  ) {
     if (permission == null || isPermissionUnavailable(permission)) {
       promise.resolve(UNAVAILABLE);
       return;
     }
 
-    Context context = getReactApplicationContext().getBaseContext();
+    Context context = reactContext.getBaseContext();
 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
@@ -133,78 +120,20 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     }
   }
 
-  @ReactMethod
-  public void shouldShowRequestRationale(final String permission, final Promise promise) {
-    if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-      promise.resolve(false);
-      return;
-    }
-
-    try {
-      promise.resolve(
-        getPermissionAwareActivity().shouldShowRequestPermissionRationale(permission));
-    } catch (IllegalStateException e) {
-      promise.reject(ERROR_INVALID_ACTIVITY, e);
-    }
+  public static void checkNotifications(
+    final ReactApplicationContext reactContext,
+    final Promise promise
+  ) {
+    promise.resolve(getLegacyNotificationsResponse(reactContext, DENIED));
   }
 
-  @ReactMethod
-  public void request(final String permission, final Promise promise) {
-    if (permission == null || isPermissionUnavailable(permission)) {
-      promise.resolve(UNAVAILABLE);
-      return;
-    }
-
-    Context context = getReactApplicationContext().getBaseContext();
-
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
-        == PackageManager.PERMISSION_GRANTED
-        ? GRANTED
-        : BLOCKED);
-      return;
-    }
-
-    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-      promise.resolve(GRANTED);
-      return;
-    }
-
-    try {
-      PermissionAwareActivity activity = getPermissionAwareActivity();
-
-      mCallbacks.put(
-        mRequestCode,
-        new Callback() {
-          @Override
-          public void invoke(Object... args) {
-            int[] results = (int[]) args[0];
-
-            if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) {
-              promise.resolve(GRANTED);
-            } else {
-              PermissionAwareActivity activity = (PermissionAwareActivity) args[1];
-
-              if (activity.shouldShowRequestPermissionRationale(permission)) {
-                promise.resolve(DENIED);
-              } else {
-                promise.resolve(BLOCKED);
-              }
-            }
-          }
-        });
-
-      activity.requestPermissions(new String[] {permission}, mRequestCode, this);
-      mRequestCode++;
-    } catch (IllegalStateException e) {
-      promise.reject(ERROR_INVALID_ACTIVITY, e);
-    }
-  }
-
-  @ReactMethod
-  public void checkMultiple(final ReadableArray permissions, final Promise promise) {
+  public static void checkMultiple(
+    final ReactApplicationContext reactContext,
+    final ReadableArray permissions,
+    final Promise promise
+  ) {
     final WritableMap output = new WritableNativeMap();
-    Context context = getReactApplicationContext().getBaseContext();
+    Context context = reactContext.getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
@@ -228,12 +157,82 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     promise.resolve(output);
   }
 
-  @ReactMethod
-  public void requestMultiple(final ReadableArray permissions, final Promise promise) {
+  public static void request(
+    final ReactApplicationContext reactContext,
+    final PermissionListener listener,
+    final SparseArray<Callback> callbacks,
+    final String permission,
+    final Promise promise
+  ) {
+    if (permission == null || isPermissionUnavailable(permission)) {
+      promise.resolve(UNAVAILABLE);
+      return;
+    }
+
+    Context context = reactContext.getBaseContext();
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
+        == PackageManager.PERMISSION_GRANTED
+        ? GRANTED
+        : BLOCKED);
+      return;
+    }
+
+    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      promise.resolve(GRANTED);
+      return;
+    }
+
+    try {
+      PermissionAwareActivity activity = getPermissionAwareActivity(reactContext);
+
+      callbacks.put(
+        mRequestCode,
+        new Callback() {
+          @Override
+          public void invoke(Object... args) {
+            int[] results = (int[]) args[0];
+
+            if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) {
+              promise.resolve(GRANTED);
+            } else {
+              PermissionAwareActivity activity = (PermissionAwareActivity) args[1];
+
+              if (activity.shouldShowRequestPermissionRationale(permission)) {
+                promise.resolve(DENIED);
+              } else {
+                promise.resolve(BLOCKED);
+              }
+            }
+          }
+        });
+
+      activity.requestPermissions(new String[] {permission}, mRequestCode, listener);
+      mRequestCode++;
+    } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
+    }
+  }
+
+  public static void requestNotifications(
+    final ReactApplicationContext reactContext,
+    final Promise promise
+  ) {
+    promise.resolve(getLegacyNotificationsResponse(reactContext, BLOCKED));
+  }
+
+  public static void requestMultiple(
+    final ReactApplicationContext reactContext,
+    final PermissionListener listener,
+    final SparseArray<Callback> callbacks,
+    final ReadableArray permissions,
+    final Promise promise
+  ) {
     final WritableMap output = new WritableNativeMap();
     final ArrayList<String> permissionsToCheck = new ArrayList<String>();
     int checkedPermissionsCount = 0;
-    Context context = getReactApplicationContext().getBaseContext();
+    Context context = reactContext.getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
@@ -264,9 +263,9 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     }
 
     try {
-      PermissionAwareActivity activity = getPermissionAwareActivity();
+      PermissionAwareActivity activity = getPermissionAwareActivity(reactContext);
 
-      mCallbacks.put(
+      callbacks.put(
         mRequestCode,
         new Callback() {
           @Override
@@ -292,50 +291,35 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
           }
         });
 
-      activity.requestPermissions(permissionsToCheck.toArray(new String[0]), mRequestCode, this);
+      activity.requestPermissions(permissionsToCheck.toArray(new String[0]), mRequestCode, listener);
       mRequestCode++;
     } catch (IllegalStateException e) {
       promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
   }
 
-  @Override
-  protected Map<String, Object> getTypedExportedConstants() {
-    return new HashMap<>();
-  }
+  public static void shouldShowRequestRationale(
+    final ReactApplicationContext reactContext,
+    final String permission,
+    final Promise promise
+  ) {
+    if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      promise.resolve(false);
+      return;
+    }
 
-  @Override
-  public void checkLocationAccuracy(Promise promise) {
-    promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
-  }
-
-  @Override
-  public void requestLocationAccuracy(String purposeKey, Promise promise) {
-    promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
-  }
-
-  @Override
-  public void openPhotoPicker(Promise promise) {
-    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
-  }
-
-  @Override
-  public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     try {
-      mCallbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity());
-      mCallbacks.remove(requestCode);
-      return mCallbacks.size() == 0;
-    } catch (Exception e) {
-      FLog.e(
-        "PermissionsModule",
-        e,
-        "Unexpected invocation of `onRequestPermissionsResult`");
-      return false;
+      promise.resolve(getPermissionAwareActivity(reactContext)
+        .shouldShowRequestPermissionRationale(permission));
+    } catch (IllegalStateException e) {
+      promise.reject(ERROR_INVALID_ACTIVITY, e);
     }
   }
 
-  private PermissionAwareActivity getPermissionAwareActivity() {
-    Activity activity = getCurrentActivity();
+  private static PermissionAwareActivity getPermissionAwareActivity(
+    final ReactApplicationContext reactContext
+  ) {
+    Activity activity = reactContext.getCurrentActivity();
 
     if (activity == null) {
       throw new IllegalStateException(
@@ -347,5 +331,36 @@ public class RNPermissionsModule extends NativePermissionsModuleSpec implements 
     }
 
     return (PermissionAwareActivity) activity;
+  }
+
+  public static void openPhotoPicker(final Promise promise) {
+    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
+  }
+
+  public static void checkLocationAccuracy(final Promise promise) {
+    promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
+  }
+
+  public static void requestLocationAccuracy(final Promise promise) {
+    promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
+  }
+
+  public static boolean onRequestPermissionsResult(
+    final ReactApplicationContext reactContext,
+    final SparseArray<Callback> callbacks,
+    int requestCode,
+    int[] grantResults
+  ) {
+    try {
+      callbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity(reactContext));
+      callbacks.remove(requestCode);
+      return callbacks.size() == 0;
+    } catch (Exception e) {
+      FLog.e(
+        "PermissionsModule",
+        e,
+        "Unexpected invocation of `onRequestPermissionsResult`");
+      return false;
+    }
   }
 }
