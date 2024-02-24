@@ -65,8 +65,8 @@ def setup_permissions(config)
   podspec = File.read(podspec_path)
 
   podspec_content = podspec
-    .gsub(/(# ?)?s\.source_files ?=.?/, "s.source_files = #{source_files}")
-    .gsub(/(# ?)?s\.frameworks ?=.?/, "s.frameworks = #{frameworks}")
+    .gsub(/(# *)?s\.source_files *=.*/, "s.source_files = #{source_files}")
+    .gsub(/(# *)?s\.frameworks *=.*/, "s.frameworks = #{frameworks}")
 
   File.write(podspec_path, podspec_content)
 end
