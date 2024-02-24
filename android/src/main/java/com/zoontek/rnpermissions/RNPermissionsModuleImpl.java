@@ -20,7 +20,6 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.PermissionAwareActivity;
@@ -334,6 +333,18 @@ public class RNPermissionsModuleImpl {
     return (PermissionAwareActivity) activity;
   }
 
+  public static void openPhotoPicker(final Promise promise) {
+    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
+  }
+
+  public static void checkLocationAccuracy(final Promise promise) {
+    promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
+  }
+
+  public static void requestLocationAccuracy(final Promise promise) {
+    promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
+  }
+
   public static boolean onRequestPermissionsResult(
     final ReactApplicationContext reactContext,
     final SparseArray<Callback> callbacks,
@@ -351,17 +362,5 @@ public class RNPermissionsModuleImpl {
         "Unexpected invocation of `onRequestPermissionsResult`");
       return false;
     }
-  }
-
-  public static void openPhotoPicker(final Promise promise) {
-    promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android");
-  }
-
-  public static void checkLocationAccuracy(final Promise promise) {
-    promise.reject("Permissions:checkLocationAccuracy", "checkLocationAccuracy is not supported on Android");
-  }
-
-  public static void requestLocationAccuracy(final Promise promise) {
-    promise.reject("Permissions:requestLocationAccuracy", "requestLocationAccuracy is not supported on Android");
   }
 }
