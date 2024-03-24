@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => package["repository"]["url"], :tag => s.version }
   s.source_files = "ios/*.{h,mm}"
   # s.frameworks = <frameworks>
-  s.resource_bundles = { 'RNPermissions_PrivacyInfo' => 'ios/Resources/PrivacyInfo.xcprivacy' }
+  # s.resource_bundles = <resource_bundles>
 
   if ENV['RCT_NEW_ARCH_ENABLED'] == "1" then
     install_modules_dependencies(s)
