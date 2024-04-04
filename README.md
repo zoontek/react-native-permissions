@@ -13,7 +13,7 @@ An unified permissions API for React Native on iOS, Android and Windows.<br>
 
 ## Support
 
-This library follows the React Native [releases support policy](https://github.com/reactwg/react-native-releases#releases-support-policy).<br>
+This library follows the React Native [releases support policy](https://github.com/reactwg/react-native-releases/blob/main/docs/support.md).<br>
 It is supporting the **latest version**, and the **two previous minor series**.
 
 ## Setup
