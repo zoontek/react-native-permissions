@@ -18,7 +18,9 @@ body:
       label: Before submitting a new issue
       description: Please perform simple checks first.
       options:
-        - label: I tested using the latest release of the library, as maybe the bug has been already fixed.
+        - label: I tested using the latest version of the library, as the bug might be already fixed.
+          required: true
+        - label: I tested using a [supported version](https://github.com/reactwg/react-native-releases/blob/main/docs/support.md) of react native.
           required: true
         - label: I checked for possible duplicate issues, with possible answers.
           required: true
