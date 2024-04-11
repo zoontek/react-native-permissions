@@ -26,35 +26,35 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. In your `Podfile` define a `node_require` function to load in the `setup_permissions` function:
+1. Load in the `setup_permissions` function in `Podfile`:
 
-      ```diff
-        # with react-native >= 0.72
-        - # Resolve react_native_pods.rb with node to allow for hoisting
-        - require Pod::Executable.execute_command('node', ['-p',
-        -   'require.resolve(
-        -     "react-native/scripts/react_native_pods.rb",
-        -     {paths: [process.argv[1]]},
-        -   )', __dir__]).strip
+      For React Native 0.73 +
 
-        + def node_require(script)
-        +   # Resolve script with node to allow for hoisting
-        +   require Pod::Executable.execute_command('node', ['-p',
-        +     "require.resolve(
-        +       '#{script}',
-        +       {paths: [process.argv[1]]},
-        +     )", __dir__]).strip
-        + end
+      ```ruby
+         def node_require(script)
+           # Resolve script with node to allow for hoisting
+           require Pod::Executable.execute_command('node', ['-p',
+             "require.resolve(
+               '#{script}',
+               {paths: [process.argv[1]]},
+             )", __dir__]).strip
+         end
 
-        + node_require('react-native/scripts/react_native_pods.rb')
-        + node_require('react-native-permissions/scripts/setup.rb')
+         node_require('react-native/scripts/react_native_pods.rb')
+         node_require('react-native-permissions/scripts/setup.rb')
       ```
 
-      ```diff
-      # with react-native < 0.72
-      require_relative '../node_modules/react-native/scripts/react_native_pods'
-      require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-      + require_relative '../node_modules/react-native-permissions/scripts/setup'
+      For React Native < 0.72
+
+      ```ruby
+        require_relative '../node_modules/react-native-permissions/scripts/setup'
+
+        # Resolve react_native_pods.rb with node to allow for hoisting
+        require Pod::Executable.execute_command('node', ['-p',
+          'require.resolve(
+            "react-native/scripts/react_native_pods.rb",
+            {paths: [process.argv[1]]},
+          )', __dir__]).strip
       ```
 
 2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added:
