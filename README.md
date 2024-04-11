@@ -332,21 +332,21 @@ As permissions are not handled in the same way on iOS and Android, this library 
                       │           ╔════╗
                       ├───────────║ NO ║──────────────┐
                       │           ╚════╝              │
-                    ╔═════╗                            ▼
+                    ╔═════╗                           ▼
                     ║ YES ║                 ┌─────────────────────┐
                     ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                      │                    └─────────────────────┘
+                      │                     └─────────────────────┘
               Is the permission
                 requestable ?
                       │           ╔════╗
                       ├───────────║ NO ║──────────────┐
                       │           ╚════╝              │
-                    ╔═════╗                            ▼
+                    ╔═════╗                           ▼
                     ║ YES ║                  ┌───────────────────┐
                     ╚═════╝                  │ RESULTS.BLOCKED / │
-                      │                     │ RESULTS.LIMITED / │
-                      │                     │  RESULTS.GRANTED  │
-                      ▼                     └───────────────────┘
+                      │                      │ RESULTS.LIMITED / │
+                      │                      │ RESULTS.GRANTED  │
+                      ▼                      └───────────────────┘
               ┌────────────────┐
               │ RESULTS.DENIED │
               └────────────────┘
@@ -361,10 +361,10 @@ As permissions are not handled in the same way on iOS and Android, this library 
                       │           ╔════╗
                       ├───────────║ NO ║──────────────┐
                       │           ╚════╝              │
-                    ╔═════╗                            ▼
+                    ╔═════╗                           ▼
                     ║ YES ║                   ┌─────────────────┐
                     ╚═════╝                   │ RESULTS.BLOCKED │
-                      │                      └─────────────────┘
+                      │                       └─────────────────┘
                       ▼
               ┌─────────────────┐
               │ RESULTS.GRANTED │
@@ -383,30 +383,30 @@ As permissions are not handled in the same way on iOS and Android, this library 
                       │           ╔════╗
                       ├───────────║ NO ║──────────────┐
                       │           ╚════╝              │
-                    ╔═════╗                            ▼
+                    ╔═════╗                           ▼
                     ║ YES ║                 ┌─────────────────────┐
                     ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                      │                    └─────────────────────┘
+                      │                     └─────────────────────┘
               Is the permission
               already granted ?
                       │           ╔═════╗
                       ├───────────║ YES ║─────────────┐
                       │           ╚═════╝             │
-                    ╔════╗                             ▼
+                    ╔════╗                            ▼
                     ║ NO ║                   ┌───────────────────┐
                     ╚════╝                   │  RESULTS.GRANTED  │
-                      │                     └───────────────────┘
+                      │                      └───────────────────┘
                       ▼
               ┌────────────────┐
               │ RESULTS.DENIED │◀──────────────────────┐
               └────────────────┘                       │
-                      │                               │
-                      ▼                               │
+                      │                                │
+                      ▼                                │
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
     ┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
-                      │                               │
-            Does the user accept                      │
+                      │                                │
+            Does the user accept                       │
                 the request ?                          │
                       │           ╔════╗      Is the permission
                       ├───────────║ NO ║──── still requestable ?
@@ -433,20 +433,20 @@ As permissions are not handled in the same way on iOS and Android, this library 
                         │           ╔════╗
                         ├───────────║ NO ║──────────────┐
                         │           ╚════╝              │
-                      ╔═════╗                            ▼
+                      ╔═════╗                           ▼
                       ║ YES ║                 ┌─────────────────────┐
                       ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                        │                    └─────────────────────┘
+                        │                     └─────────────────────┘
                 Is the permission
                   requestable ?
                         │           ╔════╗
                         ├───────────║ NO ║──────────────┐
                         │           ╚════╝              │
-                      ╔═════╗                            ▼
+                      ╔═════╗                           ▼
                       ║ YES ║                  ┌───────────────────┐
                       ╚═════╝                  │ RESULTS.BLOCKED / │
-                        │                     │  RESULTS.GRANTED  │
-                        ▼                     └───────────────────┘
+                        │                      │  RESULTS.GRANTED  │
+                        ▼                      └───────────────────┘
                 ┌────────────────┐
                 │ RESULTS.DENIED │
                 └────────────────┘
@@ -461,10 +461,10 @@ As permissions are not handled in the same way on iOS and Android, this library 
                         │           ╔════╗
                         ├───────────║ NO ║──────────────┐
                         │           ╚════╝              │
-                      ╔═════╗                            ▼
+                      ╔═════╗                           ▼
                       ║ YES ║                   ┌─────────────────┐
                       ╚═════╝                   │ RESULTS.BLOCKED │
-                        │                      └─────────────────┘
+                        │                       └─────────────────┘
                         ▼
                 ┌─────────────────┐
                 │ RESULTS.GRANTED │
