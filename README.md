@@ -27,70 +27,69 @@ $ yarn add react-native-permissions
 ### iOS
 
 1. Load in the `setup_permissions` function in `Podfile`:
+For React Native 0.73+
 
-      For React Native 0.73 +
+```ruby
+    def node_require(script)
+      # Resolve script with node to allow for hoisting
+      require Pod::Executable.execute_command('node', ['-p',
+        "require.resolve(
+          '#{script}',
+          {paths: [process.argv[1]]},
+        )", __dir__]).strip
+    end
 
-      ```ruby
-         def node_require(script)
-           # Resolve script with node to allow for hoisting
-           require Pod::Executable.execute_command('node', ['-p',
-             "require.resolve(
-               '#{script}',
-               {paths: [process.argv[1]]},
-             )", __dir__]).strip
-         end
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+```
 
-         node_require('react-native/scripts/react_native_pods.rb')
-         node_require('react-native-permissions/scripts/setup.rb')
-      ```
+For React Native < 0.72
 
-      For React Native < 0.72
+```ruby
+  # Resolve react_native_pods.rb with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    'require.resolve(
+      "react-native/scripts/react_native_pods.rb",
+      {paths: [process.argv[1]]},
+    )', __dir__]).strip
+  require_relative '../node_modules/react-native-permissions/scripts/setup'
 
-      ```ruby
-        require_relative '../node_modules/react-native-permissions/scripts/setup'
-
-        # Resolve react_native_pods.rb with node to allow for hoisting
-        require Pod::Executable.execute_command('node', ['-p',
-          'require.resolve(
-            "react-native/scripts/react_native_pods.rb",
-            {paths: [process.argv[1]]},
-          )', __dir__]).strip
-      ```
+```
 
 2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added:
 
-      ```ruby
-      # …
+```ruby
+# …
 
-      platform :ios, min_ios_version_supported
-      prepare_react_native_project!
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
 
-      # ⬇️ uncomment the permissions you need
-      setup_permissions([
-        # 'AppTrackingTransparency',
-        # 'Bluetooth',
-        # 'Calendars',
-        # 'CalendarsWriteOnly',
-        # 'Camera',
-        # 'Contacts',
-        # 'FaceID',
-        # 'LocationAccuracy',
-        # 'LocationAlways',
-        # 'LocationWhenInUse',
-        # 'MediaLibrary',
-        # 'Microphone',
-        # 'Motion',
-        # 'Notifications',
-        # 'PhotoLibrary',
-        # 'PhotoLibraryAddOnly',
-        # 'Reminders',
-        # 'Siri',
-        # 'SpeechRecognition',
-        # 'StoreKit',
-      ])
+# ⬇️ uncomment the permissions you need
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  # 'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  # 'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  # 'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
 
-      # …
-      ```
+# …
+```
 
 3. Then execute `pod install` in `ios/` directory _(📌  Note that it must be re-executed each time you update this config)_.
 
@@ -261,54 +260,54 @@ end
 
 1. Add the following lines to `android/settings.gradle`:
 
-    ```gradle
-    include ':react-native-permissions'
-    project(':react-native-permissions').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-permissions/android')
-    ```
+```gradle
+include ':react-native-permissions'
+project(':react-native-permissions').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-permissions/android')
+```
 
 2. Add the implementation line to the dependencies in `android/app/build.gradle`:
 
-    ```gradle
-    dependencies {
-      // ...
-      implementation project(':react-native-permissions')
-    }
-    ```
+```gradle
+dependencies {
+  // ...
+  implementation project(':react-native-permissions')
+}
+```
 
 3. Add the import and link the package in `MainApplication.java`:
 
-    ```java
-    import com.zoontek.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
+```java
+import com.zoontek.rnpermissions.RNPermissionsPackage; // <- add the RNPermissionsPackage import
 
-    public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication {
 
-      // …
+  // …
 
-      @Override
-      protected List<ReactPackage> getPackages() {
-        @SuppressWarnings("UnnecessaryLocalVariable")
-        List<ReactPackage> packages = new PackageList(this).getPackages();
-        // …
-        packages.add(new RNPermissionsPackage());
-        return packages;
-      }
+  @Override
+  protected List<ReactPackage> getPackages() {
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    List<ReactPackage> packages = new PackageList(this).getPackages();
+    // …
+    packages.add(new RNPermissionsPackage());
+    return packages;
+  }
 
-      // …
-    }
-    ```
+  // …
+}
+```
 
 ### Windows
 
 1. In `windows/myapp.sln` add the `RNCConfig` project to your solution:
 
-    - Open the solution in Visual Studio 2019
-    - Right-click Solution icon in Solution Explorer > Add > Existing Project
-    - Select `node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj`
+- Open the solution in Visual Studio 2019
+- Right-click Solution icon in Solution Explorer > Add > Existing Project
+- Select `node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj`
 
 2. In `windows/myapp/myapp.vcxproj` ad a reference to `RNPermissions` to your main application project. From Visual Studio 2019:
 
-    - Right-click main application project > Add > Reference...
-    - Check `RNPermissions` from Solution Projects.
+- Right-click main application project > Add > Reference...
+- Check `RNPermissions` from Solution Projects.
 
 3. In `pch.h` add `#include "winrt/RNPermissions.h"`.
 
@@ -322,154 +321,154 @@ As permissions are not handled in the same way on iOS and Android, this library 
 
 ### iOS flow
 
-    ```
-      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-      ┃ check(PERMISSIONS.IOS.CAMERA) ┃
-      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                      │
-          Is the feature available
-              on this device ?
-                      │           ╔════╗
-                      ├───────────║ NO ║──────────────┐
-                      │           ╚════╝              │
-                    ╔═════╗                           ▼
-                    ║ YES ║                 ┌─────────────────────┐
-                    ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                      │                     └─────────────────────┘
-              Is the permission
-                requestable ?
-                      │           ╔════╗
-                      ├───────────║ NO ║──────────────┐
-                      │           ╚════╝              │
-                    ╔═════╗                           ▼
-                    ║ YES ║                  ┌───────────────────┐
-                    ╚═════╝                  │ RESULTS.BLOCKED / │
-                      │                      │ RESULTS.LIMITED / │
-                      │                      │ RESULTS.GRANTED  │
-                      ▼                      └───────────────────┘
-              ┌────────────────┐
-              │ RESULTS.DENIED │
-              └────────────────┘
-                      │
-                      ▼
-      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-      ┃ request(PERMISSIONS.IOS.CAMERA) ┃
-      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                      │
-            Does the user accept
-                the request ?
-                      │           ╔════╗
-                      ├───────────║ NO ║──────────────┐
-                      │           ╚════╝              │
-                    ╔═════╗                           ▼
-                    ║ YES ║                   ┌─────────────────┐
-                    ╚═════╝                   │ RESULTS.BLOCKED │
-                      │                       └─────────────────┘
-                      ▼
-              ┌─────────────────┐
-              │ RESULTS.GRANTED │
-              └─────────────────┘
-    ```
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+             requestable ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                  ┌───────────────────┐
+                ╚═════╝                  │ RESULTS.BLOCKED / │
+                   │                     │ RESULTS.LIMITED / │
+                   │                     │  RESULTS.GRANTED  │
+                   ▼                     └───────────────────┘
+          ┌────────────────┐
+          │ RESULTS.DENIED │
+          └────────────────┘
+                   │
+                   ▼
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+         Does the user accept
+            the request ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                   ┌─────────────────┐
+                ╚═════╝                   │ RESULTS.BLOCKED │
+                   │                      └─────────────────┘
+                   ▼
+          ┌─────────────────┐
+          │ RESULTS.GRANTED │
+          └─────────────────┘
+```
 
 ### Android flow
 
-    ```
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                      │
-          Is the feature available
-              on this device ?
-                      │           ╔════╗
-                      ├───────────║ NO ║──────────────┐
-                      │           ╚════╝              │
-                    ╔═════╗                           ▼
-                    ║ YES ║                 ┌─────────────────────┐
-                    ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                      │                     └─────────────────────┘
-              Is the permission
-              already granted ?
-                      │           ╔═════╗
-                      ├───────────║ YES ║─────────────┐
-                      │           ╚═════╝             │
-                    ╔════╗                            ▼
-                    ║ NO ║                   ┌───────────────────┐
-                    ╚════╝                   │  RESULTS.GRANTED  │
-                      │                      └───────────────────┘
-                      ▼
-              ┌────────────────┐
-              │ RESULTS.DENIED │◀──────────────────────┐
-              └────────────────┘                       │
-                      │                                │
-                      ▼                                │
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
-    ┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
-                      │                                │
-            Does the user accept                       │
-                the request ?                          │
-                      │           ╔════╗      Is the permission
-                      ├───────────║ NO ║──── still requestable ?
-                      │           ╚════╝              │
-                    ╔═════╗                         ╔════╗
-                    ║ YES ║                         ║ NO ║
-                    ╚═════╝                         ╚════╝
-                      │                               │
-                      ▼                               ▼
-              ┌─────────────────┐             ┌─────────────────┐
-              │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
-              └─────────────────┘             └─────────────────┘
-    ```
+```
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                   │
+       Is the feature available
+           on this device ?
+                   │           ╔════╗
+                   ├───────────║ NO ║──────────────┐
+                   │           ╚════╝              │
+                ╔═════╗                            ▼
+                ║ YES ║                 ┌─────────────────────┐
+                ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                   │                    └─────────────────────┘
+           Is the permission
+           already granted ?
+                   │           ╔═════╗
+                   ├───────────║ YES ║─────────────┐
+                   │           ╚═════╝             │
+                ╔════╗                             ▼
+                ║ NO ║                   ┌───────────────────┐
+                ╚════╝                   │  RESULTS.GRANTED  │
+                   │                     └───────────────────┘
+                   ▼
+          ┌────────────────┐
+          │ RESULTS.DENIED │◀──────────────────────┐
+          └────────────────┘                       │
+                   │                               │
+                   ▼                               │
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
+┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
+                   │                               │
+         Does the user accept                      │
+            the request ?                          │
+                   │           ╔════╗      Is the permission
+                   ├───────────║ NO ║──── still requestable ?
+                   │           ╚════╝              │
+                ╔═════╗                         ╔════╗
+                ║ YES ║                         ║ NO ║
+                ╚═════╝                         ╚════╝
+                   │                               │
+                   ▼                               ▼
+          ┌─────────────────┐             ┌─────────────────┐
+          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
+          └─────────────────┘             └─────────────────┘
+```
 
 ### Windows flow
 
-    ```
-      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-      ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
-      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                        │
-            Is the feature available
-                  on this device ?
-                        │           ╔════╗
-                        ├───────────║ NO ║──────────────┐
-                        │           ╚════╝              │
-                      ╔═════╗                           ▼
-                      ║ YES ║                 ┌─────────────────────┐
-                      ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                        │                     └─────────────────────┘
-                Is the permission
-                  requestable ?
-                        │           ╔════╗
-                        ├───────────║ NO ║──────────────┐
-                        │           ╚════╝              │
-                      ╔═════╗                           ▼
-                      ║ YES ║                  ┌───────────────────┐
-                      ╚═════╝                  │ RESULTS.BLOCKED / │
-                        │                      │  RESULTS.GRANTED  │
-                        ▼                      └───────────────────┘
-                ┌────────────────┐
-                │ RESULTS.DENIED │
-                └────────────────┘
-                        │
-                        ▼
-      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-      ┃ request(PERMISSIONS.WINDOWS.WEBCAM) ┃
-      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                        │
-              Does the user accept
-                  the request ?
-                        │           ╔════╗
-                        ├───────────║ NO ║──────────────┐
-                        │           ╚════╝              │
-                      ╔═════╗                           ▼
-                      ║ YES ║                   ┌─────────────────┐
-                      ╚═════╝                   │ RESULTS.BLOCKED │
-                        │                       └─────────────────┘
-                        ▼
-                ┌─────────────────┐
-                │ RESULTS.GRANTED │
-                └─────────────────┘
-    ```
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
+   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                     │
+         Is the feature available
+              on this device ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                 ┌─────────────────────┐
+                  ╚═════╝                 │ RESULTS.UNAVAILABLE │
+                     │                    └─────────────────────┘
+             Is the permission
+               requestable ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                  ┌───────────────────┐
+                  ╚═════╝                  │ RESULTS.BLOCKED / │
+                     │                     │  RESULTS.GRANTED  │
+                     ▼                     └───────────────────┘
+            ┌────────────────┐
+            │ RESULTS.DENIED │
+            └────────────────┘
+                     │
+                     ▼
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ request(PERMISSIONS.WINDOWS.WEBCAM) ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+                     │
+           Does the user accept
+              the request ?
+                     │           ╔════╗
+                     ├───────────║ NO ║──────────────┐
+                     │           ╚════╝              │
+                  ╔═════╗                            ▼
+                  ║ YES ║                   ┌─────────────────┐
+                  ╚═════╝                   │ RESULTS.BLOCKED │
+                     │                      └─────────────────┘
+                     ▼
+            ┌─────────────────┐
+            │ RESULTS.GRANTED │
+            └─────────────────┘
+```
 
 ## API
 
