@@ -26,8 +26,9 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. Load in the `setup_permissions` function in `Podfile`:
-For React Native 0.73+
+1. Load in the `setup_permissions` function in `Podfile`
+
+If you're using React Native 0.73+:
 
 ```ruby
     def node_require(script)
@@ -43,7 +44,7 @@ node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 ```
 
-For React Native < 0.72
+If you're using React Native < 0.72:
 
 ```ruby
   # Resolve react_native_pods.rb with node to allow for hoisting
