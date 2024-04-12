@@ -61,7 +61,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 + require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
-2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added:
+2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added
 
 ```ruby
 # …
