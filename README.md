@@ -30,31 +30,35 @@ $ yarn add react-native-permissions
 
 If you're using React Native 0.73+:
 
-```ruby
-    def node_require(script)
-      # Resolve script with node to allow for hoisting
-      require Pod::Executable.execute_command('node', ['-p',
-        "require.resolve(
-          '#{script}',
-          {paths: [process.argv[1]]},
-        )", __dir__]).strip
-    end
+```diff
+# Ceate a generic function to require both react native's default and this package's script. 
+- # Resolve react_native_pods.rb with node to allow for hoisting
+- require Pod::Executable.execute_command('node', ['-p',
+-   'require.resolve(
+-     "react-native/scripts/react_native_pods.rb",
+-     {paths: [process.argv[1]]},
+-   )', __dir__]).strip
 
-node_require('react-native/scripts/react_native_pods.rb')
-node_require('react-native-permissions/scripts/setup.rb')
++ def node_require(script)
++   # Resolve script with node to allow for hoisting
++   require Pod::Executable.execute_command('node', ['-p',
++     "require.resolve(
++       '#{script}',
++       {paths: [process.argv[1]]},
++     )", __dir__]).strip
++ end
+# Require both scripts using our function
++ node_require('react-native/scripts/react_native_pods.rb')
++ node_require('react-native-permissions/scripts/setup.rb')
 ```
 
 If you're using React Native < 0.72:
 
-```ruby
-  # Resolve react_native_pods.rb with node to allow for hoisting
-  require Pod::Executable.execute_command('node', ['-p',
-    'require.resolve(
-      "react-native/scripts/react_native_pods.rb",
-      {paths: [process.argv[1]]},
-    )', __dir__]).strip
-  require_relative '../node_modules/react-native-permissions/scripts/setup'
-
+```diff
+# Just require_relative this pacage's script 
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
++ require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
 2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added:
