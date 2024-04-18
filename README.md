@@ -26,10 +26,12 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. By default, no permissions are setuped. So first, require the `setup` script in your `Podfile`:
+1. Load in the `setup_permissions` function in `Podfile`
+
+If you're using React Native 0.73+:
 
 ```diff
-# with react-native >= 0.72
+# Ceate a generic function to require both react native's default and this package's script. 
 - # Resolve react_native_pods.rb with node to allow for hoisting
 - require Pod::Executable.execute_command('node', ['-p',
 -   'require.resolve(
@@ -45,19 +47,21 @@ $ yarn add react-native-permissions
 +       {paths: [process.argv[1]]},
 +     )", __dir__]).strip
 + end
-
+# Require both scripts using our function
 + node_require('react-native/scripts/react_native_pods.rb')
 + node_require('react-native-permissions/scripts/setup.rb')
 ```
 
+If you're using React Native < 0.72:
+
 ```diff
-# with react-native < 0.72
+# Just require_relative this pacage's script 
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 + require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
-2. Then in the same file, add a `setup_permissions` call with the wanted permissions:
+2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added
 
 ```ruby
 # …
@@ -65,7 +69,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# ⬇️ uncomment wanted permissions
+# ⬇️ uncomment the permissions you need
 setup_permissions([
   # 'AppTrackingTransparency',
   # 'Bluetooth',
@@ -92,8 +96,9 @@ setup_permissions([
 # …
 ```
 
-3. Then execute `pod install` _(📌  Note that it must be re-executed each time you update this config)_.
-4. Finally, update your `Info.plist` with the wanted permissions usage descriptions:
+3. Then execute `pod install` in `ios/` directory _(📌  Note that it must be re-executed each time you update this config)_.
+
+4. Finally, add the permissions you included in `setup_permissions` to your `Info.plist` with usage descriptions. For example:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -101,49 +106,49 @@ setup_permissions([
 <plist version="1.0">
 <dict>
 
-  <!-- 🚨 Keep only the permissions used in your app 🚨 -->
+  <!-- 🚨 Keep only the permissions specified in `setup_permissions` 🚨 -->
 
   <key>NSAppleMusicUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSCalendarsFullAccessUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSCameraUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSContactsUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSFaceIDUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSLocationTemporaryUsageDescriptionDictionary</key>
   <dict>
     <key>YOUR-PURPOSE-KEY</key>
-    <string>YOUR TEXT</string>
+    <string>[REASON]</string>
   </dict>
   <key>NSLocationWhenInUseUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSMicrophoneUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSMotionUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSRemindersFullAccessUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSSpeechRecognitionUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSSiriUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
   <key>NSUserTrackingUsageDescription</key>
-  <string>YOUR TEXT</string>
+  <string>[REASON]</string>
 
   <!-- … -->
 
