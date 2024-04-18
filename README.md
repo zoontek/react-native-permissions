@@ -26,12 +26,12 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. Load in the `setup_permissions` function in `Podfile`
+1. By default, no permissions are avilable. First, require the `setup` script in your `Podfile`:
 
-If you're using React Native 0.73+:
+If you're using React Native 0.72+:
 
 ```diff
-# Ceate a generic function to require both react native's default and this package's script. 
+# Transform this into a `node_require` generic function:
 - # Resolve react_native_pods.rb with node to allow for hoisting
 - require Pod::Executable.execute_command('node', ['-p',
 -   'require.resolve(
@@ -47,7 +47,8 @@ If you're using React Native 0.73+:
 +       {paths: [process.argv[1]]},
 +     )", __dir__]).strip
 + end
-# Require both scripts using our function
+
+# Use it to require both react-native's and this package's scripts:
 + node_require('react-native/scripts/react_native_pods.rb')
 + node_require('react-native-permissions/scripts/setup.rb')
 ```
@@ -55,13 +56,14 @@ If you're using React Native 0.73+:
 If you're using React Native < 0.72:
 
 ```diff
-# Just require_relative this pacage's script 
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+# Add a require_relative for this package's script:
 + require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
-2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specifed here will be added
+2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be added:
 
 ```ruby
 # …
@@ -96,9 +98,8 @@ setup_permissions([
 # …
 ```
 
-3. Then execute `pod install` in `ios/` directory _(📌  Note that it must be re-executed each time you update this config)_.
-
-4. Finally, add the permissions you included in `setup_permissions` to your `Info.plist` with usage descriptions. For example:
+3. Then execute `pod install` in your `ios` directory _(📌  Note that it must be re-executed each time you update this config)_.
+4. Finally, add the corresponding permissions usage descriptions to your `Info.plist`. For example:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
