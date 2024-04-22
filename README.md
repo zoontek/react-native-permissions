@@ -371,9 +371,10 @@ As permissions are not handled in the same way on iOS and Android, this library 
                 ╚═════╝                   │ RESULTS.BLOCKED │
                    │                      └─────────────────┘
                    ▼
-          ┌─────────────────┐
-          │ RESULTS.GRANTED │
-          └─────────────────┘
+         ┌───────────────────┐
+         │ RESULTS.LIMITED / │
+         │  RESULTS.GRANTED  │
+         └───────────────────┘
 ```
 
 ### Android flow
@@ -715,13 +716,13 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 Permission checks and requests resolve into one of these statuses:
 
-| Return value          | Notes                                                             |
-| --------------------- | ----------------------------------------------------------------- |
-| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)  |
-| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable |
-| `RESULTS.GRANTED`     | The permission is granted                                         |
-| `RESULTS.LIMITED`     | The permission is granted but with limitations                    |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore              |
+| Return value          | Notes                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                            |
+| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                           |
+| `RESULTS.GRANTED`     | The permission is granted                                                                   |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations only on iOS (PhotoLibrary and Notifications) |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                        |
 
 ### Methods
 
