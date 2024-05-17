@@ -26,20 +26,26 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_lnp._tcp.</string>
+	</array>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Let me use your media library</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Let me use bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Let me use bluetooth</string>
-	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>Let me use your calendars</string>
-	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<key>NSCalendarsUsageDescription</key>
 	<string>Let me use your calendars</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Let me use the camera</string>
@@ -47,7 +53,11 @@
 	<string>Let me use your contacts</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Let me use FaceID</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Let me use your local network</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Let me use your location, even in background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Let me use your location, even in background</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
@@ -64,7 +74,7 @@
 	<string>Let me add photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let me use your photo library</string>
-	<key>NSRemindersFullAccessUsageDescription</key>
+	<key>NSRemindersUsageDescription</key>
 	<string>Let me use your reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Let me use speech recognition</string>

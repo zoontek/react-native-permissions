@@ -2,37 +2,51 @@
   "name": "react-native-permissions-example",
   "version": "0.0.1",
   "private": true,
-  "engines": {
-    "node": ">=18"
-  },
   "scripts": {
-    "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
-    "pod-restore": "mv ../RNPermissions.podspec.bak ../RNPermissions.podspec",
-    "pod-update": "yarn pod-backup && cd ios && pod update && cd .. && yarn pod-restore",
-    "pod-install": "yarn pod-backup && cd ios && pod install && cd .. && yarn pod-restore",
+    "clean-modules": "rm -rf ./node_modules/react-native-permissions/{example,node_modules}",
     "clean": "rm -rf ./node_modules ./ios/Pods",
-    "preinstall": "cd .. && yarn && yarn build && cd example",
-    "postinstall": "yarn pod-install",
+    "preinstall": "cd .. && yarn prepack && cd example",
+    "postinstall": "yarn clean-modules && react-native setup-ios-permissions && pod-install",
     "start": "react-native start",
     "reinstall": "yarn clean && yarn install"
   },
+  "reactNativePermissionsIOS": [
+    "AppTrackingTransparency",
+    "BluetoothPeripheral",
+    "Calendars",
+    "Camera",
+    "Contacts",
+    "FaceID",
+    "LocalNetworkPrivacy",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "Motion",
+    "Notifications",
+    "PhotoLibrary",
+    "PhotoLibraryAddOnly",
+    "Reminders",
+    "SpeechRecognition",
+    "StoreKit"
+  ],
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.4",
-    "react-native-paper": "^5.11.6",
-    "react-native-permissions": "link:../",
-    "react-native-safe-area-context": "^4.8.2",
-    "react-native-vector-icons": "^10.0.3",
-    "react-native-windows": "0.73.2"
+    "react-native": "0.71.4",
+    "react-native-paper": "^5.4.1",
+    "react-native-permissions": "../",
+    "react-native-safe-area-context": "^4.5.0",
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-windows": "0.71.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.73.21",
-    "@react-native/metro-config": "0.73.5",
-    "@types/react": "^18.2.47",
-    "babel-plugin-module-resolver": "^5.0.0",
-    "typescript": "^5.3.3"
+    "@types/react": "^18.0.28",
+    "metro-react-native-babel-preset": "0.73.8",
+    "pod-install": "0.1.38",
+    "typescript": "^4.9.5"
   }
 }

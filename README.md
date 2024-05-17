@@ -11,10 +11,21 @@ An unified permissions API for React Native on iOS, Android and Windows.<br>
 [![platform - ios](https://img.shields.io/badge/platform-iOS-000.svg?logo=apple&style=for-the-badge)](https://developer.apple.com/ios)
 [![platform - windows](https://img.shields.io/badge/platform-Windows-0067b8.svg?logo=windows&style=for-the-badge)](https://www.microsoft.com/en-us/windows)
 
+## Funding
+
+<a href="https://github.com/sponsors/zoontek">
+  <img align="right" width="150" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+</a>
+
+This module is provided **as is**, I work on it in my free time.
+
+If your company uses it in a production app, consider sponsoring this project 💰. You also can contact me for **premium** enterprise support, help with issues, prioritize bugfixes, feature requests, etc.
+
 ## Support
 
-This library follows the React Native [releases support policy](https://github.com/reactwg/react-native-releases/blob/main/docs/support.md).<br>
-It is supporting the **latest version**, and the **two previous minor series**.
+| version | react-native version | Xcode version |
+| ------- | -------------------- | ------------- |
+| 3.0.0+  | 0.63.0+              | 12+           |
 
 ## Setup
 
@@ -26,80 +37,44 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. By default, no permissions are avilable. First, require the `setup` script in your `Podfile`:
+By default no permission handler is linked. To add one, update your `package.json` by adding the permissions used in your app, then run `npx react-native setup-ios-permissions` followed by `pod install` (`reactNativePermissionsIOS.json` is also supported).
 
-If you're using React Native 0.72+:
+_📌  Note that these commands must be re-executed each time you update this config, delete the `node_modules` directory or update this library. An useful trick to cover a lot of these cases is running them on `postinstall` and just run `yarn` or `npm install` manually when needed._
 
-```diff
-# Transform this into a `node_require` generic function:
-- # Resolve react_native_pods.rb with node to allow for hoisting
-- require Pod::Executable.execute_command('node', ['-p',
--   'require.resolve(
--     "react-native/scripts/react_native_pods.rb",
--     {paths: [process.argv[1]]},
--   )', __dir__]).strip
-
-+ def node_require(script)
-+   # Resolve script with node to allow for hoisting
-+   require Pod::Executable.execute_command('node', ['-p',
-+     "require.resolve(
-+       '#{script}',
-+       {paths: [process.argv[1]]},
-+     )", __dir__]).strip
-+ end
-
-# Use it to require both react-native's and this package's scripts:
-+ node_require('react-native/scripts/react_native_pods.rb')
-+ node_require('react-native-permissions/scripts/setup.rb')
+```json
+{
+  "reactNativePermissionsIOS": [
+    "AppTrackingTransparency",
+    "BluetoothPeripheral",
+    "Calendars",
+    "Camera",
+    "Contacts",
+    "FaceID",
+    "LocalNetworkPrivacy",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "Motion",
+    "Notifications",
+    "PhotoLibrary",
+    "PhotoLibraryAddOnly",
+    "Reminders",
+    "Siri",
+    "SpeechRecognition",
+    "StoreKit"
+  ],
+  "devDependencies": {
+    "pod-install": "0.1.38"
+  },
+  "scripts": {
+    "postinstall": "react-native setup-ios-permissions && pod-install"
+  }
+}
 ```
 
-If you're using React Native < 0.72:
-
-```diff
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
-# Add a require_relative for this package's script:
-+ require_relative '../node_modules/react-native-permissions/scripts/setup'
-```
-
-2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be added:
-
-```ruby
-# …
-
-platform :ios, min_ios_version_supported
-prepare_react_native_project!
-
-# ⬇️ uncomment the permissions you need
-setup_permissions([
-  # 'AppTrackingTransparency',
-  # 'Bluetooth',
-  # 'Calendars',
-  # 'CalendarsWriteOnly',
-  # 'Camera',
-  # 'Contacts',
-  # 'FaceID',
-  # 'LocationAccuracy',
-  # 'LocationAlways',
-  # 'LocationWhenInUse',
-  # 'MediaLibrary',
-  # 'Microphone',
-  # 'Motion',
-  # 'Notifications',
-  # 'PhotoLibrary',
-  # 'PhotoLibraryAddOnly',
-  # 'Reminders',
-  # 'Siri',
-  # 'SpeechRecognition',
-  # 'StoreKit',
-])
-
-# …
-```
-
-3. Then execute `pod install` in your `ios` directory _(📌  Note that it must be re-executed each time you update this config)_.
-4. Finally, add the corresponding permissions usage descriptions to your `Info.plist`. For example:
+Then update your `Info.plist` with wanted permissions usage descriptions:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -107,82 +82,64 @@ setup_permissions([
 <plist version="1.0">
 <dict>
 
-  <!-- 🚨 Keep only the permissions specified in `setup_permissions` 🚨 -->
+  <!-- 🚨 Keep only the permissions used in your app 🚨 -->
 
   <key>NSAppleMusicUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>[REASON]</string>
-  <key>NSCalendarsFullAccessUsageDescription</key>
-  <string>[REASON]</string>
-  <key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
+  <key>NSCalendarsUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSCameraUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSContactsUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSFaceIDUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSLocationTemporaryUsageDescriptionDictionary</key>
   <dict>
     <key>YOUR-PURPOSE-KEY</key>
-    <string>[REASON]</string>
+    <string>YOUR TEXT</string>
   </dict>
   <key>NSLocationWhenInUseUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSMicrophoneUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSMotionUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSPhotoLibraryUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>[REASON]</string>
-  <key>NSRemindersFullAccessUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
+  <key>NSRemindersUsageDescription</key>
+  <string>YOUR TEXT</string>
   <key>NSSpeechRecognitionUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSSiriUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
   <key>NSUserTrackingUsageDescription</key>
-  <string>[REASON]</string>
+  <string>YOUR TEXT</string>
+
+  <!-- 🚨 This is required when requesting PERMISSIONS.IOS.LOCAL_NETWORK_PRIVACY 🚨 -->
+
+  <key>NSBonjourServices</key>
+  <array>
+    <string>_lnp._tcp.</string>
+  </array>
 
   <!-- … -->
 
 </dict>
 </plist>
 ```
-
-<details>
-  <summary><b>🧩 For expo users, see the plugin instructions</b></summary>
-
-Add wanted permissions (see step 1) to the plugin config:
-
-```json
-{
-  "name": "My awesome app",
-  "plugins": [
-    [
-      "react-native-permissions",
-      {
-        "iosPermissions": [
-          "AppTrackingTransparency",
-          "Bluetooth",
-          "CalendarsWriteOnly",
-          "Notifications",
-          "SpeechRecognition"
-        ]
-      }
-    ]
-  ]
-}
-```
-
-</details>
 
 ### Android
 
@@ -219,7 +176,6 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-  <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
   <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.READ_SMS" />
@@ -246,7 +202,7 @@ Open the project solution file from the `windows` folder. In the app project ope
 
 ## 🆘 Manual linking
 
-Because this package targets recent React Native versions, you probably don't need to link it manually. But if you have a special case, follow these additional instructions:
+Because this package targets React Native 0.63.0+, you probably won't need to link it manually. Otherwise if it's not the case, follow these additional instructions. You also need to manual link the module on Windows when using React Native Windows prior to 0.63:
 
 <details>
   <summary><b>👀 See manual linking instructions</b></summary>
@@ -512,7 +468,6 @@ PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
 PERMISSIONS.ANDROID.READ_MEDIA_AUDIO;
 PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
 PERMISSIONS.ANDROID.READ_MEDIA_VIDEO;
-PERMISSIONS.ANDROID.READ_MEDIA_VISUAL_USER_SELECTED;
 PERMISSIONS.ANDROID.READ_PHONE_NUMBERS;
 PERMISSIONS.ANDROID.READ_PHONE_STATE;
 PERMISSIONS.ANDROID.READ_SMS;
@@ -538,12 +493,12 @@ PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
 import {PERMISSIONS} from 'react-native-permissions';
 
 PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY;
-PERMISSIONS.IOS.BLUETOOTH;
+PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL;
 PERMISSIONS.IOS.CALENDARS;
-PERMISSIONS.IOS.CALENDARS_WRITE_ONLY;
 PERMISSIONS.IOS.CAMERA;
 PERMISSIONS.IOS.CONTACTS;
 PERMISSIONS.IOS.FACE_ID;
+PERMISSIONS.IOS.LOCAL_NETWORK_PRIVACY;
 PERMISSIONS.IOS.LOCATION_ALWAYS;
 PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
 PERMISSIONS.IOS.MEDIA_LIBRARY;
@@ -734,7 +689,7 @@ type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'bloc
 
 Check one permission status.
 
-_⚠️  Android will never return `blocked` on `check`, you have to call `request` to get the info._
+_⚠️  Android will never return `blocked` after a `check`, you have to request the permission to get the info._
 
 ```ts
 function check(permission: string): Promise<PermissionStatus>;
@@ -768,11 +723,13 @@ check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   });
 ```
 
+---
+
 #### request
 
 Request one permission.
 
-The `rationale` is only available and used on Android. It can be a native alert (a `Rationale` object) or a custom implementation (that resolves with a `boolean`).
+Note that the `rationale` parameter is only available and used on Android.
 
 ```ts
 type Rationale = {
@@ -783,10 +740,7 @@ type Rationale = {
   buttonNeutral?: string;
 };
 
-function request(
-  permission: string,
-  rationale?: Rationale | (() => Promise<boolean>),
-): Promise<PermissionStatus>;
+function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
 ```
 
 ```js
@@ -796,6 +750,8 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
   // …
 });
 ```
+
+---
 
 #### checkNotifications
 
@@ -830,11 +786,13 @@ checkNotifications().then(({status, settings}) => {
 });
 ```
 
+---
+
 #### requestNotifications
 
 Request notifications permission status and get notifications settings values.
 
-- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+.
+- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+. The permission is always granted for prior versions.
 - You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the App Settings.
 
 ```ts
@@ -876,11 +834,13 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 });
 ```
 
+---
+
 #### checkMultiple
 
 Check multiples permissions in parallel.
 
-_⚠️  Android will never return `blocked` on `checkMultiple`, you have to call `requestMultiple` to get the info._
+_⚠️  Android will never return `blocked` after a `check`, you have to request the permission to get the info._
 
 ```ts
 function checkMultiple<P extends Permission[]>(
@@ -896,6 +856,8 @@ checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses)
   console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
 });
 ```
+
+---
 
 #### requestMultiple
 
@@ -916,6 +878,8 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuse
 });
 ```
 
+---
+
 #### openSettings
 
 Open application settings.
@@ -930,21 +894,25 @@ import {openSettings} from 'react-native-permissions';
 openSettings().catch(() => console.warn('cannot open settings'));
 ```
 
-#### openPhotoPicker (iOS 14+)
+---
+
+#### openLimitedPhotoLibraryPicker (iOS 14+)
 
 Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
 
 ```ts
-function openPhotoPicker(): Promise<void>;
+function openLimitedPhotoLibraryPicker(): Promise<void>;
 ```
 
 ```js
-import {openPhotoPicker} from 'react-native-permissions';
+import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
 
-openPhotoPicker().catch(() => {
+openLimitedPhotoLibraryPicker().catch(() => {
   console.warn('Cannot open photo library picker');
 });
 ```
+
+---
 
 #### checkLocationAccuracy (iOS 14+)
 
@@ -963,6 +931,8 @@ checkLocationAccuracy()
   .then((accuracy) => console.log(`Location accuracy is: ${accuracy}`))
   .catch(() => console.warn('Cannot check location accuracy'));
 ```
+
+---
 
 #### requestLocationAccuracy (iOS 14+)
 
@@ -992,9 +962,7 @@ If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Alway
 
 When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow While Using App`, a provisional "always" status will be granted. The user will see `While Using` in the settings and later will be informed that your app is using the location in background. That looks like this:
 
-<p align="center">
-  <img width="250" src="./docs/location_always_prompt.png" alt="Screenshot">
-</p>
+![alt text](https://camo.githubusercontent.com/e8357168f4c8e754adfd940fc065520de838a21a80001839d5e740c18893ec67/68747470733a2f2f636d732e717a2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30392f696f732d31332d6c6f636174696f6e732d7465736c612d31393230783938322e6a70673f7175616c6974793d37352673747269703d616c6c26773d3132303026683d3930302663726f703d31 'Screenshot')
 
 Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
 
@@ -1011,11 +979,3 @@ You can then add the following line to that setup file to mock the `NativeModule
 ```js
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 ```
-
-## Sponsors
-
-This module is provided **as is**, I work on it in my free time.
-
-If you or your company uses it in a production app, consider sponsoring this project 💰. You also can contact me for **premium** enterprise support: help with issues, prioritize bugfixes, feature requests, etc.
-
-<a href="https://github.com/sponsors/zoontek"><img align="center" alt="Sponsors list" src="https://raw.githubusercontent.com/zoontek/sponsors/main/sponsorkit/sponsors.svg"></a>
