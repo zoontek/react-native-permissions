@@ -1,8 +1,8 @@
-#import "RNPermissions.h"
+#import "RNPermissionsHelper.h"
 
 @interface RNPermissionHandlerPhotoLibrary : NSObject<RNPermissionHandler>
 
-- (void)openPhotoPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
-                           rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
+- (void)openLimitedPhotoLibraryPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                                         rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
 
 @end

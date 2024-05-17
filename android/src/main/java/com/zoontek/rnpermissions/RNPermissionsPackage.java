@@ -1,46 +1,109 @@
 package com.zoontek.rnpermissions;
 
-import androidx.annotation.Nullable;
-
 import com.facebook.react.TurboReactPackage;
+import com.facebook.react.ViewManagerOnDemandReactPackage;
+import com.facebook.react.bridge.ModuleSpec;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.module.annotations.ReactModuleList;
 import com.facebook.react.module.model.ReactModuleInfo;
 import com.facebook.react.module.model.ReactModuleInfoProvider;
+import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+import com.facebook.react.uimanager.ViewManager;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class RNPermissionsPackage extends TurboReactPackage {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-  @Nullable
+@ReactModuleList(
+  nativeModules = {
+    RNPermissionsModule.class,
+  })
+public class RNPermissionsPackage extends TurboReactPackage implements ViewManagerOnDemandReactPackage {
+
+  /** {@inheritDoc} */
   @Override
-  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-    if (name.equals(RNPermissionsModuleImpl.NAME)) {
-      return new RNPermissionsModule(reactContext);
-    } else {
-      return null;
+  public List<String> getViewManagerNames(ReactApplicationContext reactContext) {
+    return null;
+  }
+
+  @Override
+  protected List<ModuleSpec> getViewManagers(ReactApplicationContext reactContext) {
+    return null;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public @Nullable
+  ViewManager createViewManager(
+    ReactApplicationContext reactContext, String viewManagerName) {
+    return null;
+  }
+
+  @Override
+  public NativeModule getModule(String name, @Nonnull ReactApplicationContext reactContext) {
+    switch (name) {
+      case RNPermissionsModule.NAME:
+        return new RNPermissionsModule(reactContext);
+      default:
+        return null;
     }
   }
 
   @Override
   public ReactModuleInfoProvider getReactModuleInfoProvider() {
-    return () -> {
-      final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-      boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+    try {
+      Class<?> reactModuleInfoProviderClass =
+        Class.forName("com.zoontek.rnpermissions.RNPermissionsPackage$$ReactModuleInfoProvider");
+      return (ReactModuleInfoProvider) reactModuleInfoProviderClass.newInstance();
+    } catch (ClassNotFoundException e) {
+      // ReactModuleSpecProcessor does not run at build-time. Create this ReactModuleInfoProvider by hand.
+      return new ReactModuleInfoProvider() {
+        @Override
+        public Map<String, ReactModuleInfo> getReactModuleInfos() {
+          final Map<String, ReactModuleInfo> reactModuleInfoMap = new HashMap<>();
 
-      ReactModuleInfo moduleInfo = new ReactModuleInfo(
-        RNPermissionsModuleImpl.NAME,
-        RNPermissionsModuleImpl.NAME,
-        false,
-        false,
-        true,
-        false,
-        isTurboModule
-      );
+          Class<? extends NativeModule>[] moduleList =
+            new Class[] {
+              RNPermissionsModule.class,
+            };
 
-      moduleInfos.put(RNPermissionsModuleImpl.NAME, moduleInfo);
-      return moduleInfos;
-    };
+          for (Class<? extends NativeModule> moduleClass : moduleList) {
+            ReactModule reactModule = moduleClass.getAnnotation(ReactModule.class);
+
+            reactModuleInfoMap.put(
+              reactModule.name(),
+              new ReactModuleInfo(
+                reactModule.name(),
+                moduleClass.getName(),
+                reactModule.canOverrideExistingModule(),
+                reactModule.needsEagerInit(),
+                reactModule.hasConstants(),
+                reactModule.isCxxModule(),
+                TurboModule.class.isAssignableFrom(moduleClass)));
+          }
+
+          return reactModuleInfoMap;
+        }
+      };
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new RuntimeException(
+        "No ReactModuleInfoProvider for com.zoontek.rnpermissions.RNPermissionsPackage$$ReactModuleInfoProvider", e);
+    }
+  }
+
+  @Override
+  public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+    return Collections.<NativeModule>singletonList(new RNPermissionsModule(reactContext));
+  }
+
+  @Override
+  public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+    return Collections.emptyList();
   }
 }

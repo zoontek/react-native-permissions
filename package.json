@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "4.1.5",
+  "version": "3.8.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -25,20 +25,18 @@
     "!/android/build",
     "/dist",
     "/ios",
-    "/scripts",
     "/windows",
     "/src",
     "/*.podspec",
-    "app.plugin.js",
-    "mock.js",
-    "react-native.config.js"
+    "react-native.config.js",
+    "mock.js"
   ],
   "scripts": {
     "format": "prettier '**/*' -u -w",
-    "lint": "eslint './**/*.{js,ts,tsx}'",
-    "typecheck": "tsc --noEmit",
-    "build": "bob build",
-    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
+    "lint": "eslint \"./**/*.{js,ts,tsx}\"",
+    "setup-hooks": "git config --local core.hooksPath .hooks",
+    "prepack": "bob build",
+    "typecheck": "tsc --project ./ --noEmit"
   },
   "react-native-builder-bob": {
     "source": "src",
@@ -49,8 +47,12 @@
       "typescript"
     ]
   },
+  "lint-staged": {
+    "**/*.{js,ts,tsx}": "eslint",
+    "*": "prettier -u -w"
+  },
   "codegenConfig": {
-    "name": "RNPermissionsSpec",
+    "name": "rnpermissions",
     "type": "modules",
     "jsSrcsDir": "./src",
     "android": {
@@ -58,30 +60,32 @@
     }
   },
   "peerDependencies": {
-    "react": ">=18.1.0",
-    "react-native": ">=0.70.0",
-    "react-native-windows": ">=0.70.0"
+    "react": ">=16.13.1",
+    "react-native": ">=0.63.3",
+    "react-native-windows": ">=0.62.0"
   },
   "peerDependenciesMeta": {
     "react-native-windows": {
       "optional": true
     }
   },
+  "dependencies": {
+    "picocolors": "^1.0.0",
+    "pkg-dir": "^5.0.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@babel/preset-env": "^7.20.0",
-    "@expo/config-plugins": "^7.8.4",
-    "@types/react": "^18.2.47",
-    "@typescript-eslint/eslint-plugin": "^6.18.0",
-    "@typescript-eslint/parser": "^6.18.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
+    "@types/react": "^18.0.28",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0",
+    "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^3.1.1",
-    "prettier-plugin-organize-imports": "^3.2.4",
-    "react": "18.2.0",
-    "react-native": "0.73.4",
-    "react-native-builder-bob": "^0.23.2",
-    "typescript": "^5.3.3"
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "react": "^18.2.0",
+    "react-native": "^0.71.4",
+    "react-native-builder-bob": "^0.20.4",
+    "typescript": "^4.9.5"
   }
 }

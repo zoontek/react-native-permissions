@@ -3,7 +3,7 @@ import type {Contract} from './contract';
 import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
-  openPhotoPicker,
+  openLimitedPhotoLibraryPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 import {uniq} from './utils';
@@ -57,7 +57,7 @@ async function requestMultiple<P extends Permission[]>(
   const dedup = uniq(permissions);
 
   for (let index = 0; index < dedup.length; index++) {
-    const permission = dedup[index] as P[number];
+    const permission: P[number] = dedup[index];
     output[permission] = await request(permission);
   }
 
@@ -69,7 +69,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openPhotoPicker,
+  openLimitedPhotoLibraryPicker,
   openSettings,
   request,
   requestLocationAccuracy,

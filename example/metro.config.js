@@ -1,36 +1,23 @@
 const path = require('path');
-const pkg = require('../package.json');
+const blacklist = require('metro-config/src/defaults/exclusionList');
 
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
-const escape = require('escape-string-regexp');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
-
-const peerDependencies = Object.keys(pkg.peerDependencies);
-const root = path.resolve(__dirname, '..');
-const projectNodeModules = path.join(__dirname, 'node_modules');
-const rootNodeModules = path.join(root, 'node_modules');
-
-// We need to make sure that only one version is loaded for peerDependencies
-// So we block them at the root, and alias them to the versions in example's node_modules
-const blacklistRE = exclusionList(
-  peerDependencies.map((name) => new RegExp(`^${escape(path.join(rootNodeModules, name))}\\/.*$`)),
-);
-
-const extraNodeModules = peerDependencies.reduce((acc, name) => {
-  acc[name] = path.join(projectNodeModules, name);
-  return acc;
-}, {});
-
-/**
- * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
- *
- * @type {import('metro-config').MetroConfig}
- */
-const config = {
-  projectRoot: __dirname,
-  watchFolders: [root],
-  resolver: {blacklistRE, extraNodeModules},
+module.exports = {
+  resolver: {
+    blacklistRE: blacklist([
+      // This stops "react-native run-windows" from causing the metro server to crash if its already running
+      new RegExp(`${path.resolve(__dirname, 'windows').replace(/[/\\]/g, '/')}.*`),
+      // This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
+      new RegExp(
+        `${path.resolve(__dirname, 'msbuild.ProjectImports.zip').replace(/[/\\]/g, '/')}.*`,
+      ),
+    ]),
+  },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
+      },
+    }),
+  },
 };
-
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);

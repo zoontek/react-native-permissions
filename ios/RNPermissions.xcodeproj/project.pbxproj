@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD3987E62A091920007E27CF /* RNPermissions.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD3987E42A091920007E27CF /* RNPermissions.mm */; };
+		DD95B2F622D398C1000B5FC6 /* RNPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD95B2F422D398C1000B5FC6 /* RNPermissions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,8 +24,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNPermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD3987E32A091920007E27CF /* RNPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPermissions.h; sourceTree = "<group>"; };
-		DD3987E42A091920007E27CF /* RNPermissions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNPermissions.mm; sourceTree = "<group>"; };
+		DD95B2F422D398C1000B5FC6 /* RNPermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNPermissions.m; sourceTree = "<group>"; };
+		DD95B2F522D398C1000B5FC6 /* RNPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNPermissions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,8 +50,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				DD3987E32A091920007E27CF /* RNPermissions.h */,
-				DD3987E42A091920007E27CF /* RNPermissions.mm */,
+				DD95B2F522D398C1000B5FC6 /* RNPermissions.h */,
+				DD95B2F422D398C1000B5FC6 /* RNPermissions.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			indentWidth = 2;
@@ -95,7 +95,7 @@
 			};
 			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNPermissions" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = en;
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -115,7 +115,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD3987E62A091920007E27CF /* RNPermissions.mm in Sources */,
+				DD95B2F622D398C1000B5FC6 /* RNPermissions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

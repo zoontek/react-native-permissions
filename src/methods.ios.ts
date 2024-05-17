@@ -1,5 +1,5 @@
 import type {Contract} from './contract';
-import NativeModule from './NativeRNPermissions';
+import NativeModule from './NativePermissionsModule';
 import {RESULTS} from './results';
 import type {
   LocationAccuracy,
@@ -13,7 +13,7 @@ import {uniq} from './utils';
 
 let available: string[] | undefined = undefined;
 
-function getAvailable(): string[] {
+function getAvailable(): string[] | undefined {
   if (available == null) {
     available = NativeModule.getConstants().available;
   }
@@ -21,8 +21,8 @@ function getAvailable(): string[] {
   return available;
 }
 
-async function openPhotoPicker(): Promise<void> {
-  await NativeModule.openPhotoPicker();
+async function openLimitedPhotoLibraryPicker(): Promise<void> {
+  await NativeModule.openLimitedPhotoLibraryPicker();
 }
 
 async function openSettings(): Promise<void> {
@@ -30,13 +30,13 @@ async function openSettings(): Promise<void> {
 }
 
 async function check(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable().includes(permission)
+  return getAvailable()?.includes(permission)
     ? (NativeModule.check(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
 
 async function request(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable().includes(permission)
+  return getAvailable()?.includes(permission)
     ? (NativeModule.request(permission) as Promise<PermissionStatus>)
     : RESULTS.UNAVAILABLE;
 }
@@ -85,7 +85,7 @@ async function requestMultiple<P extends Permission[]>(
   const dedup = uniq(permissions);
 
   for (let index = 0; index < dedup.length; index++) {
-    const permission = dedup[index] as P[number];
+    const permission: P[number] = dedup[index];
     output[permission] = await request(permission);
   }
 
@@ -97,7 +97,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openPhotoPicker,
+  openLimitedPhotoLibraryPicker,
   openSettings,
   request,
   requestLocationAccuracy,

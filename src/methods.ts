@@ -3,7 +3,7 @@ import {RESULTS} from './results';
 import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
-  openPhotoPicker,
+  openLimitedPhotoLibraryPicker,
   requestLocationAccuracy,
 } from './unsupportedPlatformMethods';
 
@@ -18,13 +18,10 @@ async function checkNotifications(): Promise<NotificationsResponse> {
 async function checkMultiple<P extends Permission[]>(
   permissions: P,
 ): Promise<Record<P[number], PermissionStatus>> {
-  return permissions.reduce(
-    (acc, permission: P[number]) => {
-      acc[permission] = RESULTS.UNAVAILABLE;
-      return acc;
-    },
-    {} as Record<P[number], PermissionStatus>,
-  );
+  return permissions.reduce((acc, permission: P[number]) => {
+    acc[permission] = RESULTS.UNAVAILABLE;
+    return acc;
+  }, {} as Record<P[number], PermissionStatus>);
 }
 
 export const methods: Contract = {
@@ -32,7 +29,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openPhotoPicker,
+  openLimitedPhotoLibraryPicker,
   openSettings: Promise.reject,
   request: check,
   requestLocationAccuracy,
