@@ -25,6 +25,11 @@ android {
     buildToolsVersion safeExtGet("buildToolsVersion", "33.0.0")
     compileSdkVersion safeExtGet("compileSdkVersion", 33)
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     if (project.android.hasProperty("namespace")) {
         namespace "com.zoontek.rnpermissions"
 
