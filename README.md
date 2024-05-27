@@ -26,7 +26,7 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. By default, no permissions are avilable. First, require the `setup` script in your `Podfile`:
+1. By default, no permissions are avalaible. First, require the `setup` script in your `Podfile`:
 
 If you're using React Native 0.72+:
 
