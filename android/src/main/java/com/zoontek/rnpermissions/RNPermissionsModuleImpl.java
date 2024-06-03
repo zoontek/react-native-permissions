@@ -2,6 +2,7 @@ package com.zoontek.rnpermissions;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -47,6 +49,11 @@ public class RNPermissionsModuleImpl {
   }
 
   private static boolean isPermissionUnavailable(@NonNull final String permission) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+        return false;
+      }
+    }
     String fieldName = permission
       .replace("android.permission.", "")
       .replace("com.android.voicemail.permission.", "");
@@ -113,6 +120,17 @@ public class RNPermissionsModuleImpl {
       return;
     }
 
+    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+          promise.resolve(GRANTED);
+        } else {
+          promise.resolve(DENIED);
+        }
+        return;
+      }
+    }
+
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
     } else {
@@ -177,6 +195,43 @@ public class RNPermissionsModuleImpl {
         ? GRANTED
         : BLOCKED);
       return;
+    }
+
+    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            promise.resolve(GRANTED);
+        } else {
+          try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+            reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            // Register a lifecycle listener to check permission status when app resumes
+            reactContext.addLifecycleEventListener(new LifecycleEventListener() {
+              @Override
+              public void onHostResume() {
+                // Check the permission status when the app resumes
+                if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+                  promise.resolve(GRANTED);
+                } else {
+                  promise.resolve(DENIED);
+                }
+                reactContext.removeLifecycleEventListener(this);
+              }
+
+              @Override
+              public void onHostPause() {
+              }
+
+              @Override
+              public void onHostDestroy() {
+              }
+            });
+          } catch (Exception e) {
+            promise.reject(ERROR_INVALID_ACTIVITY, e);
+          }
+        }
+        return;
+      }
     }
 
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
