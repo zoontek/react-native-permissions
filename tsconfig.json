@@ -19,8 +19,8 @@
     "noImplicitReturns": false,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": true
   },
   "include": ["src"],
-  "exclude": ["example", "node_modules"],
+  "exclude": ["example", "node_modules"]
 }
