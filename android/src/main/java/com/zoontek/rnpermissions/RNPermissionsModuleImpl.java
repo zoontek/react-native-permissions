@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.common.logging.FLog;
@@ -29,6 +30,7 @@ import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class RNPermissionsModuleImpl {
@@ -49,10 +51,8 @@ public class RNPermissionsModuleImpl {
   }
 
   private static boolean isPermissionUnavailable(@NonNull final String permission) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-      if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
-        return false;
-      }
+    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      return false;
     }
     String fieldName = permission
       .replace("android.permission.", "")
@@ -165,6 +165,14 @@ public class RNPermissionsModuleImpl {
             == PackageManager.PERMISSION_GRANTED
             ? GRANTED
             : BLOCKED);
+      } else if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            output.putString(permission, GRANTED);
+          } else {
+            output.putString(permission, DENIED);
+          }
+        }
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
       } else {
@@ -219,12 +227,10 @@ public class RNPermissionsModuleImpl {
               }
 
               @Override
-              public void onHostPause() {
-              }
+              public void onHostPause() {}
 
               @Override
-              public void onHostDestroy() {
-              }
+              public void onHostDestroy() {}
             });
           } catch (Exception e) {
             promise.reject(ERROR_INVALID_ACTIVITY, e);
@@ -277,6 +283,7 @@ public class RNPermissionsModuleImpl {
     promise.resolve(getLegacyNotificationsResponse(reactContext, BLOCKED));
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.S)
   public static void requestMultiple(
     final ReactApplicationContext reactContext,
     final PermissionListener listener,
@@ -285,8 +292,8 @@ public class RNPermissionsModuleImpl {
     final Promise promise
   ) {
     final WritableMap output = new WritableNativeMap();
-    final ArrayList<String> permissionsToCheck = new ArrayList<String>();
-    int checkedPermissionsCount = 0;
+    final ArrayList<String> permissionsToCheck = new ArrayList<>();
+    final HashSet<String> pendingPermissions = new HashSet<>();
     Context context = reactContext.getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
@@ -294,7 +301,6 @@ public class RNPermissionsModuleImpl {
 
       if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
-        checkedPermissionsCount++;
       } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         output.putString(
           permission,
@@ -302,17 +308,24 @@ public class RNPermissionsModuleImpl {
             == PackageManager.PERMISSION_GRANTED
             ? GRANTED
             : BLOCKED);
-
-        checkedPermissionsCount++;
+      } else if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            output.putString(permission, GRANTED);
+          } else {
+            permissionsToCheck.add(permission);
+            pendingPermissions.add(permission);
+          }
+        }
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
-        checkedPermissionsCount++;
       } else {
         permissionsToCheck.add(permission);
+        pendingPermissions.add(permission);
       }
     }
 
-    if (permissions.size() == checkedPermissionsCount) {
+    if (pendingPermissions.isEmpty()) {
       promise.resolve(output);
       return;
     }
@@ -331,18 +344,49 @@ public class RNPermissionsModuleImpl {
             for (int j = 0; j < permissionsToCheck.size(); j++) {
               String permission = permissionsToCheck.get(j);
 
-              if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
-                output.putString(permission, GRANTED);
+              if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+                reactContext.addLifecycleEventListener(new LifecycleEventListener() {
+                  @Override
+                  public void onHostResume() {
+                    if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+                      output.putString(permission, GRANTED);
+                    } else {
+                      output.putString(permission, DENIED);
+                    }
+                    reactContext.removeLifecycleEventListener(this);
+                    pendingPermissions.remove(permission);
+
+                    if (pendingPermissions.isEmpty()) {
+                      promise.resolve(output);
+                    }
+                  }
+
+                  @Override
+                  public void onHostPause() {}
+
+                  @Override
+                  public void onHostDestroy() {}
+                });
+
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
               } else {
-                if (activity.shouldShowRequestPermissionRationale(permission)) {
-                  output.putString(permission, DENIED);
+                if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
+                  output.putString(permission, GRANTED);
                 } else {
-                  output.putString(permission, BLOCKED);
+                  if (activity.shouldShowRequestPermissionRationale(permission)) {
+                    output.putString(permission, DENIED);
+                  } else {
+                    output.putString(permission, BLOCKED);
+                  }
                 }
+                pendingPermissions.remove(permission);
               }
             }
 
-            promise.resolve(output);
+            if (pendingPermissions.isEmpty()) {
+              promise.resolve(output);
+            }
           }
         });
 
