@@ -157,33 +157,6 @@ setup_permissions([
 </plist>
 ```
 
-<details>
-  <summary><b>🧩 For expo users, see the plugin instructions</b></summary>
-
-Add wanted permissions (see step 1) to the plugin config:
-
-```json
-{
-  "name": "My awesome app",
-  "plugins": [
-    [
-      "react-native-permissions",
-      {
-        "iosPermissions": [
-          "AppTrackingTransparency",
-          "Bluetooth",
-          "CalendarsWriteOnly",
-          "Notifications",
-          "SpeechRecognition"
-        ]
-      }
-    ]
-  ]
-}
-```
-
-</details>
-
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
@@ -238,6 +211,44 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <!-- … -->
 
 </manifest>
+```
+
+### Expo
+
+Update your `app.json` file:
+
+```js
+{
+  "expo": {
+    "name": "Awesome app",
+    "plugins": [
+      [
+        "react-native-permissions",
+        {
+          // Add setup_permissions to your Podfile (see iOS setup - steps 1, 2 and 3)
+          "iosPermissions": [
+            "Camera",
+            "Microphone"
+          ]
+        }
+      ]
+    ],
+    "ios": {
+      // Add descriptions to your Info.plist (see iOS setup - step 4)
+      "infoPlist": {
+        "NSCameraUsageDescription": "[REASON]",
+        "NSMicrophoneUsageDescription": "[REASON]"
+      }
+    },
+    "android": {
+      // Add permissions to your AndroidManifest.xml (see Android setup)
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    }
+  }
+}
 ```
 
 ### Windows
