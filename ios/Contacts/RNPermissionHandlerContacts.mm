@@ -14,16 +14,31 @@
 
 - (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                  rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
-  switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {
-    case CNAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
-    case CNAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
-    case CNAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
-    case CNAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
-  }
+  if (@available(iOS 18.0, *)) {
+    switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {       
+      case CNAuthorizationStatusNotDetermined:
+        return resolve(RNPermissionStatusNotDetermined);
+      case CNAuthorizationStatusRestricted:
+        return resolve(RNPermissionStatusRestricted);
+      case CNAuthorizationStatusDenied:
+        return resolve(RNPermissionStatusDenied);
+      case CNAuthorizationStatusAuthorized:
+        return resolve(RNPermissionStatusAuthorized);
+      case CNAuthorizationStatusLimited:
+        return resolve(RNPermissionStatusLimited); 
+    } 
+  } else {
+    switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {   
+      case CNAuthorizationStatusNotDetermined:
+        return resolve(RNPermissionStatusNotDetermined);
+      case CNAuthorizationStatusRestricted:
+        return resolve(RNPermissionStatusRestricted);
+      case CNAuthorizationStatusDenied:
+        return resolve(RNPermissionStatusDenied);
+      case CNAuthorizationStatusAuthorized:
+        return resolve(RNPermissionStatusAuthorized);
+    }
+  } 
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
