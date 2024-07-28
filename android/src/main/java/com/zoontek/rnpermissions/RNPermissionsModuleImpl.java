@@ -212,6 +212,7 @@ public class RNPermissionsModuleImpl {
         } else {
           try {
             Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+            intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
             reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             // Register a lifecycle listener to check permission status when app resumes
             reactContext.addLifecycleEventListener(new LifecycleEventListener() {
@@ -369,6 +370,7 @@ public class RNPermissionsModuleImpl {
                 });
 
                 Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
                 reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
               } else {
                 if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
