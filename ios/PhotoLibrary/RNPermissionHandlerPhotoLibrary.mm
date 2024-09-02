@@ -61,7 +61,7 @@
     UIViewController *viewController = RCTPresentedViewController();
     PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
 
-    if (@available(iOS 15, *)) {
+    if (@available(iOS 15.0, *)) {
       [photoLibrary presentLimitedLibraryPickerFromViewController:viewController
                                                 completionHandler:^(__unused NSArray<NSString *> * _Nonnull assets) {
         resolve(@(true));
