@@ -207,7 +207,8 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+  
   <!-- … -->
 
 </manifest>
@@ -539,6 +540,7 @@ PERMISSIONS.ANDROID.WRITE_CALENDAR;
 PERMISSIONS.ANDROID.WRITE_CALL_LOG;
 PERMISSIONS.ANDROID.WRITE_CONTACTS;
 PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE;
+PERMISSIONS.ANDROID.SCHEDULE_EXACT_ALARM;
 ```
 
 </details>

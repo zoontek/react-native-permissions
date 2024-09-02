@@ -2,6 +2,7 @@ package com.zoontek.rnpermissions;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -27,6 +29,7 @@ import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class RNPermissionsModuleImpl {
@@ -47,6 +50,9 @@ public class RNPermissionsModuleImpl {
   }
 
   private static boolean isPermissionUnavailable(@NonNull final String permission) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      return false;
+    }
     String fieldName = permission
       .replace("android.permission.", "")
       .replace("com.android.voicemail.permission.", "");
@@ -113,6 +119,17 @@ public class RNPermissionsModuleImpl {
       return;
     }
 
+    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+          promise.resolve(GRANTED);
+        } else {
+          promise.resolve(DENIED);
+        }
+        return;
+      }
+    }
+
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
     } else {
@@ -147,6 +164,14 @@ public class RNPermissionsModuleImpl {
             == PackageManager.PERMISSION_GRANTED
             ? GRANTED
             : BLOCKED);
+      } else if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            output.putString(permission, GRANTED);
+          } else {
+            output.putString(permission, DENIED);
+          }
+        }
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
       } else {
@@ -177,6 +202,42 @@ public class RNPermissionsModuleImpl {
         ? GRANTED
         : BLOCKED);
       return;
+    }
+
+    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            promise.resolve(GRANTED);
+        } else {
+          try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+            intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
+            reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            // Register a lifecycle listener to check permission status when app resumes
+            reactContext.addLifecycleEventListener(new LifecycleEventListener() {
+              @Override
+              public void onHostResume() {
+                // Check the permission status when the app resumes
+                if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+                  promise.resolve(GRANTED);
+                } else {
+                  promise.resolve(DENIED);
+                }
+                reactContext.removeLifecycleEventListener(this);
+              }
+
+              @Override
+              public void onHostPause() {}
+
+              @Override
+              public void onHostDestroy() {}
+            });
+          } catch (Exception e) {
+            promise.reject(ERROR_INVALID_ACTIVITY, e);
+          }
+        }
+        return;
+      }
     }
 
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
@@ -230,8 +291,8 @@ public class RNPermissionsModuleImpl {
     final Promise promise
   ) {
     final WritableMap output = new WritableNativeMap();
-    final ArrayList<String> permissionsToCheck = new ArrayList<String>();
-    int checkedPermissionsCount = 0;
+    final ArrayList<String> permissionsToCheck = new ArrayList<>();
+    final HashSet<String> pendingPermissions = new HashSet<>();
     Context context = reactContext.getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
@@ -239,7 +300,6 @@ public class RNPermissionsModuleImpl {
 
       if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
-        checkedPermissionsCount++;
       } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
         output.putString(
           permission,
@@ -247,17 +307,24 @@ public class RNPermissionsModuleImpl {
             == PackageManager.PERMISSION_GRANTED
             ? GRANTED
             : BLOCKED);
-
-        checkedPermissionsCount++;
+      } else if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+            output.putString(permission, GRANTED);
+          } else {
+            permissionsToCheck.add(permission);
+            pendingPermissions.add(permission);
+          }
+        }
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
-        checkedPermissionsCount++;
       } else {
         permissionsToCheck.add(permission);
+        pendingPermissions.add(permission);
       }
     }
 
-    if (permissions.size() == checkedPermissionsCount) {
+    if (pendingPermissions.isEmpty()) {
       promise.resolve(output);
       return;
     }
@@ -276,18 +343,55 @@ public class RNPermissionsModuleImpl {
             for (int j = 0; j < permissionsToCheck.size(); j++) {
               String permission = permissionsToCheck.get(j);
 
-              if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
-                output.putString(permission, GRANTED);
-              } else {
-                if (activity.shouldShowRequestPermissionRationale(permission)) {
-                  output.putString(permission, DENIED);
-                } else {
-                  output.putString(permission, BLOCKED);
+              if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+                reactContext.addLifecycleEventListener(new LifecycleEventListener() {
+                  @Override
+                  public void onHostResume() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                      if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+                        output.putString(permission, GRANTED);
+                      } else {
+                        output.putString(permission, DENIED);
+                      }
+                    }
+                    reactContext.removeLifecycleEventListener(this);
+                    pendingPermissions.remove(permission);
+
+                    if (pendingPermissions.isEmpty()) {
+                      promise.resolve(output);
+                    }
+                  }
+
+                  @Override
+                  public void onHostPause() {}
+
+                  @Override
+                  public void onHostDestroy() {}
+                });
+
+                Intent intent = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                  intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
                 }
+                intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
+                reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+              } else {
+                if (results.length > 0 && results[j] == PackageManager.PERMISSION_GRANTED) {
+                  output.putString(permission, GRANTED);
+                } else {
+                  if (activity.shouldShowRequestPermissionRationale(permission)) {
+                    output.putString(permission, DENIED);
+                  } else {
+                    output.putString(permission, BLOCKED);
+                  }
+                }
+                pendingPermissions.remove(permission);
               }
             }
 
-            promise.resolve(output);
+            if (pendingPermissions.isEmpty()) {
+              promise.resolve(output);
+            }
           }
         });
 
