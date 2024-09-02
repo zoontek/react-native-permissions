@@ -727,13 +727,13 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 Permission checks and requests resolve into one of these statuses:
 
-| Return value          | Notes                                                                                                                      |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                           |
-| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                          |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                                                       |
-| `RESULTS.GRANTED`     | The permission is granted                                                                                                  |
-| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `PhotoLibrary`, `PhotoLibraryAddOnly`, `Contacts` and `Notifications`_ |
+| Return value          | Notes                                                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                                       |
+| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                                      |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                                                                   |
+| `RESULTS.GRANTED`     | The permission is granted                                                                                                              |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
 
 ### Methods
 
