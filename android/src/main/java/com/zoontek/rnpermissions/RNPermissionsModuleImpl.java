@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.common.logging.FLog;
@@ -51,7 +50,7 @@ public class RNPermissionsModuleImpl {
   }
 
   private static boolean isPermissionUnavailable(@NonNull final String permission) {
-    if (Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && Manifest.permission.SCHEDULE_EXACT_ALARM.equals(permission)) {
       return false;
     }
     String fieldName = permission
@@ -284,7 +283,6 @@ public class RNPermissionsModuleImpl {
     promise.resolve(getLegacyNotificationsResponse(reactContext, BLOCKED));
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.S)
   public static void requestMultiple(
     final ReactApplicationContext reactContext,
     final PermissionListener listener,
@@ -349,10 +347,12 @@ public class RNPermissionsModuleImpl {
                 reactContext.addLifecycleEventListener(new LifecycleEventListener() {
                   @Override
                   public void onHostResume() {
-                    if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
-                      output.putString(permission, GRANTED);
-                    } else {
-                      output.putString(permission, DENIED);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                      if (context.getSystemService(AlarmManager.class).canScheduleExactAlarms()) {
+                        output.putString(permission, GRANTED);
+                      } else {
+                        output.putString(permission, DENIED);
+                      }
                     }
                     reactContext.removeLifecycleEventListener(this);
                     pendingPermissions.remove(permission);
@@ -369,7 +369,10 @@ public class RNPermissionsModuleImpl {
                   public void onHostDestroy() {}
                 });
 
-                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                Intent intent = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                  intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                }
                 intent.setData(Uri.fromParts("package", reactContext.getPackageName(), null));
                 reactContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
               } else {
