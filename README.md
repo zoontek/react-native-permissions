@@ -733,7 +733,7 @@ Permission checks and requests resolve into one of these statuses:
 | `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                          |
 | `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                                                       |
 | `RESULTS.GRANTED`     | The permission is granted                                                                                                  |
-| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `PhotoLibrary`, `PhotoLibraryAddOnly`, `Contacts` and `Notifications`_ |
 
 ### Methods
 
