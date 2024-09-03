@@ -352,10 +352,15 @@ public class RNPermissionsModuleImpl {
     int[] grantResults
   ) {
     try {
-      callbacks.get(requestCode).invoke(grantResults, getPermissionAwareActivity(reactContext));
-      callbacks.remove(requestCode);
+      Callback callback = callbacks.get(requestCode);
+      if (callback != null) {
+        callback.invoke(grantResults, getPermissionAwareActivity(reactContext));
+        callbacks.remove(requestCode);
+      } else {
+        FLog.w("PermissionsModule", "Unable to find callback with requestCode %d", requestCode);
+      }
       return callbacks.size() == 0;
-    } catch (Exception e) {
+    } catch (IllegalStateException e) {
       FLog.e(
         "PermissionsModule",
         e,
