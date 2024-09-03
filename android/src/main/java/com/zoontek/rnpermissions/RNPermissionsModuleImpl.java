@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Process;
 import android.provider.Settings;
 import android.util.SparseArray;
 
@@ -105,14 +103,6 @@ public class RNPermissionsModuleImpl {
 
     Context context = reactContext.getBaseContext();
 
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
-        == PackageManager.PERMISSION_GRANTED
-        ? GRANTED
-        : BLOCKED);
-      return;
-    }
-
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
     } else {
@@ -140,13 +130,6 @@ public class RNPermissionsModuleImpl {
 
       if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
-      } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        output.putString(
-          permission,
-          context.checkPermission(permission, Process.myPid(), Process.myUid())
-            == PackageManager.PERMISSION_GRANTED
-            ? GRANTED
-            : BLOCKED);
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
       } else {
@@ -170,14 +153,6 @@ public class RNPermissionsModuleImpl {
     }
 
     Context context = reactContext.getBaseContext();
-
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-      promise.resolve(context.checkPermission(permission, Process.myPid(), Process.myUid())
-        == PackageManager.PERMISSION_GRANTED
-        ? GRANTED
-        : BLOCKED);
-      return;
-    }
 
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       promise.resolve(GRANTED);
@@ -240,15 +215,6 @@ public class RNPermissionsModuleImpl {
       if (isPermissionUnavailable(permission)) {
         output.putString(permission, UNAVAILABLE);
         checkedPermissionsCount++;
-      } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        output.putString(
-          permission,
-          context.checkPermission(permission, Process.myPid(), Process.myUid())
-            == PackageManager.PERMISSION_GRANTED
-            ? GRANTED
-            : BLOCKED);
-
-        checkedPermissionsCount++;
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
         checkedPermissionsCount++;
@@ -303,7 +269,7 @@ public class RNPermissionsModuleImpl {
     final String permission,
     final Promise promise
   ) {
-    if (permission == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+    if (permission == null) {
       promise.resolve(false);
       return;
     }
