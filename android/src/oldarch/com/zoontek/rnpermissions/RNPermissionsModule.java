@@ -3,7 +3,6 @@ package com.zoontek.rnpermissions;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -13,8 +12,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.PermissionListener;
-
-import java.util.Map;
 
 @ReactModule(name = RNPermissionsModuleImpl.NAME)
 public class RNPermissionsModule extends ReactContextBaseJavaModule implements PermissionListener {
@@ -30,12 +27,6 @@ public class RNPermissionsModule extends ReactContextBaseJavaModule implements P
   @Override
   public String getName() {
     return RNPermissionsModuleImpl.NAME;
-  }
-
-  @Nullable
-  @Override
-  public Map<String, Object> getConstants() {
-    return RNPermissionsModuleImpl.getConstants();
   }
 
   @ReactMethod

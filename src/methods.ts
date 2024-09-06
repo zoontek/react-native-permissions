@@ -8,11 +8,11 @@ import {
 } from './unsupportedPlatformMethods';
 
 async function check(): Promise<PermissionStatus> {
-  return RESULTS.UNAVAILABLE;
+  return RESULTS.BLOCKED;
 }
 
 async function checkNotifications(): Promise<NotificationsResponse> {
-  return {status: RESULTS.UNAVAILABLE, settings: {}};
+  return {status: RESULTS.BLOCKED, settings: {}};
 }
 
 async function checkMultiple<P extends Permission[]>(
@@ -20,7 +20,7 @@ async function checkMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>> {
   return permissions.reduce(
     (acc, permission: P[number]) => {
-      acc[permission] = RESULTS.UNAVAILABLE;
+      acc[permission] = RESULTS.BLOCKED;
       return acc;
     },
     {} as Record<P[number], PermissionStatus>,

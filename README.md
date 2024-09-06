@@ -343,15 +343,6 @@ As permissions are not handled in the same way on iOS and Android, this library 
    ┃ check(PERMISSIONS.IOS.CAMERA) ┃
    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                    │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
            Is the permission
              requestable ?
                    │           ╔════╗
@@ -395,15 +386,6 @@ As permissions are not handled in the same way on iOS and Android, this library 
  ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                    │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
            Is the permission
            already granted ?
                    │           ╔═════╗
@@ -445,15 +427,6 @@ As permissions are not handled in the same way on iOS and Android, this library 
    ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                      │
-         Is the feature available
-              on this device ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                 ┌─────────────────────┐
-                  ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                     │                    └─────────────────────┘
              Is the permission
                requestable ?
                      │           ╔════╗
@@ -727,19 +700,18 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 Permission checks and requests resolve into one of these statuses:
 
-| Return value          | Notes                                                                                                                                  |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                                       |
-| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                                      |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                                                                   |
-| `RESULTS.GRANTED`     | The permission is granted                                                                                                              |
-| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
+| Return value      | Notes                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `RESULTS.DENIED`  | The permission has not been requested / is denied but requestable                                                                      |
+| `RESULTS.BLOCKED` | The permission is denied and not requestable anymore                                                                                   |
+| `RESULTS.GRANTED` | The permission is granted                                                                                                              |
+| `RESULTS.LIMITED` | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
 
 ### Methods
 
 ```ts
 // type used in usage examples
-type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'blocked';
+type PermissionStatus = 'denied' | 'limited' | 'granted' | 'blocked';
 ```
 
 #### check
@@ -758,9 +730,6 @@ import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 check(PERMISSIONS.IOS.LOCATION_ALWAYS)
   .then((result) => {
     switch (result) {
-      case RESULTS.UNAVAILABLE:
-        console.log('This feature is not available (on this device / in this context)');
-        break;
       case RESULTS.DENIED:
         console.log('The permission has not been requested / is denied but requestable');
         break;

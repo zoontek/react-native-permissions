@@ -1,6 +1,5 @@
 import type {Contract} from './contract';
 import NativeModule from './NativeRNPermissions';
-import {RESULTS} from './results';
 import type {
   LocationAccuracy,
   LocationAccuracyOptions,
@@ -11,16 +10,6 @@ import type {
 } from './types';
 import {uniq} from './utils';
 
-let available: string[] | undefined = undefined;
-
-function getAvailable(): string[] {
-  if (available == null) {
-    available = NativeModule.getConstants().available;
-  }
-
-  return available;
-}
-
 async function openPhotoPicker(): Promise<void> {
   await NativeModule.openPhotoPicker();
 }
@@ -29,16 +18,12 @@ async function openSettings(): Promise<void> {
   await NativeModule.openSettings();
 }
 
-async function check(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable().includes(permission)
-    ? (NativeModule.check(permission) as Promise<PermissionStatus>)
-    : RESULTS.UNAVAILABLE;
+function check(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.check(permission) as Promise<PermissionStatus>;
 }
 
-async function request(permission: Permission): Promise<PermissionStatus> {
-  return getAvailable().includes(permission)
-    ? (NativeModule.request(permission) as Promise<PermissionStatus>)
-    : RESULTS.UNAVAILABLE;
+function request(permission: Permission): Promise<PermissionStatus> {
+  return NativeModule.request(permission) as Promise<PermissionStatus>;
 }
 
 function checkLocationAccuracy(): Promise<LocationAccuracy> {

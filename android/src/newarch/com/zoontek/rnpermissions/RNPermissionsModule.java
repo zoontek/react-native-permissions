@@ -11,8 +11,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.PermissionListener;
 
-import java.util.Map;
-
 @ReactModule(name = RNPermissionsModuleImpl.NAME)
 public class RNPermissionsModule extends NativeRNPermissionsSpec implements PermissionListener {
 
@@ -27,11 +25,6 @@ public class RNPermissionsModule extends NativeRNPermissionsSpec implements Perm
   @NonNull
   public String getName() {
     return RNPermissionsModuleImpl.NAME;
-  }
-
-  @Override
-  protected Map<String, Object> getTypedExportedConstants() {
-    return RNPermissionsModuleImpl.getConstants();
   }
 
   @Override

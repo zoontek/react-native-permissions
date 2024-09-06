@@ -1,6 +1,5 @@
 package com.zoontek.rnpermissions;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.util.SparseArray;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.common.logging.FLog;
@@ -35,27 +33,7 @@ public class RNPermissionsModuleImpl {
   private static int mRequestCode = 0;
   private static final String GRANTED = "granted";
   private static final String DENIED = "denied";
-  private static final String UNAVAILABLE = "unavailable";
   private static final String BLOCKED = "blocked";
-
-  public static Map<String, Object> getConstants() {
-    HashMap<String, Object> constants = new HashMap<>();
-    constants.put("available", Arguments.createArray());
-    return constants;
-  }
-
-  private static boolean isPermissionUnavailable(@NonNull final String permission) {
-    String fieldName = permission
-      .replace("android.permission.", "")
-      .replace("com.android.voicemail.permission.", "");
-
-    try {
-      Manifest.permission.class.getField(fieldName);
-      return false;
-    } catch (NoSuchFieldException ignored) {
-      return true;
-    }
-  }
 
   // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
   private static WritableMap getLegacyNotificationsResponse(
@@ -96,8 +74,8 @@ public class RNPermissionsModuleImpl {
     final String permission,
     final Promise promise
   ) {
-    if (permission == null || isPermissionUnavailable(permission)) {
-      promise.resolve(UNAVAILABLE);
+    if (permission == null) {
+      promise.resolve(BLOCKED);
       return;
     }
 
@@ -128,9 +106,7 @@ public class RNPermissionsModuleImpl {
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
 
-      if (isPermissionUnavailable(permission)) {
-        output.putString(permission, UNAVAILABLE);
-      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
       } else {
         output.putString(permission, DENIED);
@@ -147,8 +123,8 @@ public class RNPermissionsModuleImpl {
     final String permission,
     final Promise promise
   ) {
-    if (permission == null || isPermissionUnavailable(permission)) {
-      promise.resolve(UNAVAILABLE);
+    if (permission == null) {
+      promise.resolve(BLOCKED);
       return;
     }
 
@@ -212,10 +188,7 @@ public class RNPermissionsModuleImpl {
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
 
-      if (isPermissionUnavailable(permission)) {
-        output.putString(permission, UNAVAILABLE);
-        checkedPermissionsCount++;
-      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED);
         checkedPermissionsCount++;
       } else {

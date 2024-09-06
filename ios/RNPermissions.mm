@@ -80,85 +80,6 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
-- (NSDictionary *)constantsToExport {
-  NSMutableArray<NSString *> *available = [NSMutableArray new];
-
-#if __has_include("RNPermissionHandlerBluetooth.h")
-  [available addObject:[RNPermissionHandlerBluetooth handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
-  [available addObject:[RNPermissionHandlerCalendars handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
-  [available addObject:[RNPermissionHandlerCamera handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
-  [available addObject:[RNPermissionHandlerContacts handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
-  [available addObject:[RNPermissionHandlerFaceID handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-  [available addObject:[RNPermissionHandlerLocationAlways handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  [available addObject:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
-  [available addObject:[RNPermissionHandlerMediaLibrary handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
-  [available addObject:[RNPermissionHandlerMicrophone handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
-  [available addObject:[RNPermissionHandlerMotion handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerNotifications.h")
-  [available addObject:[RNPermissionHandlerNotifications handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  [available addObject:[RNPermissionHandlerPhotoLibrary handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
-  [available addObject:[RNPermissionHandlerReminders handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
-  [available addObject:[RNPermissionHandlerSiri handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  [available addObject:[RNPermissionHandlerSpeechRecognition handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
-  [available addObject:[RNPermissionHandlerStoreKit handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-  [available addObject:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  [available addObject:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerLocationAccuracy.h")
-  [available addObject:[RNPermissionHandlerLocationAccuracy handlerUniqueId]];
-#endif
-#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-  [available addObject:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]];
-#endif
-
-#if RCT_DEV
-  if ([available count] == 0) {
-    NSMutableString *message = [NSMutableString new];
-
-    [message appendString:@"⚠  No permission handler detected.\n\n"];
-    [message appendString:@"• Check that you are correctly calling setup_permissions in your Podfile.\n"];
-    [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
-
-    RCTLogError(@"%@", message);
-  }
-#endif
-
-  return @{ @"available": available };
-}
-
 - (void)checkUsageDescriptionKeys:(NSArray<NSString *> * _Nonnull)keys {
 #if RCT_DEV
   for (NSString *key in keys) {
@@ -170,117 +91,183 @@ RCT_EXPORT_MODULE();
 #endif
 }
 
-- (id<RNPermissionHandler> _Nullable)handlerForPermission:(NSString *)permission {
-  id<RNPermissionHandler> handler = nil;
-
-  if (false) {}
-#if __has_include("RNPermissionHandlerBluetooth.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerBluetooth handlerUniqueId]]) {
-    handler = [RNPermissionHandlerBluetooth new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerCalendars handlerUniqueId]]) {
-    handler = [RNPermissionHandlerCalendars new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerCamera handlerUniqueId]]) {
-    handler = [RNPermissionHandlerCamera new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerContacts handlerUniqueId]]) {
-    handler = [RNPermissionHandlerContacts new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerFaceID handlerUniqueId]]) {
-    handler = [RNPermissionHandlerFaceID new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerLocationAlways handlerUniqueId]]) {
-    handler = [RNPermissionHandlerLocationAlways new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]]) {
-    handler = [RNPermissionHandlerLocationWhenInUse new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerMediaLibrary handlerUniqueId]]) {
-    handler = [RNPermissionHandlerMediaLibrary new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerMicrophone handlerUniqueId]]) {
-    handler = [RNPermissionHandlerMicrophone new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerMotion handlerUniqueId]]) {
-    handler = [RNPermissionHandlerMotion new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerPhotoLibrary handlerUniqueId]]) {
-    handler = [RNPermissionHandlerPhotoLibrary new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerReminders handlerUniqueId]]) {
-    handler = [RNPermissionHandlerReminders new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerSiri handlerUniqueId]]) {
-    handler = [RNPermissionHandlerSiri new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerSpeechRecognition handlerUniqueId]]) {
-    handler = [RNPermissionHandlerSpeechRecognition new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerStoreKit handlerUniqueId]]) {
-    handler = [RNPermissionHandlerStoreKit new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]]) {
-    handler = [RNPermissionHandlerAppTrackingTransparency new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]]) {
-    handler = [RNPermissionHandlerPhotoLibraryAddOnly new];
-  }
-#endif
-#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-  else if ([permission isEqualToString:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]]) {
-    handler = [RNPermissionHandlerCalendarsWriteOnly new];
-  }
-#endif
-  else {
-    RCTLogError(@"Unknown permission \"%@\"", permission);
-  }
-
+- (id<RNPermissionHandler>)checkPermissionHandler:(id<RNPermissionHandler>)handler {
   [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
   return handler;
+}
+
+- (id<RNPermissionHandler> _Nullable)handlerForPermission:(NSString *)permission {
+  bool hasPermissionHandlers = false;
+
+#if __has_include("RNPermissionHandlerBluetooth.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerBluetooth handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerBluetooth new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerCalendars.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerCalendars handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerCalendars new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerCamera.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerCamera handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerCamera new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerContacts.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerContacts handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerContacts new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerFaceID.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerFaceID handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerFaceID new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerLocationAlways.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerLocationAlways handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerLocationAlways new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerLocationWhenInUse new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerMediaLibrary.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerMediaLibrary handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerMediaLibrary new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerMicrophone.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerMicrophone handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerMicrophone new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerMotion.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerMotion handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerMotion new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerPhotoLibrary.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerPhotoLibrary handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerPhotoLibrary new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerReminders.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerReminders handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerReminders new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerSiri.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerSiri handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerSiri new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerSpeechRecognition.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerSpeechRecognition handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerSpeechRecognition new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerStoreKit.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerStoreKit handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerStoreKit new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerAppTrackingTransparency new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerPhotoLibraryAddOnly new]];
+  }
+#endif
+
+#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
+  hasPermissionHandlers = true;
+
+  if ([permission isEqualToString:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]]) {
+    return [self checkPermissionHandler:[RNPermissionHandlerCalendarsWriteOnly new]];
+  }
+#endif
+
+#if RCT_DEV
+  if (hasPermissionHandlers) {
+    RCTLogError(@"Unknown permission \"%@\"", permission);
+  } else {
+    NSMutableString *message = [NSMutableString new];
+
+    [message appendString:@"⚠  No permission handler detected.\n\n"];
+    [message appendString:@"• Check that you are correctly calling setup_permissions in your Podfile.\n"];
+    [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
+
+    RCTLogError(@"%@", message);
+  }
+#endif
+
+  return nil;
 }
 
 - (NSString *)stringForStatus:(RNPermissionStatus)status {
   switch (status) {
     case RNPermissionStatusNotAvailable:
+    case RNPermissionStatusDenied:
     case RNPermissionStatusRestricted:
-      return @"unavailable";
+      return @"blocked";
     case RNPermissionStatusNotDetermined:
       return @"denied";
-    case RNPermissionStatusDenied:
-      return @"blocked";
     case RNPermissionStatusLimited:
       return @"limited";
     case RNPermissionStatusAuthorized:
@@ -322,7 +309,12 @@ RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(check:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-  id<RNPermissionHandler> handler = [self handlerForPermission:permission];
+  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
+
+  if (handler == nil) {
+    return resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
+  }
+
   NSString *lockId = [self lockHandler:handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status) {
@@ -337,7 +329,12 @@ RCT_EXPORT_METHOD(check:(NSString *)permission
 RCT_EXPORT_METHOD(request:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-  id<RNPermissionHandler> handler = [self handlerForPermission:permission];
+  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
+
+  if (handler == nil) {
+    return resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
+  }
+
   NSString *lockId = [self lockHandler:handler];
 
   [handler requestWithResolver:^(RNPermissionStatus status) {

@@ -7,10 +7,6 @@ type NotificationsResponse = {
 };
 
 export interface Spec extends TurboModule {
-  getConstants(): {
-    available: string[];
-  };
-
   openSettings(): Promise<void>;
   check(permission: string): Promise<string>;
   checkNotifications(): Promise<NotificationsResponse>;
