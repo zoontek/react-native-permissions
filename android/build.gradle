@@ -7,7 +7,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle:8.1.1")
     }
 }
 
@@ -22,8 +22,8 @@ if (isNewArchitectureEnabled()) {
 }
 
 android {
-    buildToolsVersion safeExtGet("buildToolsVersion", "33.0.0")
-    compileSdkVersion safeExtGet("compileSdkVersion", 33)
+    buildToolsVersion safeExtGet("buildToolsVersion", "34.0.0")
+    compileSdkVersion safeExtGet("compileSdkVersion", 34)
 
     if (project.android.hasProperty("namespace")) {
         namespace "com.zoontek.rnpermissions"
@@ -39,8 +39,8 @@ android {
     }
     defaultConfig {
         buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
-        minSdkVersion safeExtGet("minSdkVersion", 21)
-        targetSdkVersion safeExtGet("targetSdkVersion", 33)
+        minSdkVersion safeExtGet("minSdkVersion", 23)
+        targetSdkVersion safeExtGet("targetSdkVersion", 34)
     }
     lintOptions {
         abortOnError false
