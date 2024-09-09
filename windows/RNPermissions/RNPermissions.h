@@ -25,4 +25,3 @@ namespace RNPermissions
     void Request(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept;
   };
 }
-
