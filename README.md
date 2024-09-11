@@ -627,7 +627,6 @@ type RationaleObject = {
 
 type Rationale = RationaleObject | (() => Promise<boolean>);
 
-// Only used by iOS
 type NotificationOption =
   | 'alert'
   | 'badge'
@@ -638,8 +637,7 @@ type NotificationOption =
   | 'providesAppSettings';
 
 type NotificationSettings = {
-  // Properties are only available on iOS
-  // Unavailable settings will not be included in the response object
+  // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
   sound?: boolean;
@@ -718,7 +716,7 @@ The `rationale` is only available and used on Android. It can be a native alert 
 
 ```ts
 function requestNotifications(
-  options: NotificationOption[],
+  options: NotificationOption[], // only used by iOS
   rationale?: Rationale,
 ): Promise<{
   status: PermissionStatus;
