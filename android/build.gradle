@@ -7,6 +7,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${safeExtGet("kotlinVersion", "1.8.0")}")
         classpath("com.android.tools.build:gradle:8.1.1")
     }
 }
@@ -16,6 +17,7 @@ def isNewArchitectureEnabled() {
 }
 
 apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
 
 if (isNewArchitectureEnabled()) {
     apply plugin: "com.facebook.react"
