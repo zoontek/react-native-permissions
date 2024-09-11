@@ -604,9 +604,7 @@ Permission requests resolve into one of these statuses:
 | `RESULTS.GRANTED` | The permission is granted                                                                                                              |
 | `RESULTS.LIMITED` | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
 
-### Methods
-
-#### Types
+### Types
 
 ```ts
 type ValueOf<T> = T[keyof T];
@@ -626,6 +624,9 @@ type RationaleObject = {
 };
 
 type Rationale = RationaleObject | (() => Promise<boolean>);
+
+type LocationAccuracy = 'full' | 'reduced';
+type LocationAccuracyOptions = {purposeKey: string};
 
 type NotificationOption =
   | 'alert'
@@ -649,6 +650,8 @@ type NotificationSettings = {
   notificationCenter?: boolean;
 };
 ```
+
+### Methods
 
 #### check
 
@@ -801,7 +804,7 @@ openPhotoPicker().catch(() => console.warn('Cannot open photo library picker'));
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow checking if the user share his precise location.
 
 ```ts
-function checkLocationAccuracy(): Promise<'full' | 'reduced'>;
+function checkLocationAccuracy(): Promise<LocationAccuracy>;
 ```
 
 ```ts
@@ -817,7 +820,7 @@ checkLocationAccuracy()
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow requesting the user for his precise location. Will resolve immediately if `full` accuracy is already authorized.
 
 ```ts
-function requestLocationAccuracy(options: {purposeKey: string}): Promise<'full' | 'reduced'>;
+function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
 ```
 
 ```js
