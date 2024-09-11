@@ -595,7 +595,7 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 ### Permissions statuses
 
-Permission checks and requests resolve into one of these statuses:
+Permission requests resolve into one of these statuses:
 
 | Return value      | Notes                                                                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
