@@ -28,8 +28,6 @@ $ yarn add react-native-permissions
 
 1. By default, no permissions are avalaible. First, require the `setup` script in your `Podfile`:
 
-If you're using React Native 0.72+:
-
 ```diff
 # Transform this into a `node_require` generic function:
 - # Resolve react_native_pods.rb with node to allow for hoisting
@@ -51,16 +49,6 @@ If you're using React Native 0.72+:
 # Use it to require both react-native's and this package's scripts:
 + node_require('react-native/scripts/react_native_pods.rb')
 + node_require('react-native-permissions/scripts/setup.rb')
-```
-
-If you're using React Native < 0.72:
-
-```diff
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
-# Add a require_relative for this package's script:
-+ require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
 2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be added:
@@ -333,131 +321,41 @@ public class MainApplication extends Application implements ReactApplication {
 
 ## Understanding permission flow
 
-As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms' behaviors. To understand it a little better, take a look to these two flowcharts:
-
-### iOS flow
+As permissions are not handled in the same way on iOS, Android and Windows, this library provides an abstraction over the three platforms behaviors. To understand it a little better, take a look to this flowchart:
 
 ```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │ RESULTS.LIMITED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │
-          └────────────────┘
-                   │
-                   ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-         Does the user accept
-            the request ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                   ┌─────────────────┐
-                ╚═════╝                   │ RESULTS.BLOCKED │
-                   │                      └─────────────────┘
-                   ▼
-         ┌───────────────────┐
-         │ RESULTS.LIMITED / │
-         │  RESULTS.GRANTED  │
-         └───────────────────┘
-```
-
-### Android flow
-
-```
- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-           Is the permission
-           already granted ?
-                   │           ╔═════╗
-                   ├───────────║ YES ║─────────────┐
-                   │           ╚═════╝             │
-                ╔════╗                             ▼
-                ║ NO ║                   ┌───────────────────┐
-                ╚════╝                   │  RESULTS.GRANTED  │
-                   │                     └───────────────────┘
-                   ▼
-          ┌────────────────┐
-          │ RESULTS.DENIED │◀──────────────────────┐
-          └────────────────┘                       │
-                   │                               │
-                   ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
-                   │                               │
-         Does the user accept                      │
-            the request ?                          │
-                   │           ╔════╗      Is the permission
-                   ├───────────║ NO ║──── still requestable ?
-                   │           ╚════╝              │
-                ╔═════╗                         ╔════╗
-                ║ YES ║                         ║ NO ║
-                ╚═════╝                         ╚════╝
-                   │                               │
-                   ▼                               ▼
-          ┌─────────────────┐             ┌─────────────────┐
-          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
-          └─────────────────┘             └─────────────────┘
-```
-
-### Windows flow
-
-```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                     │
-             Is the permission
-               requestable ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                  ┌───────────────────┐
-                  ╚═════╝                  │ RESULTS.BLOCKED / │
-                     │                     │  RESULTS.GRANTED  │
-                     ▼                     └───────────────────┘
-            ┌────────────────┐
-            │ RESULTS.DENIED │
-            └────────────────┘
-                     │
-                     ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.WINDOWS.WEBCAM) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                     │
-           Does the user accept
-              the request ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                   ┌─────────────────┐
-                  ╚═════╝                   │ RESULTS.BLOCKED │
-                     │                      └─────────────────┘
-                     ▼
-            ┌─────────────────┐
-            │ RESULTS.GRANTED │
-            └─────────────────┘
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ check(PERMISSIONS.X.Y) ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━┛
+              │
+      Is the permission
+          granted ?
+              │           ╔═════╗
+              ├───────────║ YES ║──────────────┐
+              │           ╚═════╝              │
+           ╔════╗                              ▼
+           ║ NO ║                   ┌─────────────────────┐
+           ╚════╝                   │ No request required │
+              │                     └─────────────────────┘
+              ▼
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ request(PERMISSIONS.X.Y) ┃◀──────────────────┐
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛                ╔═════╗
+              │                             ║ YES ║
+    Did the user see and                    ╚═════╝
+    accept the request ?                       │
+              │           ╔════╗       Is the permission
+              ├───────────║ NO ║────── still requestable ?
+              │           ╚════╝               │
+           ╔═════╗                          ╔════╗
+           ║ YES ║                          ║ NO ║
+           ╚═════╝                          ╚════╝
+              │                                │
+              ▼                                ▼
+     ┌───────────────────┐            ┌─────────────────┐
+     │ RESULTS.LIMITED / │            │ RESULTS.BLOCKED │
+     │  RESULTS.GRANTED  │            └─────────────────┘
+     └───────────────────┘
 ```
 
 ## API
