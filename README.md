@@ -333,9 +333,9 @@ As permissions are not handled in the same way on iOS, Android and Windows, this
               │           ╔═════╗
               ├───────────║ YES ║─────────────┐
               │           ╚═════╝             │
-           ╔════╗                             ▼
-           ║ NO ║                   ┌───────────────────┐
-           ╚════╝                   │ No request needed │
+            ╔════╗                            ▼
+            ║ NO ║                  ┌───────────────────┐
+            ╚════╝                  │ No request needed │
               │                     └───────────────────┘
               ▼
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -347,9 +347,9 @@ As permissions are not handled in the same way on iOS, Android and Windows, this
               │           ╔════╗       Is the permission
               ├───────────║ NO ║────── still requestable ?
               │           ╚════╝               │
-           ╔═════╗                          ╔════╗
-           ║ YES ║                          ║ NO ║
-           ╚═════╝                          ╚════╝
+           ╔═════╗                           ╔════╗
+           ║ YES ║                           ║ NO ║
+           ╚═════╝                           ╚════╝
               │                                │
               ▼                                ▼
      ┌───────────────────┐            ┌─────────────────┐
