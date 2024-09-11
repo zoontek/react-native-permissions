@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import android.util.SparseArray
 
 import androidx.core.app.NotificationManagerCompat
@@ -86,7 +85,6 @@ object RNPermissionsModuleImpl {
     promise: Promise
   ) {
     if (check(reactContext, permission)) {
-      Log.i("TOTO", "GOES HERE " + check(reactContext, permission))
       return promise.resolve(GRANTED)
     }
 
