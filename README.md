@@ -616,7 +616,7 @@ type Permission =
   | ValueOf<typeof PERMISSIONS.IOS>
   | ValueOf<typeof PERMISSIONS.WINDOWS>;
 
-type PermissionStatus = 'denied' | 'blocked' | 'granted' | 'limited';
+type PermissionStatus = ValueOf<typeof RESULTS>;
 
 type RationaleObject = {
   title: string;
