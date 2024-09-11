@@ -793,9 +793,7 @@ function openPhotoPicker(): Promise<void>;
 ```ts
 import {openPhotoPicker} from 'react-native-permissions';
 
-openPhotoPicker().catch(() => {
-  console.warn('Cannot open photo library picker');
-});
+openPhotoPicker().catch(() => console.warn('Cannot open photo library picker'));
 ```
 
 #### checkLocationAccuracy (iOS 14+)
