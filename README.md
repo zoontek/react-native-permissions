@@ -606,9 +606,50 @@ Permission requests resolve into one of these statuses:
 
 ### Methods
 
+#### Types
+
 ```ts
-// type used in usage examples
-type PermissionStatus = 'denied' | 'limited' | 'granted' | 'blocked';
+type ValueOf<T> = T[keyof T];
+
+type Permission =
+  | ValueOf<typeof PERMISSIONS.ANDROID>
+  | ValueOf<typeof PERMISSIONS.IOS>
+  | ValueOf<typeof PERMISSIONS.WINDOWS>;
+
+type PermissionStatus = 'denied' | 'blocked' | 'granted' | 'limited';
+
+type RationaleObject = {
+  title: string;
+  message: string;
+  buttonPositive: string;
+  buttonNegative?: string;
+};
+
+type Rationale = RationaleObject | (() => Promise<boolean>);
+
+// Only used by iOS
+type NotificationOption =
+  | 'alert'
+  | 'badge'
+  | 'sound'
+  | 'carPlay'
+  | 'criticalAlert'
+  | 'provisional'
+  | 'providesAppSettings';
+
+type NotificationSettings = {
+  // Properties are only available on iOS
+  // Unavailable settings will not be included in the response object
+  alert?: boolean;
+  badge?: boolean;
+  sound?: boolean;
+  carPlay?: boolean;
+  criticalAlert?: boolean;
+  provisional?: boolean;
+  providesAppSettings?: boolean;
+  lockScreen?: boolean;
+  notificationCenter?: boolean;
+};
 ```
 
 #### check
@@ -616,10 +657,10 @@ type PermissionStatus = 'denied' | 'limited' | 'granted' | 'blocked';
 Check if one permission is granted.
 
 ```ts
-function check(permission: string): boolean;
+function check(permission: Permission): boolean;
 ```
 
-```js
+```ts
 import {check, PERMISSIONS} from 'react-native-permissions';
 
 const granted = check(PERMISSIONS.IOS.LOCATION_ALWAYS);
@@ -636,19 +677,10 @@ Request one permission.
 The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
 
 ```ts
-type RationaleObject = {
-  title: string;
-  message: string;
-  buttonPositive: string;
-  buttonNegative?: string;
-};
-
-type Rationale = RationaleObject | (() => Promise<boolean>);
-
-function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
+function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
 ```
 
-```js
+```ts
 import {request, PERMISSIONS} from 'react-native-permissions';
 
 request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
@@ -661,27 +693,13 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 Check if notifications permission is granted and get notifications settings values.
 
 ```ts
-type NotificationSettings = {
-  // properties only available on iOS
-  // unavailable settings will not be included in the response object
-  alert?: boolean;
-  badge?: boolean;
-  sound?: boolean;
-  carPlay?: boolean;
-  criticalAlert?: boolean;
-  provisional?: boolean;
-  providesAppSettings?: boolean;
-  lockScreen?: boolean;
-  notificationCenter?: boolean;
-};
-
 function checkNotifications(): Promise<{
   granted: boolean;
   settings: NotificationSettings;
 }>;
 ```
 
-```js
+```ts
 import {checkNotifications} from 'react-native-permissions';
 
 checkNotifications().then(({granted, settings}) => {
@@ -699,30 +717,6 @@ Request notifications permission status and get notifications settings values.
 The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
 
 ```ts
-// only used on iOS
-type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'criticalAlert'
-  | 'carPlay'
-  | 'provisional'
-  | 'providesAppSettings';
-
-type NotificationSettings = {
-  // properties only available on iOS
-  // unavailable settings will not be included in the response object
-  alert?: boolean;
-  badge?: boolean;
-  sound?: boolean;
-  carPlay?: boolean;
-  criticalAlert?: boolean;
-  provisional?: boolean;
-  providesAppSettings?: boolean;
-  lockScreen?: boolean;
-  notificationCenter?: boolean;
-};
-
 function requestNotifications(
   options: NotificationOption[],
   rationale?: Rationale,
@@ -732,7 +726,7 @@ function requestNotifications(
 }>;
 ```
 
-```js
+```ts
 import {requestNotifications} from 'react-native-permissions';
 
 requestNotifications(['alert', 'sound']).then(({status, settings}) => {
@@ -748,7 +742,7 @@ Check if multiples permissions are granted in parallel.
 function checkMultiple<P extends Permission[]>(permissions: P): Record<P[number], boolean>;
 ```
 
-```js
+```ts
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
 const statuses = checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]);
@@ -767,7 +761,7 @@ function requestMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>>;
 ```
 
-```js
+```ts
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
@@ -784,7 +778,7 @@ Open application settings.
 function openSettings(): Promise<void>;
 ```
 
-```js
+```ts
 import {openSettings} from 'react-native-permissions';
 
 openSettings().catch(() => console.warn('cannot open settings'));
@@ -798,7 +792,7 @@ Open a picker to update the photo selection when `PhotoLibrary` permission is `l
 function openPhotoPicker(): Promise<void>;
 ```
 
-```js
+```ts
 import {openPhotoPicker} from 'react-native-permissions';
 
 openPhotoPicker().catch(() => {
@@ -811,12 +805,10 @@ openPhotoPicker().catch(() => {
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow checking if the user share his precise location.
 
 ```ts
-type LocationAccuracy = 'full' | 'reduced';
-
-function checkLocationAccuracy(): Promise<LocationAccuracy>;
+function checkLocationAccuracy(): Promise<'full' | 'reduced'>;
 ```
 
-```js
+```ts
 import {checkLocationAccuracy} from 'react-native-permissions';
 
 checkLocationAccuracy()
@@ -829,13 +821,7 @@ checkLocationAccuracy()
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow requesting the user for his precise location. Will resolve immediately if `full` accuracy is already authorized.
 
 ```ts
-type LocationAccuracyOptions = {
-  purposeKey: string;
-};
-
-type LocationAccuracy = 'full' | 'reduced';
-
-function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
+function requestLocationAccuracy(options: {purposeKey: string}): Promise<'full' | 'reduced'>;
 ```
 
 ```js

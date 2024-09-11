@@ -3,13 +3,13 @@ import type {IOSPermissionMap} from './permissions.ios';
 import type {WindowsPermissionMap} from './permissions.windows';
 import {ResultMap} from './results';
 
-type Values<T extends object> = T[keyof T];
+type ValueOf<T> = T[keyof T];
 
-export type AndroidPermission = Values<AndroidPermissionMap>;
-export type IOSPermission = Values<IOSPermissionMap>;
-export type WindowsPermission = Values<WindowsPermissionMap>;
+export type AndroidPermission = ValueOf<AndroidPermissionMap>;
+export type IOSPermission = ValueOf<IOSPermissionMap>;
+export type WindowsPermission = ValueOf<WindowsPermissionMap>;
 export type Permission = AndroidPermission | IOSPermission | WindowsPermission;
-export type PermissionStatus = Values<ResultMap>;
+export type PermissionStatus = ValueOf<ResultMap>;
 
 export type RationaleObject = {
   title: string;
