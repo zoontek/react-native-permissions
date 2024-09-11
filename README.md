@@ -331,12 +331,12 @@ As permissions are not handled in the same way on iOS, Android and Windows, this
       Is the permission
           granted ?
               │           ╔═════╗
-              ├───────────║ YES ║──────────────┐
-              │           ╚═════╝              │
-           ╔════╗                              ▼
-           ║ NO ║                   ┌─────────────────────┐
-           ╚════╝                   │ No request required │
-              │                     └─────────────────────┘
+              ├───────────║ YES ║─────────────┐
+              │           ╚═════╝             │
+           ╔════╗                             ▼
+           ║ NO ║                   ┌───────────────────┐
+           ╚════╝                   │ No request needed │
+              │                     └───────────────────┘
               ▼
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ request(PERMISSIONS.X.Y) ┃◀──────────────────┐
