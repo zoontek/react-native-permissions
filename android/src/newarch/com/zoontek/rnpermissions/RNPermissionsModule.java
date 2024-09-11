@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.PermissionListener;
 
@@ -33,8 +34,8 @@ public class RNPermissionsModule extends NativeRNPermissionsSpec implements Perm
   }
 
   @Override
-  public void check(String permission, Promise promise) {
-    RNPermissionsModuleImpl.check(getReactApplicationContext(), permission, promise);
+  public boolean check(String permission) {
+    return RNPermissionsModuleImpl.check(getReactApplicationContext(), permission);
   }
 
   @Override
@@ -43,8 +44,8 @@ public class RNPermissionsModule extends NativeRNPermissionsSpec implements Perm
   }
 
   @Override
-  public void checkMultiple(ReadableArray permissions, Promise promise) {
-    RNPermissionsModuleImpl.checkMultiple(getReactApplicationContext(), permissions, promise);
+  public WritableMap checkMultiple(ReadableArray permissions) {
+    return RNPermissionsModuleImpl.checkMultiple(getReactApplicationContext(), permissions);
   }
 
   @Override

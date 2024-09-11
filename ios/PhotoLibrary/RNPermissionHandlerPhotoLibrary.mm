@@ -14,8 +14,7 @@
   return @"ios.permission.PHOTO_LIBRARY";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   PHAuthorizationStatus status;
 
   if (@available(iOS 14.0, *)) {
@@ -26,15 +25,15 @@
 
   switch (status) {
     case PHAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case PHAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case PHAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case PHAuthorizationStatusLimited:
-      return resolve(RNPermissionStatusLimited);
+      return RNPermissionStatusLimited;
     case PHAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 
@@ -42,11 +41,11 @@
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 14.0, *)) {
     [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(__unused PHAuthorizationStatus status) {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }];
   } else {
     [PHPhotoLibrary requestAuthorization:^(__unused PHAuthorizationStatus status) {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }];
   }
 }

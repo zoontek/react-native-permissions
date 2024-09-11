@@ -260,14 +260,19 @@ RCT_EXPORT_MODULE();
   return nil;
 }
 
+- (bool)boolForStatus:(RNPermissionStatus)status {
+  // Limited is also considered as granted, as the feature is accessible (partially)
+  return status == RNPermissionStatusAuthorized || status == RNPermissionStatusLimited;
+}
+
 - (NSString *)stringForStatus:(RNPermissionStatus)status {
   switch (status) {
+    case RNPermissionStatusNotDetermined:
+      return @"denied";
     case RNPermissionStatusNotAvailable:
     case RNPermissionStatusDenied:
     case RNPermissionStatusRestricted:
       return @"blocked";
-    case RNPermissionStatusNotDetermined:
-      return @"denied";
     case RNPermissionStatusLimited:
       return @"limited";
     case RNPermissionStatusAuthorized:
@@ -306,44 +311,25 @@ RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
   }];
 }
 
-RCT_EXPORT_METHOD(check:(NSString *)permission
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
-
-  if (handler == nil) {
-    return resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
-  }
-
-  NSString *lockId = [self lockHandler:handler];
-
-  [handler checkWithResolver:^(RNPermissionStatus status) {
-    resolve([self stringForStatus:status]);
-    [self unlockHandler:lockId];
-  } rejecter:^(NSError *error) {
-    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
-    [self unlockHandler:lockId];
-  }];
-}
-
 RCT_EXPORT_METHOD(request:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
 
   if (handler == nil) {
-    return resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
+    resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
+  } else {
+    NSString *lockId = [self lockHandler:handler];
+
+    [handler requestWithResolver:^(RNPermissionStatus status) {
+      resolve([self stringForStatus:status]);
+      [self unlockHandler:lockId];
+    }
+                        rejecter:^(NSError *error) {
+      reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+      [self unlockHandler:lockId];
+    }];
   }
-
-  NSString *lockId = [self lockHandler:handler];
-
-  [handler requestWithResolver:^(RNPermissionStatus status) {
-    resolve([self stringForStatus:status]);
-    [self unlockHandler:lockId];
-  } rejecter:^(NSError *error) {
-    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
-    [self unlockHandler:lockId];
-  }];
 }
 
 RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
@@ -353,10 +339,7 @@ RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
-    resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
-    [self unlockHandler:lockId];
-  } rejecter:^(NSError * _Nonnull error) {
-    reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+    resolve(@{ @"granted": @([self boolForStatus:status]), @"settings": settings });
     [self unlockHandler:lockId];
   }];
 #else
@@ -371,13 +354,15 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
   RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
-  [handler requestWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
+  [handler requestWithOptions:options
+                     resolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
     resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
     [self unlockHandler:lockId];
-  } rejecter:^(NSError * _Nonnull error) {
+  }
+                     rejecter:^(NSError * _Nonnull error) {
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
-  } options:options];
+  }];
 #else
   reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
 #endif
@@ -418,10 +403,19 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
 #endif
 }
 
-- (void)checkMultiple:(NSArray *)permissions
-              resolve:(RCTPromiseResolveBlock)resolve
-               reject:(RCTPromiseRejectBlock)reject {
-  reject(@"RNPermissions:checkMultiple", @"checkMultiple is not supported on iOS", nil);
+#if RCT_NEW_ARCH_ENABLED
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeRNPermissionsSpecJSI>(params);
+}
+
+- (NSNumber *)check:(NSString *)permission {
+  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
+  return @(handler != nil && [self boolForStatus:[handler currentStatus]]);
+}
+
+- (NSDictionary *)checkMultiple:(NSArray *)permissions {
+  @throw [NSException exceptionWithName:@"RNPermissions:checkMultiple" reason:@"checkMultiple is not supported on iOS" userInfo:nil];
 }
 
 - (void)requestMultiple:(NSArray *)permissions
@@ -436,14 +430,11 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
   reject(@"RNPermissions:shouldShowRequestRationale", @"shouldShowRequestRationale is not supported on iOS", nil);
 }
 
-#if RCT_NEW_ARCH_ENABLED
+#else
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
-  return std::make_shared<facebook::react::NativeRNPermissionsSpecJSI>(params);
-}
-
-- (facebook::react::ModuleConstants<JS::NativeRNPermissions::Constants::Builder>)getConstants {
-  return [self constantsToExport];
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(check: (NSString *)permission) {
+  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
+  return @(handler != nil && [self boolForStatus:[handler currentStatus]]);
 }
 
 #endif

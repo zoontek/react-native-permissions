@@ -2,14 +2,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface RNPermissionHandlerLocationAccuracy() <CLLocationManagerDelegate>
-
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
-
-@end
-
 @implementation RNPermissionHandlerLocationAccuracy
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {

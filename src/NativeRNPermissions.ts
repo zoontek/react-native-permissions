@@ -1,27 +1,18 @@
 import type {TurboModule} from 'react-native';
 import {TurboModuleRegistry} from 'react-native';
 
-type NotificationsResponse = {
-  status: Object;
-  settings: Object;
-};
-
 export interface Spec extends TurboModule {
-  openSettings(): Promise<void>;
-  check(permission: string): Promise<string>;
-  checkNotifications(): Promise<NotificationsResponse>;
-  request(permission: string): Promise<string>;
-  requestNotifications(options: string[]): Promise<NotificationsResponse>;
-
-  // Android only part
-  checkMultiple(permissions: string[]): Promise<Object>;
-  requestMultiple(permissions: string[]): Promise<Object>;
-  shouldShowRequestRationale(permission: string): Promise<boolean>;
-
-  // iOS only part
+  check(permission: string): boolean;
   checkLocationAccuracy(): Promise<string>;
+  checkMultiple(permissions: string[]): Object;
+  checkNotifications(): Promise<{granted: boolean; settings: Object}>;
   openPhotoPicker(): Promise<boolean>;
+  openSettings(): Promise<void>;
+  request(permission: string): Promise<string>;
   requestLocationAccuracy(purposeKey: string): Promise<string>;
+  requestMultiple(permissions: string[]): Promise<Object>;
+  requestNotifications(options: string[]): Promise<{status: string; settings: Object}>;
+  shouldShowRequestRationale(permission: string): Promise<boolean>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNPermissions');

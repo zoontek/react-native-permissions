@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -20,29 +19,27 @@
   return @"ios.permission.LOCATION_ALWAYS";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case kCLAuthorizationStatusAuthorizedWhenInUse:
     case kCLAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case kCLAuthorizationStatusAuthorizedAlways:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
-    return [self checkWithResolver:resolve rejecter:reject];
+    return resolve([self currentStatus]);
   }
 
   _resolve = resolve;
-  _reject = reject;
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
@@ -52,7 +49,7 @@
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
   if (status != kCLAuthorizationStatusNotDetermined) {
     [_locationManager setDelegate:nil];
-    [self checkWithResolver:_resolve rejecter:_reject];
+    _resolve([self currentStatus]);
   }
 }
 

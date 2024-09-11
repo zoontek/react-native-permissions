@@ -183,7 +183,6 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
   <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
-  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
   <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
   <uses-permission android:name="android.permission.READ_CALENDAR" />
   <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -716,58 +715,39 @@ type PermissionStatus = 'denied' | 'limited' | 'granted' | 'blocked';
 
 #### check
 
-Check one permission status.
-
-_⚠️  Android will never return `blocked` on `check`, you have to call `request` to get the info._
+Check if one permission is granted.
 
 ```ts
-function check(permission: string): Promise<PermissionStatus>;
+function check(permission: string): boolean;
 ```
 
 ```js
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {check, PERMISSIONS} from 'react-native-permissions';
 
-check(PERMISSIONS.IOS.LOCATION_ALWAYS)
-  .then((result) => {
-    switch (result) {
-      case RESULTS.DENIED:
-        console.log('The permission has not been requested / is denied but requestable');
-        break;
-      case RESULTS.LIMITED:
-        console.log('The permission is limited: some actions are possible');
-        break;
-      case RESULTS.GRANTED:
-        console.log('The permission is granted');
-        break;
-      case RESULTS.BLOCKED:
-        console.log('The permission is denied and not requestable anymore');
-        break;
-    }
-  })
-  .catch((error) => {
-    // …
-  });
+const granted = check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+
+if (granted) {
+  console.log('The permission is granted');
+}
 ```
 
 #### request
 
 Request one permission.
 
-The `rationale` is only available and used on Android. It can be a native alert (a `Rationale` object) or a custom implementation (that resolves with a `boolean`).
+The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
 
 ```ts
-type Rationale = {
+type RationaleObject = {
   title: string;
   message: string;
-  buttonPositive?: string;
+  buttonPositive: string;
   buttonNegative?: string;
-  buttonNeutral?: string;
 };
 
-function request(
-  permission: string,
-  rationale?: Rationale | (() => Promise<boolean>),
-): Promise<PermissionStatus>;
+type Rationale = RationaleObject | (() => Promise<boolean>);
+
+function request(permission: string, rationale?: Rationale): Promise<PermissionStatus>;
 ```
 
 ```js
@@ -780,7 +760,7 @@ request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
 
 #### checkNotifications
 
-Check notifications permission status and get notifications settings values.
+Check if notifications permission is granted and get notifications settings values.
 
 ```ts
 type NotificationSettings = {
@@ -798,7 +778,7 @@ type NotificationSettings = {
 };
 
 function checkNotifications(): Promise<{
-  status: PermissionStatus;
+  granted: boolean;
   settings: NotificationSettings;
 }>;
 ```
@@ -806,7 +786,7 @@ function checkNotifications(): Promise<{
 ```js
 import {checkNotifications} from 'react-native-permissions';
 
-checkNotifications().then(({status, settings}) => {
+checkNotifications().then(({granted, settings}) => {
   // …
 });
 ```
@@ -816,7 +796,9 @@ checkNotifications().then(({status, settings}) => {
 Request notifications permission status and get notifications settings values.
 
 - You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+.
-- You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the App Settings.
+- You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the app settings.
+
+The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
 
 ```ts
 // only used on iOS
@@ -843,7 +825,10 @@ type NotificationSettings = {
   notificationCenter?: boolean;
 };
 
-function requestNotifications(options: NotificationOption[]): Promise<{
+function requestNotifications(
+  options: NotificationOption[],
+  rationale?: Rationale,
+): Promise<{
   status: PermissionStatus;
   settings: NotificationSettings;
 }>;
@@ -859,23 +844,19 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 #### checkMultiple
 
-Check multiples permissions in parallel.
-
-_⚠️  Android will never return `blocked` on `checkMultiple`, you have to call `requestMultiple` to get the info._
+Check if multiples permissions are granted in parallel.
 
 ```ts
-function checkMultiple<P extends Permission[]>(
-  permissions: P,
-): Promise<Record<P[number], PermissionStatus>>;
+function checkMultiple<P extends Permission[]>(permissions: P): Record<P[number], boolean>;
 ```
 
 ```js
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
-checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
-  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
-});
+const statuses = checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]);
+
+console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
 ```
 
 #### requestMultiple

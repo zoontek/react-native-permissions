@@ -1,31 +1,48 @@
 import type {Contract} from './contract';
 import {RESULTS} from './results';
-import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
   requestLocationAccuracy,
-} from './unsupportedPlatformMethods';
+} from './unsupportedMethods';
 
-async function check(): Promise<PermissionStatus> {
+const openSettings: Contract['openSettings'] = async () => {};
+
+const check: Contract['check'] = () => {
+  return false;
+};
+
+const request: Contract['request'] = async () => {
   return RESULTS.BLOCKED;
-}
+};
 
-async function checkNotifications(): Promise<NotificationsResponse> {
+const checkNotifications: Contract['checkNotifications'] = async () => {
+  return {granted: false, settings: {}};
+};
+
+const requestNotifications: Contract['requestNotifications'] = async () => {
   return {status: RESULTS.BLOCKED, settings: {}};
-}
+};
 
-async function checkMultiple<P extends Permission[]>(
-  permissions: P,
-): Promise<Record<P[number], PermissionStatus>> {
-  return permissions.reduce(
-    (acc, permission: P[number]) => {
-      acc[permission] = RESULTS.BLOCKED;
-      return acc;
-    },
-    {} as Record<P[number], PermissionStatus>,
-  );
-}
+const checkMultiple: Contract['checkMultiple'] = (permissions) => {
+  const output: Record<string, boolean> = {};
+
+  for (const permission of permissions) {
+    output[permission] = false;
+  }
+
+  return output as ReturnType<Contract['checkMultiple']>;
+};
+
+const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
+  const output: Record<string, string> = {};
+
+  for (const permission of permissions) {
+    output[permission] = RESULTS.BLOCKED;
+  }
+
+  return output as Awaited<ReturnType<Contract['requestMultiple']>>;
+};
 
 export const methods: Contract = {
   check,
@@ -33,9 +50,9 @@ export const methods: Contract = {
   checkMultiple,
   checkNotifications,
   openPhotoPicker,
-  openSettings: Promise.reject,
-  request: check,
+  openSettings,
+  request,
   requestLocationAccuracy,
-  requestMultiple: checkMultiple,
-  requestNotifications: checkNotifications,
+  requestMultiple,
+  requestNotifications,
 };

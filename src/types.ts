@@ -5,20 +5,23 @@ import {ResultMap} from './results';
 
 type Values<T extends object> = T[keyof T];
 
-export type {Rationale} from 'react-native';
-
 export type AndroidPermission = Values<AndroidPermissionMap>;
 export type IOSPermission = Values<IOSPermissionMap>;
 export type WindowsPermission = Values<WindowsPermissionMap>;
 export type Permission = AndroidPermission | IOSPermission | WindowsPermission;
-
 export type PermissionStatus = Values<ResultMap>;
 
-export type LocationAccuracyOptions = {
-  purposeKey: string;
+export type RationaleObject = {
+  title: string;
+  message: string;
+  buttonPositive: string;
+  buttonNegative?: string;
 };
 
+export type Rationale = RationaleObject | (() => Promise<boolean>);
+
 export type LocationAccuracy = 'full' | 'reduced';
+export type LocationAccuracyOptions = {purposeKey: string};
 
 export type NotificationOption =
   | 'alert'
@@ -39,9 +42,4 @@ export type NotificationSettings = {
   providesAppSettings?: boolean;
   lockScreen?: boolean;
   notificationCenter?: boolean;
-};
-
-export type NotificationsResponse = {
-  status: PermissionStatus;
-  settings: NotificationSettings;
 };

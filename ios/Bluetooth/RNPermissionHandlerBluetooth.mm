@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) CBPeripheralManager* manager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -23,21 +22,19 @@
   return @"ios.permission.BLUETOOTH";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
 #if TARGET_OS_SIMULATOR
-  return resolve(RNPermissionStatusNotAvailable);
+  return RNPermissionStatusNotAvailable;
 #else
-
   switch ([CBManager authorization]) {
     case CBManagerAuthorizationNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case CBManagerAuthorizationRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case CBManagerAuthorizationDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case CBManagerAuthorizationAllowedAlways:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 #endif
 }
@@ -48,7 +45,6 @@
   return resolve(RNPermissionStatusNotAvailable);
 #else
   _resolve = resolve;
-  _reject = reject;
 
   _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{
     CBPeripheralManagerOptionShowPowerAlertKey: @false,
@@ -67,7 +63,7 @@
     case CBManagerStateUnauthorized:
       return _resolve(RNPermissionStatusDenied);
     case CBManagerStatePoweredOn:
-      return [self checkWithResolver:_resolve rejecter:_reject];
+      return _resolve([self currentStatus]);
   }
 }
 

@@ -21,8 +21,7 @@ typedef enum {
 
 + (NSString * _Nonnull)handlerUniqueId;
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
-                 rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
+- (RNPermissionStatus)currentStatus;
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus status))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;

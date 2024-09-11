@@ -22,8 +22,6 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RNPermissionsModuleImpl {
 
@@ -34,21 +32,6 @@ public class RNPermissionsModuleImpl {
   private static final String GRANTED = "granted";
   private static final String DENIED = "denied";
   private static final String BLOCKED = "blocked";
-
-  // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
-  private static WritableMap getLegacyNotificationsResponse(
-    final ReactApplicationContext reactContext,
-    final String disabledStatus
-  ) {
-    final boolean enabled = NotificationManagerCompat.from(reactContext).areNotificationsEnabled();
-    final WritableMap output = Arguments.createMap();
-    final WritableMap settings = Arguments.createMap();
-
-    output.putString("status", enabled ? GRANTED : disabledStatus);
-    output.putMap("settings", settings);
-
-    return output;
-  }
 
   public static void openSettings(
     final ReactApplicationContext reactContext,
@@ -69,51 +52,42 @@ public class RNPermissionsModuleImpl {
     }
   }
 
-  public static void check(
+  public static boolean check(
     final ReactApplicationContext reactContext,
-    final String permission,
-    final Promise promise
+    final String permission
   ) {
-    if (permission == null) {
-      promise.resolve(BLOCKED);
-      return;
-    }
-
-    Context context = reactContext.getBaseContext();
-
-    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-      promise.resolve(GRANTED);
-    } else {
-      promise.resolve(DENIED);
-    }
+    return permission != null &&
+      reactContext.getBaseContext().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
   }
 
+  // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
   public static void checkNotifications(
     final ReactApplicationContext reactContext,
     final Promise promise
   ) {
-    promise.resolve(getLegacyNotificationsResponse(reactContext, DENIED));
+    final boolean granted = NotificationManagerCompat.from(reactContext).areNotificationsEnabled();
+    final WritableMap output = Arguments.createMap();
+    final WritableMap settings = Arguments.createMap();
+
+    output.putBoolean("granted", granted);
+    output.putMap("settings", settings);
+
+    promise.resolve(output);
   }
 
-  public static void checkMultiple(
+  public static WritableMap checkMultiple(
     final ReactApplicationContext reactContext,
-    final ReadableArray permissions,
-    final Promise promise
+    final ReadableArray permissions
   ) {
     final WritableMap output = new WritableNativeMap();
     Context context = reactContext.getBaseContext();
 
     for (int i = 0; i < permissions.size(); i++) {
       String permission = permissions.getString(i);
-
-      if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-        output.putString(permission, GRANTED);
-      } else {
-        output.putString(permission, DENIED);
-      }
+      output.putBoolean(permission, context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
     }
 
-    promise.resolve(output);
+    return output;
   }
 
   public static void request(
@@ -166,11 +140,19 @@ public class RNPermissionsModuleImpl {
     }
   }
 
+  // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
   public static void requestNotifications(
     final ReactApplicationContext reactContext,
     final Promise promise
   ) {
-    promise.resolve(getLegacyNotificationsResponse(reactContext, BLOCKED));
+    final boolean granted = NotificationManagerCompat.from(reactContext).areNotificationsEnabled();
+    final WritableMap output = Arguments.createMap();
+    final WritableMap settings = Arguments.createMap();
+
+    output.putString("status", granted ? GRANTED : BLOCKED);
+    output.putMap("settings", settings);
+
+    promise.resolve(output);
   }
 
   public static void requestMultiple(

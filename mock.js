@@ -14,7 +14,7 @@ export {PERMISSIONS, RESULTS};
 
 export const openPhotoPicker = jest.fn(async () => {});
 export const openSettings = jest.fn(async () => {});
-export const check = jest.fn(async (permission) => RESULTS.GRANTED);
+export const check = jest.fn((permission) => true);
 export const request = jest.fn(async (permission) => RESULTS.GRANTED);
 export const checkLocationAccuracy = jest.fn(async () => 'full');
 export const requestLocationAccuracy = jest.fn(async (options) => 'full');
@@ -42,7 +42,7 @@ const notificationSettings = {
 };
 
 export const checkNotifications = jest.fn(async () => ({
-  status: RESULTS.GRANTED,
+  granted: true,
   settings: notificationSettings,
 }));
 
@@ -56,8 +56,8 @@ export const requestNotifications = jest.fn(async (options) => ({
     }),
 }));
 
-export const checkMultiple = jest.fn(async (permissions) =>
-  permissions.reduce((acc, permission) => ({...acc, [permission]: RESULTS.GRANTED}), {}),
+export const checkMultiple = jest.fn((permissions) =>
+  permissions.reduce((acc, permission) => ({...acc, [permission]: true}), {}),
 );
 
 export const requestMultiple = jest.fn(async (permissions) =>
