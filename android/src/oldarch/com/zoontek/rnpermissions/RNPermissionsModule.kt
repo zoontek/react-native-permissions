@@ -8,7 +8,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.modules.core.PermissionListener
 
@@ -27,9 +26,8 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.openSettings(reactApplicationContext, promise)
   }
 
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  fun check(permission: String): Boolean {
-    return RNPermissionsModuleImpl.check(reactApplicationContext, permission)
+  fun check(permission: String, promise: Promise) {
+    RNPermissionsModuleImpl.check(reactApplicationContext, permission, promise)
   }
 
   @ReactMethod
@@ -37,9 +35,8 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.checkNotifications(reactApplicationContext, promise)
   }
 
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  fun checkMultiple(permissions: ReadableArray): WritableMap {
-    return RNPermissionsModuleImpl.checkMultiple(reactApplicationContext, permissions)
+  fun checkMultiple(permissions: ReadableArray, promise: Promise) {
+    RNPermissionsModuleImpl.checkMultiple(reactApplicationContext, permissions, promise)
   }
 
   @ReactMethod

@@ -261,7 +261,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (bool)boolForStatus:(RNPermissionStatus)status {
-  // Limited is also considered as granted, as the feature is accessible (partially)
+  // Limited is also considered as granted, as the feature is usable
   return status == RNPermissionStatusAuthorized || status == RNPermissionStatusLimited;
 }
 
@@ -309,6 +309,13 @@ RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
       reject(@"cannot_open_settings", @"Cannot open application settings", nil);
     }
   }];
+}
+
+RCT_EXPORT_METHOD(check:(NSString *)permission
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+  id<RNPermissionHandler> handler = [self handlerForPermission:permission];
+  resolve(@(handler != nil && [self boolForStatus:[handler currentStatus]]));
 }
 
 RCT_EXPORT_METHOD(request:(NSString *)permission
@@ -409,11 +416,6 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
   return std::make_shared<facebook::react::NativeRNPermissionsSpecJSI>(params);
 }
 
-- (NSNumber *)check:(NSString *)permission {
-  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
-  return @(handler != nil && [self boolForStatus:[handler currentStatus]]);
-}
-
 - (NSDictionary *)checkMultiple:(NSArray *)permissions {
   @throw [NSException exceptionWithName:@"RNPermissions:checkMultiple" reason:@"checkMultiple is not supported on iOS" userInfo:nil];
 }
@@ -428,13 +430,6 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
                            resolve:(RCTPromiseResolveBlock)resolve
                             reject:(RCTPromiseRejectBlock)reject {
   reject(@"RNPermissions:shouldShowRequestRationale", @"shouldShowRequestRationale is not supported on iOS", nil);
-}
-
-#else
-
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(check: (NSString *)permission) {
-  id<RNPermissionHandler> _Nullable handler = [self handlerForPermission:permission];
-  return @(handler != nil && [self boolForStatus:[handler currentStatus]]);
 }
 
 #endif

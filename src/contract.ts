@@ -9,9 +9,9 @@ import type {
 } from './types';
 
 export type Contract = {
-  check(permission: Permission): boolean;
+  check(permission: Permission): Promise<boolean>;
   checkLocationAccuracy(): Promise<LocationAccuracy>;
-  checkMultiple<P extends Permission[]>(permissions: P): Record<P[number], boolean>;
+  checkMultiple<P extends Permission[]>(permissions: P): Promise<Record<P[number], boolean>>;
   checkNotifications(): Promise<{granted: boolean; settings: NotificationSettings}>;
   openPhotoPicker(): Promise<void>;
   openSettings(): Promise<void>;

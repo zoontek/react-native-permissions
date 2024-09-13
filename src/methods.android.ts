@@ -52,7 +52,8 @@ const request: Contract['request'] = async (permission, rationale) => {
   const performRequest = await shouldRequestPermission(permission, rationale);
 
   if (!performRequest) {
-    return check(permission) ? RESULTS.GRANTED : RESULTS.DENIED;
+    const granted = await check(permission);
+    return granted ? RESULTS.GRANTED : RESULTS.DENIED;
   }
 
   const status = (await NativeModule.request(permission)) as PermissionStatus;
@@ -62,7 +63,7 @@ const request: Contract['request'] = async (permission, rationale) => {
 const checkNotifications: Contract['checkNotifications'] = async () => {
   return USES_LEGACY_NOTIFICATIONS
     ? NativeModule.checkNotifications()
-    : {granted: check(POST_NOTIFICATIONS), settings: {}};
+    : {granted: await check(POST_NOTIFICATIONS), settings: {}};
 };
 
 const requestNotifications: Contract['requestNotifications'] = async (options, rationale) => {
@@ -75,8 +76,8 @@ const requestNotifications: Contract['requestNotifications'] = async (options, r
   const performRequest = await shouldRequestPermission(POST_NOTIFICATIONS, rationale);
 
   if (!performRequest) {
-    const status = check(POST_NOTIFICATIONS) ? RESULTS.GRANTED : RESULTS.DENIED;
-    return {status, settings: {}};
+    const granted = await check(POST_NOTIFICATIONS);
+    return {status: granted ? RESULTS.GRANTED : RESULTS.DENIED, settings: {}};
   }
 
   const status = await request(POST_NOTIFICATIONS);

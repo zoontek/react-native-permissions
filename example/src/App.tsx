@@ -81,8 +81,13 @@ export const App = () => {
                     icon="eye-outline"
                     mode="contained"
                     onPress={() => {
-                      const status = RNPermissions.check(item);
-                      showSnackbar(`check(${name})`, status);
+                      RNPermissions.check(item)
+                        .then((status) => {
+                          showSnackbar(`check(${name})`, status);
+                        })
+                        .catch((error) => {
+                          console.error(error);
+                        });
                     }}
                   >
                     Check

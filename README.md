@@ -658,17 +658,13 @@ type NotificationSettings = {
 Check if one permission is granted.
 
 ```ts
-function check(permission: Permission): boolean;
+function check(permission: Permission): Promise<boolean>;
 ```
 
 ```ts
-import {check, PERMISSIONS} from 'react-native-permissions';
-
-const granted = check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-
-if (granted) {
-  console.log('The permission is granted');
-}
+check(PERMISSIONS.IOS.LOCATION_ALWAYS).then((granted) => {
+  // …
+});
 ```
 
 #### request
@@ -684,7 +680,7 @@ function request(permission: Permission, rationale?: Rationale): Promise<Permiss
 ```ts
 import {request, PERMISSIONS} from 'react-native-permissions';
 
-request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
+request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
   // …
 });
 ```
@@ -740,16 +736,16 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 Check if multiples permissions are granted in parallel.
 
 ```ts
-function checkMultiple<P extends Permission[]>(permissions: P): Record<P[number], boolean>;
+function checkMultiple<P extends Permission[]>(permissions: P): Promise<Record<P[number], boolean>>;
 ```
 
 ```ts
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
-const statuses = checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]);
-
-console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
+  console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+  console.log('FaceID', statuses[PERMISSIONS.IOS.FACE_ID]);
+});
 ```
 
 #### requestMultiple

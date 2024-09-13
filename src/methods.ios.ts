@@ -36,14 +36,14 @@ const requestNotifications: Contract['requestNotifications'] = (options) => {
   return NativeModule.requestNotifications(options) as ReturnType<Contract['requestNotifications']>;
 };
 
-const checkMultiple: Contract['checkMultiple'] = (permissions) => {
+const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
   const output: Record<string, boolean> = {};
 
   for (const permission of uniq(permissions)) {
-    output[permission] = check(permission);
+    output[permission] = await check(permission);
   }
 
-  return output as ReturnType<Contract['checkMultiple']>;
+  return output as Awaited<ReturnType<Contract['checkMultiple']>>;
 };
 
 const requestMultiple: Contract['requestMultiple'] = async (permissions) => {

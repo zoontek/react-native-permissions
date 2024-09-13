@@ -6,7 +6,6 @@ import com.facebook.react.bridge.Callback
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.modules.core.PermissionListener
 
@@ -24,16 +23,16 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.openSettings(reactApplicationContext, promise)
   }
 
-  override fun check(permission: String): Boolean {
-    return RNPermissionsModuleImpl.check(reactApplicationContext, permission)
+  override fun check(permission: String, promise: Promise) {
+    RNPermissionsModuleImpl.check(reactApplicationContext, permission, promise)
   }
 
   override fun checkNotifications(promise: Promise) {
     RNPermissionsModuleImpl.checkNotifications(reactApplicationContext, promise)
   }
 
-  override fun checkMultiple(permissions: ReadableArray): WritableMap {
-    return RNPermissionsModuleImpl.checkMultiple(reactApplicationContext, permissions)
+  override fun checkMultiple(permissions: ReadableArray, promise: Promise) {
+    RNPermissionsModuleImpl.checkMultiple(reactApplicationContext, permissions, promise)
   }
 
   override fun request(permission: String, promise: Promise) {

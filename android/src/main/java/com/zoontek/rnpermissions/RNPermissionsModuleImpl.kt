@@ -44,9 +44,9 @@ object RNPermissionsModuleImpl {
     }
   }
 
-  fun check(reactContext: ReactApplicationContext, permission: String): Boolean {
+  fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
     val context = reactContext.baseContext
-    return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    promise.resolve(context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED)
   }
 
   // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
@@ -61,7 +61,7 @@ object RNPermissionsModuleImpl {
     promise.resolve(output)
   }
 
-  fun checkMultiple(reactContext: ReactApplicationContext, permissions: ReadableArray): WritableMap {
+  fun checkMultiple(reactContext: ReactApplicationContext, permissions: ReadableArray, promise: Promise) {
     val output: WritableMap = WritableNativeMap()
     val context = reactContext.baseContext
 
@@ -74,7 +74,7 @@ object RNPermissionsModuleImpl {
       )
     }
 
-    return output
+    promise.resolve(output)
   }
 
   fun request(
@@ -84,7 +84,9 @@ object RNPermissionsModuleImpl {
     permission: String,
     promise: Promise
   ) {
-    if (check(reactContext, permission)) {
+    val context = reactContext.baseContext
+
+    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
       return promise.resolve(GRANTED)
     }
 
@@ -135,11 +137,12 @@ object RNPermissionsModuleImpl {
     val grantedPermissions: WritableMap = WritableNativeMap()
     val permissionsToCheck = ArrayList<String>()
     var checkedPermissionsCount = 0
+    val context = reactContext.baseContext
 
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (check(reactContext, permission)) {
+      if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         grantedPermissions.putString(permission, GRANTED)
         checkedPermissionsCount++
       } else {

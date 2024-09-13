@@ -10,7 +10,7 @@ import {
 import {uniq} from './utils';
 
 const NativeModule: {
-  Check: (permission: Permission) => PermissionStatus;
+  Check: (permission: Permission) => Promise<PermissionStatus>;
   CheckNotifications: () => Promise<PermissionStatus>;
   Request: (permission: Permission) => Promise<PermissionStatus>;
   OpenSettings: () => Promise<void>;
@@ -20,8 +20,9 @@ const openSettings: Contract['openSettings'] = async () => {
   await NativeModule.OpenSettings();
 };
 
-const check: Contract['check'] = (permission) => {
-  return NativeModule.Check(permission) === RESULTS.GRANTED;
+const check: Contract['check'] = async (permission) => {
+  const status = await NativeModule.Check(permission);
+  return status === RESULTS.GRANTED;
 };
 
 const request: Contract['request'] = (permission) => {
@@ -38,14 +39,14 @@ const requestNotifications: Contract['requestNotifications'] = async () => {
   return {status, settings: {}};
 };
 
-const checkMultiple: Contract['checkMultiple'] = (permissions) => {
+const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
   const output: Record<string, boolean> = {};
 
   for (const permission of uniq(permissions)) {
-    output[permission] = check(permission);
+    output[permission] = await check(permission);
   }
 
-  return output as ReturnType<Contract['checkMultiple']>;
+  return output as Awaited<ReturnType<Contract['checkMultiple']>>;
 };
 
 const requestMultiple: Contract['requestMultiple'] = async (permissions) => {

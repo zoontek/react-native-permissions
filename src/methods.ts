@@ -8,7 +8,7 @@ import {
 
 const openSettings: Contract['openSettings'] = async () => {};
 
-const check: Contract['check'] = () => {
+const check: Contract['check'] = async () => {
   return false;
 };
 
@@ -24,14 +24,14 @@ const requestNotifications: Contract['requestNotifications'] = async () => {
   return {status: RESULTS.BLOCKED, settings: {}};
 };
 
-const checkMultiple: Contract['checkMultiple'] = (permissions) => {
+const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
   const output: Record<string, boolean> = {};
 
   for (const permission of permissions) {
     output[permission] = false;
   }
 
-  return output as ReturnType<Contract['checkMultiple']>;
+  return output as Awaited<ReturnType<Contract['checkMultiple']>>;
 };
 
 const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
