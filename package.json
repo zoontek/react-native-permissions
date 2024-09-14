@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0-beta.2",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -34,10 +34,11 @@
     "react-native.config.js"
   ],
   "scripts": {
+    "clean": "rm -rf dist",
     "format": "prettier '**/*' -u -w",
     "lint": "eslint './**/*.{js,ts,tsx}'",
     "typecheck": "tsc --noEmit",
-    "build": "bob build",
+    "build": "yarn clean && bob build && rm -rf dist/commonjs/package.json",
     "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
   },
   "react-native-builder-bob": {
