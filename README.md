@@ -856,7 +856,7 @@ The user is immediately prompted:
 | Allow Once            | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
 | Don’t Allow           | `RESULTS.BLOCKED`        | `RESULTS.BLOCKED`             |
 
-In this scenario, if the user chooses `Allow While Using App`, they will see `While Using` in the app settings and will later be informed that your app is using their location in background with the option to change it:
+In this scenario, if the user chooses `Allow While Using App`, they will see `While Using` in the app settings and will later be informed that your app is using their location in background with the option to confirm / change it:
 
 <img width="250" src="./docs/location_always_second_prompt.png" alt="Location second prompt">
 
