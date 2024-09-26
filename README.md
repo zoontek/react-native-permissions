@@ -829,15 +829,36 @@ requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
 
 ### About iOS `LOCATION_ALWAYS` permission
 
-If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Always Allow` button in the system dialog. Only `Allow Once`, `Allow While Using App` and `Don't Allow`. This is expected behaviour, check the [Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736).
+On iOS, background location permission can be requested in two different ways.
 
-When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow While Using App`, a provisional "always" status will be granted. The user will see `While Using` in the settings and later will be informed that your app is using the location in background. That looks like this:
+[📕 Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736)
 
-<p align="center">
-  <img width="250" src="./docs/location_always_prompt.png" alt="Screenshot">
-</p>
+#### Request `LOCATION_ALWAYS` after `LOCATION_WHEN_IN_USE`
 
-Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
+If the user chooses _Allow While Using App_ when calling `request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)`, then calling `request(PERMISSIONS.IOS.LOCATION_ALWAYS)` afterward will immediately prompt the user:
+
+<img width="250" src="./docs/location_always_upgrade.png" alt="Location upgrade">
+
+| Option                 | `LOCATION_ALWAYS` status | `LOCATION_WHEN_IN_USE` status |
+| ---------------------- | ------------------------ | ----------------------------- |
+| Keep Only While Using  | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
+| Change to Always Allow | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
+
+#### Request `LOCATION_ALWAYS` directly
+
+The user has multiple choices:
+
+<img width="250" src="./docs/location_always_first_prompt.png" alt="Location first prompt">
+
+| Option                | `LOCATION_ALWAYS` status | `LOCATION_WHEN_IN_USE` status |
+| --------------------- | ------------------------ | ----------------------------- |
+| Allow While Using App | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
+| Allow Once            | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
+| Don’t Allow           | `RESULTS.BLOCKED`        | `RESULTS.BLOCKED`             |
+
+In this scenario, if the user chooses `Allow While Using App`, they will see `While Using` in the app settings and will later be informed that your app is using their location in background with the option to change it:
+
+<img width="250" src="./docs/location_always_second_prompt.png" alt="Location second prompt">
 
 ### Testing with Jest
 

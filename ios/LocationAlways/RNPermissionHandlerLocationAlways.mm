@@ -4,6 +4,7 @@
 
 @interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
 
+@property (nonatomic, assign) bool observingApplicationWillResignActive;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
 
@@ -35,7 +36,9 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+
+  if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
     return resolve([self currentStatus]);
   }
 
@@ -43,13 +46,55 @@
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
+
+  if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onApplicationWillResignActive)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+
+    _observingApplicationWillResignActive = true;
+    [self performSelector:@selector(onApplicationWillResignActiveCheck) withObject:nil afterDelay:0.25];
+  }
+
   [_locationManager requestAlwaysAuthorization];
 }
 
+- (void)onApplicationWillResignActive {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  _observingApplicationWillResignActive = false;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(onApplicationDidBecomeActive)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+}
+
+- (void)onApplicationWillResignActiveCheck {
+  if (_observingApplicationWillResignActive) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _observingApplicationWillResignActive = false;
+
+    [self resolveStatus:[CLLocationManager authorizationStatus]];
+  }
+}
+
+- (void)onApplicationDidBecomeActive {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self resolveStatus:[CLLocationManager authorizationStatus]];
+}
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined) {
-    [_locationManager setDelegate:nil];
+  if (status != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
+    [self resolveStatus:status];
+  }
+}
+
+- (void)resolveStatus:(CLAuthorizationStatus)status {
+  if (_resolve != nil) {
     _resolve([self currentStatus]);
+    _resolve = nil;
+    [_locationManager setDelegate:nil];
   }
 }
 
