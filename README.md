@@ -829,9 +829,7 @@ requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
 
 ### About iOS `LOCATION_ALWAYS` permission
 
-On iOS, background location permission can be requested in two different ways.
-
-[📕 Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736)
+On iOS, background location permission can be requested in two different ways ([Apple Developer Docs 📘](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736)).
 
 #### Request `LOCATION_ALWAYS` after `LOCATION_WHEN_IN_USE`
 
@@ -844,9 +842,11 @@ If the user chooses _Allow While Using App_ when calling `request(PERMISSIONS.IO
 | Keep Only While Using  | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
 | Change to Always Allow | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
 
+---
+
 #### Request `LOCATION_ALWAYS` directly
 
-The user has multiple choices:
+The user is immediately prompted:
 
 <img width="250" src="./docs/location_always_first_prompt.png" alt="Location first prompt">
 
