@@ -852,8 +852,8 @@ The user is immediately prompted:
 
 | Option                | `LOCATION_ALWAYS` status | `LOCATION_WHEN_IN_USE` status |
 | --------------------- | ------------------------ | ----------------------------- |
-| Allow While Using App | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
 | Allow Once            | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
+| Allow While Using App | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
 | Don’t Allow           | `RESULTS.BLOCKED`        | `RESULTS.BLOCKED`             |
 
 In this scenario, if the user chooses `Allow While Using App`, they will see `While Using` in the app settings and will later be informed that your app is using their location in background with the option to confirm / change it:
