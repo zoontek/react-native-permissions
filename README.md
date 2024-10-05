@@ -369,7 +369,7 @@ This can be implemented as follows:
 
 - `check` the permission status
 - If `granted`, use the feature
-- If `blocked`, display a screen prompting the user to go to settings (using `openSettings`) _(This will not be shown on Android.)_
+- If `blocked`, display a screen prompting the user to go to settings (using `openSettings`) _(This will not be shown on Android)_
 - If `denied`, display a button to `request` permission:
   - If `granted`, use the feature
   - If `blocked`, display an alert prompting the user to go to settings (using `openSettings`)
@@ -681,7 +681,8 @@ type LocationAccuracyOptions = {purposeKey: string};
 
 Check one permission status.
 
-_⚠️ On Android, the `check` function will never return a `blocked` status. You need to call `request` to obtain that information._
+> [!IMPORTANT]  
+> On Android, the `check` function will never return a `blocked` status. You need to call `request` to obtain that information.
 
 ```ts
 function check(permission: Permission): Promise<PermissionStatus>;
@@ -726,7 +727,8 @@ request(PERMISSIONS.IOS.CAMERA).then((status) => {
 
 Check notifications permission status and get notifications settings values.
 
-_⚠️ On Android >= 13, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information._
+> [!IMPORTANT]  
+> On Android >= 13, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information.
 
 ```ts
 function checkNotifications(): Promise<NotificationsResponse>;
@@ -768,7 +770,8 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 Check multiples permissions in parallel.
 
-_⚠️ On Android, the `checkMultiple` function will never return a `blocked` status. You need to call `requestMultiple` to obtain that information._
+> [!IMPORTANT]  
+> On Android, the `checkMultiple` function will never return a `blocked` status. You need to call `requestMultiple` to obtain that information.
 
 ```ts
 function checkMultiple<P extends Permission[]>(
