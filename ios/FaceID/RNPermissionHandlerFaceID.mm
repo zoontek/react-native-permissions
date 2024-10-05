@@ -2,13 +2,10 @@
 
 #import <LocalAuthentication/LocalAuthentication.h>
 
-static NSString* SETTING_KEY = @"@RNPermissions:Requested";
-
 @interface RNPermissionHandlerFaceID()
 
 @property (nonatomic, strong) LAContext *laContext;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -22,8 +19,7 @@ static NSString* SETTING_KEY = @"@RNPermissions:Requested";
   return @"ios.permission.FACE_ID";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   LAContext *context = [LAContext new];
   NSError *error;
 
@@ -31,24 +27,21 @@ static NSString* SETTING_KEY = @"@RNPermissions:Requested";
   bool hasFaceID = context.biometryType == LABiometryTypeFaceID;
 
   if (!hasFaceID) {
-    return resolve(RNPermissionStatusNotAvailable);
+    return RNPermissionStatusNotAvailable;
   }
 
   if (error != nil) {
     if (error.code == LAErrorBiometryNotAvailable && hasFaceID)
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     else
-      return resolve(RNPermissionStatusNotAvailable);
+      return RNPermissionStatusNotAvailable;
   }
 
-  NSArray<NSString *> *requested = [[NSUserDefaults standardUserDefaults] arrayForKey:SETTING_KEY];
-  NSString *handlerId = [[self class] handlerUniqueId];
-
-  if (requested == nil || ![requested containsObject:handlerId]) {
-    return resolve(RNPermissionStatusNotDetermined);
+  if ([RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+    return RNPermissionStatusNotDetermined;
   }
 
-  resolve(RNPermissionStatusAuthorized);
+  return RNPermissionStatusAuthorized;
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
@@ -71,7 +64,6 @@ static NSString* SETTING_KEY = @"@RNPermissions:Requested";
   }
 
   _resolve = resolve;
-  _reject = reject;
   _laContext = context;
 
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -96,21 +88,8 @@ static NSString* SETTING_KEY = @"@RNPermissions:Requested";
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
 
-  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  NSString *handlerId = [[self class] handlerUniqueId];
-  NSMutableArray *requested = [[userDefaults arrayForKey:SETTING_KEY] mutableCopy];
-
-  if (requested == nil) {
-    requested = [NSMutableArray new];
-  }
-
-  if (![requested containsObject:handlerId]) {
-    [requested addObject:handlerId];
-    [userDefaults setObject:requested forKey:SETTING_KEY];
-    [userDefaults synchronize];
-  }
-
-  [self checkWithResolver:_resolve rejecter:_reject];
+  [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+  _resolve([self currentStatus]);
 }
 
 @end

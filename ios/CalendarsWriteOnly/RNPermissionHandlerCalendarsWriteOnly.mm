@@ -12,18 +12,17 @@
   return @"ios.permission.CALENDARS_WRITE_ONLY";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
     case EKAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case EKAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case EKAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
-    case EKAuthorizationStatusFullAccess:
+      return RNPermissionStatusDenied;
     case EKAuthorizationStatusWriteOnly:
-      return resolve(RNPermissionStatusAuthorized);
+    case EKAuthorizationStatusFullAccess:
+      return RNPermissionStatusAuthorized;
   }
 }
 
@@ -35,7 +34,7 @@
     if (error != nil) {
       reject(error);
     } else {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }
   };
 

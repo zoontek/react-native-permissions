@@ -12,20 +12,19 @@
   return @"ios.permission.STOREKIT";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
 #if TARGET_OS_SIMULATOR
-  return resolve(RNPermissionStatusNotAvailable);
+  return RNPermissionStatusNotAvailable;
 #else
   switch ([SKCloudServiceController authorizationStatus]) {
     case SKCloudServiceAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case SKCloudServiceAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case SKCloudServiceAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case SKCloudServiceAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 #endif
 }
@@ -33,7 +32,7 @@
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   [SKCloudServiceController requestAuthorization:^(__unused SKCloudServiceAuthorizationStatus status) {
-    [self checkWithResolver:resolve rejecter:reject];
+    resolve([self currentStatus]);
   }];
 }
 

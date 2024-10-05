@@ -19,7 +19,7 @@ It is supporting the **latest version**, and the **two previous minor series**.
 ## Setup
 
 ```bash
-$ npm install --save react-native-permissions
+$ npm i -S react-native-permissions
 # --- or ---
 $ yarn add react-native-permissions
 ```
@@ -27,8 +27,6 @@ $ yarn add react-native-permissions
 ### iOS
 
 1. By default, no permissions are avalaible. First, require the `setup` script in your `Podfile`:
-
-If you're using React Native 0.72+:
 
 ```diff
 # Transform this into a `node_require` generic function:
@@ -51,16 +49,6 @@ If you're using React Native 0.72+:
 # Use it to require both react-native's and this package's scripts:
 + node_require('react-native/scripts/react_native_pods.rb')
 + node_require('react-native-permissions/scripts/setup.rb')
-```
-
-If you're using React Native < 0.72:
-
-```diff
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
-# Add a require_relative for this package's script:
-+ require_relative '../node_modules/react-native-permissions/scripts/setup'
 ```
 
 2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be added:
@@ -334,159 +322,60 @@ public class MainApplication extends Application implements ReactApplication {
 
 ## Understanding permission flow
 
-As permissions are not handled in the same way on iOS and Android, this library provides an abstraction over the two platforms' behaviors. To understand it a little better, take a look to these two flowcharts:
-
-### iOS flow
+As permissions are not handled in the same way on iOS, Android and Windows, this library provides an abstraction over the three platforms behaviors. To understand it a little better, take a look to this flowchart:
 
 ```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.IOS.CAMERA) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-             requestable ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                  ┌───────────────────┐
-                ╚═════╝                  │ RESULTS.BLOCKED / │
-                   │                     │ RESULTS.LIMITED / │
-                   │                     │  RESULTS.GRANTED  │
-                   ▼                     └───────────────────┘
-          ┌────────────────┐
-          │ RESULTS.DENIED │
-          └────────────────┘
-                   │
-                   ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.IOS.CAMERA) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-         Does the user accept
-            the request ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                   ┌─────────────────┐
-                ╚═════╝                   │ RESULTS.BLOCKED │
-                   │                      └─────────────────┘
-                   ▼
-         ┌───────────────────┐
-         │ RESULTS.LIMITED / │
-         │  RESULTS.GRANTED  │
-         └───────────────────┘
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ check(PERMISSIONS.X.Y) ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━┛
+              │                                ┌─────────────────────┐
+  Is the feature available ───────── NO ─────▶ │ RESULTS.UNAVAILABLE │
+      on this device ?                         └─────────────────────┘
+              │
+             YES
+              │                                ┌───────────────────────────┐
+      Is the permission ─────────── YES ─────▶ │ RESULTS.GRANTED / LIMITED │
+      already granted ?                        └───────────────────────────┘
+              │
+              NO
+              │                                ┌─────────────────┐
+Is the permission requestable, ───── NO ─────▶ │ RESULTS.BLOCKED │
+ or is the platform Android ?                  └─────────────────┘
+              │
+             YES
+              │
+              ▼
+     ┌────────────────┐
+     │ RESULTS.DENIED │
+     └────────────────┘
+              │
+              ▼
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ request(PERMISSIONS.X.Y) ┃◀─────────────────────────┐
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛                          │
+              │                                       YES
+              │                                        │
+    Did the user see and ──────── NO ──────── Is the permission
+    accept the request ?                      still requestable ?
+              │                                        │
+             YES                                       NO
+              │                                        │
+              ▼                                        ▼
+┌───────────────────────────┐                 ┌─────────────────┐
+│ RESULTS.GRANTED / LIMITED │                 │ RESULTS.BLOCKED │
+└───────────────────────────┘                 └─────────────────┘
 ```
 
-### Android flow
+This can be implemented as follows:
 
-```
- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ check(PERMISSIONS.ANDROID.CAMERA) ┃
- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                   │
-       Is the feature available
-           on this device ?
-                   │           ╔════╗
-                   ├───────────║ NO ║──────────────┐
-                   │           ╚════╝              │
-                ╔═════╗                            ▼
-                ║ YES ║                 ┌─────────────────────┐
-                ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                   │                    └─────────────────────┘
-           Is the permission
-           already granted ?
-                   │           ╔═════╗
-                   ├───────────║ YES ║─────────────┐
-                   │           ╚═════╝             │
-                ╔════╗                             ▼
-                ║ NO ║                   ┌───────────────────┐
-                ╚════╝                   │  RESULTS.GRANTED  │
-                   │                     └───────────────────┘
-                   ▼
-          ┌────────────────┐
-          │ RESULTS.DENIED │◀──────────────────────┐
-          └────────────────┘                       │
-                   │                               │
-                   ▼                               │
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓         ╔═════╗
-┃ request(PERMISSIONS.ANDROID.CAMERA) ┃         ║ YES ║
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         ╚═════╝
-                   │                               │
-         Does the user accept                      │
-            the request ?                          │
-                   │           ╔════╗      Is the permission
-                   ├───────────║ NO ║──── still requestable ?
-                   │           ╚════╝              │
-                ╔═════╗                         ╔════╗
-                ║ YES ║                         ║ NO ║
-                ╚═════╝                         ╚════╝
-                   │                               │
-                   ▼                               ▼
-          ┌─────────────────┐             ┌─────────────────┐
-          │ RESULTS.GRANTED │             │ RESULTS.BLOCKED │
-          └─────────────────┘             └─────────────────┘
-```
+- `check` the permission status
+- If `granted`, use the feature
+- If `blocked`, display a screen prompting the user to go to settings (using `openSettings`) _(This will not be shown on Android)_
+- If `denied`, display a button to `request` permission:
+  - If `granted`, use the feature
+  - If `blocked`, display an alert prompting the user to go to settings (using `openSettings`)
 
-### Windows flow
-
-```
-   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-   ┃ check(PERMISSIONS.WINDOWS.WEBCAM) ┃
-   ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                     │
-         Is the feature available
-              on this device ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                 ┌─────────────────────┐
-                  ╚═════╝                 │ RESULTS.UNAVAILABLE │
-                     │                    └─────────────────────┘
-             Is the permission
-               requestable ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                  ┌───────────────────┐
-                  ╚═════╝                  │ RESULTS.BLOCKED / │
-                     │                     │  RESULTS.GRANTED  │
-                     ▼                     └───────────────────┘
-            ┌────────────────┐
-            │ RESULTS.DENIED │
-            └────────────────┘
-                     │
-                     ▼
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ request(PERMISSIONS.WINDOWS.WEBCAM) ┃
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-                     │
-           Does the user accept
-              the request ?
-                     │           ╔════╗
-                     ├───────────║ NO ║──────────────┐
-                     │           ╚════╝              │
-                  ╔═════╗                            ▼
-                  ║ YES ║                   ┌─────────────────┐
-                  ╚═════╝                   │ RESULTS.BLOCKED │
-                     │                      └─────────────────┘
-                     ▼
-            ┌─────────────────┐
-            │ RESULTS.GRANTED │
-            └─────────────────┘
-```
+The user experience (UX) is excellent on iOS and acceptable on Android, considering the platform's limitations.
 
 ## API
 
@@ -727,95 +616,45 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 Permission checks and requests resolve into one of these statuses:
 
-| Return value          | Notes                                                                                                                      |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                           |
-| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                          |
-| `RESULTS.BLOCKED`     | The permission is denied and not requestable anymore                                                                       |
-| `RESULTS.GRANTED`     | The permission is granted                                                                                                  |
-| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
+| Return value          | Notes                                                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                                       |
+| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                                      |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable                                                                                           |
+| `RESULTS.GRANTED`     | The permission is granted                                                                                                              |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
 
-### Methods
-
-```ts
-// type used in usage examples
-type PermissionStatus = 'unavailable' | 'denied' | 'limited' | 'granted' | 'blocked';
-```
-
-#### check
-
-Check one permission status.
-
-_⚠️  Android will never return `blocked` on `check`, you have to call `request` to get the info._
+### Types
 
 ```ts
-function check(permission: string): Promise<PermissionStatus>;
-```
+type ValueOf<T> = T[keyof T];
 
-```js
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+type Permission =
+  | ValueOf<typeof PERMISSIONS.ANDROID>
+  | ValueOf<typeof PERMISSIONS.IOS>
+  | ValueOf<typeof PERMISSIONS.WINDOWS>;
 
-check(PERMISSIONS.IOS.LOCATION_ALWAYS)
-  .then((result) => {
-    switch (result) {
-      case RESULTS.UNAVAILABLE:
-        console.log('This feature is not available (on this device / in this context)');
-        break;
-      case RESULTS.DENIED:
-        console.log('The permission has not been requested / is denied but requestable');
-        break;
-      case RESULTS.LIMITED:
-        console.log('The permission is limited: some actions are possible');
-        break;
-      case RESULTS.GRANTED:
-        console.log('The permission is granted');
-        break;
-      case RESULTS.BLOCKED:
-        console.log('The permission is denied and not requestable anymore');
-        break;
-    }
-  })
-  .catch((error) => {
-    // …
-  });
-```
+type PermissionStatus = ValueOf<typeof RESULTS>;
 
-#### request
-
-Request one permission.
-
-The `rationale` is only available and used on Android. It can be a native alert (a `Rationale` object) or a custom implementation (that resolves with a `boolean`).
-
-```ts
-type Rationale = {
+type RationaleObject = {
   title: string;
   message: string;
-  buttonPositive?: string;
+  buttonPositive: string;
   buttonNegative?: string;
-  buttonNeutral?: string;
 };
 
-function request(
-  permission: string,
-  rationale?: Rationale | (() => Promise<boolean>),
-): Promise<PermissionStatus>;
-```
+type Rationale = RationaleObject | (() => Promise<boolean>);
 
-```js
-import {request, PERMISSIONS} from 'react-native-permissions';
+type NotificationOption =
+  | 'alert'
+  | 'badge'
+  | 'sound'
+  | 'carPlay'
+  | 'criticalAlert'
+  | 'provisional'
+  | 'providesAppSettings';
 
-request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((result) => {
-  // …
-});
-```
-
-#### checkNotifications
-
-Check notifications permission status and get notifications settings values.
-
-```ts
 type NotificationSettings = {
-  // properties only available on iOS
   // unavailable settings will not be included in the response object
   alert?: boolean;
   badge?: boolean;
@@ -828,13 +667,75 @@ type NotificationSettings = {
   notificationCenter?: boolean;
 };
 
-function checkNotifications(): Promise<{
+type NotificationsResponse = {
   status: PermissionStatus;
   settings: NotificationSettings;
-}>;
+};
+
+type LocationAccuracy = 'full' | 'reduced';
+type LocationAccuracyOptions = {purposeKey: string};
 ```
 
-```js
+### Methods
+
+#### check
+
+Check one permission status.
+
+> [!IMPORTANT]  
+> On Android, the `check` function will never return a `blocked` status. You need to call `request` to obtain that information.
+
+```ts
+function check(permission: Permission): Promise<PermissionStatus>;
+```
+
+```ts
+check(PERMISSIONS.IOS.CAMERA).then((status) => {
+  switch (status) {
+    case RESULTS.UNAVAILABLE:
+      return console.log('This feature is not available (on this device / in this context)');
+    case RESULTS.DENIED:
+      return console.log('The permission has not been requested / is denied but requestable');
+    case RESULTS.BLOCKED:
+      return console.log('The permission is denied and not requestable');
+    case RESULTS.GRANTED:
+      return console.log('The permission is granted');
+    case RESULTS.LIMITED:
+      return console.log('The permission is granted but with limitations');
+  }
+});
+```
+
+#### request
+
+Request one permission.
+
+The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
+
+```ts
+function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
+```
+
+```ts
+import {request, PERMISSIONS} from 'react-native-permissions';
+
+request(PERMISSIONS.IOS.CAMERA).then((status) => {
+  // …
+});
+```
+
+#### checkNotifications
+
+Check notifications permission status and get notifications settings values.
+
+> [!IMPORTANT]  
+> On Android >= 13, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information.
+
+```ts
+function checkNotifications(): Promise<NotificationsResponse>;
+```
+
+```ts
 import {checkNotifications} from 'react-native-permissions';
 
 checkNotifications().then(({status, settings}) => {
@@ -846,41 +747,19 @@ checkNotifications().then(({status, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+.
-- You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the App Settings.
+- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform a runtime request on Android 13+.
+- You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the app settings.
+
+The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
 
 ```ts
-// only used on iOS
-type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'criticalAlert'
-  | 'carPlay'
-  | 'provisional'
-  | 'providesAppSettings';
-
-type NotificationSettings = {
-  // properties only available on iOS
-  // unavailable settings will not be included in the response object
-  alert?: boolean;
-  badge?: boolean;
-  sound?: boolean;
-  carPlay?: boolean;
-  criticalAlert?: boolean;
-  provisional?: boolean;
-  providesAppSettings?: boolean;
-  lockScreen?: boolean;
-  notificationCenter?: boolean;
-};
-
-function requestNotifications(options: NotificationOption[]): Promise<{
-  status: PermissionStatus;
-  settings: NotificationSettings;
-}>;
+function requestNotifications(
+  options: NotificationOption[], // only used by iOS
+  rationale?: Rationale,
+): Promise<NotificationsResponse>;
 ```
 
-```js
+```ts
 import {requestNotifications} from 'react-native-permissions';
 
 requestNotifications(['alert', 'sound']).then(({status, settings}) => {
@@ -892,7 +771,8 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 Check multiples permissions in parallel.
 
-_⚠️  Android will never return `blocked` on `checkMultiple`, you have to call `requestMultiple` to get the info._
+> [!IMPORTANT]  
+> On Android, the `checkMultiple` function will never return a `blocked` status. You need to call `requestMultiple` to obtain that information.
 
 ```ts
 function checkMultiple<P extends Permission[]>(
@@ -900,7 +780,7 @@ function checkMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>>;
 ```
 
-```js
+```ts
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
 checkMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
@@ -919,7 +799,7 @@ function requestMultiple<P extends Permission[]>(
 ): Promise<Record<P[number], PermissionStatus>>;
 ```
 
-```js
+```ts
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuses) => {
@@ -936,10 +816,10 @@ Open application settings.
 function openSettings(): Promise<void>;
 ```
 
-```js
+```ts
 import {openSettings} from 'react-native-permissions';
 
-openSettings().catch(() => console.warn('cannot open settings'));
+openSettings().catch(() => console.warn('Cannot open app settings'));
 ```
 
 #### openPhotoPicker (iOS 14+)
@@ -950,12 +830,10 @@ Open a picker to update the photo selection when `PhotoLibrary` permission is `l
 function openPhotoPicker(): Promise<void>;
 ```
 
-```js
+```ts
 import {openPhotoPicker} from 'react-native-permissions';
 
-openPhotoPicker().catch(() => {
-  console.warn('Cannot open photo library picker');
-});
+openPhotoPicker().catch(() => console.warn('Cannot open photo library picker'));
 ```
 
 #### checkLocationAccuracy (iOS 14+)
@@ -963,12 +841,10 @@ openPhotoPicker().catch(() => {
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow checking if the user share his precise location.
 
 ```ts
-type LocationAccuracy = 'full' | 'reduced';
-
 function checkLocationAccuracy(): Promise<LocationAccuracy>;
 ```
 
-```js
+```ts
 import {checkLocationAccuracy} from 'react-native-permissions';
 
 checkLocationAccuracy()
@@ -981,12 +857,6 @@ checkLocationAccuracy()
 When `LocationAlways` or `LocationWhenInUse` is `granted`, allow requesting the user for his precise location. Will resolve immediately if `full` accuracy is already authorized.
 
 ```ts
-type LocationAccuracyOptions = {
-  purposeKey: string;
-};
-
-type LocationAccuracy = 'full' | 'reduced';
-
 function requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
 ```
 
@@ -1000,15 +870,36 @@ requestLocationAccuracy({purposeKey: 'YOUR-PURPOSE-KEY'})
 
 ### About iOS `LOCATION_ALWAYS` permission
 
-If you are requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, there won't be a `Always Allow` button in the system dialog. Only `Allow Once`, `Allow While Using App` and `Don't Allow`. This is expected behaviour, check the [Apple Developer Docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736).
+On iOS, background location permission can be requested in two different ways ([Apple Developer Docs 📘](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620551-requestalwaysauthorization#3578736)).
 
-When requesting `PERMISSIONS.IOS.LOCATION_ALWAYS`, if the user choose `Allow While Using App`, a provisional "always" status will be granted. The user will see `While Using` in the settings and later will be informed that your app is using the location in background. That looks like this:
+#### Request `LOCATION_ALWAYS` after `LOCATION_WHEN_IN_USE`
 
-<p align="center">
-  <img width="250" src="./docs/location_always_prompt.png" alt="Screenshot">
-</p>
+If the user chooses _Allow While Using App_ when calling `request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)`, then calling `request(PERMISSIONS.IOS.LOCATION_ALWAYS)` afterward will immediately prompt the user:
 
-Subsequently, if you are requesting `LOCATION_ALWAYS` permission, there is no need to request `LOCATION_WHEN_IN_USE`. If the user accepts, `LOCATION_WHEN_IN_USE` will be granted too. If the user denies, `LOCATION_WHEN_IN_USE` will be denied too.
+<img width="250" src="./docs/location_always_upgrade.png" alt="Location upgrade">
+
+| Option                 | `LOCATION_ALWAYS` status | `LOCATION_WHEN_IN_USE` status |
+| ---------------------- | ------------------------ | ----------------------------- |
+| Keep Only While Using  | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
+| Change to Always Allow | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
+
+---
+
+#### Request `LOCATION_ALWAYS` directly
+
+The user is immediately prompted:
+
+<img width="250" src="./docs/location_always_first_prompt.png" alt="Location first prompt">
+
+| Option                | `LOCATION_ALWAYS` status | `LOCATION_WHEN_IN_USE` status |
+| --------------------- | ------------------------ | ----------------------------- |
+| Allow Once            | `RESULTS.BLOCKED`        | `RESULTS.GRANTED`             |
+| Allow While Using App | `RESULTS.GRANTED`        | `RESULTS.GRANTED`             |
+| Don’t Allow           | `RESULTS.BLOCKED`        | `RESULTS.BLOCKED`             |
+
+In this scenario, if the user chooses `Allow While Using App`, they will see `While Using` in the app settings and will later be informed that your app is using their location in background with the option to confirm / change it:
+
+<img width="250" src="./docs/location_always_second_prompt.png" alt="Location second prompt">
 
 ### Testing with Jest
 

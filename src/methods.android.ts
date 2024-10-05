@@ -1,93 +1,89 @@
-import {Alert, AlertButton} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
-import type {
-  NotificationOption,
-  NotificationsResponse,
-  Permission,
-  PermissionStatus,
-  Rationale,
-} from './types';
+import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
   requestLocationAccuracy,
-} from './unsupportedPlatformMethods';
-import {platformVersion, uniq} from './utils';
+} from './unsupportedMethods';
+import {uniq} from './utils';
 
-const TIRAMISU_VERSION_CODE = 33;
+const POST_NOTIFICATIONS = 'android.permission.POST_NOTIFICATIONS' as Permission;
+const USES_LEGACY_NOTIFICATIONS = (Platform.OS === 'android' ? Platform.Version : 0) < 33;
 
-async function openSettings(): Promise<void> {
-  await NativeModule.openSettings();
-}
-
-function check(permission: Permission): Promise<PermissionStatus> {
-  return NativeModule.check(permission) as Promise<PermissionStatus>;
-}
-
-async function showRationaleAlert(rationale: Rationale): Promise<boolean> {
-  return new Promise<boolean>((resolve) => {
-    const {title, message, buttonPositive, buttonNegative, buttonNeutral} = rationale;
-    const buttons: AlertButton[] = [];
-
-    if (buttonNegative) {
-      const onPress = () => resolve(false);
-      buttonNeutral && buttons.push({text: buttonNeutral, onPress});
-      buttons.push({text: buttonNegative, onPress});
-    }
-
-    buttons.push({text: buttonPositive, onPress: () => resolve(true)});
-    Alert.alert(title, message, buttons, {cancelable: false});
-  });
-}
-
-async function request(
+const shouldRequestPermission = async (
   permission: Permission,
-  rationale?: Rationale | (() => Promise<boolean>),
-): Promise<PermissionStatus> {
+  rationale: Rationale | undefined,
+): Promise<boolean> => {
   if (rationale == null || !(await NativeModule.shouldShowRequestRationale(permission))) {
-    return NativeModule.request(permission) as Promise<PermissionStatus>;
+    return true;
   }
 
-  return (typeof rationale === 'function' ? rationale() : showRationaleAlert(rationale)).then(
-    (shouldRequest) =>
-      (shouldRequest
-        ? NativeModule.request(permission)
-        : NativeModule.check(permission)) as Promise<PermissionStatus>,
-  );
-}
-
-async function checkNotifications(): Promise<NotificationsResponse> {
-  if (platformVersion < TIRAMISU_VERSION_CODE) {
-    return NativeModule.checkNotifications() as Promise<NotificationsResponse>;
+  if (typeof rationale === 'function') {
+    return rationale();
   }
 
-  const status = await check('android.permission.POST_NOTIFICATIONS');
-  return {status, settings: {}};
-}
+  return new Promise<boolean>((resolve) => {
+    const {buttonNegative} = rationale;
 
-async function requestNotifications(options: NotificationOption[]): Promise<NotificationsResponse> {
-  if (platformVersion < TIRAMISU_VERSION_CODE) {
-    return NativeModule.requestNotifications(options) as Promise<NotificationsResponse>;
+    Alert.alert(
+      rationale.title,
+      rationale.message,
+      [
+        ...(buttonNegative ? [{text: buttonNegative, onPress: () => resolve(false)}] : []),
+        {text: rationale.buttonPositive, onPress: () => resolve(true)},
+      ],
+      {cancelable: false},
+    );
+  });
+};
+
+const openSettings: Contract['openSettings'] = async () => {
+  await NativeModule.openSettings();
+};
+
+const check: Contract['check'] = async (permission) => {
+  const status = (await NativeModule.check(permission)) as PermissionStatus;
+  return status;
+};
+
+const request: Contract['request'] = async (permission, rationale) => {
+  const fn = (await shouldRequestPermission(permission, rationale))
+    ? NativeModule.request
+    : NativeModule.check;
+
+  const status = (await fn(permission)) as PermissionStatus;
+  return status;
+};
+
+const checkNotifications: Contract['checkNotifications'] = async () => {
+  if (USES_LEGACY_NOTIFICATIONS) {
+    const response = (await NativeModule.checkNotifications()) as NotificationsResponse;
+    return response;
+  } else {
+    const status = await check(POST_NOTIFICATIONS);
+    return {status, settings: {}};
   }
+};
 
-  const status = await request('android.permission.POST_NOTIFICATIONS');
-  return {status, settings: {}};
-}
+const requestNotifications: Contract['requestNotifications'] = async (options, rationale) => {
+  if (USES_LEGACY_NOTIFICATIONS) {
+    const response = (await NativeModule.requestNotifications(options)) as NotificationsResponse;
+    return response;
+  } else {
+    const status = await request(POST_NOTIFICATIONS, rationale);
+    return {status, settings: {}};
+  }
+};
 
-function checkMultiple<P extends Permission[]>(
-  permissions: P,
-): Promise<Record<P[number], PermissionStatus>> {
-  const dedup = uniq(permissions);
-  return NativeModule.checkMultiple(dedup) as Promise<Record<P[number], PermissionStatus>>;
-}
+const checkMultiple: Contract['checkMultiple'] = (permissions) => {
+  return NativeModule.checkMultiple(uniq(permissions)) as ReturnType<Contract['checkMultiple']>;
+};
 
-function requestMultiple<P extends Permission[]>(
-  permissions: P,
-): Promise<Record<P[number], PermissionStatus>> {
-  const dedup = uniq(permissions);
-  return NativeModule.requestMultiple(dedup) as Promise<Record<P[number], PermissionStatus>>;
-}
+const requestMultiple: Contract['requestMultiple'] = (permissions) => {
+  return NativeModule.requestMultiple(uniq(permissions)) as ReturnType<Contract['requestMultiple']>;
+};
 
 export const methods: Contract = {
   check,

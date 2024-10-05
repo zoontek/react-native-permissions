@@ -67,12 +67,6 @@ def setup_permissions(config)
   podspec_content = podspec
     .gsub(/(# *)?s\.source_files *=.*/, "s.source_files = #{source_files}")
     .gsub(/(# *)?s\.frameworks *=.*/, "s.frameworks = #{frameworks}")
-    .gsub(
-      /(# *)?s\.resource_bundles *=.*/,
-      directories.include?('FaceID') ?
-        "s.resource_bundles = { 'RNPermissionsPrivacyInfo' => 'ios/PrivacyInfo.xcprivacy' }" :
-        '# s.resource_bundles = <resource_bundles>'
-    )
 
   File.write(podspec_path, podspec_content)
 end
