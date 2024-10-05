@@ -19,7 +19,7 @@ It is supporting the **latest version**, and the **two previous minor series**.
 ## Setup
 
 ```bash
-$ npm install --save react-native-permissions
+$ npm i -S react-native-permissions
 # --- or ---
 $ yarn add react-native-permissions
 ```
@@ -171,6 +171,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
   <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
   <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
   <uses-permission android:name="android.permission.READ_CALENDAR" />
   <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -328,34 +329,40 @@ As permissions are not handled in the same way on iOS, Android and Windows, this
  ┃ check(PERMISSIONS.X.Y) ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━┛
               │
-      Is the permission
-          granted ?
-              │           ╔═════╗
-              ├───────────║ YES ║─────────────┐
-              │           ╚═════╝             │
-            ╔════╗                            ▼
-            ║ NO ║                  ┌───────────────────┐
-            ╚════╝                  │ No request needed │
-              │                     └───────────────────┘
+  Is the feature available                  ┌─────────────────────┐
+      on this device ? ───── NO ──────────▶ │ RESULTS.UNAVAILABLE │
+              │                             └─────────────────────┘
+             YES
+              │
+      Is the permission                  ┌───────────────────────────┐
+      already granted ? ───── YES ─────▶ │ RESULTS.GRANTED / LIMITED │
+              │                          └───────────────────────────┘
+              NO
+              │
+Is the permission requestable,                ┌─────────────────┐
+ or is the platform Android ? ───── NO ─────▶ │ RESULTS.BLOCKED │
+              │                               └─────────────────┘
+             YES
+              │
               ▼
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ request(PERMISSIONS.X.Y) ┃◀──────────────────┐
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛                ╔═════╗
-              │                             ║ YES ║
-    Did the user see and                    ╚═════╝
-    accept the request ?                       │
-              │           ╔════╗       Is the permission
-              ├───────────║ NO ║────── still requestable ?
-              │           ╚════╝               │
-           ╔═════╗                           ╔════╗
-           ║ YES ║                           ║ NO ║
-           ╚═════╝                           ╚════╝
-              │                                │
-              ▼                                ▼
-     ┌───────────────────┐            ┌─────────────────┐
-     │ RESULTS.LIMITED / │            │ RESULTS.BLOCKED │
-     │  RESULTS.GRANTED  │            └─────────────────┘
-     └───────────────────┘
+     ┌────────────────┐
+     │ RESULTS.DENIED │
+     └────────────────┘
+              │
+              ▼
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ ┃ request(PERMISSIONS.X.Y) ┃◀────────────────────────┐
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛                        YES
+              │                                       │
+    Did the user see and                     Is the permission
+    accept the request ? ───── NO ────────── still requestable ?
+              │                                       │
+             YES                                      NO
+              │                                       │
+              ▼                                       ▼
+┌───────────────────────────┐                 ┌─────────────────┐
+│ RESULTS.GRANTED / LIMITED │                 │ RESULTS.BLOCKED │
+└───────────────────────────┘                 └─────────────────┘
 ```
 
 ## API
@@ -595,14 +602,15 @@ PERMISSIONS.WINDOWS.XBOX_ACCESSORY_MANAGEMENT;
 
 ### Permissions statuses
 
-Permission requests resolve into one of these statuses:
+Permission checks and requests resolve into one of these statuses:
 
-| Return value      | Notes                                                                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `RESULTS.DENIED`  | The permission has not been requested / is denied but requestable                                                                      |
-| `RESULTS.BLOCKED` | The permission is denied and not requestable anymore                                                                                   |
-| `RESULTS.GRANTED` | The permission is granted                                                                                                              |
-| `RESULTS.LIMITED` | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
+| Return value          | Notes                                                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `RESULTS.UNAVAILABLE` | This feature is not available (on this device / in this context)                                                                       |
+| `RESULTS.DENIED`      | The permission has not been requested / is denied but requestable                                                                      |
+| `RESULTS.BLOCKED`     | The permission is denied and not requestable                                                                                           |
+| `RESULTS.GRANTED`     | The permission is granted                                                                                                              |
+| `RESULTS.LIMITED`     | The permission is granted but with limitations<br>_Only for iOS `Contacts`, `PhotoLibrary`, `PhotoLibraryAddOnly` and `Notifications`_ |
 
 ### Types
 
@@ -625,9 +633,6 @@ type RationaleObject = {
 
 type Rationale = RationaleObject | (() => Promise<boolean>);
 
-type LocationAccuracy = 'full' | 'reduced';
-type LocationAccuracyOptions = {purposeKey: string};
-
 type NotificationOption =
   | 'alert'
   | 'badge'
@@ -649,21 +654,42 @@ type NotificationSettings = {
   lockScreen?: boolean;
   notificationCenter?: boolean;
 };
+
+type NotificationsResponse = {
+  status: PermissionStatus;
+  settings: NotificationSettings;
+};
+
+type LocationAccuracy = 'full' | 'reduced';
+type LocationAccuracyOptions = {purposeKey: string};
 ```
 
 ### Methods
 
 #### check
 
-Check if one permission is granted.
+Check one permission status.
+
+_⚠️ On Android, the `check` function will never return a `blocked` status. You need to call `request` to obtain that information._
 
 ```ts
-function check(permission: Permission): Promise<boolean>;
+function check(permission: Permission): Promise<PermissionStatus>;
 ```
 
 ```ts
-check(PERMISSIONS.IOS.LOCATION_ALWAYS).then((granted) => {
-  // …
+check(PERMISSIONS.IOS.CAMERA).then((status) => {
+  switch (status) {
+    case RESULTS.UNAVAILABLE:
+      return console.log('This feature is not available (on this device / in this context)');
+    case RESULTS.DENIED:
+      return console.log('The permission has not been requested / is denied but requestable');
+    case RESULTS.BLOCKED:
+      return console.log('The permission is denied and not requestable');
+    case RESULTS.GRANTED:
+      return console.log('The permission is granted');
+    case RESULTS.LIMITED:
+      return console.log('The permission is granted but with limitations');
+  }
 });
 ```
 
@@ -680,26 +706,25 @@ function request(permission: Permission, rationale?: Rationale): Promise<Permiss
 ```ts
 import {request, PERMISSIONS} from 'react-native-permissions';
 
-request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+request(PERMISSIONS.IOS.CAMERA).then((status) => {
   // …
 });
 ```
 
 #### checkNotifications
 
-Check if notifications permission is granted and get notifications settings values.
+Check notifications permission status and get notifications settings values.
+
+_⚠️ On Android >= 13, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information._
 
 ```ts
-function checkNotifications(): Promise<{
-  granted: boolean;
-  settings: NotificationSettings;
-}>;
+function checkNotifications(): Promise<NotificationsResponse>;
 ```
 
 ```ts
 import {checkNotifications} from 'react-native-permissions';
 
-checkNotifications().then(({granted, settings}) => {
+checkNotifications().then(({status, settings}) => {
   // …
 });
 ```
@@ -708,7 +733,7 @@ checkNotifications().then(({granted, settings}) => {
 
 Request notifications permission status and get notifications settings values.
 
-- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform request on Android 13+.
+- You have to [target at least SDK 33](https://github.com/zoontek/react-native-permissions/releases/tag/3.5.0) to perform a runtime request on Android 13+.
 - You cannot request notifications permissions on Windows. Disabling / enabling them can only be done through the app settings.
 
 The `rationale` is only available and used on Android. It can be a native alert (a `RationaleObject`) or a custom implementation (that resolves with a `boolean`).
@@ -717,10 +742,7 @@ The `rationale` is only available and used on Android. It can be a native alert 
 function requestNotifications(
   options: NotificationOption[], // only used by iOS
   rationale?: Rationale,
-): Promise<{
-  status: PermissionStatus;
-  settings: NotificationSettings;
-}>;
+): Promise<NotificationsResponse>;
 ```
 
 ```ts
@@ -733,10 +755,14 @@ requestNotifications(['alert', 'sound']).then(({status, settings}) => {
 
 #### checkMultiple
 
-Check if multiples permissions are granted in parallel.
+Check multiples permissions in parallel.
+
+_⚠️ On Android, the `checkMultiple` function will never return a `blocked` status. You need to call `requestMultiple` to obtain that information._
 
 ```ts
-function checkMultiple<P extends Permission[]>(permissions: P): Promise<Record<P[number], boolean>>;
+function checkMultiple<P extends Permission[]>(
+  permissions: P,
+): Promise<Record<P[number], PermissionStatus>>;
 ```
 
 ```ts
@@ -778,7 +804,7 @@ function openSettings(): Promise<void>;
 ```ts
 import {openSettings} from 'react-native-permissions';
 
-openSettings().catch(() => console.warn('cannot open settings'));
+openSettings().catch(() => console.warn('Cannot open app settings'));
 ```
 
 #### openPhotoPicker (iOS 14+)

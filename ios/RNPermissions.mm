@@ -244,34 +244,30 @@ RCT_EXPORT_MODULE();
 #endif
 
 #if RCT_DEV
-  if (hasPermissionHandlers) {
-    RCTLogError(@"Unknown permission \"%@\"", permission);
-  } else {
-    NSMutableString *message = [NSMutableString new];
+  NSMutableString *message = [NSMutableString new];
 
-    [message appendString:@"⚠  No permission handler detected.\n\n"];
-    [message appendString:@"• Check that you are correctly calling setup_permissions in your Podfile.\n"];
-    [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
+  NSString *title = hasPermissionHandlers
+    ? [NSString stringWithFormat:@"No \"%@\" permission handler detected", permission]
+    : @"No permission handler detected";
 
-    RCTLogError(@"%@", message);
-  }
+  [message appendString:[NSString stringWithFormat:@"⚠  %@.\n\n", title]];
+  [message appendString:@"• Check that you have correctly set up setup_permissions in your Podfile.\n"];
+  [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
+
+  RCTLogError(@"%@", message);
 #endif
 
   return nil;
 }
 
-- (bool)boolForStatus:(RNPermissionStatus)status {
-  // Limited is also considered as granted, as the feature is usable
-  return status == RNPermissionStatusAuthorized || status == RNPermissionStatusLimited;
-}
-
 - (NSString *)stringForStatus:(RNPermissionStatus)status {
   switch (status) {
+    case RNPermissionStatusNotAvailable:
+    case RNPermissionStatusRestricted:
+      return @"unavailable";
     case RNPermissionStatusNotDetermined:
       return @"denied";
-    case RNPermissionStatusNotAvailable:
     case RNPermissionStatusDenied:
-    case RNPermissionStatusRestricted:
       return @"blocked";
     case RNPermissionStatusLimited:
       return @"limited";
@@ -315,7 +311,7 @@ RCT_EXPORT_METHOD(check:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
-  resolve(@(handler != nil && [self boolForStatus:[handler currentStatus]]));
+  resolve([self stringForStatus:(handler != nil ? [handler currentStatus] : RNPermissionStatusNotAvailable)]);
 }
 
 RCT_EXPORT_METHOD(request:(NSString *)permission
@@ -346,7 +342,7 @@ RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
-    resolve(@{ @"granted": @([self boolForStatus:status]), @"settings": settings });
+    resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
     [self unlockHandler:lockId];
   }];
 #else

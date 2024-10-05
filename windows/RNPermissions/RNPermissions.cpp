@@ -38,13 +38,15 @@ void RNPermissions::RNPermissions::CheckNotifications(React::ReactPromise<std::s
     case NotificationSetting::DisabledForUser:
     case NotificationSetting::DisabledByGroupPolicy:
     case NotificationSetting::DisabledByManifest:
-    default:
       promise.Resolve("blocked");
+      break;
+    default:
+      promise.Resolve("unavailable");
       break;
     }
   }
   catch (...) {
-      promise.Resolve("blocked");
+      promise.Resolve("unavailable");
   }
 }
 
@@ -68,14 +70,16 @@ void RNPermissions::RNPermissions::Check(std::wstring permission, React::ReactPr
       break;
     case AppCapabilityAccessStatus::DeniedByUser:
     case AppCapabilityAccessStatus::DeniedBySystem:
+      promise.Resolve("blocked");
+      break;
     case AppCapabilityAccessStatus::NotDeclaredByApp:
     default:
-      promise.Resolve("blocked");
+      promise.Resolve("unavailable");
       break;
     }
   }
   catch (...) {
-    promise.Resolve("blocked");
+    promise.Resolve("unavailable");
   }
 }
 
@@ -103,13 +107,15 @@ void RNPermissions::RNPermissions::Request(std::wstring permission, React::React
       break;
     case AppCapabilityAccessStatus::DeniedByUser:
     case AppCapabilityAccessStatus::DeniedBySystem:
+      promise.Resolve("blocked");
+      break;
     case AppCapabilityAccessStatus::NotDeclaredByApp:
     default:
-      promise.Resolve("blocked");
+      promise.Resolve("unavailable");
       break;
     }
   }
   catch (...) {
-    promise.Resolve("blocked");
+    promise.Resolve("unavailable");
   }
 }

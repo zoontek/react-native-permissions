@@ -1,5 +1,6 @@
 import type {Contract} from './contract';
 import NativeModule from './NativeRNPermissions';
+import {LocationAccuracy, NotificationsResponse, PermissionStatus} from './types';
 import {uniq} from './utils';
 
 const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
@@ -10,34 +11,38 @@ const openSettings: Contract['openSettings'] = async () => {
   await NativeModule.openSettings();
 };
 
-const check: Contract['check'] = (permission) => {
-  return NativeModule.check(permission);
+const check: Contract['check'] = async (permission) => {
+  const status = (await NativeModule.check(permission)) as PermissionStatus;
+  return status;
 };
 
 const request: Contract['request'] = async (permission) => {
-  return NativeModule.request(permission) as ReturnType<Contract['request']>;
+  const status = (await NativeModule.request(permission)) as PermissionStatus;
+  return status;
 };
 
 const checkLocationAccuracy: Contract['checkLocationAccuracy'] = async () => {
-  return NativeModule.checkLocationAccuracy() as ReturnType<Contract['checkLocationAccuracy']>;
+  const accuracy = (await NativeModule.checkLocationAccuracy()) as LocationAccuracy;
+  return accuracy;
 };
 
-const requestLocationAccuracy: Contract['requestLocationAccuracy'] = ({purposeKey}) => {
-  return NativeModule.requestLocationAccuracy(purposeKey) as ReturnType<
-    Contract['requestLocationAccuracy']
-  >;
+const requestLocationAccuracy: Contract['requestLocationAccuracy'] = async ({purposeKey}) => {
+  const accuracy = (await NativeModule.requestLocationAccuracy(purposeKey)) as LocationAccuracy;
+  return accuracy;
 };
 
 const checkNotifications: Contract['checkNotifications'] = async () => {
-  return NativeModule.checkNotifications();
+  const response = (await NativeModule.checkNotifications()) as NotificationsResponse;
+  return response;
 };
 
-const requestNotifications: Contract['requestNotifications'] = (options) => {
-  return NativeModule.requestNotifications(options) as ReturnType<Contract['requestNotifications']>;
+const requestNotifications: Contract['requestNotifications'] = async (options) => {
+  const response = (await NativeModule.requestNotifications(options)) as NotificationsResponse;
+  return response;
 };
 
 const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
-  const output: Record<string, boolean> = {};
+  const output: Record<string, PermissionStatus> = {};
 
   for (const permission of uniq(permissions)) {
     output[permission] = await check(permission);
@@ -47,7 +52,7 @@ const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
 };
 
 const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
-  const output: Record<string, string> = {};
+  const output: Record<string, PermissionStatus> = {};
 
   for (const permission of uniq(permissions)) {
     output[permission] = await request(permission);

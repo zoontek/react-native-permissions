@@ -43,3 +43,8 @@ export type NotificationSettings = {
   lockScreen?: boolean;
   notificationCenter?: boolean;
 };
+
+export type NotificationsResponse = {
+  status: PermissionStatus;
+  settings: NotificationSettings;
+};

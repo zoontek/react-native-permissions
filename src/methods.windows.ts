@@ -1,6 +1,5 @@
 import {NativeModules} from 'react-native';
 import type {Contract} from './contract';
-import {RESULTS} from './results';
 import type {Permission, PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
@@ -20,9 +19,8 @@ const openSettings: Contract['openSettings'] = async () => {
   await NativeModule.OpenSettings();
 };
 
-const check: Contract['check'] = async (permission) => {
-  const status = await NativeModule.Check(permission);
-  return status === RESULTS.GRANTED;
+const check: Contract['check'] = (permission) => {
+  return NativeModule.Check(permission);
 };
 
 const request: Contract['request'] = (permission) => {
@@ -31,16 +29,11 @@ const request: Contract['request'] = (permission) => {
 
 const checkNotifications: Contract['checkNotifications'] = async () => {
   const status = await NativeModule.CheckNotifications();
-  return {granted: status === RESULTS.GRANTED, settings: {}};
-};
-
-const requestNotifications: Contract['requestNotifications'] = async () => {
-  const status = await NativeModule.CheckNotifications();
   return {status, settings: {}};
 };
 
 const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
-  const output: Record<string, boolean> = {};
+  const output: Record<string, PermissionStatus> = {};
 
   for (const permission of uniq(permissions)) {
     output[permission] = await check(permission);
@@ -50,7 +43,7 @@ const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
 };
 
 const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
-  const output: Record<string, string> = {};
+  const output: Record<string, PermissionStatus> = {};
 
   for (const permission of uniq(permissions)) {
     output[permission] = await request(permission);
@@ -69,5 +62,5 @@ export const methods: Contract = {
   request,
   requestLocationAccuracy,
   requestMultiple,
-  requestNotifications,
+  requestNotifications: checkNotifications,
 };

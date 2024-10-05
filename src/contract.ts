@@ -2,17 +2,19 @@ import type {
   LocationAccuracy,
   LocationAccuracyOptions,
   NotificationOption,
-  NotificationSettings,
+  NotificationsResponse,
   Permission,
   PermissionStatus,
   Rationale,
 } from './types';
 
 export type Contract = {
-  check(permission: Permission): Promise<boolean>;
+  check(permission: Permission): Promise<PermissionStatus>;
   checkLocationAccuracy(): Promise<LocationAccuracy>;
-  checkMultiple<P extends Permission[]>(permissions: P): Promise<Record<P[number], boolean>>;
-  checkNotifications(): Promise<{granted: boolean; settings: NotificationSettings}>;
+  checkMultiple<P extends Permission[]>(
+    permissions: P,
+  ): Promise<Record<P[number], PermissionStatus>>;
+  checkNotifications(): Promise<NotificationsResponse>;
   openPhotoPicker(): Promise<void>;
   openSettings(): Promise<void>;
   request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
@@ -23,5 +25,5 @@ export type Contract = {
   requestNotifications(
     options: NotificationOption[],
     rationale?: Rationale,
-  ): Promise<{status: PermissionStatus; settings: NotificationSettings}>;
+  ): Promise<NotificationsResponse>;
 };

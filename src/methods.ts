@@ -1,47 +1,28 @@
 import type {Contract} from './contract';
 import {RESULTS} from './results';
+import {PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedMethods';
 
-const openSettings: Contract['openSettings'] = async () => {};
-
 const check: Contract['check'] = async () => {
-  return false;
-};
-
-const request: Contract['request'] = async () => {
-  return RESULTS.BLOCKED;
+  return RESULTS.UNAVAILABLE;
 };
 
 const checkNotifications: Contract['checkNotifications'] = async () => {
-  return {granted: false, settings: {}};
-};
-
-const requestNotifications: Contract['requestNotifications'] = async () => {
-  return {status: RESULTS.BLOCKED, settings: {}};
+  return {status: RESULTS.UNAVAILABLE, settings: {}};
 };
 
 const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
-  const output: Record<string, boolean> = {};
+  const output: Record<string, PermissionStatus> = {};
 
   for (const permission of permissions) {
-    output[permission] = false;
+    output[permission] = RESULTS.UNAVAILABLE;
   }
 
   return output as Awaited<ReturnType<Contract['checkMultiple']>>;
-};
-
-const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
-  const output: Record<string, string> = {};
-
-  for (const permission of permissions) {
-    output[permission] = RESULTS.BLOCKED;
-  }
-
-  return output as Awaited<ReturnType<Contract['requestMultiple']>>;
 };
 
 export const methods: Contract = {
@@ -50,9 +31,9 @@ export const methods: Contract = {
   checkMultiple,
   checkNotifications,
   openPhotoPicker,
-  openSettings,
-  request,
+  openSettings: Promise.reject,
+  request: check,
   requestLocationAccuracy,
-  requestMultiple,
-  requestNotifications,
+  requestMultiple: checkMultiple,
+  requestNotifications: checkNotifications,
 };

@@ -1,8 +1,7 @@
 import {Alert, Platform} from 'react-native';
 import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
-import {RESULTS} from './results';
-import type {Permission, PermissionStatus, Rationale} from './types';
+import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
@@ -44,44 +43,38 @@ const openSettings: Contract['openSettings'] = async () => {
   await NativeModule.openSettings();
 };
 
-const check: Contract['check'] = (permission) => {
-  return NativeModule.check(permission);
+const check: Contract['check'] = async (permission) => {
+  const status = (await NativeModule.check(permission)) as PermissionStatus;
+  return status;
 };
 
 const request: Contract['request'] = async (permission, rationale) => {
-  const performRequest = await shouldRequestPermission(permission, rationale);
+  const fn = (await shouldRequestPermission(permission, rationale))
+    ? NativeModule.request
+    : NativeModule.check;
 
-  if (!performRequest) {
-    const granted = await check(permission);
-    return granted ? RESULTS.GRANTED : RESULTS.DENIED;
-  }
-
-  const status = (await NativeModule.request(permission)) as PermissionStatus;
+  const status = (await fn(permission)) as PermissionStatus;
   return status;
 };
 
 const checkNotifications: Contract['checkNotifications'] = async () => {
-  return USES_LEGACY_NOTIFICATIONS
-    ? NativeModule.checkNotifications()
-    : {granted: await check(POST_NOTIFICATIONS), settings: {}};
+  if (USES_LEGACY_NOTIFICATIONS) {
+    const response = (await NativeModule.checkNotifications()) as NotificationsResponse;
+    return response;
+  } else {
+    const status = await check(POST_NOTIFICATIONS);
+    return {status, settings: {}};
+  }
 };
 
 const requestNotifications: Contract['requestNotifications'] = async (options, rationale) => {
   if (USES_LEGACY_NOTIFICATIONS) {
-    return NativeModule.requestNotifications(options) as ReturnType<
-      Contract['requestNotifications']
-    >;
+    const response = (await NativeModule.requestNotifications(options)) as NotificationsResponse;
+    return response;
+  } else {
+    const status = await request(POST_NOTIFICATIONS, rationale);
+    return {status, settings: {}};
   }
-
-  const performRequest = await shouldRequestPermission(POST_NOTIFICATIONS, rationale);
-
-  if (!performRequest) {
-    const granted = await check(POST_NOTIFICATIONS);
-    return {status: granted ? RESULTS.GRANTED : RESULTS.DENIED, settings: {}};
-  }
-
-  const status = await request(POST_NOTIFICATIONS);
-  return {status, settings: {}};
 };
 
 const checkMultiple: Contract['checkMultiple'] = (permissions) => {

@@ -1,5 +1,6 @@
 package com.zoontek.rnpermissions
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -20,14 +21,28 @@ import com.facebook.react.modules.core.PermissionAwareActivity
 import com.facebook.react.modules.core.PermissionListener
 
 object RNPermissionsModuleImpl {
-  const val NAME: String = "RNPermissions"
+  const val NAME = "RNPermissions"
 
   private var requestCode = 0
 
   private const val ERROR_INVALID_ACTIVITY = "E_INVALID_ACTIVITY"
   private const val GRANTED = "granted"
   private const val DENIED = "denied"
+  private const val UNAVAILABLE = "unavailable"
   private const val BLOCKED = "blocked"
+
+  private fun isPermissionUnavailable(permission: String): Boolean {
+    val fieldName = permission
+      .replace("android.permission.", "")
+      .replace("com.android.voicemail.permission.", "")
+
+    try {
+      Manifest.permission::class.java.getField(fieldName)
+      return false
+    } catch (ignored: NoSuchFieldException) {
+      return true
+    }
+  }
 
   fun openSettings(reactContext: ReactApplicationContext, promise: Promise) {
     try {
@@ -45,16 +60,25 @@ object RNPermissionsModuleImpl {
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
+    if (isPermissionUnavailable(permission)) {
+      return promise.resolve(UNAVAILABLE)
+    }
+
     val context = reactContext.baseContext
-    promise.resolve(context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED)
+
+    if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+      promise.resolve(GRANTED)
+    } else {
+      promise.resolve(DENIED)
+    }
   }
 
   // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
   fun checkNotifications(reactContext: ReactApplicationContext, promise: Promise) {
-    val granted = NotificationManagerCompat.from(reactContext).areNotificationsEnabled()
+    val enabled = NotificationManagerCompat.from(reactContext).areNotificationsEnabled()
 
     val output = Arguments.createMap().apply {
-      putBoolean("granted", granted)
+      putString("status", if (enabled) GRANTED else DENIED)
       putMap("settings", Arguments.createMap())
     }
 
@@ -68,10 +92,13 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      output.putBoolean(
-        permission,
-        context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-      )
+      if (isPermissionUnavailable(permission)) {
+        output.putString(permission, UNAVAILABLE)
+      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+        output.putString(permission, GRANTED)
+      } else {
+        output.putString(permission, DENIED)
+      }
     }
 
     promise.resolve(output)
@@ -84,6 +111,10 @@ object RNPermissionsModuleImpl {
     permission: String,
     promise: Promise
   ) {
+    if (isPermissionUnavailable(permission)) {
+      return promise.resolve(UNAVAILABLE)
+    }
+
     val context = reactContext.baseContext
 
     if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
@@ -99,13 +130,13 @@ object RNPermissionsModuleImpl {
           val results = args[0] as IntArray
           val callbackActivity = args[1] as PermissionAwareActivity
 
-          val status = when {
-            results.isNotEmpty() && results[0] == PackageManager.PERMISSION_GRANTED -> GRANTED
-            callbackActivity.shouldShowRequestPermissionRationale(permission) -> DENIED
-            else -> BLOCKED
+          if (results.isNotEmpty() && results[0] == PackageManager.PERMISSION_GRANTED) {
+            promise.resolve(GRANTED)
+          } else if (callbackActivity.shouldShowRequestPermissionRationale(permission)) {
+            promise.resolve(DENIED)
+          } else {
+            promise.resolve(BLOCKED)
           }
-
-          promise.resolve(status)
         })
 
       activity.requestPermissions(arrayOf(permission), requestCode, listener)
@@ -117,10 +148,10 @@ object RNPermissionsModuleImpl {
 
   // Only used on Android < 13 (the POST_NOTIFICATIONS runtime permission isn't available)
   fun requestNotifications(reactContext: ReactApplicationContext, promise: Promise) {
-    val granted = NotificationManagerCompat.from(reactContext).areNotificationsEnabled()
+    val enabled = NotificationManagerCompat.from(reactContext).areNotificationsEnabled()
 
     val output = Arguments.createMap().apply {
-      putString("status", if (granted) GRANTED else BLOCKED)
+      putString("status", if (enabled) GRANTED else BLOCKED)
       putMap("settings", Arguments.createMap())
     }
 
@@ -134,7 +165,7 @@ object RNPermissionsModuleImpl {
     permissions: ReadableArray,
     promise: Promise
   ) {
-    val grantedPermissions: WritableMap = WritableNativeMap()
+    val output: WritableMap = WritableNativeMap()
     val permissionsToCheck = ArrayList<String>()
     var checkedPermissionsCount = 0
     val context = reactContext.baseContext
@@ -142,8 +173,11 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-        grantedPermissions.putString(permission, GRANTED)
+      if (isPermissionUnavailable(permission)) {
+        output.putString(permission, UNAVAILABLE)
+        checkedPermissionsCount++
+      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+        output.putString(permission, GRANTED)
         checkedPermissionsCount++
       } else {
         permissionsToCheck.add(permission)
@@ -151,7 +185,7 @@ object RNPermissionsModuleImpl {
     }
 
     if (permissions.size() == checkedPermissionsCount) {
-      return promise.resolve(grantedPermissions)
+      return promise.resolve(output)
     }
 
     try {
@@ -164,16 +198,16 @@ object RNPermissionsModuleImpl {
           val callbackActivity = args[1] as PermissionAwareActivity
 
           permissionsToCheck.forEachIndexed { index, permission ->
-            val status = when {
-              results.isNotEmpty() && results[index] == PackageManager.PERMISSION_GRANTED -> GRANTED
-              callbackActivity.shouldShowRequestPermissionRationale(permission) -> DENIED
-              else -> BLOCKED
+            if (results.isNotEmpty() && results[index] == PackageManager.PERMISSION_GRANTED) {
+              output.putString(permission, GRANTED)
+            } else if (callbackActivity.shouldShowRequestPermissionRationale(permission)) {
+              output.putString(permission, DENIED)
+            } else {
+              output.putString(permission, BLOCKED)
             }
-
-            grantedPermissions.putString(permission, status)
           }
 
-          promise.resolve(grantedPermissions)
+          promise.resolve(output)
         })
 
       activity.requestPermissions(permissionsToCheck.toTypedArray<String>(), requestCode, listener)
