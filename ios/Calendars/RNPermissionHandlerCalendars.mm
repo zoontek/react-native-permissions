@@ -19,8 +19,9 @@
     case EKAuthorizationStatusRestricted:
       return RNPermissionStatusRestricted;
     case EKAuthorizationStatusDenied:
-    case EKAuthorizationStatusWriteOnly:
       return RNPermissionStatusDenied;
+    case EKAuthorizationStatusWriteOnly:
+      return [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]] ? RNPermissionStatusDenied : RNPermissionStatusNotDetermined;
     case EKAuthorizationStatusFullAccess:
       return RNPermissionStatusAuthorized;
   }
@@ -34,7 +35,19 @@
     if (error != nil) {
       reject(error);
     } else {
-      resolve([self currentStatus]);
+      [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+
+      switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
+        case EKAuthorizationStatusNotDetermined:
+          return resolve(RNPermissionStatusNotDetermined);
+        case EKAuthorizationStatusRestricted:
+          return resolve(RNPermissionStatusRestricted);
+        case EKAuthorizationStatusDenied:
+        case EKAuthorizationStatusWriteOnly:
+          return resolve(RNPermissionStatusDenied);
+        case EKAuthorizationStatusFullAccess:
+          return resolve(RNPermissionStatusAuthorized);
+      }
     }
   };
 
