@@ -365,6 +365,17 @@ Is the permission requestable,                ┌──────────�
 └───────────────────────────┘                 └─────────────────┘
 ```
 
+This can be implemented as follows:
+
+- `check` the permission status.
+- If `granted`, use the feature.
+- If `blocked`, display a screen prompting the user to go to settings (using `openSettings`). _(This will not be shown on Android.)_
+- If `denied`, display a button to `request` permission:
+  - If `granted`, use the feature.
+  - If `blocked`, display an alert prompting the user to go to settings (using `openSettings`)
+
+The user experience (UX) is excellent on iOS and acceptable on Android, considering the platform's limitations.
+
 ## API
 
 ### Supported permissions
