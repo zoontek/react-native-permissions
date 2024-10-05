@@ -34,4 +34,8 @@ typedef enum {
 @interface RNPermissions : NSObject<RCTBridgeModule>
 #endif
 
++ (void)flagAsRequested:(NSString * _Nonnull)handlerId;
+
++ (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId;
+
 @end

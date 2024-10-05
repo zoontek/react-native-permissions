@@ -62,6 +62,8 @@
 #import "RNPermissionHandlerCalendarsWriteOnly.h"
 #endif
 
+static NSString* SETTING_KEY = @"@RNPermissions:Requested";
+
 @interface RNPermissions()
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>> *_Nonnull handlers;
@@ -291,6 +293,28 @@ RCT_EXPORT_MODULE();
   if (_handlers != nil) {
     [_handlers removeObjectForKey:lockId];
   }
+}
+
++ (void)flagAsRequested:(NSString * _Nonnull)handlerId {
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSMutableArray<NSString *> *requested = [[userDefaults arrayForKey:SETTING_KEY] mutableCopy];
+
+  if (requested == nil) {
+    requested = [NSMutableArray new];
+  }
+
+  if (![requested containsObject:handlerId]) {
+    [requested addObject:handlerId];
+    [userDefaults setObject:requested forKey:SETTING_KEY];
+    [userDefaults synchronize];
+  }
+}
+
++ (bool)isFlaggedAsRequested:(NSString * _Nonnull)handlerId {
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSArray<NSString *> *requested = [userDefaults arrayForKey:SETTING_KEY];
+
+  return requested != nil && [requested containsObject:handlerId];
 }
 
 RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
