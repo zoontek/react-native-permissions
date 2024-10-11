@@ -23,6 +23,8 @@
       return resolve(RNPermissionStatusDenied);
     case CNAuthorizationStatusAuthorized:
       return resolve(RNPermissionStatusAuthorized);
+    case CNAuthorizationStatusLimited:
+      return resolve(RNPermissionStatusLimited);
   }
 }
 
