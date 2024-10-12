@@ -26,6 +26,7 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.openSettings(reactApplicationContext, promise)
   }
 
+  @ReactMethod
   fun check(permission: String, promise: Promise) {
     RNPermissionsModuleImpl.check(reactApplicationContext, permission, promise)
   }
@@ -35,6 +36,7 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.checkNotifications(reactApplicationContext, promise)
   }
 
+  @ReactMethod
   fun checkMultiple(permissions: ReadableArray, promise: Promise) {
     RNPermissionsModuleImpl.checkMultiple(reactApplicationContext, permissions, promise)
   }
