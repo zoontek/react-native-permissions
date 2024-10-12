@@ -31,17 +31,34 @@ object RNPermissionsModuleImpl {
   private const val UNAVAILABLE = "unavailable"
   private const val BLOCKED = "blocked"
 
-  private fun isPermissionUnavailable(permission: String): Boolean {
+  private fun isPermissionAvailable(context: ReactApplicationContext, permission: String): Boolean {
     val fieldName = permission
-      .replace("android.permission.", "")
-      .replace("com.android.voicemail.permission.", "")
+      .removePrefix("android.permission.")
+      .removePrefix("com.android.voicemail.permission.")
 
     try {
       Manifest.permission::class.java.getField(fieldName)
-      return false
-    } catch (ignored: NoSuchFieldException) {
       return true
+    } catch (ignored: NoSuchFieldException) {
+      val manager = context.packageManager
+
+      val groups = manager.getAllPermissionGroups(0).toMutableList().apply {
+        add(null) // Add ungrouped permissions
+      }
+
+      for (group in groups) {
+        try {
+          val permissions = manager.queryPermissionsByGroup(group?.name, 0)
+
+          if (permissions.any { it?.name == permission }) {
+            return true
+          }
+        } catch (ignored: PackageManager.NameNotFoundException) {
+        }
+      }
     }
+
+    return false
   }
 
   fun openSettings(reactContext: ReactApplicationContext, promise: Promise) {
@@ -60,7 +77,7 @@ object RNPermissionsModuleImpl {
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
-    if (isPermissionUnavailable(permission)) {
+    if (!isPermissionAvailable(reactContext, permission)) {
       return promise.resolve(UNAVAILABLE)
     }
 
@@ -92,7 +109,7 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (isPermissionUnavailable(permission)) {
+      if (!isPermissionAvailable(reactContext, permission)) {
         output.putString(permission, UNAVAILABLE)
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
         output.putString(permission, GRANTED)
@@ -111,7 +128,7 @@ object RNPermissionsModuleImpl {
     permission: String,
     promise: Promise
   ) {
-    if (isPermissionUnavailable(permission)) {
+    if (!isPermissionAvailable(reactContext, permission)) {
       return promise.resolve(UNAVAILABLE)
     }
 
@@ -173,7 +190,7 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (isPermissionUnavailable(permission)) {
+      if (!isPermissionAvailable(reactContext, permission)) {
         output.putString(permission, UNAVAILABLE)
         checkedPermissionsCount++
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
