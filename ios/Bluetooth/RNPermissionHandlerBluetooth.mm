@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) CBPeripheralManager* manager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -23,34 +22,19 @@
   return @"ios.permission.BLUETOOTH";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
 #if TARGET_OS_SIMULATOR
-  return resolve(RNPermissionStatusNotAvailable);
+  return RNPermissionStatusNotAvailable;
 #else
-
-  if (@available(iOS 13.1, *)) {
-    switch ([CBManager authorization]) {
-      case CBManagerAuthorizationNotDetermined:
-        return resolve(RNPermissionStatusNotDetermined);
-      case CBManagerAuthorizationRestricted:
-        return resolve(RNPermissionStatusRestricted);
-      case CBManagerAuthorizationDenied:
-        return resolve(RNPermissionStatusDenied);
-      case CBManagerAuthorizationAllowedAlways:
-        return resolve(RNPermissionStatusAuthorized);
-    }
-  } else {
-    switch ([CBPeripheralManager authorizationStatus]) {
-      case CBPeripheralManagerAuthorizationStatusNotDetermined:
-        return resolve(RNPermissionStatusNotDetermined);
-      case CBPeripheralManagerAuthorizationStatusRestricted:
-        return resolve(RNPermissionStatusRestricted);
-      case CBPeripheralManagerAuthorizationStatusDenied:
-        return resolve(RNPermissionStatusDenied);
-      case CBPeripheralManagerAuthorizationStatusAuthorized:
-        return resolve(RNPermissionStatusAuthorized);
-    }
+  switch ([CBManager authorization]) {
+    case CBManagerAuthorizationNotDetermined:
+      return RNPermissionStatusNotDetermined;
+    case CBManagerAuthorizationRestricted:
+      return RNPermissionStatusRestricted;
+    case CBManagerAuthorizationDenied:
+      return RNPermissionStatusDenied;
+    case CBManagerAuthorizationAllowedAlways:
+      return RNPermissionStatusAuthorized;
   }
 #endif
 }
@@ -61,7 +45,6 @@
   return resolve(RNPermissionStatusNotAvailable);
 #else
   _resolve = resolve;
-  _reject = reject;
 
   _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{
     CBPeripheralManagerOptionShowPowerAlertKey: @false,
@@ -80,7 +63,7 @@
     case CBManagerStateUnauthorized:
       return _resolve(RNPermissionStatusDenied);
     case CBManagerStatePoweredOn:
-      return [self checkWithResolver:_resolve rejecter:_reject];
+      return _resolve([self currentStatus]);
   }
 }
 

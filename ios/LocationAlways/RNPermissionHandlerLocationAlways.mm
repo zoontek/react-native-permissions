@@ -4,9 +4,9 @@
 
 @interface RNPermissionHandlerLocationAlways() <CLLocationManagerDelegate>
 
+@property (nonatomic, assign) bool observingApplicationWillResignActive;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
 
 @end
 
@@ -20,39 +20,81 @@
   return @"ios.permission.LOCATION_ALWAYS";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case kCLAuthorizationStatusAuthorizedWhenInUse:
     case kCLAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case kCLAuthorizationStatusAuthorizedAlways:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
-    return [self checkWithResolver:resolve rejecter:reject];
+  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+
+  if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
+    return resolve([self currentStatus]);
   }
 
   _resolve = resolve;
-  _reject = reject;
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
+
+  if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onApplicationWillResignActive)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+
+    _observingApplicationWillResignActive = true;
+    [self performSelector:@selector(onApplicationWillResignActiveCheck) withObject:nil afterDelay:0.25];
+  }
+
   [_locationManager requestAlwaysAuthorization];
 }
 
+- (void)onApplicationWillResignActive {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  _observingApplicationWillResignActive = false;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(onApplicationDidBecomeActive)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+}
+
+- (void)onApplicationWillResignActiveCheck {
+  if (_observingApplicationWillResignActive) {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _observingApplicationWillResignActive = false;
+
+    [self resolveStatus:[CLLocationManager authorizationStatus]];
+  }
+}
+
+- (void)onApplicationDidBecomeActive {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self resolveStatus:[CLLocationManager authorizationStatus]];
+}
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined) {
+  if (status != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
+    [self resolveStatus:status];
+  }
+}
+
+- (void)resolveStatus:(CLAuthorizationStatus)status {
+  if (_resolve != nil) {
+    _resolve([self currentStatus]);
+    _resolve = nil;
     [_locationManager setDelegate:nil];
-    [self checkWithResolver:_resolve rejecter:_reject];
   }
 }
 

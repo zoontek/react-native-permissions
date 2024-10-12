@@ -12,18 +12,18 @@
   return @"ios.permission.CALENDARS";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
     case EKAuthorizationStatusNotDetermined:
-    case EKAuthorizationStatusWriteOnly:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case EKAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case EKAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
+    case EKAuthorizationStatusWriteOnly:
+      return [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]] ? RNPermissionStatusDenied : RNPermissionStatusNotDetermined;
     case EKAuthorizationStatusFullAccess:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 
@@ -35,7 +35,19 @@
     if (error != nil) {
       reject(error);
     } else {
-      [self checkWithResolver:resolve rejecter:reject];
+      [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+
+      switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
+        case EKAuthorizationStatusNotDetermined:
+          return resolve(RNPermissionStatusNotDetermined);
+        case EKAuthorizationStatusRestricted:
+          return resolve(RNPermissionStatusRestricted);
+        case EKAuthorizationStatusDenied:
+        case EKAuthorizationStatusWriteOnly:
+          return resolve(RNPermissionStatusDenied);
+        case EKAuthorizationStatusFullAccess:
+          return resolve(RNPermissionStatusAuthorized);
+      }
     }
   };
 

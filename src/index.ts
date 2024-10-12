@@ -4,6 +4,7 @@ import {RESULTS} from './results';
 
 export {PERMISSIONS} from './permissions';
 export {RESULTS} from './results';
+
 export * from './types';
 
 export const check = methods.check;
