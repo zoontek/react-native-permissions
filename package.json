@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "4.1.5",
+  "version": "5.0.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -34,10 +34,11 @@
     "react-native.config.js"
   ],
   "scripts": {
+    "clean": "rm -rf dist",
     "format": "prettier '**/*' -u -w",
     "lint": "eslint './**/*.{js,ts,tsx}'",
     "typecheck": "tsc --noEmit",
-    "build": "bob build",
+    "build": "yarn clean && bob build && rm -rf dist/commonjs/package.json",
     "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
   },
   "react-native-builder-bob": {
@@ -70,18 +71,18 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
-    "@expo/config-plugins": "^7.8.4",
-    "@types/react": "^18.2.47",
-    "@typescript-eslint/eslint-plugin": "^6.18.0",
-    "@typescript-eslint/parser": "^6.18.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^3.1.1",
-    "prettier-plugin-organize-imports": "^3.2.4",
-    "react": "18.2.0",
-    "react-native": "0.73.4",
-    "react-native-builder-bob": "^0.23.2",
-    "typescript": "^5.3.3"
+    "@expo/config-plugins": "^7.2.5 || ^8.0.4",
+    "@types/react": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.37.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "react": "18.3.1",
+    "react-native": "0.75.4",
+    "react-native-builder-bob": "^0.30.2",
+    "typescript": "^5.5.3"
   }
 }

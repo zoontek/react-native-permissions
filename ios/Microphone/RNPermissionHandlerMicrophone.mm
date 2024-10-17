@@ -12,25 +12,24 @@
   return @"ios.permission.MICROPHONE";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   if (@available(iOS 17.0, *)) {
     switch ([[AVAudioApplication sharedInstance] recordPermission]) {
       case AVAudioApplicationRecordPermissionUndetermined:
-        return resolve(RNPermissionStatusNotDetermined);
+        return RNPermissionStatusNotDetermined;
       case AVAudioApplicationRecordPermissionDenied:
-        return resolve(RNPermissionStatusDenied);
+        return RNPermissionStatusDenied;
       case AVAudioApplicationRecordPermissionGranted:
-        return resolve(RNPermissionStatusAuthorized);
+        return RNPermissionStatusAuthorized;
     }
   } else {
     switch ([[AVAudioSession sharedInstance] recordPermission]) {
       case AVAudioSessionRecordPermissionUndetermined:
-        return resolve(RNPermissionStatusNotDetermined);
+        return RNPermissionStatusNotDetermined;
       case AVAudioSessionRecordPermissionDenied:
-        return resolve(RNPermissionStatusDenied);
+        return RNPermissionStatusDenied;
       case AVAudioSessionRecordPermissionGranted:
-        return resolve(RNPermissionStatusAuthorized);
+        return RNPermissionStatusAuthorized;
     }
   }
 }
@@ -39,11 +38,11 @@
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 17.0, *)) {
     [AVAudioApplication requestRecordPermissionWithCompletionHandler:^(__unused BOOL granted) {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }];
   } else {
     [[AVAudioSession sharedInstance] requestRecordPermission:^(__unused BOOL granted) {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }];
   }
 }

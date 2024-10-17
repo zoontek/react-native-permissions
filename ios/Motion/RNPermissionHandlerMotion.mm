@@ -19,21 +19,20 @@
   return @"ios.permission.MOTION";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   if (![CMMotionActivityManager isActivityAvailable]) {
-    return resolve(RNPermissionStatusNotAvailable);
+    return RNPermissionStatusNotAvailable;
   }
 
   switch ([CMMotionActivityManager authorizationStatus]) {
     case CMAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case CMAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case CMAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case CMAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 

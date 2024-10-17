@@ -12,17 +12,18 @@
   return @"ios.permission.CONTACTS";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
   switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts]) {
     case CNAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case CNAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case CNAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
+    case CNAuthorizationStatusLimited:
+      return RNPermissionStatusLimited;
     case CNAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 }
 
@@ -33,7 +34,7 @@
     if (error != nil && error.code != 100) { // error code 100 is permission denied
       reject(error);
     } else {
-      [self checkWithResolver:resolve rejecter:reject];
+      resolve([self currentStatus]);
     }
   }];
 }

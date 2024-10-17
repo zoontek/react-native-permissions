@@ -2,14 +2,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface RNPermissionHandlerLocationAccuracy() <CLLocationManagerDelegate>
-
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
-@property (nonatomic, strong) void (^reject)(NSError *error);
-
-@end
-
 @implementation RNPermissionHandlerLocationAccuracy
 
 + (NSArray<NSString *> * _Nonnull)usageDescriptionKeys {
@@ -22,7 +14,7 @@
 
 - (void)checkWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                  rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14, *)) {
+  if (@available(iOS 14.0, *)) {
     switch ([CLLocationManager authorizationStatus]) {
       case kCLAuthorizationStatusNotDetermined:
         return reject(@"cannot_check_location_accuracy", @"Location permission hasn't been requested first", nil);
@@ -50,7 +42,7 @@
 - (void)requestWithPurposeKey:(NSString * _Nonnull)purposeKey
                      resolver:(RCTPromiseResolveBlock _Nonnull)resolve
                      rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14, *)) {
+  if (@available(iOS 14.0, *)) {
     switch ([CLLocationManager authorizationStatus]) {
       case kCLAuthorizationStatusNotDetermined:
         return reject(@"cannot_request_location_accuracy", @"Location permission hasn't been requested first", nil);

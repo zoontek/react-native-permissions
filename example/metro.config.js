@@ -23,7 +23,7 @@ const extraNodeModules = peerDependencies.reduce((acc, name) => {
 
 /**
  * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
+ * https://reactnative.dev/docs/metro
  *
  * @type {import('metro-config').MetroConfig}
  */

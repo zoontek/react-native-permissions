@@ -19,7 +19,6 @@ const ANDROID = Object.freeze({
   CAMERA: 'android.permission.CAMERA',
   GET_ACCOUNTS: 'android.permission.GET_ACCOUNTS',
   NEARBY_WIFI_DEVICES: 'android.permission.NEARBY_WIFI_DEVICES',
-  POST_NOTIFICATIONS: 'android.permission.POST_NOTIFICATIONS',
   PROCESS_OUTGOING_CALLS: 'android.permission.PROCESS_OUTGOING_CALLS',
   READ_CALENDAR: 'android.permission.READ_CALENDAR',
   READ_CALL_LOG: 'android.permission.READ_CALL_LOG',

@@ -12,20 +12,19 @@
   return @"ios.permission.MEDIA_LIBRARY";
 }
 
-- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
-                 rejecter:(void (__unused ^ _Nonnull)(NSError * _Nonnull))reject {
+- (RNPermissionStatus)currentStatus {
 #if TARGET_OS_TV
-  resolve(RNPermissionStatusNotAvailable);
+  return RNPermissionStatusNotAvailable;
 #else
   switch ([MPMediaLibrary authorizationStatus]) {
     case MPMediaLibraryAuthorizationStatusNotDetermined:
-      return resolve(RNPermissionStatusNotDetermined);
+      return RNPermissionStatusNotDetermined;
     case MPMediaLibraryAuthorizationStatusRestricted:
-      return resolve(RNPermissionStatusRestricted);
+      return RNPermissionStatusRestricted;
     case MPMediaLibraryAuthorizationStatusDenied:
-      return resolve(RNPermissionStatusDenied);
+      return RNPermissionStatusDenied;
     case MPMediaLibraryAuthorizationStatusAuthorized:
-      return resolve(RNPermissionStatusAuthorized);
+      return RNPermissionStatusAuthorized;
   }
 #endif
 }
@@ -36,7 +35,7 @@
   resolve(RNPermissionStatusNotAvailable);
 #else
   [MPMediaLibrary requestAuthorization:^(__unused MPMediaLibraryAuthorizationStatus status) {
-    [self checkWithResolver:resolve rejecter:reject];
+    resolve([self currentStatus]);
   }];
 #endif
 }
