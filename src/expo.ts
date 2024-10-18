@@ -1,4 +1,4 @@
-import {ConfigPlugin, withDangerousMod} from '@expo/config-plugins';
+import {ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -60,16 +60,9 @@ ${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
         comment: '#',
       });
 
-      if (!withRequire.didMerge || !withSetup.didMerge) {
-        console.error(
-          "ERROR: Cannot add react-native-permissions to the project's ios/Podfile because it's malformed. Please report this with a copy of your project Podfile.",
-        );
-        return config;
-      }
-
       await fs.writeFile(file, withSetup.contents, 'utf-8');
       return config;
     },
   ]);
 
-export default withPermissions;
+export default createRunOncePlugin(withPermissions, 'react-native-permissions');
