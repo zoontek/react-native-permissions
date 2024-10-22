@@ -203,7 +203,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 
 ### Expo
 
-If you use Expo, the previous sections don't apply. Instead just update your `app.json` file with the corresponding values, but using the syntax examplified below:
+If you use Expo, the previous sections don't apply. Instead just update your `app.json` file with the corresponding values, but using the syntax exemplified below:
 
 ```js
 {
