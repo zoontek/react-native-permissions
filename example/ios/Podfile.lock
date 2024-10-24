@@ -1499,7 +1499,7 @@ PODS:
     - React-logger (= 0.75.4)
     - React-perflogger (= 0.75.4)
     - React-utils (= 0.75.4)
-  - RNPermissions (5.0.1):
+  - RNPermissions (5.0.2):
     - React-Core
   - RNVectorIcons (10.2.0):
     - DoubleConversion
@@ -1794,7 +1794,7 @@ SPEC CHECKSUMS:
   React-utils: cbe8b8b3d7b2ac282e018e46f0e7b25cdc87c5a0
   ReactCodegen: 4bcb34e6b5ebf6eef5cee34f55aa39991ea1c1f1
   ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
-  RNPermissions: ed7216b9f49ed98b6cf56b8030de68b9a10b2423
+  RNPermissions: f72d5bf895c8d73e4d627700f183e217598b8264
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6

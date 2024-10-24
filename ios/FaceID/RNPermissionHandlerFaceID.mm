@@ -37,7 +37,7 @@
       return RNPermissionStatusNotAvailable;
   }
 
-  if ([RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
+  if (![RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]]) {
     return RNPermissionStatusNotDetermined;
   }
 
