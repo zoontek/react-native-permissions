@@ -1,15 +1,20 @@
 import type {Contract} from './contract';
 
-const ONLY_SUPPORTED_BY_IOS_14 = 'Only supported by iOS 14 and above';
+const getUnsupportedError = (os: 'iOS' | 'Android', version: number) =>
+  new Error(`Only supported by ${os} ${version} and above`);
 
-export const checkLocationAccuracy: Contract['checkLocationAccuracy'] = async () => {
-  throw new Error(ONLY_SUPPORTED_BY_IOS_14);
+export const canScheduleExactAlarms: Contract['canScheduleExactAlarms'] = async () => {
+  throw getUnsupportedError('Android', 12);
 };
 
 export const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
-  throw new Error(ONLY_SUPPORTED_BY_IOS_14);
+  throw getUnsupportedError('iOS', 14);
 };
 
 export const requestLocationAccuracy: Contract['requestLocationAccuracy'] = async () => {
-  throw new Error(ONLY_SUPPORTED_BY_IOS_14);
+  throw getUnsupportedError('iOS', 14);
+};
+
+export const checkLocationAccuracy: Contract['checkLocationAccuracy'] = async () => {
+  throw getUnsupportedError('iOS', 14);
 };

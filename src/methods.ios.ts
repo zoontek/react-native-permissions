@@ -1,14 +1,15 @@
 import type {Contract} from './contract';
 import NativeModule from './NativeRNPermissions';
 import {LocationAccuracy, NotificationsResponse, PermissionStatus} from './types';
+import {canScheduleExactAlarms} from './unsupportedMethods';
 import {uniq} from './utils';
 
 const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
   await NativeModule.openPhotoPicker();
 };
 
-const openSettings: Contract['openSettings'] = async () => {
-  await NativeModule.openSettings();
+const openSettings: Contract['openSettings'] = async (type = 'application') => {
+  await NativeModule.openSettings(type);
 };
 
 const check: Contract['check'] = async (permission) => {
@@ -62,6 +63,7 @@ const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
 };
 
 export const methods: Contract = {
+  canScheduleExactAlarms,
   check,
   checkLocationAccuracy,
   checkMultiple,

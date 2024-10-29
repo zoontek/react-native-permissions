@@ -22,8 +22,13 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
   }
 
   @ReactMethod
-  fun openSettings(promise: Promise) {
-    RNPermissionsModuleImpl.openSettings(reactApplicationContext, promise)
+  fun openSettings(type: String?, promise: Promise) {
+    RNPermissionsModuleImpl.openSettings(reactApplicationContext, type, promise)
+  }
+
+  @ReactMethod
+  fun canScheduleExactAlarms(promise: Promise) {
+    RNPermissionsModuleImpl.canScheduleExactAlarms(reactApplicationContext, promise)
   }
 
   @ReactMethod

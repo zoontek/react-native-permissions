@@ -2,6 +2,7 @@ import {NativeModules} from 'react-native';
 import type {Contract} from './contract';
 import type {Permission, PermissionStatus} from './types';
 import {
+  canScheduleExactAlarms,
   checkLocationAccuracy,
   openPhotoPicker,
   requestLocationAccuracy,
@@ -53,6 +54,7 @@ const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
 };
 
 export const methods: Contract = {
+  canScheduleExactAlarms,
   check,
   checkLocationAccuracy,
   checkMultiple,

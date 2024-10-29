@@ -7,6 +7,7 @@ export {RESULTS} from './results';
 
 export * from './types';
 
+export const canScheduleExactAlarms = methods.canScheduleExactAlarms;
 export const check = methods.check;
 export const checkLocationAccuracy = methods.checkLocationAccuracy;
 export const checkMultiple = methods.checkMultiple;
@@ -22,6 +23,7 @@ export default {
   PERMISSIONS,
   RESULTS,
 
+  canScheduleExactAlarms,
   check,
   checkLocationAccuracy,
   checkMultiple,

@@ -1575,7 +1575,7 @@ PODS:
     - React-logger (= 0.76.0)
     - React-perflogger (= 0.76.0)
     - React-utils (= 0.76.0)
-  - RNPermissions (5.0.2):
+  - RNPermissions (5.1.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1893,7 +1893,7 @@ SPEC CHECKSUMS:
   React-utils: d9624101245ebaab39c9f1bd786132da0b4f27ff
   ReactCodegen: dbfef1fef26f42c900bb1884fa149d49d501d64d
   ReactCommon: 429ca28cd813c31359c73ffac6dc24f93347d522
-  RNPermissions: 16e35cb70f2752307bedf3b1f0a92b80d0506435
+  RNPermissions: f15581411f464b3fdf5c372da79c2ad985281b70
   RNVectorIcons: 07792a9538e8577c1263fcad187712e90d65d8fb
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: f8ec45ce98bba1bc93dd28f2ee37215180e6d2b6

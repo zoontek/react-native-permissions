@@ -39,9 +39,12 @@ const shouldRequestPermission = async (
   });
 };
 
-const openSettings: Contract['openSettings'] = async () => {
-  await NativeModule.openSettings();
+const openSettings: Contract['openSettings'] = async (type = 'application') => {
+  await NativeModule.openSettings(type);
 };
+
+const canScheduleExactAlarms: Contract['canScheduleExactAlarms'] = () =>
+  NativeModule.canScheduleExactAlarms();
 
 const check: Contract['check'] = async (permission) => {
   const status = (await NativeModule.check(permission)) as PermissionStatus;
@@ -86,6 +89,7 @@ const requestMultiple: Contract['requestMultiple'] = (permissions) => {
 };
 
 export const methods: Contract = {
+  canScheduleExactAlarms,
   check,
   checkLocationAccuracy,
   checkMultiple,
