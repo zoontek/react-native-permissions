@@ -12,12 +12,13 @@ const {RESULTS} = require('./dist/commonjs/results');
 const PERMISSIONS = {ANDROID, IOS, WINDOWS};
 export {PERMISSIONS, RESULTS};
 
+export const canScheduleExactAlarms = jest.fn(async () => true);
+export const check = jest.fn(async () => RESULTS.GRANTED);
+export const checkLocationAccuracy = jest.fn(async () => 'full');
 export const openPhotoPicker = jest.fn(async () => {});
 export const openSettings = jest.fn(async () => {});
-export const check = jest.fn(async (permission) => RESULTS.GRANTED);
-export const request = jest.fn(async (permission) => RESULTS.GRANTED);
-export const checkLocationAccuracy = jest.fn(async () => 'full');
-export const requestLocationAccuracy = jest.fn(async (options) => 'full');
+export const request = jest.fn(async () => RESULTS.GRANTED);
+export const requestLocationAccuracy = jest.fn(async () => 'full');
 
 const notificationOptions = [
   'alert',
@@ -68,6 +69,7 @@ export default {
   PERMISSIONS,
   RESULTS,
 
+  canScheduleExactAlarms,
   check,
   checkLocationAccuracy,
   checkMultiple,

@@ -7,12 +7,13 @@ type NotificationsResponse = {
 };
 
 export interface Spec extends TurboModule {
+  canScheduleExactAlarms(): Promise<boolean>;
   check(permission: string): Promise<string>;
   checkLocationAccuracy(): Promise<string>;
   checkMultiple(permissions: string[]): Promise<Object>;
   checkNotifications(): Promise<NotificationsResponse>;
   openPhotoPicker(): Promise<boolean>;
-  openSettings(): Promise<void>;
+  openSettings(type: string): Promise<void>;
   request(permission: string): Promise<string>;
   requestLocationAccuracy(purposeKey: string): Promise<string>;
   requestMultiple(permissions: string[]): Promise<Object>;

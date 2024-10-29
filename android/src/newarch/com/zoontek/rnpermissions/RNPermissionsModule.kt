@@ -19,8 +19,12 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     return RNPermissionsModuleImpl.NAME
   }
 
-  override fun openSettings(promise: Promise) {
-    RNPermissionsModuleImpl.openSettings(reactApplicationContext, promise)
+  override fun openSettings(type: String?, promise: Promise) {
+    RNPermissionsModuleImpl.openSettings(reactApplicationContext, type, promise)
+  }
+
+  override fun canScheduleExactAlarms(promise: Promise) {
+    RNPermissionsModuleImpl.canScheduleExactAlarms(reactApplicationContext, promise)
   }
 
   override fun check(permission: String, promise: Promise) {

@@ -188,6 +188,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.RECEIVE_SMS" />
   <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
   <uses-permission android:name="android.permission.SEND_SMS" />
   <uses-permission android:name="android.permission.USE_SIP" />
   <uses-permission android:name="android.permission.UWB_RANGING" />
@@ -729,7 +730,7 @@ request(PERMISSIONS.IOS.CAMERA).then((status) => {
 Check notifications permission status and get notifications settings values.
 
 > [!IMPORTANT]  
-> On Android >= 13, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information.
+> On Android 13+, the `checkNotifications` function will never return a `blocked` status. You need to call `requestNotifications` to obtain that information.
 
 ```ts
 function checkNotifications(): Promise<NotificationsResponse>;
@@ -810,16 +811,38 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuse
 
 #### openSettings
 
-Open application settings.
+Open application / alarms / notifications settings (default to `application`).
+
+> [!NOTE]
+>
+> - `notifications` settings are only available on Android 8+ and iOS 15.4+
+> - `alarms` settings are only available on Android 12+
+> - When a choice is not available, it fallbacks to `application` settings
 
 ```ts
-function openSettings(): Promise<void>;
+function openSettings(type?: 'application' | 'alarms' | 'notifications'): Promise<void>;
 ```
 
 ```ts
 import {openSettings} from 'react-native-permissions';
 
-openSettings().catch(() => console.warn('Cannot open app settings'));
+openSettings('application').catch(() => console.warn('Cannot open app settings'));
+```
+
+#### canScheduleExactAlarms (Android)
+
+Check if your app can schedule exact alarms.
+
+```ts
+function canScheduleExactAlarms(): Promise<boolean>;
+```
+
+```ts
+import {canScheduleExactAlarms} from 'react-native-permissions';
+
+canScheduleExactAlarms()
+  .then((value) => console.log(`Can schedule exact alarms: ${value}`))
+  .catch(() => console.warn('Cannot check exact alarms scheduling setting'));
 ```
 
 #### openPhotoPicker (iOS 14+)

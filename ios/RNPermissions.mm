@@ -317,16 +317,23 @@ RCT_EXPORT_MODULE();
   return requested != nil && [requested containsObject:handlerId];
 }
 
-RCT_EXPORT_METHOD(openSettings:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(openSettings:(NSString *)type
+                  resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
   UIApplication *sharedApplication = [UIApplication sharedApplication];
-  NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+  NSString *urlString = UIApplicationOpenSettingsURLString;
 
-  [sharedApplication openURL:url options:@{} completionHandler:^(BOOL success) {
+  if (@available(iOS 15.4, *)) {
+    if ([type isEqualToString:@"notifications"]) {
+      urlString = UIApplicationOpenNotificationSettingsURLString;
+    }
+  }
+
+  [sharedApplication openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:^(BOOL success) {
     if (success) {
       resolve(@(true));
     } else {
-      reject(@"cannot_open_settings", @"Cannot open application settings", nil);
+      reject(@"cannot_open_settings", [NSString stringWithFormat:@"Cannot open %@ settings", type], nil);
     }
   }];
 }
@@ -436,14 +443,21 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
   return std::make_shared<facebook::react::NativeRNPermissionsSpecJSI>(params);
 }
 
-- (NSDictionary *)checkMultiple:(NSArray *)permissions {
-  @throw [NSException exceptionWithName:@"RNPermissions:checkMultiple" reason:@"checkMultiple is not supported on iOS" userInfo:nil];
+- (void)checkMultiple:(NSArray *)permissions
+              resolve:(RCTPromiseResolveBlock)resolve
+               reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:checkMultiple", @"checkMultiple is not supported on iOS", nil);
 }
 
 - (void)requestMultiple:(NSArray *)permissions
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject {
   reject(@"RNPermissions:requestMultiple", @"requestMultiple is not supported on iOS", nil);
+}
+
+- (void)canScheduleExactAlarms:(RCTPromiseResolveBlock)resolve
+                        reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:canScheduleExactAlarms", @"canScheduleExactAlarms is not supported on iOS", nil);
 }
 
 - (void)shouldShowRequestRationale:(NSString *)permission

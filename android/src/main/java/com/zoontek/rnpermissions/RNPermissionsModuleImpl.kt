@@ -1,9 +1,12 @@
 package com.zoontek.rnpermissions
 
 import android.Manifest
+import android.app.AlarmManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.SparseArray
 
@@ -61,12 +64,25 @@ object RNPermissionsModuleImpl {
     return false
   }
 
-  fun openSettings(reactContext: ReactApplicationContext, promise: Promise) {
+  fun openSettings(reactContext: ReactApplicationContext, type: String?, promise: Promise) {
     try {
-      val intent = Intent().apply {
-        setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+      val packageName = reactContext.packageName
+
+      val intent = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && type == "alarms" -> Intent().apply {
+          setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+          setData(Uri.parse("package:${packageName}"))
+        }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && type == "notifications" -> Intent().apply {
+          setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+          putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+        }
+        else -> Intent().apply {
+          setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+          setData(Uri.parse("package:${packageName}"))
+        }
+      }.apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        setData(Uri.fromParts("package", reactContext.packageName, null))
       }
 
       reactContext.startActivity(intent)
@@ -74,6 +90,17 @@ object RNPermissionsModuleImpl {
     } catch (e: Exception) {
       promise.reject(ERROR_INVALID_ACTIVITY, e)
     }
+  }
+
+  fun canScheduleExactAlarms(reactContext: ReactApplicationContext, promise: Promise) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+      return promise.resolve(true)
+    }
+
+    val alarmManager = reactContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+      ?: return promise.resolve(false);
+
+    promise.resolve(alarmManager.canScheduleExactAlarms())
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
