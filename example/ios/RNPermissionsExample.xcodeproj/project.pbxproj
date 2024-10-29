@@ -280,7 +280,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoontek.rnpermissionsexampl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoontek.rnpermissionsexample;
 				PRODUCT_NAME = RNPermissionsExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -308,7 +308,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoontek.rnpermissionsexampl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoontek.rnpermissionsexample;
 				PRODUCT_NAME = RNPermissionsExample;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
