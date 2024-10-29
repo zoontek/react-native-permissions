@@ -817,7 +817,7 @@ Open application / alarms / notifications settings (default to `application`).
 >
 > - `notifications` settings are only available on Android 8+ and iOS 15.4+
 > - `alarms` settings are only available on Android 12+
-> - When a choice is not available, it fallbacks to `application` settings
+> - If a choice is not available, it fallbacks to `application` settings
 
 ```ts
 function openSettings(type?: 'application' | 'alarms' | 'notifications'): Promise<void>;
