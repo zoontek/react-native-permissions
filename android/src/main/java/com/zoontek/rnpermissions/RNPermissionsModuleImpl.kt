@@ -98,9 +98,9 @@ object RNPermissionsModuleImpl {
     }
 
     val alarmManager = reactContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-      ?: return promise.resolve(false);
+    val canScheduleExactAlarms: Boolean = alarmManager?.canScheduleExactAlarms() ?: false
 
-    promise.resolve(alarmManager.canScheduleExactAlarms())
+    promise.resolve(canScheduleExactAlarms)
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
@@ -136,13 +136,14 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (!isPermissionAvailable(reactContext, permission)) {
-        output.putString(permission, UNAVAILABLE)
-      } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
-        output.putString(permission, GRANTED)
-      } else {
-        output.putString(permission, DENIED)
-      }
+      output.putString(
+        permission,
+        when {
+          !isPermissionAvailable(reactContext, permission) -> UNAVAILABLE
+          context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED -> GRANTED
+          else -> DENIED
+        }
+      )
     }
 
     promise.resolve(output)
@@ -174,13 +175,13 @@ object RNPermissionsModuleImpl {
           val results = args[0] as IntArray
           val callbackActivity = args[1] as PermissionAwareActivity
 
-          if (results.isNotEmpty() && results[0] == PackageManager.PERMISSION_GRANTED) {
-            promise.resolve(GRANTED)
-          } else if (callbackActivity.shouldShowRequestPermissionRationale(permission)) {
-            promise.resolve(DENIED)
-          } else {
-            promise.resolve(BLOCKED)
-          }
+          promise.resolve(
+            when {
+              results.getOrNull(0) == PackageManager.PERMISSION_GRANTED -> GRANTED
+              callbackActivity.shouldShowRequestPermissionRationale(permission) -> DENIED
+              else -> BLOCKED
+            }
+          )
         })
 
       activity.requestPermissions(arrayOf(permission), requestCode, listener)
@@ -242,13 +243,15 @@ object RNPermissionsModuleImpl {
           val callbackActivity = args[1] as PermissionAwareActivity
 
           permissionsToCheck.forEachIndexed { index, permission ->
-            if (results.isNotEmpty() && results[index] == PackageManager.PERMISSION_GRANTED) {
-              output.putString(permission, GRANTED)
-            } else if (callbackActivity.shouldShowRequestPermissionRationale(permission)) {
-              output.putString(permission, DENIED)
-            } else {
-              output.putString(permission, BLOCKED)
-            }
+            output.putString(
+              permission,
+              when {
+                results.getOrNull(index) == PackageManager.PERMISSION_GRANTED -> GRANTED
+                callbackActivity.shouldShowRequestPermissionRationale(permission) -> DENIED
+                else -> BLOCKED
+              }
+            )
+
           }
 
           promise.resolve(output)
