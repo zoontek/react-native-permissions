@@ -38,7 +38,7 @@
     "format": "prettier '**/*' -u -w",
     "lint": "eslint './**/*.{js,ts,tsx}'",
     "typecheck": "tsc --noEmit",
-    "build": "yarn clean && bob build && rm -rf dist/commonjs/package.json",
+    "build": "yarn clean && bob build && rm -rf dist/*/package.json",
     "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
   },
   "react-native-builder-bob": {
@@ -82,7 +82,7 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "react": "18.3.1",
     "react-native": "0.76.1",
-    "react-native-builder-bob": "^0.30.3",
+    "react-native-builder-bob": "^0.31.0",
     "typescript": "^5.6.3"
   }
 }
