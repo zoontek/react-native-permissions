@@ -23,7 +23,7 @@
 }
 
 - (RNPermissionStatus)currentStatus {
-#if TARGET_OS_SIMULATOR
+#if TARGET_OS_SIMULATOR || TARGET_OS_TV
   return RNPermissionStatusNotAvailable;
 #else
   switch ([CBManager authorization]) {
@@ -41,7 +41,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-#if TARGET_OS_SIMULATOR
+#if TARGET_OS_SIMULATOR || TARGET_OS_TV
   return resolve(RNPermissionStatusNotAvailable);
 #else
   _resolve = resolve;

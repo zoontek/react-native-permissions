@@ -33,7 +33,7 @@
 }
 
 - (RNPermissionStatus)currentStatus {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     return [self convertStatus:[ATTrackingManager trackingAuthorizationStatus]];
   } else {
     if ([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]) {
@@ -46,7 +46,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     if ([ATTrackingManager trackingAuthorizationStatus] != ATTrackingManagerAuthorizationStatusNotDetermined) {
       return resolve([self currentStatus]);
     }
@@ -73,7 +73,7 @@
                                                   name:UIApplicationDidBecomeActiveNotification
                                                 object:nil];
 
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
       self->_resolve([self convertStatus:status]);
     }];

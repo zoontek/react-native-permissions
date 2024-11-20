@@ -13,7 +13,7 @@
 }
 
 - (RNPermissionStatus)currentStatus {
-  if (@available(iOS 17.0, *)) {
+  if (@available(iOS 17.0, tvOS 17.0, *)) {
     switch ([[AVAudioApplication sharedInstance] recordPermission]) {
       case AVAudioApplicationRecordPermissionUndetermined:
         return RNPermissionStatusNotDetermined;
@@ -36,7 +36,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if (@available(iOS 17.0, *)) {
+  if (@available(iOS 17.0, tvOS 17.0, *)) {
     [AVAudioApplication requestRecordPermissionWithCompletionHandler:^(__unused BOOL granted) {
       resolve([self currentStatus]);
     }];
