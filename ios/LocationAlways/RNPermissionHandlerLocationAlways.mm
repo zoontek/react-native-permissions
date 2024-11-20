@@ -21,6 +21,9 @@
 }
 
 - (RNPermissionStatus)currentStatus {
+#if TARGET_OS_TV
+  return RNPermissionStatusNotAvailable;
+#else
   switch ([CLLocationManager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
       return RNPermissionStatusNotDetermined;
@@ -32,10 +35,14 @@
     case kCLAuthorizationStatusAuthorizedAlways:
       return RNPermissionStatusAuthorized;
   }
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_TV
+  resolve(RNPermissionStatusNotAvailable);
+#else
   CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
 
   if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
@@ -58,6 +65,7 @@
   }
 
   [_locationManager requestAlwaysAuthorization];
+#endif
 }
 
 - (void)onApplicationWillResignActive {

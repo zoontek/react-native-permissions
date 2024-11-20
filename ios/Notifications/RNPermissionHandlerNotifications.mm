@@ -21,13 +21,13 @@
       return RNPermissionStatusNotDetermined;
     case UNAuthorizationStatusDenied:
       return RNPermissionStatusDenied;
-    case UNAuthorizationStatusAuthorized:
-    case UNAuthorizationStatusProvisional:
-      return RNPermissionStatusAuthorized;
 #if !TARGET_OS_TV
     case UNAuthorizationStatusEphemeral:
       return RNPermissionStatusLimited;
 #endif
+    case UNAuthorizationStatusAuthorized:
+    case UNAuthorizationStatusProvisional:
+      return RNPermissionStatusAuthorized;
   }
 }
 

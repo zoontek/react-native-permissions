@@ -1,6 +1,8 @@
 #import "RNPermissionHandlerCalendars.h"
 
+#if !TARGET_OS_TV
 #import <EventKit/EventKit.h>
+#endif
 
 @implementation RNPermissionHandlerCalendars
 
@@ -13,6 +15,9 @@
 }
 
 - (RNPermissionStatus)currentStatus {
+#if TARGET_OS_TV
+  return RNPermissionStatusNotAvailable;
+#else
   switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
     case EKAuthorizationStatusNotDetermined:
       return RNPermissionStatusNotDetermined;
@@ -25,10 +30,14 @@
     case EKAuthorizationStatusFullAccess:
       return RNPermissionStatusAuthorized;
   }
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_TV
+  resolve(RNPermissionStatusNotAvailable);
+#else
   EKEventStore *store = [EKEventStore new];
 
   void (^completion)(BOOL, NSError * _Nullable) = ^(__unused BOOL granted, NSError * _Nullable error) {
@@ -56,6 +65,7 @@
   } else {
     [store requestAccessToEntityType:EKEntityTypeEvent completion:completion];
   }
+#endif
 }
 
 @end

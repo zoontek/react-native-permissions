@@ -1,11 +1,15 @@
 #import "RNPermissionHandlerMotion.h"
 
+#if !TARGET_OS_TV
 #import <CoreMotion/CoreMotion.h>
+#endif
 
 @interface RNPermissionHandlerMotion()
 
+#if !TARGET_OS_TV
 @property (nonatomic, strong) CMMotionActivityManager *activityManager;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
+#endif
 
 @end
 
@@ -20,6 +24,9 @@
 }
 
 - (RNPermissionStatus)currentStatus {
+#if TARGET_OS_TV
+  return RNPermissionStatusNotAvailable;
+#else
   if (![CMMotionActivityManager isActivityAvailable]) {
     return RNPermissionStatusNotAvailable;
   }
@@ -34,10 +41,14 @@
     case CMAuthorizationStatusAuthorized:
       return RNPermissionStatusAuthorized;
   }
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_TV
+  resolve(RNPermissionStatusNotAvailable);
+#else
   if (![CMMotionActivityManager isActivityAvailable]) {
     return resolve(RNPermissionStatusNotAvailable);
   }
@@ -65,6 +76,7 @@
 
     return resolve(RNPermissionStatusNotDetermined);
   }];
+#endif
 }
 
 @end
