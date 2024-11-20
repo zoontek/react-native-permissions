@@ -23,6 +23,9 @@
         return RNPermissionStatusAuthorized;
     }
   } else {
+#if TARGET_OS_TV
+    return RNPermissionStatusNotAvailable;
+#else
     switch ([[AVAudioSession sharedInstance] recordPermission]) {
       case AVAudioSessionRecordPermissionUndetermined:
         return RNPermissionStatusNotDetermined;
@@ -31,6 +34,7 @@
       case AVAudioSessionRecordPermissionGranted:
         return RNPermissionStatusAuthorized;
     }
+#endif
   }
 }
 
@@ -41,9 +45,13 @@
       resolve([self currentStatus]);
     }];
   } else {
+#if TARGET_OS_TV
+    resolve([self currentStatus]);
+#else
     [[AVAudioSession sharedInstance] requestRecordPermission:^(__unused BOOL granted) {
       resolve([self currentStatus]);
     }];
+#endif
   }
 }
 
