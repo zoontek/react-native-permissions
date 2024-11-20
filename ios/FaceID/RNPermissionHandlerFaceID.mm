@@ -4,8 +4,10 @@
 
 @interface RNPermissionHandlerFaceID()
 
+#if !TARGET_OS_TV
 @property (nonatomic, strong) LAContext *laContext;
 @property (nonatomic, strong) void (^resolve)(RNPermissionStatus status);
+#endif
 
 @end
 
@@ -20,6 +22,9 @@
 }
 
 - (RNPermissionStatus)currentStatus {
+#if TARGET_OS_TV
+  return RNPermissionStatusNotAvailable;
+#else
   LAContext *context = [LAContext new];
   NSError *error;
 
@@ -42,10 +47,14 @@
   }
 
   return RNPermissionStatusAuthorized;
+#endif
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+#if TARGET_OS_TV
+  resolve(RNPermissionStatusNotAvailable);
+#else
   LAContext *context = [LAContext new];
   NSError *error;
 
@@ -77,10 +86,13 @@
 
   // Hack to invalidate FaceID verification immediately after being requested
   [self performSelector:@selector(invalidateContext) withObject:self afterDelay:0.05];
+#endif
 }
 
 - (void)invalidateContext {
+#if !TARGET_OS_TV
   [_laContext invalidate];
+#endif
 }
 
 - (void)onApplicationDidBecomeActive:(__unused NSNotification *)notification {
@@ -89,7 +101,10 @@
                                                 object:nil];
 
   [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+
+#if !TARGET_OS_TV
   _resolve([self currentStatus]);
+#endif
 }
 
 @end

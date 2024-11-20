@@ -13,7 +13,7 @@
 }
 
 - (RNPermissionStatus)currentStatus {
-  if (@available(iOS 17.0, *)) {
+  if (@available(iOS 17.0, tvOS 17.0, *)) {
     switch ([[AVAudioApplication sharedInstance] recordPermission]) {
       case AVAudioApplicationRecordPermissionUndetermined:
         return RNPermissionStatusNotDetermined;
@@ -23,6 +23,9 @@
         return RNPermissionStatusAuthorized;
     }
   } else {
+#if TARGET_OS_TV
+    return RNPermissionStatusNotAvailable;
+#else
     switch ([[AVAudioSession sharedInstance] recordPermission]) {
       case AVAudioSessionRecordPermissionUndetermined:
         return RNPermissionStatusNotDetermined;
@@ -31,19 +34,24 @@
       case AVAudioSessionRecordPermissionGranted:
         return RNPermissionStatusAuthorized;
     }
+#endif
   }
 }
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if (@available(iOS 17.0, *)) {
+  if (@available(iOS 17.0, tvOS 17.0, *)) {
     [AVAudioApplication requestRecordPermissionWithCompletionHandler:^(__unused BOOL granted) {
       resolve([self currentStatus]);
     }];
   } else {
+#if TARGET_OS_TV
+    resolve([self currentStatus]);
+#else
     [[AVAudioSession sharedInstance] requestRecordPermission:^(__unused BOOL granted) {
       resolve([self currentStatus]);
     }];
+#endif
   }
 }
 

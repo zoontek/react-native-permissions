@@ -323,7 +323,7 @@ RCT_EXPORT_METHOD(openSettings:(NSString *)type
   UIApplication *sharedApplication = [UIApplication sharedApplication];
   NSString *urlString = UIApplicationOpenSettingsURLString;
 
-  if (@available(iOS 15.4, *)) {
+  if (@available(iOS 15.4, tvOS 15.4, *)) {
     if ([type isEqualToString:@"notifications"]) {
       urlString = UIApplicationOpenNotificationSettingsURLString;
     }

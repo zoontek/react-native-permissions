@@ -14,7 +14,7 @@
 
 - (void)checkWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                  rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     switch ([CLLocationManager authorizationStatus]) {
       case kCLAuthorizationStatusNotDetermined:
         return reject(@"cannot_check_location_accuracy", @"Location permission hasn't been requested first", nil);
@@ -42,7 +42,7 @@
 - (void)requestWithPurposeKey:(NSString * _Nonnull)purposeKey
                      resolver:(RCTPromiseResolveBlock _Nonnull)resolve
                      rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     switch ([CLLocationManager authorizationStatus]) {
       case kCLAuthorizationStatusNotDetermined:
         return reject(@"cannot_request_location_accuracy", @"Location permission hasn't been requested first", nil);

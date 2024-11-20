@@ -21,8 +21,10 @@
       return RNPermissionStatusNotDetermined;
     case UNAuthorizationStatusDenied:
       return RNPermissionStatusDenied;
+#if !TARGET_OS_TV
     case UNAuthorizationStatusEphemeral:
       return RNPermissionStatusLimited;
+#endif
     case UNAuthorizationStatusAuthorized:
     case UNAuthorizationStatusProvisional:
       return RNPermissionStatusAuthorized;
@@ -32,11 +34,17 @@
 - (NSDictionary * _Nonnull)convertSettings:(UNNotificationSettings * _Nonnull)settings {
   NSMutableDictionary *result = [NSMutableDictionary new];
 
-  if (settings.alertSetting != UNNotificationSettingNotSupported) {
-    [result setValue:@(settings.alertSetting == UNNotificationSettingEnabled) forKey:@"alert"];
-  }
+  [result setValue:@(settings.authorizationStatus == UNAuthorizationStatusProvisional) forKey:@"provisional"];
+
   if (settings.badgeSetting != UNNotificationSettingNotSupported) {
     [result setValue:@(settings.badgeSetting == UNNotificationSettingEnabled) forKey:@"badge"];
+  }
+
+#if !TARGET_OS_TV
+  [result setValue:@(settings.providesAppNotificationSettings == true) forKey:@"providesAppSettings"];
+
+  if (settings.alertSetting != UNNotificationSettingNotSupported) {
+    [result setValue:@(settings.alertSetting == UNNotificationSettingEnabled) forKey:@"alert"];
   }
   if (settings.soundSetting != UNNotificationSettingNotSupported) {
     [result setValue:@(settings.soundSetting == UNNotificationSettingEnabled) forKey:@"sound"];
@@ -50,13 +58,10 @@
   if (settings.notificationCenterSetting != UNNotificationSettingNotSupported) {
     [result setValue:@(settings.notificationCenterSetting == UNNotificationSettingEnabled) forKey:@"notificationCenter"];
   }
-
-  [result setValue:@(settings.providesAppNotificationSettings == true) forKey:@"providesAppSettings"];
-  [result setValue:@(settings.authorizationStatus == UNAuthorizationStatusProvisional) forKey:@"provisional"];
-
   if (settings.criticalAlertSetting != UNNotificationSettingNotSupported) {
     [result setValue:@(settings.criticalAlertSetting == UNNotificationSettingEnabled) forKey:@"criticalAlert"];
   }
+#endif
 
   return result;
 }

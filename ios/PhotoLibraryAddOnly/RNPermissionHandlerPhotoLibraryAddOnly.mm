@@ -13,7 +13,7 @@
 }
 
 - (RNPermissionStatus)currentStatus {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     switch ([PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelAddOnly]) {
       case PHAuthorizationStatusNotDetermined:
         return RNPermissionStatusNotDetermined;
@@ -33,7 +33,7 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if (@available(iOS 14.0, *)) {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
     [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelAddOnly handler:^(__unused PHAuthorizationStatus status) {
       resolve([self currentStatus]);
     }];
