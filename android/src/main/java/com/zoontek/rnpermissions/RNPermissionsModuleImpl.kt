@@ -39,29 +39,25 @@ object RNPermissionsModuleImpl {
       .removePrefix("android.permission.")
       .removePrefix("com.android.voicemail.permission.")
 
-    try {
+    val availableInManifest = runCatching {
       Manifest.permission::class.java.getField(fieldName)
-      return true
-    } catch (ignored: NoSuchFieldException) {
-      val manager = context.packageManager
+    }.isSuccess
 
-      val groups = manager.getAllPermissionGroups(0).toMutableList().apply {
-        add(null) // Add ungrouped permissions
-      }
+    val manager = context.packageManager
 
-      for (group in groups) {
-        try {
-          val permissions = manager.queryPermissionsByGroup(group?.name, 0)
+    val groups = manager.getAllPermissionGroups(0).toMutableList().apply {
+      add(null) // Add ungrouped permissions
+    }
 
-          if (permissions.any { it?.name == permission }) {
-            return true
-          }
-        } catch (ignored: PackageManager.NameNotFoundException) {
-        }
+    val availableInGroups = groups.any { group ->
+      runCatching {
+        manager.queryPermissionsByGroup(group?.name, 0)
+      }.getOrDefault(emptyList()).any {
+        it?.name == permission
       }
     }
 
-    return false
+    return availableInManifest || availableInGroups
   }
 
   fun openSettings(reactContext: ReactApplicationContext, type: String?, promise: Promise) {
