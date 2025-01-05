@@ -38,13 +38,15 @@
 #if TARGET_OS_TV
   resolve(RNPermissionStatusNotAvailable);
 #else
-  EKEventStore *store = [EKEventStore new];
-
-  void (^completion)(BOOL, NSError * _Nullable) = ^(__unused BOOL granted, NSError * _Nullable error) {
+  void (^completion)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
     if (error != nil) {
       reject(error);
     } else {
       [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
+
+      if (granted) {
+        return resolve(RNPermissionStatusAuthorized);
+      }
 
       switch ([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent]) {
         case EKAuthorizationStatusNotDetermined:
@@ -59,6 +61,8 @@
       }
     }
   };
+
+  EKEventStore *store = [EKEventStore new];
 
   if (@available(iOS 17.0, *)) {
     [store requestFullAccessToEventsWithCompletion:completion];

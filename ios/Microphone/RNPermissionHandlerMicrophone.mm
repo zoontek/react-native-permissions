@@ -40,17 +40,17 @@
 
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
+  void (^completion)(BOOL) = ^(BOOL granted) {
+    resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
+  };
+
   if (@available(iOS 17.0, tvOS 17.0, *)) {
-    [AVAudioApplication requestRecordPermissionWithCompletionHandler:^(__unused BOOL granted) {
-      resolve([self currentStatus]);
-    }];
+    [AVAudioApplication requestRecordPermissionWithCompletionHandler:completion];
   } else {
 #if TARGET_OS_TV
     resolve([self currentStatus]);
 #else
-    [[AVAudioSession sharedInstance] requestRecordPermission:^(__unused BOOL granted) {
-      resolve([self currentStatus]);
-    }];
+    [[AVAudioSession sharedInstance] requestRecordPermission:completion];
 #endif
   }
 }

@@ -37,15 +37,15 @@
 #if TARGET_OS_TV
   resolve(RNPermissionStatusNotAvailable);
 #else
-  EKEventStore *store = [EKEventStore new];
-
-  void (^completion)(BOOL, NSError * _Nullable) = ^(__unused BOOL granted, NSError * _Nullable error) {
+  void (^completion)(BOOL, NSError * _Nullable) = ^(BOOL granted, NSError * _Nullable error) {
     if (error != nil) {
       reject(error);
     } else {
-      resolve([self currentStatus]);
+      resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
     }
   };
+
+  EKEventStore *store = [EKEventStore new];
 
   if (@available(iOS 17.0, *)) {
     [store requestWriteOnlyAccessToEventsWithCompletion:completion];

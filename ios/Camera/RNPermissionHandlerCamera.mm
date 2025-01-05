@@ -33,8 +33,8 @@
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
   if (@available(iOS 7.0, tvOS 17.0, *)) {
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
-                             completionHandler:^(__unused BOOL granted) {
-      resolve([self currentStatus]);
+                             completionHandler:^(BOOL granted) {
+      resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
     }];
   } else {
     resolve([self currentStatus]);

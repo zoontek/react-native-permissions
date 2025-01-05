@@ -39,11 +39,11 @@
   resolve(RNPermissionStatusNotAvailable);
 #else
   [[CNContactStore new] requestAccessForEntityType:CNEntityTypeContacts
-                                 completionHandler:^(__unused BOOL granted, NSError * _Nullable error) {
+                                 completionHandler:^(BOOL granted, NSError * _Nullable error) {
     if (error != nil && error.code != 100) { // error code 100 is permission denied
       reject(error);
     } else {
-      resolve([self currentStatus]);
+      resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
     }
   }];
 #endif
