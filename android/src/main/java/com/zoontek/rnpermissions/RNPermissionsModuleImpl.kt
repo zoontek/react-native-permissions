@@ -1,6 +1,5 @@
 package com.zoontek.rnpermissions
 
-import android.Manifest
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
@@ -34,31 +33,29 @@ object RNPermissionsModuleImpl {
   private const val UNAVAILABLE = "unavailable"
   private const val BLOCKED = "blocked"
 
-  private fun isPermissionAvailable(context: ReactApplicationContext, permission: String): Boolean {
-    val fieldName = permission
-      .removePrefix("android.permission.")
-      .removePrefix("com.android.voicemail.permission.")
+  // Based on https://developer.android.com/reference/android/Manifest.permission
+  // Permissions not explicitly listed are considered available (API < 21)
+  private val minimumApi = mapOf(
+    "android.permission.ACCEPT_HANDOVER" to 28,
+    "android.permission.ACCESS_BACKGROUND_LOCATION" to 29,
+    "android.permission.ACCESS_MEDIA_LOCATION" to 29,
+    "android.permission.ACTIVITY_RECOGNITION" to 29,
+    "android.permission.ANSWER_PHONE_CALLS" to 26,
+    "android.permission.BLUETOOTH_ADVERTISE" to 31,
+    "android.permission.BLUETOOTH_CONNECT" to 31,
+    "android.permission.BLUETOOTH_SCAN" to 31,
+    "android.permission.BODY_SENSORS_BACKGROUND" to 33,
+    "android.permission.NEARBY_WIFI_DEVICES" to 33,
+    "android.permission.READ_MEDIA_AUDIO" to 33,
+    "android.permission.READ_MEDIA_IMAGES" to 33,
+    "android.permission.READ_MEDIA_VIDEO" to 33,
+    "android.permission.READ_MEDIA_VISUAL_USER_SELECTED" to 34,
+    "android.permission.READ_PHONE_NUMBERS" to 26,
+    "android.permission.UWB_RANGING" to 31
+  )
 
-    val availableInManifest = runCatching {
-      Manifest.permission::class.java.getField(fieldName)
-    }.isSuccess
-
-    val manager = context.packageManager
-
-    val groups = manager.getAllPermissionGroups(0).toMutableList().apply {
-      add(null) // Add ungrouped permissions
-    }
-
-    val availableInGroups = groups.any { group ->
-      runCatching {
-        manager.queryPermissionsByGroup(group?.name, 0)
-      }.getOrDefault(emptyList()).any {
-        it?.name == permission
-      }
-    }
-
-    return availableInManifest || availableInGroups
-  }
+  private fun isPermissionAvailable(permission: String): Boolean =
+    Build.VERSION.SDK_INT >= minimumApi.getOrDefault(permission, Build.VERSION_CODES.BASE)
 
   fun openSettings(reactContext: ReactApplicationContext, type: String?, promise: Promise) {
     try {
@@ -100,7 +97,7 @@ object RNPermissionsModuleImpl {
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {
-    if (!isPermissionAvailable(reactContext, permission)) {
+    if (!isPermissionAvailable(permission)) {
       return promise.resolve(UNAVAILABLE)
     }
 
@@ -135,7 +132,7 @@ object RNPermissionsModuleImpl {
       output.putString(
         permission,
         when {
-          !isPermissionAvailable(reactContext, permission) -> UNAVAILABLE
+          !isPermissionAvailable(permission) -> UNAVAILABLE
           context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED -> GRANTED
           else -> DENIED
         }
@@ -152,7 +149,7 @@ object RNPermissionsModuleImpl {
     permission: String,
     promise: Promise
   ) {
-    if (!isPermissionAvailable(reactContext, permission)) {
+    if (!isPermissionAvailable(permission)) {
       return promise.resolve(UNAVAILABLE)
     }
 
@@ -214,7 +211,7 @@ object RNPermissionsModuleImpl {
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
 
-      if (!isPermissionAvailable(reactContext, permission)) {
+      if (!isPermissionAvailable(permission)) {
         output.putString(permission, UNAVAILABLE)
         checkedPermissionsCount++
       } else if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
