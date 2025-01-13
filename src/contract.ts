@@ -24,7 +24,7 @@ export type Contract = {
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
   requestNotifications(
-    options: NotificationOption[],
+    options?: NotificationOption[],
     rationale?: Rationale,
   ): Promise<NotificationsResponse>;
 };

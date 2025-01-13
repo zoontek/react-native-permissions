@@ -37,7 +37,9 @@ const checkNotifications: Contract['checkNotifications'] = async () => {
   return response;
 };
 
-const requestNotifications: Contract['requestNotifications'] = async (options) => {
+const requestNotifications: Contract['requestNotifications'] = async (
+  options = ['alert', 'badge', 'sound'],
+) => {
   const response = (await NativeModule.requestNotifications(options)) as NotificationsResponse;
   return response;
 };

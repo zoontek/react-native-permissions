@@ -70,7 +70,7 @@ const checkNotifications: Contract['checkNotifications'] = async () => {
   }
 };
 
-const requestNotifications: Contract['requestNotifications'] = async (options, rationale) => {
+const requestNotifications: Contract['requestNotifications'] = async (options = [], rationale) => {
   if (USES_LEGACY_NOTIFICATIONS) {
     const response = (await NativeModule.requestNotifications(options)) as NotificationsResponse;
     return response;

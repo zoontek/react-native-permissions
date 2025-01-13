@@ -755,7 +755,7 @@ The `rationale` is only available and used on Android. It can be a native alert 
 
 ```ts
 function requestNotifications(
-  options: NotificationOption[], // only used by iOS
+  options?: NotificationOption[], // only used by iOS
   rationale?: Rationale,
 ): Promise<NotificationsResponse>;
 ```
