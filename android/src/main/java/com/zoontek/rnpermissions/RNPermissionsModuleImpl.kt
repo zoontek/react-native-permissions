@@ -128,7 +128,9 @@ object RNPermissionsModuleImpl {
 
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
-
+      if (permission.isNullOrBlank()) {
+        continue;
+      }
       output.putString(
         permission,
         when {
@@ -210,7 +212,9 @@ object RNPermissionsModuleImpl {
 
     for (i in 0 until permissions.size()) {
       val permission = permissions.getString(i)
-
+      if (permission.isNullOrBlank()) {
+        continue;
+      }
       if (!isPermissionAvailable(permission)) {
         output.putString(permission, UNAVAILABLE)
         checkedPermissionsCount++
