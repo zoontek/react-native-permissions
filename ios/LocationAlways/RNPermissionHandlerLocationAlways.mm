@@ -43,13 +43,27 @@
 #if TARGET_OS_TV
   resolve(RNPermissionStatusNotAvailable);
 #else
+  _resolve = resolve;
+
+  if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+    [self performRequest];
+  } else {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(performRequest)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+  }
+#endif
+}
+
+- (void)performRequest {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+
   CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
 
   if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
-    return resolve([self currentStatus]);
+    return _resolve([self currentStatus]);
   }
-
-  _resolve = resolve;
 
   _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
@@ -65,7 +79,6 @@
   }
 
   [_locationManager requestAlwaysAuthorization];
-#endif
 }
 
 - (void)onApplicationWillResignActive {
