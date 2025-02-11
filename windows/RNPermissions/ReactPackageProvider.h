@@ -14,11 +14,11 @@ struct ReactPackageProvider : ReactPackageProviderT<ReactPackageProvider>
   void CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept;
 };
 
-} // namespace winrt::ReactNativePermissions::implementation
+} // namespace winrt::RNPermissions::implementation
 
 namespace winrt::RNPermissions::factory_implementation
 {
 
 struct ReactPackageProvider : ReactPackageProviderT<ReactPackageProvider, implementation::ReactPackageProvider> {};
 
-} // namespace winrt::ReactNativePermissions::factory_implementation
+} // namespace winrt::RNPermissions::factory_implementation

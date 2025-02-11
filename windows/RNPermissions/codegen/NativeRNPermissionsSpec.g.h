@@ -13,7 +13,7 @@
 #include <NativeModules.h>
 #include <tuple>
 
-namespace ReactNativePermissionsCodegen {
+namespace RNPermissionsCodegen {
 
 inline winrt::Microsoft::ReactNative::FieldMap GetStructInfo(RNPermissionsSpec_NotificationsResponse*) noexcept {
     winrt::Microsoft::ReactNative::FieldMap fieldMap {
@@ -106,4 +106,4 @@ struct RNPermissionsSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
   }
 };
 
-} // namespace ReactNativePermissionsCodegen
+} // namespace RNPermissionsCodegen

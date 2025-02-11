@@ -10,7 +10,7 @@ using namespace winrt::Windows::Security::Authorization::AppCapabilityAccess;
 using namespace std::literals;
 
 
-namespace winrt::ReactNativePermissions
+namespace winrt::RNPermissions
 {
 
 void RNPermissions::Initialize(React::ReactContext const &reactContext) noexcept {
@@ -125,4 +125,4 @@ void RNPermissions::RNPermissions::Request(std::wstring permission, React::React
   }
 }
 
-} // namespace winrt::ReactNativePermissions
+} // namespace winrt::RNPermissions

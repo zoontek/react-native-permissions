@@ -14,11 +14,11 @@
 #include <functional>
 #include <vector>
 
-namespace ReactNativePermissionsCodegen {
+namespace RNPermissionsCodegen {
 
 struct RNPermissionsSpec_NotificationsResponse {
     ::React::JSValue status;
     ::React::JSValue settings;
 };
 
-} // namespace ReactNativePermissionsCodegen
+} // namespace RNPermissionsCodegen

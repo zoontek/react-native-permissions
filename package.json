@@ -58,7 +58,7 @@
       "javaPackageName": "com.zoontek.rnpermissions"
     },
     "windows": {
-      "namespace": "ReactNativePermissionsCodegen",
+      "namespace": "RNPermissionsCodegen",
       "outputDirectory": "windows/RNPermissions/codegen",
       "separateDataTypes": true
     }
@@ -93,8 +93,8 @@
   },
   "react-native-windows": {
     "init-windows": {
-      "name": "ReactNativePermissions",
-      "namespace": "ReactNativePermissions",
+      "name": "RNPermissions",
+      "namespace": "RNPermissions",
       "template": "cpp-lib"
     }
   }

@@ -9,7 +9,7 @@
 
 using namespace winrt::Microsoft::ReactNative;
 
-namespace winrt::ReactNativePermissions::implementation
+namespace winrt::RNPermissions::implementation
 {
 
 void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
@@ -21,4 +21,4 @@ void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuil
   #endif
 }
 
-} // namespace winrt::ReactNativePermissions::implementation
+} // namespace winrt::RNPermissions::implementation

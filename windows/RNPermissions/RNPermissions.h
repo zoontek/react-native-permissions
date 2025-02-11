@@ -8,13 +8,13 @@
 
 #include "NativeModules.h"
 
-namespace winrt::ReactNativePermissions
+namespace winrt::RNPermissions
 {
 
 REACT_MODULE(RNPermissions)
 struct RNPermissions
 {
-  using ModuleSpec = ReactNativePermissionsCodegen::RNPermissionsSpec;
+  using ModuleSpec = RNPermissionsCodegen::RNPermissionsSpec;
 
     REACT_INIT(Initialize);
     void Initialize(React::ReactContext const& reactContext) noexcept;
@@ -35,4 +35,4 @@ private:
   React::ReactContext m_context;
 };
 
-} // namespace winrt::ReactNativePermissions
+} // namespace winrt::RNPermissions
