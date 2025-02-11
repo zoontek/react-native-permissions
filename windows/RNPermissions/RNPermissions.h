@@ -1,16 +1,23 @@
 #pragma once
 
 #include "pch.h"
+#include "resource.h"
+
+#include "codegen/NativeRnPermissionsDataTypes.g.h"
+#include "codegen/NativeRnPermissionsSpec.g.h"
+
 #include "NativeModules.h"
 
-namespace RNPermissions
+namespace winrt::ReactNativePermissions
 {
-  REACT_MODULE(RNPermissions);
-  struct RNPermissions
-  {
-    React::ReactContext m_reactContext;
-    REACT_INIT(Init);
-    void Init(React::ReactContext const& reactContext) noexcept;
+
+REACT_MODULE(RNPermissions)
+struct RNPermissions
+{
+  using ModuleSpec = ReactNativePermissionsCodegen::RNPermissionsSpec;
+
+    REACT_INIT(Initialize);
+    void Initialize(React::ReactContext const& reactContext) noexcept;
 
     REACT_METHOD(OpenSettings);
     void OpenSettings(React::ReactPromise<void>&& promise) noexcept;
@@ -23,5 +30,9 @@ namespace RNPermissions
 
     REACT_METHOD(Request);
     void Request(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept;
-  };
-}
+
+private:
+  React::ReactContext m_context;
+};
+
+} // namespace winrt::ReactNativePermissions

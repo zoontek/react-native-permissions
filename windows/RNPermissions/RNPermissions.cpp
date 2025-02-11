@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "RNPermissions.h"
 
 using namespace winrt::Windows::System;
@@ -8,12 +9,16 @@ using namespace winrt::Windows::UI::Notifications;
 using namespace winrt::Windows::Security::Authorization::AppCapabilityAccess;
 using namespace std::literals;
 
-inline void RNPermissions::RNPermissions::Init(React::ReactContext const& reactContext) noexcept {
-  m_reactContext = reactContext;
+
+namespace winrt::ReactNativePermissions
+{
+
+void RNPermissions::Initialize(React::ReactContext const &reactContext) noexcept {
+  m_context = reactContext;
 }
 
 inline void RNPermissions::RNPermissions::OpenSettings(React::ReactPromise<void>&& promise) noexcept {
-  m_reactContext.UIDispatcher().Post([promise]() {
+  m_context.UIDispatcher().Post([promise]() {
     Launcher::LaunchUriAsync(Uri(L"ms-settings:appsfeatures-app"))
       .Completed([promise](const auto&, const auto& status) {
         if (status == AsyncStatus::Completed) {
@@ -119,3 +124,5 @@ void RNPermissions::RNPermissions::Request(std::wstring permission, React::React
     promise.Resolve("unavailable");
   }
 }
+
+} // namespace winrt::ReactNativePermissions

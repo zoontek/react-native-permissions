@@ -1,15 +1,24 @@
 #include "pch.h"
-#include "ReactPackageProvider.h"
-#include "ReactPackageProvider.g.cpp"
 
-#include <ModuleRegistration.h>
+#include "ReactPackageProvider.h"
+#if __has_include("ReactPackageProvider.g.cpp")
+#include "ReactPackageProvider.g.cpp"
+#endif
 
 #include "RNPermissions.h"
 
-namespace winrt::RNPermissions::implementation
+using namespace winrt::Microsoft::ReactNative;
+
+namespace winrt::ReactNativePermissions::implementation
 {
-  void ReactPackageProvider::CreatePackage(IReactPackageBuilder const& packageBuilder) noexcept
-  {
-    AddAttributedModules(packageBuilder);
-  }
+
+void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
+{
+  #ifdef RnwNewArch      
+    AddAttributedModules(packageBuilder, true);  
+  #else      
+    AddAttributedModules(packageBuilder);  
+  #endif
 }
+
+} // namespace winrt::ReactNativePermissions::implementation
