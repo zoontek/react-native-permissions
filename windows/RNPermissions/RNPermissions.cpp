@@ -31,6 +31,21 @@ inline void RNPermissions::RNPermissions::OpenSettings(std::wstring type, React:
     });
 }
 
+void RNPermissions::RNPermissions::OpenPhotoPicker(React::ReactPromise<bool>&& promise) noexcept {
+  // no-op
+  promise.Resolve(false);
+}
+
+void RNPermissions::RNPermissions::CanScheduleExactAlarms(React::ReactPromise<bool>&& promise) noexcept {
+  // no-op
+  promise.Resolve(false);
+}
+
+void RNPermissions::RNPermissions::CheckLocationAccuracy(React::ReactPromise<std::string>&& promise) noexcept {
+  // no-op
+  promise.Resolve("N/A");
+}
+
 void RNPermissions::RNPermissions::CheckNotifications(React::ReactPromise<RNPermissionsSpec_NotificationsResponse>&& promise) noexcept {
   try {
     auto notifier = ToastNotificationManager::CreateToastNotifier();
@@ -92,6 +107,11 @@ void RNPermissions::RNPermissions::Check(std::wstring permission, React::ReactPr
   }
 }
 
+void RNPermissions::RNPermissions::CheckMultiple(std::vector<std::string> permissions, React::ReactPromise<::React::JSValue>&& promise) noexcept {
+  // no-op
+  promise.Resolve(::React::JSValue::EmptyObject);
+}
+
 void RNPermissions::RNPermissions::Request(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept {
   try {
     auto capability = AppCapability::Create(trimmPermission(permission));
@@ -127,6 +147,29 @@ void RNPermissions::RNPermissions::Request(std::wstring permission, React::React
   catch (...) {
     promise.Resolve("unavailable");
   }
+}
+
+void RNPermissions::RNPermissions::RequestMultiple(std::vector<std::string> permissions, React::ReactPromise<::React::JSValue>&& promise) noexcept {
+  // no-op
+  promise.Resolve(::React::JSValue::EmptyObject);
+}
+
+void RNPermissions::RNPermissions::RequestNotifications(std::vector<std::string> options, React::ReactPromise<RNPermissionsSpec_NotificationsResponse>&& promise) noexcept {
+  // no-op
+  RNPermissionsSpec_NotificationsResponse response;
+  response.status = "denied";
+  response.settings = ::React::JSValue::JSValue();
+  promise.Resolve(response);
+}
+
+void RNPermissions::RNPermissions::RequestLocationAccuracy(std::wstring purposeKey, React::ReactPromise<std::string>&& promise) noexcept {
+  // no-op
+  promise.Resolve("N/A");
+}
+
+void RNPermissions::RNPermissions::ShouldShowRequestRationale(std::wstring permission, React::ReactPromise<bool>&& promise) noexcept {
+  // no-op
+  promise.Resolve(false);
 }
 
 } // namespace winrt::RNPermissions
