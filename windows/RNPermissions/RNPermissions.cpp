@@ -8,7 +8,7 @@ using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::UI::Notifications;
 using namespace winrt::Windows::Security::Authorization::AppCapabilityAccess;
 using namespace std::literals;
-
+using namespace RNPermissionsCodegen;
 
 namespace winrt::RNPermissions
 {
@@ -17,7 +17,7 @@ void RNPermissions::Initialize(React::ReactContext const &reactContext) noexcept
   m_context = reactContext;
 }
 
-inline void RNPermissions::RNPermissions::OpenSettings(React::ReactPromise<void>&& promise) noexcept {
+inline void RNPermissions::RNPermissions::OpenSettings(std::wstring type, React::ReactPromise<void>&& promise) noexcept {
   m_context.UIDispatcher().Post([promise]() {
     Launcher::LaunchUriAsync(Uri(L"ms-settings:appsfeatures-app"))
       .Completed([promise](const auto&, const auto& status) {
@@ -31,27 +31,31 @@ inline void RNPermissions::RNPermissions::OpenSettings(React::ReactPromise<void>
     });
 }
 
-void RNPermissions::RNPermissions::CheckNotifications(React::ReactPromise<std::string>&& promise) noexcept {
+void RNPermissions::RNPermissions::CheckNotifications(React::ReactPromise<RNPermissionsSpec_NotificationsResponse>&& promise) noexcept {
   try {
     auto notifier = ToastNotificationManager::CreateToastNotifier();
     auto setting = notifier.Setting();
+    RNPermissionsSpec_NotificationsResponse response;
     switch (setting) {
     case NotificationSetting::Enabled:
-      promise.Resolve("granted");
+      response.status = "granted";
       break;
     case NotificationSetting::DisabledForApplication:
     case NotificationSetting::DisabledForUser:
     case NotificationSetting::DisabledByGroupPolicy:
     case NotificationSetting::DisabledByManifest:
-      promise.Resolve("blocked");
+      response.status = "blocked";
       break;
     default:
-      promise.Resolve("unavailable");
+      response.status = "unavailable";
       break;
     }
+    promise.Resolve(response);
   }
   catch (...) {
-      promise.Resolve("unavailable");
+    RNPermissionsSpec_NotificationsResponse response;
+    response.status = "unavailable";
+    promise.Resolve(response);
   }
 }
 
