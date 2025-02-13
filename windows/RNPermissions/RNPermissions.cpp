@@ -32,17 +32,17 @@ inline void RNPermissions::RNPermissions::OpenSettings(std::wstring type, React:
 }
 
 void RNPermissions::RNPermissions::OpenPhotoPicker(React::ReactPromise<bool>&& promise) noexcept {
-  // no-op
+  // no-op - iOS 14+ only
   promise.Resolve(false);
 }
 
 void RNPermissions::RNPermissions::CanScheduleExactAlarms(React::ReactPromise<bool>&& promise) noexcept {
-  // no-op
+  // no-op - Android only
   promise.Resolve(false);
 }
 
 void RNPermissions::RNPermissions::CheckLocationAccuracy(React::ReactPromise<std::string>&& promise) noexcept {
-  // no-op
+  // no-op - iOS 14+ only
   promise.Resolve("N/A");
 }
 
@@ -108,8 +108,30 @@ void RNPermissions::RNPermissions::Check(std::wstring permission, React::ReactPr
 }
 
 void RNPermissions::RNPermissions::CheckMultiple(std::vector<std::string> permissions, React::ReactPromise<::React::JSValue>&& promise) noexcept {
-  // no-op
-  promise.Resolve(::React::JSValue::EmptyObject);
+  auto result = ::React::JSValueArray();
+  for (auto& permission : permissions) {
+    std::wstring wpermission(permission.begin(), permission.end());
+    auto capability = AppCapability::Create(trimmPermission(wpermission));
+    ::React::JSValueObject permissionStatus;
+    permissionStatus["permission"] = permission;
+    switch (capability.CheckAccess()) {
+      case AppCapabilityAccessStatus::Allowed:
+      permissionStatus["status"] = "granted";
+      result.push_back(::React::JSValue(std::move(permissionStatus)));
+    case AppCapabilityAccessStatus::UserPromptRequired:
+      permissionStatus["status"] = "denied";
+      result.push_back(::React::JSValue(std::move(permissionStatus)));
+    case AppCapabilityAccessStatus::DeniedByUser:
+    case AppCapabilityAccessStatus::DeniedBySystem:
+      permissionStatus["status"] = "blocked";
+      result.push_back(::React::JSValue(std::move(permissionStatus)));
+    case AppCapabilityAccessStatus::NotDeclaredByApp:
+    default:
+      permissionStatus["status"] = "unavailable";
+      result.push_back(::React::JSValue(std::move(permissionStatus)));
+    }
+  }
+  promise.Resolve(::React::JSValue(std::move(result)));
 }
 
 void RNPermissions::RNPermissions::Request(std::wstring permission, React::ReactPromise<std::string>&& promise) noexcept {
@@ -150,25 +172,58 @@ void RNPermissions::RNPermissions::Request(std::wstring permission, React::React
 }
 
 void RNPermissions::RNPermissions::RequestMultiple(std::vector<std::string> permissions, React::ReactPromise<::React::JSValue>&& promise) noexcept {
-  // no-op
-  promise.Resolve(::React::JSValue::EmptyObject);
+  auto result = ::React::JSValueArray();
+  for (auto& permission : permissions) {
+    std::wstring wpermission(permission.begin(), permission.end());
+    auto capability = AppCapability::Create(trimmPermission(wpermission));
+    ::React::JSValueObject permissionStatus;
+    permissionStatus["permission"] = permission;
+    switch (capability.CheckAccess()) {
+      case AppCapabilityAccessStatus::Allowed:
+      permissionStatus["status"] = "granted";
+      result.push_back(::React::JSValue(std::move(permissionStatus)));
+      case AppCapabilityAccessStatus::UserPromptRequired:
+        capability.RequestAccessAsync()
+          .Completed([&result, &permissionStatus, &promise](const auto& async, const auto& status) {
+            if (status == AsyncStatus::Completed) {
+              if (async.GetResults() == AppCapabilityAccessStatus::Allowed) {
+                permissionStatus["status"] = "granted";
+              } else {
+                permissionStatus["status"] = "denied";
+              }
+            }
+            else {
+              permissionStatus["status"] = "Failure";
+            }
+            result.push_back(::React::JSValue(std::move(permissionStatus)));          });
+      case AppCapabilityAccessStatus::DeniedByUser:
+      case AppCapabilityAccessStatus::DeniedBySystem:
+        permissionStatus["status"] = "blocked";
+        result.push_back(::React::JSValue(std::move(permissionStatus)));
+      case AppCapabilityAccessStatus::NotDeclaredByApp:
+      default:
+        permissionStatus["status"] = "unavailable";
+        result.push_back(::React::JSValue(std::move(permissionStatus)));
+    }
+  }
+  promise.Resolve(::React::JSValue(std::move(result)));
 }
 
 void RNPermissions::RNPermissions::RequestNotifications(std::vector<std::string> options, React::ReactPromise<RNPermissionsSpec_NotificationsResponse>&& promise) noexcept {
-  // no-op
+  // no-op - not available on Windows
   RNPermissionsSpec_NotificationsResponse response;
-  response.status = "denied";
+  response.status = "N/A";
   response.settings = ::React::JSValue::JSValue();
   promise.Resolve(response);
 }
 
 void RNPermissions::RNPermissions::RequestLocationAccuracy(std::wstring purposeKey, React::ReactPromise<std::string>&& promise) noexcept {
-  // no-op
+  // no-op - iOS 14+ only
   promise.Resolve("N/A");
 }
 
 void RNPermissions::RNPermissions::ShouldShowRequestRationale(std::wstring permission, React::ReactPromise<bool>&& promise) noexcept {
-  // no-op
+  // no-op - Android only
   promise.Resolve(false);
 }
 
