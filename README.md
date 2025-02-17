@@ -325,46 +325,33 @@ public class MainApplication extends Application implements ReactApplication {
 
 As permissions are not handled in the same way on iOS, Android and Windows, this library provides an abstraction over the three platforms behaviors. To understand it a little better, take a look to this flowchart:
 
-```
- ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ check(PERMISSIONS.X.Y) ┃
- ┗━━━━━━━━━━━━━━━━━━━━━━━━┛
-              │                                ┌─────────────────────┐
-  Is the feature available ───────── NO ─────▶ │ RESULTS.UNAVAILABLE │
-      on this device ?                         └─────────────────────┘
-              │
-             YES
-              │                                ┌───────────────────────────┐
-      Is the permission ─────────── YES ─────▶ │ RESULTS.GRANTED / LIMITED │
-      already granted ?                        └───────────────────────────┘
-              │
-              NO
-              │                                ┌─────────────────┐
-Is the permission requestable, ───── NO ─────▶ │ RESULTS.BLOCKED │
- or is the platform Android ?                  └─────────────────┘
-              │
-             YES
-              │
-              ▼
-     ┌────────────────┐
-     │ RESULTS.DENIED │
-     └────────────────┘
-              │
-              ▼
- ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
- ┃ request(PERMISSIONS.X.Y) ┃◀─────────────────────────┐
- ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛                          │
-              │                                       YES
-              │                                        │
-    Did the user see and ──────── NO ──────── Is the permission
-    accept the request ?                      still requestable ?
-              │                                        │
-             YES                                       NO
-              │                                        │
-              ▼                                        ▼
-┌───────────────────────────┐                 ┌─────────────────┐
-│ RESULTS.GRANTED / LIMITED │                 │ RESULTS.BLOCKED │
-└───────────────────────────┘                 └─────────────────┘
+```mermaid
+flowchart TD
+    A["check(PERMISSIONS.X.Y)"] --> B
+    
+    B{"Is the feature available on this device?"} ---->|No| C["RESULTS.UNAVAILABLE"]
+    B -->|Yes| D
+    
+    D{"Is the permission already granted?"} ---->|Yes| E["RESULTS.GRANTED / LIMITED"]
+    D -->|No| F
+    
+    F{"Is the permission requestable, or is the platform Android?"} ---->|No| G["RESULTS.BLOCKED"]
+    F -->|Yes| H["RESULTS.DENIED"]
+    
+    H --> I["request(PERMISSIONS.X.Y)"]
+    
+    I --> J{"Did the user see and accept the request?"}
+    J ---->|Yes| E
+    J -->|No| K
+    
+    K{"Is the permission still requestable?"} -->|Yes| I
+    K ---->|No| G
+
+    %% Styling
+    classDef default fill:#fff,stroke:#000,stroke-width:2px;
+    classDef boxes fill:#fff,stroke:#000,stroke-width:2px;
+    
+    linkStyle default stroke:#000,stroke-width:2px;
 ```
 
 This can be implemented as follows:
