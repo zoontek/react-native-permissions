@@ -14,7 +14,9 @@
     "preinstall": "cd .. && yarn && yarn build && cd example",
     "postinstall": "yarn pod-install",
     "start": "react-native start",
-    "reinstall": "yarn clean && yarn install"
+    "reinstall": "yarn clean && yarn install",
+    "windows": "npx @react-native-community/cli run-windows",
+    "test:windows": "jest --config jest.config.windows.js"
   },
   "dependencies": {
     "react": "18.3.1",
@@ -23,7 +25,7 @@
     "react-native-permissions": "link:../",
     "react-native-safe-area-context": "^4.14.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-windows": "0.76.1"
+    "react-native-windows": "0.76.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -36,6 +38,14 @@
     "@react-native/metro-config": "0.76.2",
     "@types/react": "^18.2.6",
     "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "@rnx-kit/jest-preset": "^0.1.17"
+  },
+  "react-native-windows": {
+    "init-windows": {
+      "name": "ReactNativePermissionsExample",
+      "namespace": "ReactNativePermissionsExample",
+      "template": "cpp-app"
+    }
   }
 }
