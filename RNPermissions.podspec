@@ -17,8 +17,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => package["repository"]["url"], :tag => s.version }
   s.resource_bundles = { 'RNPermissionsPrivacyInfo' => 'ios/PrivacyInfo.xcprivacy' }
 
-  s.source_files = "ios/*.{h,mm}"
-  # s.frameworks = <frameworks>
+  s.source_files = "ios/*.{h,mm}", "ios/StoreKit/*.{h,mm}", "ios/FaceID/*.{h,mm}", "ios/Calendars/*.{h,mm}", "ios/LocationAlways/*.{h,mm}", "ios/PhotoLibraryAddOnly/*.{h,mm}", "ios/Microphone/*.{h,mm}", "ios/SpeechRecognition/*.{h,mm}", "ios/LocationWhenInUse/*.{h,mm}", "ios/PhotoLibrary/*.{h,mm}", "ios/Camera/*.{h,mm}", "ios/Contacts/*.{h,mm}", "ios/Motion/*.{h,mm}", "ios/CalendarsWriteOnly/*.{h,mm}", "ios/AppTrackingTransparency/*.{h,mm}", "ios/LocationAccuracy/*.{h,mm}", "ios/Bluetooth/*.{h,mm}", "ios/MediaLibrary/*.{h,mm}", "ios/Notifications/*.{h,mm}", "ios/Reminders/*.{h,mm}"
+  s.frameworks = "StoreKit", "LocalAuthentication", "EventKit", "CoreLocation", "Photos", "AVFoundation", "Speech", "PhotosUI", "Contacts", "CoreMotion", "AdSupport", "AppTrackingTransparency", "CoreBluetooth", "MediaPlayer", "UserNotifications"
 
   if ENV['RCT_NEW_ARCH_ENABLED'] == "1" then
     install_modules_dependencies(s)
