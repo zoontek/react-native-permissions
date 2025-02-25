@@ -7,6 +7,8 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Example.Package", "Example.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "Example\Example.vcxproj", "{17FAB8EC-5020-4037-A6C7-D83295B29658}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RNPermissions", "..\node_modules\react-native-permissions\windows\RNPermissions\RNPermissions.vcxproj", "{99677B9D-A27B-4239-930E-C36C8D339C54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -53,6 +55,18 @@ Global
 		{17FAB8EC-5020-4037-A6C7-D83295B29658}.Release|ARM64.ActiveCfg = Release|ARM64
 		{17FAB8EC-5020-4037-A6C7-D83295B29658}.Release|ARM64.Build.0 = Release|ARM64
 		{17FAB8EC-5020-4037-A6C7-D83295B29658}.Release|ARM64.Deploy.0 = Release|ARM64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|x64.ActiveCfg = Debug|x64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|x64.Build.0 = Debug|x64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|x86.ActiveCfg = Debug|Win32
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|x86.Build.0 = Debug|Win32
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Debug|ARM64.Build.0 = Debug|ARM64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|x64.ActiveCfg = Release|x64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|x64.Build.0 = Release|x64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|x86.ActiveCfg = Release|Win32
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|x86.Build.0 = Release|Win32
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|ARM64.ActiveCfg = Release|ARM64
+		{99677B9D-A27B-4239-930E-C36C8D339C54}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
