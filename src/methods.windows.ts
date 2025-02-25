@@ -1,6 +1,6 @@
-import {NativeModules} from 'react-native';
+import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
-import type {Permission, PermissionStatus} from './types';
+import type {NotificationsResponse, Permission, PermissionStatus} from './types';
 import {
   canScheduleExactAlarms,
   checkLocationAccuracy,
@@ -9,28 +9,23 @@ import {
 } from './unsupportedMethods';
 import {uniq} from './utils';
 
-const NativeModule: {
-  Check: (permission: Permission) => Promise<PermissionStatus>;
-  CheckNotifications: () => Promise<PermissionStatus>;
-  Request: (permission: Permission) => Promise<PermissionStatus>;
-  OpenSettings: () => Promise<void>;
-} = NativeModules.RNPermissions;
-
 const openSettings: Contract['openSettings'] = async () => {
-  await NativeModule.OpenSettings();
+  await NativeModule.openSettings("N/A");
 };
 
-const check: Contract['check'] = (permission) => {
-  return NativeModule.Check(permission);
+const check: Contract['check'] = async (permission) => {
+  const response = (await NativeModule.check(permission)) as PermissionStatus;
+  return response;
 };
 
-const request: Contract['request'] = (permission) => {
-  return NativeModule.Request(permission);
+const request: Contract['request'] = async (permission) => {
+  const response = (await NativeModule.request(permission)) as PermissionStatus;
+  return response;
 };
 
 const checkNotifications: Contract['checkNotifications'] = async () => {
-  const status = await NativeModule.CheckNotifications();
-  return {status, settings: {}};
+  const response = (await NativeModule.checkNotifications()) as NotificationsResponse;
+  return response;
 };
 
 const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
