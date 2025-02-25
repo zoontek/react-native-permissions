@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": "^22"
   },
   "scripts": {
     "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
@@ -14,9 +14,7 @@
     "preinstall": "cd .. && yarn && yarn build && cd example",
     "postinstall": "yarn pod-install",
     "start": "react-native start",
-    "reinstall": "yarn clean && yarn install",
-    "windows": "npx @react-native-community/cli run-windows",
-    "test:windows": "jest --config jest.config.windows.js"
+    "reinstall": "yarn clean && yarn install"
   },
   "dependencies": {
     "react": "18.3.1",
@@ -38,14 +36,6 @@
     "@react-native/metro-config": "0.77.1",
     "@types/react": "^18.2.6",
     "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "^5.7.3",
-    "@rnx-kit/jest-preset": "^0.1.17"
-  },
-  "react-native-windows": {
-    "init-windows": {
-      "name": "ReactNativePermissionsExample",
-      "namespace": "ReactNativePermissionsExample",
-      "template": "cpp-app"
-    }
+    "typescript": "^5.7.3"
   }
 }
