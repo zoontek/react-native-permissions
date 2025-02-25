@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": "^22"
+    "node": ">=18"
   },
   "scripts": {
     "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
@@ -38,7 +38,7 @@
     "@react-native/metro-config": "0.77.1",
     "@types/react": "^18.2.6",
     "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
     "@rnx-kit/jest-preset": "^0.1.17"
   },
   "react-native-windows": {
