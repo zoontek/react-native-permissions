@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": "^22"
   },
   "scripts": {
     "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
@@ -20,12 +20,12 @@
   },
   "dependencies": {
     "react": "18.3.1",
-    "react-native": "0.76.2",
-    "react-native-paper": "^5.12.5",
+    "react-native": "0.77.1",
+    "react-native-paper": "^5.13.1",
     "react-native-permissions": "link:../",
-    "react-native-safe-area-context": "^4.14.0",
+    "react-native-safe-area-context": "^5.2.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-windows": "0.76.7"
+    "react-native-windows": "0.77.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -34,11 +34,11 @@
     "@react-native-community/cli": "15.0.1",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",
-    "@react-native/babel-preset": "0.76.2",
-    "@react-native/metro-config": "0.76.2",
+    "@react-native/babel-preset": "0.77.1",
+    "@react-native/metro-config": "0.77.1",
     "@types/react": "^18.2.6",
     "babel-plugin-module-resolver": "^5.0.2",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.3"
     "@rnx-kit/jest-preset": "^0.1.17"
   },
   "react-native-windows": {
