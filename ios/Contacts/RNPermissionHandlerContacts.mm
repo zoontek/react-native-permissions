@@ -43,7 +43,7 @@
     if (error != nil && error.code != 100) { // error code 100 is permission denied
       reject(error);
     } else {
-      resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
+      resolve([self currentStatus]);
     }
   }];
 #endif
