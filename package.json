@@ -56,6 +56,11 @@
     "jsSrcsDir": "./src",
     "android": {
       "javaPackageName": "com.zoontek.rnpermissions"
+    },
+    "windows": {
+      "namespace": "RNPermissionsCodegen",
+      "outputDirectory": "windows/RNPermissions/codegen",
+      "separateDataTypes": true
     }
   },
   "peerDependencies": {
@@ -83,6 +88,14 @@
     "react": "18.3.1",
     "react-native": "0.77.1",
     "react-native-builder-bob": "^0.37.0",
+    "react-native-windows": "0.77.2",
     "typescript": "^5.7.3"
+  },
+  "react-native-windows": {
+    "init-windows": {
+      "name": "RNPermissions",
+      "namespace": "RNPermissions",
+      "template": "cpp-lib"
+    }
   }
 }
