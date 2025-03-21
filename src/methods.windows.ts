@@ -1,6 +1,6 @@
 import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
-import type {NotificationsResponse, Permission, PermissionStatus} from './types';
+import type {NotificationsResponse, PermissionStatus} from './types';
 import {
   canScheduleExactAlarms,
   checkLocationAccuracy,
@@ -10,7 +10,7 @@ import {
 import {uniq} from './utils';
 
 const openSettings: Contract['openSettings'] = async () => {
-  await NativeModule.openSettings("N/A");
+  await NativeModule.openSettings('N/A');
 };
 
 const check: Contract['check'] = async (permission) => {
