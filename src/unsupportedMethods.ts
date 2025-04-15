@@ -7,6 +7,10 @@ export const canScheduleExactAlarms: Contract['canScheduleExactAlarms'] = async 
   throw getUnsupportedError('Android', 12);
 };
 
+export const canUseFullScreenIntent: Contract['canUseFullScreenIntent'] = async () => {
+  throw getUnsupportedError('Android', 14);
+};
+
 export const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
   throw getUnsupportedError('iOS', 14);
 };

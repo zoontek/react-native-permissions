@@ -27,6 +27,10 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.canScheduleExactAlarms(reactApplicationContext, promise)
   }
 
+  override fun canUseFullScreenIntent(promise: Promise) {
+    RNPermissionsModuleImpl.canUseFullScreenIntent(reactApplicationContext, promise)
+  }
+
   override fun check(permission: String, promise: Promise) {
     RNPermissionsModuleImpl.check(reactApplicationContext, permission, promise)
   }

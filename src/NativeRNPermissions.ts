@@ -8,6 +8,7 @@ type NotificationsResponse = {
 
 export interface Spec extends TurboModule {
   canScheduleExactAlarms(): Promise<boolean>;
+  canUseFullScreenIntent(): Promise<boolean>;
   check(permission: string): Promise<string>;
   checkLocationAccuracy(): Promise<string>;
   checkMultiple(permissions: string[]): Promise<Object>;

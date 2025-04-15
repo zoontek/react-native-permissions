@@ -1,6 +1,7 @@
 package com.zoontek.rnpermissions
 
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -70,6 +71,10 @@ object RNPermissionsModuleImpl {
           setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
           putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
         }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && type == "fullscreen" -> Intent().apply {
+          setAction(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
+          setData(Uri.parse("package:${packageName}"))
+        }
         else -> Intent().apply {
           setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
           setData(Uri.parse("package:${packageName}"))
@@ -94,6 +99,17 @@ object RNPermissionsModuleImpl {
     val canScheduleExactAlarms: Boolean = alarmManager?.canScheduleExactAlarms() ?: false
 
     promise.resolve(canScheduleExactAlarms)
+  }
+
+  fun canUseFullScreenIntent(reactContext: ReactApplicationContext, promise: Promise) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      return promise.resolve(true)
+    }
+
+    val notificationManager = reactContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val canUseFullScreenIntent = notificationManager.canUseFullScreenIntent()
+
+    promise.resolve(canUseFullScreenIntent)
   }
 
   fun check(reactContext: ReactApplicationContext, permission: String, promise: Promise) {

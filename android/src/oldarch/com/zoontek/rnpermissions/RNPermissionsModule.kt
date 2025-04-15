@@ -32,6 +32,11 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
   }
 
   @ReactMethod
+  fun canUseFullScreenIntent(promise: Promise) {
+    RNPermissionsModuleImpl.canUseFullScreenIntent(reactApplicationContext, promise)
+  }
+
+  @ReactMethod
   fun check(permission: String, promise: Promise) {
     RNPermissionsModuleImpl.check(reactApplicationContext, permission, promise)
   }
