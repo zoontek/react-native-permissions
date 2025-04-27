@@ -1,7 +1,7 @@
 import type {Contract} from './contract';
 import NativeModule from './NativeRNPermissions';
 import {LocationAccuracy, NotificationsResponse, PermissionStatus} from './types';
-import {canScheduleExactAlarms} from './unsupportedMethods';
+import {canScheduleExactAlarms, canUseFullScreenIntent} from './unsupportedMethods';
 import {uniq} from './utils';
 
 const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
@@ -66,6 +66,7 @@ const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
 
 export const methods: Contract = {
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   check,
   checkLocationAccuracy,
   checkMultiple,

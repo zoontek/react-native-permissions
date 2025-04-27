@@ -460,6 +460,11 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
   reject(@"RNPermissions:canScheduleExactAlarms", @"canScheduleExactAlarms is not supported on iOS", nil);
 }
 
+- (void)canUseFullScreenIntent:(RCTPromiseResolveBlock)resolve
+                        reject:(RCTPromiseRejectBlock)reject {
+  reject(@"RNPermissions:canUseFullScreenIntent", @"canUseFullScreenIntent is not supported on iOS", nil);
+}
+
 - (void)shouldShowRequestRationale:(NSString *)permission
                            resolve:(RCTPromiseResolveBlock)resolve
                             reject:(RCTPromiseRejectBlock)reject {

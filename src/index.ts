@@ -8,6 +8,7 @@ export {RESULTS} from './results';
 export * from './types';
 
 export const canScheduleExactAlarms = methods.canScheduleExactAlarms;
+export const canUseFullScreenIntent = methods.canUseFullScreenIntent;
 export const check = methods.check;
 export const checkLocationAccuracy = methods.checkLocationAccuracy;
 export const checkMultiple = methods.checkMultiple;
@@ -24,6 +25,7 @@ export default {
   RESULTS,
 
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   check,
   checkLocationAccuracy,
   checkMultiple,

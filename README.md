@@ -811,16 +811,17 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuse
 
 #### openSettings
 
-Open application / alarms / notifications settings (default to `application`).
+Open application / alarms / notifications / fullscreen settings (default to `application`).
 
 > [!NOTE]
 >
 > - `notifications` settings are only available on Android 8+ and iOS 15.4+
 > - `alarms` settings are only available on Android 12+
+> - `fullscreen` settings are only available on Android 14+
 > - If a choice is not available, it fallbacks to `application` settings
 
 ```ts
-function openSettings(type?: 'application' | 'alarms' | 'notifications'): Promise<void>;
+function openSettings(type?: 'application' | 'alarms' | 'notifications' | 'fullscreen'): Promise<void>;
 ```
 
 ```ts
@@ -843,6 +844,23 @@ import {canScheduleExactAlarms} from 'react-native-permissions';
 canScheduleExactAlarms()
   .then((value) => console.log(`Can schedule exact alarms: ${value}`))
   .catch(() => console.warn('Cannot check exact alarms scheduling setting'));
+```
+
+
+#### canUseFullScreenIntent (Android)
+
+Check if your app can use full screen intent.
+
+```ts
+function canUseFullScreenIntent(): Promise<boolean>;
+```
+
+```ts
+import {canUseFullScreenIntent} from 'react-native-permissions';
+
+canUseFullScreenIntent()
+  .then((value) => console.log(`Can use full screen intent: ${value}`))
+  .catch(() => console.warn('Cannot check full screen intent using setting'));
 ```
 
 #### openPhotoPicker (iOS 14+)

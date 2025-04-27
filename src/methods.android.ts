@@ -46,6 +46,9 @@ const openSettings: Contract['openSettings'] = async (type = 'application') => {
 const canScheduleExactAlarms: Contract['canScheduleExactAlarms'] = () =>
   NativeModule.canScheduleExactAlarms();
 
+const canUseFullScreenIntent: Contract['canUseFullScreenIntent'] = () =>
+  NativeModule.canUseFullScreenIntent();
+
 const check: Contract['check'] = async (permission) => {
   const status = (await NativeModule.check(permission)) as PermissionStatus;
   return status;
@@ -90,6 +93,7 @@ const requestMultiple: Contract['requestMultiple'] = (permissions) => {
 
 export const methods: Contract = {
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   check,
   checkLocationAccuracy,
   checkMultiple,

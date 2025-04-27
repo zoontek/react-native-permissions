@@ -26,6 +26,7 @@ inline winrt::Microsoft::ReactNative::FieldMap GetStructInfo(RNPermissionsSpec_N
 struct RNPermissionsSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
   static constexpr auto methods = std::tuple{
       Method<void(Promise<bool>) noexcept>{0, L"canScheduleExactAlarms"},
+      Method<void(Promise<bool>) noexcept>{0, L"canUseFullScreenIntent"},
       Method<void(std::string, Promise<std::string>) noexcept>{1, L"check"},
       Method<void(Promise<std::string>) noexcept>{2, L"checkLocationAccuracy"},
       Method<void(std::vector<std::string>, Promise<::React::JSValue>) noexcept>{3, L"checkMultiple"},
@@ -48,6 +49,11 @@ struct RNPermissionsSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
           "canScheduleExactAlarms",
           "    REACT_METHOD(canScheduleExactAlarms) void canScheduleExactAlarms(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n"
           "    REACT_METHOD(canScheduleExactAlarms) static void canScheduleExactAlarms(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n");
+    REACT_SHOW_METHOD_SPEC_ERRORS(
+          0,
+          "canUseFullScreenIntent",
+          "    REACT_METHOD(canUseFullScreenIntent) void canUseFullScreenIntent(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n"
+          "    REACT_METHOD(canUseFullScreenIntent) static void canUseFullScreenIntent(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n");
     REACT_SHOW_METHOD_SPEC_ERRORS(
           1,
           "check",

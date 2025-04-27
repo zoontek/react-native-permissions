@@ -10,6 +10,7 @@ import type {
 
 export type Contract = {
   canScheduleExactAlarms(): Promise<boolean>;
+  canUseFullScreenIntent(): Promise<boolean>;
   check(permission: Permission): Promise<PermissionStatus>;
   checkLocationAccuracy(): Promise<LocationAccuracy>;
   checkMultiple<P extends Permission[]>(
@@ -17,7 +18,7 @@ export type Contract = {
   ): Promise<Record<P[number], PermissionStatus>>;
   checkNotifications(): Promise<NotificationsResponse>;
   openPhotoPicker(): Promise<void>;
-  openSettings(type?: 'application' | 'alarms' | 'notifications'): Promise<void>;
+  openSettings(type?: 'application' | 'alarms' | 'notifications' | 'fullscreen'): Promise<void>;
   request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
   requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
   requestMultiple<P extends Permission[]>(

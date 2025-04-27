@@ -27,6 +27,7 @@ const checkMultiple: Contract['checkMultiple'] = async (permissions) => {
 
 export const methods: Contract = {
   canScheduleExactAlarms: Promise.reject,
+  canUseFullScreenIntent: Promise.reject,
   check,
   checkLocationAccuracy,
   checkMultiple,

@@ -3,6 +3,7 @@ import type {Contract} from './contract';
 import type {NotificationsResponse, PermissionStatus} from './types';
 import {
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   checkLocationAccuracy,
   openPhotoPicker,
   requestLocationAccuracy,
@@ -50,6 +51,7 @@ const requestMultiple: Contract['requestMultiple'] = async (permissions) => {
 
 export const methods: Contract = {
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   check,
   checkLocationAccuracy,
   checkMultiple,

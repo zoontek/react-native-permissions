@@ -41,6 +41,11 @@ void RNPermissions::RNPermissions::CanScheduleExactAlarms(React::ReactPromise<bo
   promise.Resolve(false);
 }
 
+void RNPermissions::RNPermissions::CanUseFullScreenIntent(React::ReactPromise<bool>&& promise) noexcept {
+  // no-op - Android only
+  promise.Resolve(false);
+}
+
 void RNPermissions::RNPermissions::CheckLocationAccuracy(React::ReactPromise<std::string>&& promise) noexcept {
   // no-op - iOS 14+ only
   promise.Resolve("N/A");

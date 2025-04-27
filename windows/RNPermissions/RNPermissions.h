@@ -29,6 +29,9 @@ struct RNPermissions
     REACT_METHOD(CanScheduleExactAlarms, L"canScheduleExactAlarms");
     void CanScheduleExactAlarms(React::ReactPromise<bool>&& promise) noexcept;
 
+    REACT_METHOD(CanUseFullScreenIntent, L"canUseFullScreenIntent");
+    void CanUseFullScreenIntent(React::ReactPromise<bool>&& promise) noexcept;
+
     REACT_METHOD(CheckLocationAccuracy, L"checkLocationAccuracy");
     void CheckLocationAccuracy(React::ReactPromise<std::string>&& promise) noexcept;
 

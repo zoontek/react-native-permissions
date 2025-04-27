@@ -13,6 +13,7 @@ const PERMISSIONS = {ANDROID, IOS, WINDOWS};
 export {PERMISSIONS, RESULTS};
 
 export const canScheduleExactAlarms = jest.fn(async () => true);
+export const canUseFullScreenIntent = jest.fn(async () => true);
 export const check = jest.fn(async () => RESULTS.GRANTED);
 export const checkLocationAccuracy = jest.fn(async () => 'full');
 export const openPhotoPicker = jest.fn(async () => {});
@@ -70,6 +71,7 @@ export default {
   RESULTS,
 
   canScheduleExactAlarms,
+  canUseFullScreenIntent,
   check,
   checkLocationAccuracy,
   checkMultiple,
