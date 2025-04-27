@@ -67,13 +67,13 @@ object RNPermissionsModuleImpl {
           setAction(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
           setData(Uri.parse("package:${packageName}"))
         }
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && type == "notifications" -> Intent().apply {
-          setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-          putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-        }
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && type == "fullscreen" -> Intent().apply {
           setAction(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
           setData(Uri.parse("package:${packageName}"))
+        }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && type == "notifications" -> Intent().apply {
+          setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+          putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
         }
         else -> Intent().apply {
           setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)

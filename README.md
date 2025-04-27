@@ -811,7 +811,7 @@ requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.FACE_ID]).then((statuse
 
 #### openSettings
 
-Open application / alarms / notifications / fullscreen settings (default to `application`).
+Open application / alarms / fullscreen / notifications settings (default to `application`).
 
 > [!NOTE]
 >
@@ -821,7 +821,9 @@ Open application / alarms / notifications / fullscreen settings (default to `app
 > - If a choice is not available, it fallbacks to `application` settings
 
 ```ts
-function openSettings(type?: 'application' | 'alarms' | 'notifications' | 'fullscreen'): Promise<void>;
+function openSettings(
+  type?: 'application' | 'alarms' | 'fullscreen' | 'notifications',
+): Promise<void>;
 ```
 
 ```ts
@@ -845,7 +847,6 @@ canScheduleExactAlarms()
   .then((value) => console.log(`Can schedule exact alarms: ${value}`))
   .catch(() => console.warn('Cannot check exact alarms scheduling setting'));
 ```
-
 
 #### canUseFullScreenIntent (Android)
 

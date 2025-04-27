@@ -18,7 +18,7 @@ export type Contract = {
   ): Promise<Record<P[number], PermissionStatus>>;
   checkNotifications(): Promise<NotificationsResponse>;
   openPhotoPicker(): Promise<void>;
-  openSettings(type?: 'application' | 'alarms' | 'notifications' | 'fullscreen'): Promise<void>;
+  openSettings(type?: 'application' | 'alarms' | 'fullscreen' | 'notifications'): Promise<void>;
   request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;
   requestLocationAccuracy(options: LocationAccuracyOptions): Promise<LocationAccuracy>;
   requestMultiple<P extends Permission[]>(
