@@ -190,6 +190,7 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
   <uses-permission android:name="android.permission.SEND_SMS" />
+  <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
   <uses-permission android:name="android.permission.USE_SIP" />
   <uses-permission android:name="android.permission.UWB_RANGING" />
   <uses-permission android:name="android.permission.WRITE_CALENDAR" />
@@ -821,7 +822,9 @@ Open application / alarms / notifications / fullscreen settings (default to `app
 > - If a choice is not available, it fallbacks to `application` settings
 
 ```ts
-function openSettings(type?: 'application' | 'alarms' | 'notifications' | 'fullscreen'): Promise<void>;
+function openSettings(
+  type?: 'application' | 'alarms' | 'fullscreen' | 'notifications',
+): Promise<void>;
 ```
 
 ```ts
@@ -845,7 +848,6 @@ canScheduleExactAlarms()
   .then((value) => console.log(`Can schedule exact alarms: ${value}`))
   .catch(() => console.warn('Cannot check exact alarms scheduling setting'));
 ```
-
 
 #### canUseFullScreenIntent (Android)
 
