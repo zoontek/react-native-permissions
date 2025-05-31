@@ -1,5 +1,6 @@
 import type {IOSPermissionMap} from './permissions.ios';
 import type {WindowsPermissionMap} from './permissions.windows';
+import {proxifyPermissions} from './utils';
 
 const ANDROID = Object.freeze({
   ACCEPT_HANDOVER: 'android.permission.ACCEPT_HANDOVER',
@@ -48,6 +49,6 @@ export type AndroidPermissionMap = typeof ANDROID;
 
 export const PERMISSIONS = Object.freeze({
   ANDROID,
-  IOS: {} as IOSPermissionMap,
-  WINDOWS: {} as WindowsPermissionMap,
+  IOS: proxifyPermissions<IOSPermissionMap>('ios'),
+  WINDOWS: proxifyPermissions<WindowsPermissionMap>('windows'),
 } as const);

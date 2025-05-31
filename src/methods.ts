@@ -1,6 +1,6 @@
 import type {Contract} from './contract';
 import {RESULTS} from './results';
-import {PermissionStatus} from './types';
+import type {PermissionStatus} from './types';
 import {
   checkLocationAccuracy,
   openPhotoPicker,
