@@ -11,6 +11,7 @@
     "sourceMap": true,
     "stripInternal": true,
     "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

@@ -1,4 +1,4 @@
-import {ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
+import {type ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
 import * as fs from 'fs/promises';
 import * as path from 'path';

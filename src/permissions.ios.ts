@@ -1,5 +1,6 @@
 import type {AndroidPermissionMap} from './permissions.android';
 import type {WindowsPermissionMap} from './permissions.windows';
+import {proxifyPermissions} from './utils';
 
 const IOS = Object.freeze({
   APP_TRACKING_TRANSPARENCY: 'ios.permission.APP_TRACKING_TRANSPARENCY',
@@ -25,7 +26,7 @@ const IOS = Object.freeze({
 export type IOSPermissionMap = typeof IOS;
 
 export const PERMISSIONS = Object.freeze({
-  ANDROID: {} as AndroidPermissionMap,
+  ANDROID: proxifyPermissions<AndroidPermissionMap>('android'),
   IOS,
-  WINDOWS: {} as WindowsPermissionMap,
+  WINDOWS: proxifyPermissions<WindowsPermissionMap>('windows'),
 } as const);
