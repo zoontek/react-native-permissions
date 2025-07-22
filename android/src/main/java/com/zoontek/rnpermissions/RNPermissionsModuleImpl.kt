@@ -56,7 +56,8 @@ object RNPermissionsModuleImpl {
   )
 
   private fun isPermissionAvailable(permission: String): Boolean =
-    Build.VERSION.SDK_INT >= (minimumApi[permission] ?: Build.VERSION_CODES.BASE)
+    (permission.startsWith("android.") || permission.startsWith("com.android")) &&
+      Build.VERSION.SDK_INT >= (minimumApi[permission] ?: Build.VERSION_CODES.BASE)
 
   fun openSettings(reactContext: ReactApplicationContext, type: String?, promise: Promise) {
     try {
