@@ -21,10 +21,12 @@
 }
 
 - (RNPermissionStatus)currentStatus {
+  CLLocationManager *manager = [CLLocationManager new];
+
 #if TARGET_OS_TV
   return RNPermissionStatusNotAvailable;
 #else
-  switch ([CLLocationManager authorizationStatus]) {
+  switch ([manager authorizationStatus]) {
     case kCLAuthorizationStatusNotDetermined:
       return RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusRestricted:
@@ -59,13 +61,14 @@
 - (void)performRequest {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+  CLLocationManager *manager = [CLLocationManager new];
+  CLAuthorizationStatus status = [manager authorizationStatus];
 
   if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
     return _resolve([self currentStatus]);
   }
 
-  _locationManager = [CLLocationManager new];
+  _locationManager = manager;
   [_locationManager setDelegate:self];
 
   if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
@@ -96,26 +99,30 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _observingApplicationWillResignActive = false;
 
-    [self resolveStatus:[CLLocationManager authorizationStatus]];
+    [self resolveStatus];
   }
 }
 
 - (void)onApplicationDidBecomeActive {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self resolveStatus:[CLLocationManager authorizationStatus]];
+  [self resolveStatus];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
-    [self resolveStatus:status];
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
+  if ([manager authorizationStatus] != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
+    [self resolveStatus];
   }
 }
 
-- (void)resolveStatus:(CLAuthorizationStatus)status {
+- (void)resolveStatus {
   if (_resolve != nil) {
     _resolve([self currentStatus]);
     _resolve = nil;
+  }
+
+  if (_locationManager != nil) {
     [_locationManager setDelegate:nil];
+    _locationManager = nil;
   }
 }
 

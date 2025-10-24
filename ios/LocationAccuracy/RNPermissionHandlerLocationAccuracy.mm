@@ -14,71 +14,63 @@
 
 - (void)checkWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                  rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14.0, tvOS 14.0, *)) {
-    switch ([CLLocationManager authorizationStatus]) {
-      case kCLAuthorizationStatusNotDetermined:
-        return reject(@"cannot_check_location_accuracy", @"Location permission hasn't been requested first", nil);
-      case kCLAuthorizationStatusRestricted:
-      case kCLAuthorizationStatusDenied:
-        return reject(@"cannot_check_location_accuracy", @"Location permission has been blocked by the user", nil);
-      case kCLAuthorizationStatusAuthorizedWhenInUse:
-      case kCLAuthorizationStatusAuthorizedAlways:
-        break;
-    }
+  CLLocationManager *manager = [CLLocationManager new];
 
-    CLLocationManager *locationManager = [CLLocationManager new];
+  switch ([manager authorizationStatus]) {
+    case kCLAuthorizationStatusNotDetermined:
+      return reject(@"cannot_check_location_accuracy", @"Location permission hasn't been requested first", nil);
+    case kCLAuthorizationStatusRestricted:
+    case kCLAuthorizationStatusDenied:
+      return reject(@"cannot_check_location_accuracy", @"Location permission has been blocked by the user", nil);
+    case kCLAuthorizationStatusAuthorizedWhenInUse:
+    case kCLAuthorizationStatusAuthorizedAlways:
+      break;
+  }
 
-    switch (locationManager.accuracyAuthorization) {
-      case CLAccuracyAuthorizationFullAccuracy:
-        return resolve(@"full");
-      case CLAccuracyAuthorizationReducedAccuracy:
-        return resolve(@"reduced");
-    }
-  } else {
-    reject(@"cannot_check_location_accuracy", @"Only available on iOS 14 or higher", nil);
+  switch (manager.accuracyAuthorization) {
+    case CLAccuracyAuthorizationFullAccuracy:
+      return resolve(@"full");
+    case CLAccuracyAuthorizationReducedAccuracy:
+      return resolve(@"reduced");
   }
 }
 
 - (void)requestWithPurposeKey:(NSString * _Nonnull)purposeKey
                      resolver:(RCTPromiseResolveBlock _Nonnull)resolve
                      rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
-  if (@available(iOS 14.0, tvOS 14.0, *)) {
-    switch ([CLLocationManager authorizationStatus]) {
-      case kCLAuthorizationStatusNotDetermined:
-        return reject(@"cannot_request_location_accuracy", @"Location permission hasn't been requested first", nil);
-      case kCLAuthorizationStatusRestricted:
-      case kCLAuthorizationStatusDenied:
-        return reject(@"cannot_request_location_accuracy", @"Location permission has been blocked by the user", nil);
-      case kCLAuthorizationStatusAuthorizedWhenInUse:
-      case kCLAuthorizationStatusAuthorizedAlways:
-        break;
-    }
+  CLLocationManager *manager = [CLLocationManager new];
 
-    CLLocationManager *locationManager = [CLLocationManager new];
-
-    switch (locationManager.accuracyAuthorization) {
-      case CLAccuracyAuthorizationFullAccuracy:
-        return resolve(@"full"); // resolve early if full accuracy is already granted
-      case CLAccuracyAuthorizationReducedAccuracy:
-        break;
-    }
-
-    [locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
-                                                                  completion:^(NSError * _Nullable error) {
-      if (error) {
-        reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
-      } else {
-        switch (locationManager.accuracyAuthorization) {
-          case CLAccuracyAuthorizationFullAccuracy:
-            return resolve(@"full");
-          case CLAccuracyAuthorizationReducedAccuracy:
-            return resolve(@"reduced");
-        }
-      }
-    }];
-  } else {
-    reject(@"cannot_request_location_accuracy", @"Only available on iOS 14 or higher", nil);
+  switch ([manager authorizationStatus]) {
+    case kCLAuthorizationStatusNotDetermined:
+      return reject(@"cannot_request_location_accuracy", @"Location permission hasn't been requested first", nil);
+    case kCLAuthorizationStatusRestricted:
+    case kCLAuthorizationStatusDenied:
+      return reject(@"cannot_request_location_accuracy", @"Location permission has been blocked by the user", nil);
+    case kCLAuthorizationStatusAuthorizedWhenInUse:
+    case kCLAuthorizationStatusAuthorizedAlways:
+      break;
   }
+
+  switch (manager.accuracyAuthorization) {
+    case CLAccuracyAuthorizationFullAccuracy:
+      return resolve(@"full"); // resolve early if full accuracy is already granted
+    case CLAccuracyAuthorizationReducedAccuracy:
+      break;
+  }
+
+  [manager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey
+                                                                completion:^(NSError * _Nullable error) {
+    if (error) {
+      reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
+    } else {
+      switch (manager.accuracyAuthorization) {
+        case CLAccuracyAuthorizationFullAccuracy:
+          return resolve(@"full");
+        case CLAccuracyAuthorizationReducedAccuracy:
+          return resolve(@"reduced");
+      }
+    }
+  }];
 }
 
 @end
