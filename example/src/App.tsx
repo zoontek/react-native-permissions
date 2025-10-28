@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Fragment, useState} from 'react';
 import {Platform, ScrollView, StatusBar, View} from 'react-native';
 import {Appbar, Button, Divider, Snackbar, Text} from 'react-native-paper';
 import RNPermissions, {
@@ -7,22 +7,20 @@ import RNPermissions, {
   type Permission,
 } from 'react-native-permissions';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {SIRI, ...PERMISSIONS_IOS} = PERMISSIONS.IOS; // remove siri (certificate required)
 
 const PLATFORM_PERMISSIONS = Platform.select<
-  typeof PERMISSIONS.ANDROID | typeof PERMISSIONS_IOS | typeof PERMISSIONS.WINDOWS | {}
+  typeof PERMISSIONS.ANDROID | typeof PERMISSIONS_IOS | typeof PERMISSIONS.WINDOWS
 >({
   android: PERMISSIONS.ANDROID,
-  ios: PERMISSIONS_IOS,
+  default: PERMISSIONS_IOS,
   windows: PERMISSIONS.WINDOWS,
-  default: {},
 });
 
 const PERMISSIONS_VALUES: Permission[] = Object.values(PLATFORM_PERMISSIONS);
 
 export const App = () => {
-  const [snackbarContent, setSnackbarContent] = React.useState<string>();
+  const [snackbarContent, setSnackbarContent] = useState<string>();
 
   const showSnackbar = (title: string, response: unknown) =>
     setSnackbarContent(title + '\n\n' + JSON.stringify(response, null, 2));
@@ -74,7 +72,7 @@ export const App = () => {
           const name = parts[parts.length - 1];
 
           return (
-            <React.Fragment key={item}>
+            <Fragment key={item}>
               <View style={{padding: 20}}>
                 <Text numberOfLines={1} variant="bodyMedium">
                   {name}
@@ -118,7 +116,7 @@ export const App = () => {
               </View>
 
               <Divider />
-            </React.Fragment>
+            </Fragment>
           );
         })}
 

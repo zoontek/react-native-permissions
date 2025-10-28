@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": ["fetchWindowsCapabilites.js"],
+  "plugins": ["typescript", "react"],
+  "categories": {
+    "correctness": "error",
+    "perf": "error",
+    "restriction": "error",
+    "suspicious": "error"
+  },
+  "env": {
+    "builtin": true
+  },
+  "rules": {
+    "no-await-in-loop": "off",
+    "no-empty-function": "off",
+    "no-eq-null": "off",
+    "no-undefined": "off",
+
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+
+    "react/jsx-filename-extension": "off",
+    "react/react-in-jsx-scope": "off",
+
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-require-imports": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-wrapper-object-types": "off",
+
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
+  },
+  "overrides": [
+    {
+      "files": ["example/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

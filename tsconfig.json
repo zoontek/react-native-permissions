@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "esnext",
     "lib": ["ES2017"],
     "jsx": "react-native",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
 
     "allowJs": false,
     "strict": true,
@@ -11,7 +11,6 @@
     "sourceMap": true,
     "stripInternal": true,
     "skipLibCheck": true,
-    "verbatimModuleSyntax": true,
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -20,7 +19,8 @@
     "noImplicitReturns": false,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src"],
   "exclude": ["example", "node_modules"]
