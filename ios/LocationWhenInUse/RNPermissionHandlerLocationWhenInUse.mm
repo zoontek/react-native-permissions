@@ -19,8 +19,16 @@
   return @"ios.permission.LOCATION_WHEN_IN_USE";
 }
 
-- (RNPermissionStatus)currentStatus {
-  switch ([CLLocationManager authorizationStatus]) {
+- (CLAuthorizationStatus)statusWithManager:(CLLocationManager *)manager {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
+    return [manager authorizationStatus];
+  } else {
+    return [CLLocationManager authorizationStatus];
+  }
+}
+
+- (RNPermissionStatus)convertStatus:(CLAuthorizationStatus)status {
+  switch (status) {
     case kCLAuthorizationStatusNotDetermined:
       return RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusRestricted:
@@ -33,23 +41,49 @@
   }
 }
 
+- (RNPermissionStatus)currentStatus {
+  return [self convertStatus:[self statusWithManager:[CLLocationManager new]]];
+}
+
 - (void)requestWithResolver:(void (^ _Nonnull)(RNPermissionStatus))resolve
                    rejecter:(void (^ _Nonnull)(NSError * _Nonnull))reject {
-  if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
-    return resolve([self currentStatus]);
+  CLLocationManager *manager = [CLLocationManager new];
+  CLAuthorizationStatus status = [self statusWithManager:manager];
+
+  if (status != kCLAuthorizationStatusNotDetermined) {
+    return resolve([self convertStatus:status]);
   }
 
+  _locationManager = manager;
   _resolve = resolve;
 
-  _locationManager = [CLLocationManager new];
   [_locationManager setDelegate:self];
   [_locationManager requestWhenInUseAuthorization];
 }
 
+#pragma mark - iOS 14+
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
+  if ([manager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
+    [self resolveStatus];
+  }
+}
+
+#pragma mark - iOS < 14
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
   if (status != kCLAuthorizationStatusNotDetermined) {
+    [self resolveStatus];
+  }
+}
+
+- (void)resolveStatus {
+  if (_resolve != nil && _locationManager != nil) {
+    CLAuthorizationStatus status = [self statusWithManager:_locationManager];
+
     [_locationManager setDelegate:nil];
-    _resolve([self currentStatus]);
+    _locationManager = nil;
+
+    _resolve([self convertStatus:status]);
+    _resolve = nil;
   }
 }
 

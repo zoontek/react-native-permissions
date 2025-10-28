@@ -20,11 +20,16 @@
   return @"ios.permission.LOCATION_ALWAYS";
 }
 
-- (RNPermissionStatus)currentStatus {
-#if TARGET_OS_TV
-  return RNPermissionStatusNotAvailable;
-#else
-  switch ([CLLocationManager authorizationStatus]) {
+- (CLAuthorizationStatus)statusWithManager:(CLLocationManager *)manager {
+  if (@available(iOS 14.0, tvOS 14.0, *)) {
+    return [manager authorizationStatus];
+  } else {
+    return [CLLocationManager authorizationStatus];
+  }
+}
+
+- (RNPermissionStatus)convertStatus:(CLAuthorizationStatus)status {
+  switch (status) {
     case kCLAuthorizationStatusNotDetermined:
       return RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusRestricted:
@@ -35,6 +40,13 @@
     case kCLAuthorizationStatusAuthorizedAlways:
       return RNPermissionStatusAuthorized;
   }
+}
+
+- (RNPermissionStatus)currentStatus {
+#if TARGET_OS_TV
+  return RNPermissionStatusNotAvailable;
+#else
+  return [self convertStatus:[self statusWithManager:[CLLocationManager new]]];
 #endif
 }
 
@@ -59,14 +71,12 @@
 - (void)performRequest {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+  CLLocationManager *manager = [CLLocationManager new];
+  CLAuthorizationStatus status = [self statusWithManager:manager];
 
   if (status != kCLAuthorizationStatusNotDetermined && status != kCLAuthorizationStatusAuthorizedWhenInUse) {
-    return _resolve([self currentStatus]);
+    return _resolve([self convertStatus:status]);
   }
-
-  _locationManager = [CLLocationManager new];
-  [_locationManager setDelegate:self];
 
   if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -78,6 +88,9 @@
     [self performSelector:@selector(onApplicationWillResignActiveCheck) withObject:nil afterDelay:0.25];
   }
 
+  _locationManager = manager;
+
+  [_locationManager setDelegate:self];
   [_locationManager requestAlwaysAuthorization];
 }
 
@@ -95,27 +108,38 @@
   if (_observingApplicationWillResignActive) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _observingApplicationWillResignActive = false;
-
-    [self resolveStatus:[CLLocationManager authorizationStatus]];
+    [self resolveStatus];
   }
 }
 
 - (void)onApplicationDidBecomeActive {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self resolveStatus:[CLLocationManager authorizationStatus]];
+  [self resolveStatus];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
-    [self resolveStatus:status];
+#pragma mark - iOS 14+
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
+  if ([manager authorizationStatus] != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
+    [self resolveStatus];
   }
 }
 
-- (void)resolveStatus:(CLAuthorizationStatus)status {
-  if (_resolve != nil) {
-    _resolve([self currentStatus]);
-    _resolve = nil;
+#pragma mark - iOS < 14
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+  if (status != kCLAuthorizationStatusNotDetermined && !_observingApplicationWillResignActive) {
+    [self resolveStatus];
+  }
+}
+
+- (void)resolveStatus {
+  if (_resolve != nil && _locationManager != nil) {
+    CLAuthorizationStatus status = [self statusWithManager:_locationManager];
+
     [_locationManager setDelegate:nil];
+    _locationManager = nil;
+
+    _resolve([self convertStatus:status]);
+    _resolve = nil;
   }
 }
 
