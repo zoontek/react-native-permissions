@@ -53,7 +53,7 @@
   "codegenConfig": {
     "name": "RNPermissionsSpec",
     "type": "modules",
-    "jsSrcsDir": "./src",
+    "jsSrcsDir": "./src/specs",
     "android": {
       "javaPackageName": "com.zoontek.rnpermissions"
     },

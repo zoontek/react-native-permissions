@@ -1,5 +1,5 @@
-import NativeModule from './NativeRNPermissions';
 import type {Contract} from './contract';
+import NativeModule from './specs/NativeRNPermissions';
 import type {NotificationsResponse, PermissionStatus} from './types';
 import {
   canScheduleExactAlarms,

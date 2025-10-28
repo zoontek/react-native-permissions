@@ -6,6 +6,8 @@
     "node": ">=20"
   },
   "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "pod-backup": "cp ../RNPermissions.podspec ../RNPermissions.podspec.bak",
     "pod-restore": "mv ../RNPermissions.podspec.bak ../RNPermissions.podspec",
     "pod-update": "yarn pod-backup && cd ios && bundle install && bundle exec pod update && cd .. && yarn pod-restore",

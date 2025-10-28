@@ -1,5 +1,5 @@
 import type {Contract} from './contract';
-import NativeModule from './NativeRNPermissions';
+import NativeModule from './specs/NativeRNPermissions';
 import type {LocationAccuracy, NotificationsResponse, PermissionStatus} from './types';
 import {canScheduleExactAlarms, canUseFullScreenIntent} from './unsupportedMethods';
 import {uniq} from './utils';
