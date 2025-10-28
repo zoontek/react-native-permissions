@@ -84,7 +84,6 @@
     "react": "19.1.1",
     "react-native": "0.82.1",
     "react-native-builder-bob": "^0.40.14",
-    "react-native-windows": "0.79.4",
     "typescript": "^5.9.3"
   },
   "react-native-windows": {
