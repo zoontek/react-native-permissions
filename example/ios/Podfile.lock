@@ -2408,7 +2408,7 @@ PODS:
     - React-perflogger (= 0.82.1)
     - React-utils (= 0.82.1)
     - SocketRocket
-  - RNPermissions (5.4.2):
+  - RNPermissions (5.4.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -2780,7 +2780,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: a45ef34bb22dc1c9b2ac1f74167d9a28af961176
   ReactCodegen: 878add6c7d8ff8cea87697c44d29c03b79b6f2d9
   ReactCommon: 804dc80944fa90b86800b43c871742ec005ca424
-  RNPermissions: 789cc61ad4a30180ad2c98addf033feb4d8f1d0d
+  RNPermissions: f6b3e41e29e5c4994cc90257c3093ae6fdcb1f98
   RNVectorIcons: 791f13226ec4a3fd13062eda9e892159f0981fae
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 689c8e04277f3ad631e60fe2a08e41d411daf8eb

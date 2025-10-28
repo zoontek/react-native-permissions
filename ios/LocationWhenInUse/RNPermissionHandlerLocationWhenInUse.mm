@@ -76,7 +76,7 @@
 }
 
 - (void)resolveStatus {
-  if (_resolve != nil && _locationManager != nil) {
+  if (_locationManager != nil && _resolve != nil) {
     CLAuthorizationStatus status = [self statusWithManager:_locationManager];
 
     [_locationManager setDelegate:nil];
