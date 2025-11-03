@@ -42,7 +42,7 @@
   },
   "overrides": [
     {
-      "files": ["example/**"],
+      "files": ["example/**", "scripts/**"],
       "rules": {
         "no-console": "off"
       }

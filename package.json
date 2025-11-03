@@ -25,7 +25,7 @@
     "!/android/build",
     "/dist",
     "/ios",
-    "/scripts",
+    "/scripts/setup.rb",
     "/windows",
     "/src",
     "/*.podspec",
@@ -39,7 +39,8 @@
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && bob build && rm -rf dist/*/package.json",
-    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn build"
+    "podspec-check": "node scripts/podspec-check.mts",
+    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn podspec-check && yarn build"
   },
   "react-native-builder-bob": {
     "source": "src",
