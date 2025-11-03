@@ -5,8 +5,8 @@ def log_warning(message)
 end
 
 def setup_permissions(config)
-  if config.nil? || !config.is_a?(Array)
-    return log_warning("Invalid config argument")
+  if config.nil? || !config.is_a?(Array) || config.empty?
+    return log_warning("Invalid config argument (expected a non-empty Array)")
   end
 
   permissions_frameworks = {
