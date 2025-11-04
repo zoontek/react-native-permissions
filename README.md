@@ -203,19 +203,6 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 </manifest>
 ```
 
-> On Android 11+:
->
-> When a user grants a one-time permission (such as for location, camera, or microphone), Android treats the session as active while the app is in use — even if it's backgrounded or reopened shortly after being closed. One-time permissions are not revoked immediately.
->
-> The system will revoke the permission automatically:
->
-> - If the app is terminated (e.g. swiped away or force-closed), the permission is typically revoked within **30 to 60 seconds**.
-> - If the app is backgrounded and unused, the permission is also usually revoked within **30 to 60 seconds**.
->
-> The exact timing may vary depending on the Android version and device. This behavior is designed to protect user privacy without disrupting the app experience.
->
-> See the official Android documentation [Android 11 permissions documentation](https://developer.android.com/about/versions/11/privacy/permissions#one-time-permission).
-
 ### Expo
 
 If you use Expo, the previous sections don't apply. Instead just update your `app.json` file with the corresponding values, but using the syntax exemplified below:
@@ -391,6 +378,18 @@ This can be implemented as follows:
   - If `blocked`, display an alert prompting the user to go to settings (using `openSettings`)
 
 The user experience (UX) is excellent on iOS and acceptable on Android, considering the platform's limitations.
+
+> [!IMPORTANT]
+> _One-time permissions on Android 11+_
+>
+> When a user grants a one-time permission (such as for location, camera, or microphone), Android treats the session as active while the app is in use — even if it's backgrounded or reopened shortly after being closed.
+>
+> The system will revoke the permission automatically within **30 to 60 seconds** if:
+>
+> - The app is terminated (e.g. swiped away or force-closed).
+> - The app is backgrounded and unused.
+>
+> The exact timing may vary depending on the Android version and device. For more informations, see the official [Android 11 permissions documentation](https://developer.android.com/about/versions/11/privacy/permissions#one-time-permission).
 
 ## API
 
