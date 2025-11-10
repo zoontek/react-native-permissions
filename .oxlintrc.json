@@ -28,14 +28,14 @@
     "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off",
 
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-require-imports": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-wrapper-object-types": "off",
+    "typescript/ban-ts-comment": "off",
+    "typescript/ban-types": "off",
+    "typescript/explicit-function-return-type": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    "typescript/no-explicit-any": "off",
+    "typescript/no-require-imports": "off",
+    "typescript/no-var-requires": "off",
+    "typescript/no-wrapper-object-types": "off",
 
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error"
