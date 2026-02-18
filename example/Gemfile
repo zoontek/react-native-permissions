@@ -14,3 +14,7 @@ gem 'bigdecimal'
 gem 'logger'
 gem 'benchmark'
 gem 'mutex_m'
+
+# Fix https://github.com/CocoaPods/CocoaPods/issues/12805
+gem 'nkf'
+gem 'base64'
