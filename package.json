@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "5.4.4",
+  "version": "5.5.0-beta.0",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -18,8 +18,8 @@
   ],
   "react-native": "./src/index.ts",
   "types": "./dist/typescript/commonjs/index.d.ts",
-  "main": "./dist/commonjs/index.js",
   "module": "./dist/module/index.js",
+  "main": "./dist/commonjs/index.js",
   "exports": {
     ".": {
       "import": {
@@ -51,8 +51,9 @@
         "default": "./dist/commonjs/mock.js"
       }
     },
+    "./app.plugin.js": "./app.plugin.js",
     "./package.json": "./package.json",
-    "./app.plugin.js": "./app.plugin.js"
+    "./scripts/setup.rb": "./scripts/setup.rb"
   },
   "files": [
     "/android",
