@@ -16,10 +16,44 @@
     "permission",
     "authorization"
   ],
-  "types": "dist/typescript/index.d.ts",
-  "main": "dist/commonjs/index.js",
-  "module": "dist/module/index.js",
-  "react-native": "src/index.ts",
+  "react-native": "./src/index.ts",
+  "types": "./dist/typescript/commonjs/index.d.ts",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/module/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/typescript/module/index.d.ts",
+        "default": "./dist/module/index.js"
+      },
+      "require": {
+        "types": "./dist/typescript/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./expo": {
+      "import": {
+        "types": "./dist/typescript/module/expo.d.ts",
+        "default": "./dist/module/expo.js"
+      },
+      "require": {
+        "types": "./dist/typescript/commonjs/expo.d.ts",
+        "default": "./dist/commonjs/expo.js"
+      }
+    },
+    "./mock": {
+      "import": {
+        "types": "./dist/typescript/module/mock.d.ts",
+        "default": "./dist/module/mock.js"
+      },
+      "require": {
+        "types": "./dist/typescript/commonjs/mock.d.ts",
+        "default": "./dist/commonjs/mock.js"
+      }
+    },
+    "./package.json": "./package.json",
+    "./app.plugin.js": "./app.plugin.js"
+  },
   "files": [
     "/android",
     "!/android/build",
@@ -29,16 +63,14 @@
     "/windows",
     "/src",
     "/*.podspec",
-    "app.plugin.js",
-    "mock.js",
-    "react-native.config.js"
+    "app.plugin.js"
   ],
   "scripts": {
     "clean": "rm -rf dist",
     "format": "prettier '**/*' -u -w",
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
-    "build": "yarn clean && bob build && rm -rf dist/*/package.json",
+    "build": "yarn clean && bob build",
     "podspec-check": "node scripts/podspec-check.mts",
     "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn podspec-check && yarn build"
   },
@@ -46,9 +78,19 @@
     "source": "src",
     "output": "dist",
     "targets": [
-      "commonjs",
-      "module",
-      "typescript"
+      "typescript",
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ]
     ]
   },
   "codegenConfig": {
@@ -78,6 +120,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@expo/config-plugins": "*",
+    "@types/jest": "^29.5.14",
     "@types/react": "^19.2.0",
     "oxlint": "^1.48.0",
     "prettier": "^3.8.1",

@@ -1,10 +1,12 @@
 import {type ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import {readFile, writeFile} from 'fs/promises';
+import {join} from 'path';
 
-type Props = {
-  iosPermissions?: (
+type NonEmptyArray<T> = [T, ...T[]];
+
+type PermissionsPluginConfig = {
+  iosPermissions: NonEmptyArray<
     | 'AppTrackingTransparency'
     | 'Bluetooth'
     | 'Calendars'
@@ -25,19 +27,22 @@ type Props = {
     | 'Siri'
     | 'SpeechRecognition'
     | 'StoreKit'
-  )[];
+  >;
 };
 
-const withPermissions: ConfigPlugin<Props> = (expoConfig, {iosPermissions = []}) =>
+const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
+  expoConfig,
+  {iosPermissions} = {},
+) =>
   withDangerousMod(expoConfig, [
     'ios',
     async (config) => {
-      const file = path.join(config.modRequest.platformProjectRoot, 'Podfile');
-      const contents = await fs.readFile(file, 'utf8');
-
-      if (iosPermissions.length === 0) {
+      if (iosPermissions == null || iosPermissions.length === 0) {
         return config;
       }
+
+      const filePath = join(config.modRequest.platformProjectRoot, 'Podfile');
+      const contents = await readFile(filePath, 'utf8');
 
       const withRequire = mergeContents({
         tag: 'require',
@@ -60,9 +65,12 @@ ${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
         comment: '#',
       });
 
-      await fs.writeFile(file, withSetup.contents, 'utf-8');
+      await writeFile(filePath, withSetup.contents, 'utf-8');
       return config;
     },
   ]);
 
-export default createRunOncePlugin(withPermissions, 'react-native-permissions');
+const PACKAGE_NAME = 'react-native-permissions';
+
+export const withPermissions = createRunOncePlugin(plugin, PACKAGE_NAME);
+export default (config: PermissionsPluginConfig) => [PACKAGE_NAME, config] as const;
