@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": ">= 22.11.0"
   },
   "scripts": {
     "android": "react-native run-android",
@@ -19,23 +19,23 @@
     "reinstall": "yarn clean && yarn install"
   },
   "dependencies": {
-    "react": "19.1.1",
-    "react-native": "0.82.1",
-    "react-native-paper": "^5.14.5",
+    "react": "19.2.3",
+    "react-native": "0.84.0",
+    "react-native-paper": "^5.15.0",
     "react-native-permissions": "link:../",
-    "react-native-safe-area-context": "^5.6.1",
+    "react-native-safe-area-context": "^5.6.2",
     "react-native-vector-icons": "^10.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "20.0.0",
-    "@react-native-community/cli-platform-android": "20.0.0",
-    "@react-native-community/cli-platform-ios": "20.0.0",
-    "@react-native/babel-preset": "0.82.1",
-    "@react-native/metro-config": "0.82.1",
-    "@types/react": "^19.1.1",
+    "@react-native-community/cli": "20.1.0",
+    "@react-native-community/cli-platform-android": "20.1.0",
+    "@react-native-community/cli-platform-ios": "20.1.0",
+    "@react-native/babel-preset": "0.84.0",
+    "@react-native/metro-config": "0.84.0",
+    "@types/react": "^19.2.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "typescript": "^5.9.3"
   }

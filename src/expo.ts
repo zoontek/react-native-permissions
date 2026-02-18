@@ -28,8 +28,8 @@ type Props = {
   )[];
 };
 
-const withPermissions: ConfigPlugin<Props> = (config, {iosPermissions = []}) =>
-  withDangerousMod(config, [
+const withPermissions: ConfigPlugin<Props> = (expoConfig, {iosPermissions = []}) =>
+  withDangerousMod(expoConfig, [
     'ios',
     async (config) => {
       const file = path.join(config.modRequest.platformProjectRoot, 'Podfile');
