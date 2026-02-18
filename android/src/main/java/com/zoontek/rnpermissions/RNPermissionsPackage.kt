@@ -23,7 +23,6 @@ class RNPermissionsPackage : TurboReactPackage() {
         RNPermissionsModuleImpl.NAME,
         RNPermissionsModuleImpl.NAME,
         false,
-        false,
         true,
         false,
         isTurboModule
