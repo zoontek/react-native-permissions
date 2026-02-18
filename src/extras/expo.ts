@@ -73,4 +73,7 @@ ${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
 const PACKAGE_NAME = 'react-native-permissions';
 
 export const withPermissions = createRunOncePlugin(plugin, PACKAGE_NAME);
-export default (config: PermissionsPluginConfig) => [PACKAGE_NAME, config] as const;
+
+export default (
+  config: PermissionsPluginConfig,
+): [typeof PACKAGE_NAME, PermissionsPluginConfig] => [PACKAGE_NAME, config];
