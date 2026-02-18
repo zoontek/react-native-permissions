@@ -1854,7 +1854,7 @@ PODS:
     - React-utils (= 0.84.0)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.84.0)
-  - RNPermissions (5.5.0-beta.0):
+  - RNPermissions (5.5.0-beta.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2208,7 +2208,7 @@ SPEC CHECKSUMS:
   ReactCodegen: c5e5343f6691b0cd76913b9be5e89e5a83ff3315
   ReactCommon: 92b53b0bd7f7d86154dc9f512c1ea5dee717cc72
   ReactNativeDependencies: e3a2ea1c43a893c264e3ef6b8f76865f8681eaf5
-  RNPermissions: ebd03b061276695541689454bc0f3d6bb909bf52
+  RNPermissions: 9c97d3f229c5e4d3d3546d53b624e6e204bfa50a
   RNVectorIcons: 4351544f100d4f12cac156a7c13399e60bab3e26
   Yoga: 772166513f9cd2d61a6251d0dacbbfaa5b537479
 
