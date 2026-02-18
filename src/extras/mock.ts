@@ -1,9 +1,9 @@
-import type {Contract} from './contract';
-import {PERMISSIONS as PERMISSIONS_ANDROID} from './permissions.android';
-import {PERMISSIONS as PERMISSIONS_IOS} from './permissions.ios';
-import {PERMISSIONS as PERMISSIONS_WINDOWS} from './permissions.windows';
-import {RESULTS} from './results';
-import type {PermissionStatus} from './types';
+import type {Contract} from '../contract';
+import {PERMISSIONS as PERMISSIONS_ANDROID} from '../permissions.android';
+import {PERMISSIONS as PERMISSIONS_IOS} from '../permissions.ios';
+import {PERMISSIONS as PERMISSIONS_WINDOWS} from '../permissions.windows';
+import {RESULTS} from '../results';
+import type {PermissionStatus} from '../types';
 
 const PERMISSIONS = {
   ANDROID: PERMISSIONS_ANDROID,

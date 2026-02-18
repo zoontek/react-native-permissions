@@ -1,2 +1,2 @@
-const {withPermissions} = require('./dist/commonjs/expo');
+const {withPermissions} = require('./dist/commonjs/extras/expo');
 module.exports = withPermissions;

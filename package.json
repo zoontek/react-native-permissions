@@ -33,22 +33,22 @@
     },
     "./expo": {
       "import": {
-        "types": "./dist/typescript/module/expo.d.ts",
-        "default": "./dist/module/expo.js"
+        "types": "./dist/typescript/module/extras/expo.d.ts",
+        "default": "./dist/module/extras/expo.js"
       },
       "require": {
-        "types": "./dist/typescript/commonjs/expo.d.ts",
-        "default": "./dist/commonjs/expo.js"
+        "types": "./dist/typescript/commonjs/extras/expo.d.ts",
+        "default": "./dist/commonjs/extras/expo.js"
       }
     },
     "./mock": {
       "import": {
-        "types": "./dist/typescript/module/mock.d.ts",
-        "default": "./dist/module/mock.js"
+        "types": "./dist/typescript/module/extras/mock.d.ts",
+        "default": "./dist/module/extras/mock.js"
       },
       "require": {
-        "types": "./dist/typescript/commonjs/mock.d.ts",
-        "default": "./dist/commonjs/mock.js"
+        "types": "./dist/typescript/commonjs/extras/mock.d.ts",
+        "default": "./dist/commonjs/extras/mock.js"
       }
     },
     "./app.plugin.js": "./app.plugin.js",
