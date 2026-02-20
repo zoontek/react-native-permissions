@@ -27,18 +27,14 @@
 
     "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
 
-    "typescript/ban-ts-comment": "off",
-    "typescript/ban-types": "off",
     "typescript/explicit-function-return-type": "off",
     "typescript/explicit-module-boundary-types": "off",
-    "typescript/no-explicit-any": "off",
     "typescript/no-require-imports": "off",
     "typescript/no-var-requires": "off",
-    "typescript/no-wrapper-object-types": "off",
-
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "typescript/no-wrapper-object-types": "off"
   },
   "overrides": [
     {
