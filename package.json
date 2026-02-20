@@ -16,10 +16,9 @@
     "permission",
     "authorization"
   ],
-  "react-native": "./src/index.ts",
-  "types": "./dist/typescript/commonjs/index.d.ts",
-  "module": "./dist/module/index.js",
   "main": "./dist/commonjs/index.js",
+  "module": "./dist/module/index.js",
+  "types": "./dist/typescript/commonjs/index.d.ts",
   "exports": {
     ".": {
       "import": {
