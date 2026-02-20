@@ -3,10 +3,8 @@ import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
 import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
 
-type NonEmptyArray<T> = [T, ...T[]];
-
 type PermissionsPluginConfig = {
-  iosPermissions: NonEmptyArray<
+  iosPermissions?: (
     | 'AppTrackingTransparency'
     | 'Bluetooth'
     | 'Calendars'
@@ -27,7 +25,7 @@ type PermissionsPluginConfig = {
     | 'Siri'
     | 'SpeechRecognition'
     | 'StoreKit'
-  >;
+  )[];
 };
 
 const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (

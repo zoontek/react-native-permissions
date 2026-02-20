@@ -205,41 +205,71 @@ Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml
 
 ### Expo
 
-If you use Expo, the previous sections don't apply. Instead just update your `app.json` file with the corresponding values, but using the syntax exemplified below:
+If you use Expo, the previous sections don't apply. Instead just update your app config file with the corresponding values, using one of the syntaxes exemplified below:
 
-```js
+<details open>
+<summary><strong>With dynamic configuration (app.config.js, app.config.ts)</strong></summary>
+
+```ts
+import type {ConfigContext, ExpoConfig} from 'expo/config';
+import permissions from 'react-native-permissions/expo'; // use `require` with app.config.js
+
+export default ({config}: ConfigContext): ExpoConfig => ({
+  // …
+  plugins: [
+    permissions({
+      // Add setup_permissions to your Podfile (see iOS setup - steps 1, 2 and 3)
+      iosPermissions: ['Camera', 'Microphone'],
+    }),
+  ],
+  ios: {
+    // Add descriptions to your Info.plist (see iOS setup - step 4)
+    infoPlist: {
+      NSCameraUsageDescription: '[REASON]',
+      NSMicrophoneUsageDescription: '[REASON]',
+    },
+  },
+  android: {
+    // Add permissions to your AndroidManifest.xml (see Android setup)
+    permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
+  },
+});
+```
+
+</details>
+
+<details>
+<summary><strong>With static configuration (app.json)</strong></summary>
+
+```jsonc
 {
   "expo": {
-    "name": "Awesome app",
+    // …
     "plugins": [
       [
         "react-native-permissions",
         {
           // Add setup_permissions to your Podfile (see iOS setup - steps 1, 2 and 3)
-          "iosPermissions": [
-            "Camera",
-            "Microphone"
-          ]
-        }
-      ]
+          "iosPermissions": ["Camera", "Microphone"],
+        },
+      ],
     ],
     "ios": {
       // Add descriptions to your Info.plist (see iOS setup - step 4)
       "infoPlist": {
         "NSCameraUsageDescription": "[REASON]",
-        "NSMicrophoneUsageDescription": "[REASON]"
-      }
+        "NSMicrophoneUsageDescription": "[REASON]",
+      },
     },
     "android": {
       // Add permissions to your AndroidManifest.xml (see Android setup)
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ]
-    }
-  }
+      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
+    },
+  },
 }
 ```
+
+</details>
 
 ### Windows
 
