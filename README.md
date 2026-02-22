@@ -212,7 +212,7 @@ If you use Expo, the previous sections don't apply. Instead just update your app
 
 ```ts
 import type {ConfigContext, ExpoConfig} from 'expo/config';
-import permissions from 'react-native-permissions/expo'; // use `require` with app.config.js
+import permissions from 'react-native-permissions/expo'; // use `require` in app.config.js
 
 export default ({config}: ConfigContext): ExpoConfig => ({
   // …
