@@ -4,6 +4,9 @@ import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
 
 type PermissionsPluginConfig = {
+  /**
+   * List of iOS permissions to add in the Podfile via `setup_permissions`
+   */
   iosPermissions?: (
     | 'AppTrackingTransparency'
     | 'Bluetooth'
