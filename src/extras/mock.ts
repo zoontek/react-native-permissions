@@ -5,13 +5,13 @@ import {PERMISSIONS as PERMISSIONS_WINDOWS} from '../permissions.windows';
 import {RESULTS} from '../results';
 import type {PermissionStatus} from '../types';
 
-const PERMISSIONS = {
-  ANDROID: PERMISSIONS_ANDROID,
-  IOS: PERMISSIONS_IOS,
-  WINDOWS: PERMISSIONS_WINDOWS,
-};
+export {RESULTS} from '../results';
 
-export {PERMISSIONS, RESULTS};
+export const PERMISSIONS = {
+  ANDROID: PERMISSIONS_ANDROID.ANDROID,
+  IOS: PERMISSIONS_IOS.IOS,
+  WINDOWS: PERMISSIONS_WINDOWS.WINDOWS,
+};
 
 export const canScheduleExactAlarms = jest.fn(async () => true);
 export const canUseFullScreenIntent = jest.fn(async () => true);
