@@ -1,6 +1,6 @@
 {
   "name": "react-native-permissions",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "license": "MIT",
   "description": "An unified permissions API for React Native on iOS, Android and Windows",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -122,11 +122,11 @@
     "@expo/config-plugins": "*",
     "@types/jest": "^29.5.14",
     "@types/react": "^19.2.0",
-    "oxlint": "^1.49.0",
+    "oxlint": "^1.51.0",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "react": "19.2.3",
-    "react-native": "0.84.0",
+    "react-native": "0.84.1",
     "react-native-builder-bob": "^0.40.18",
     "typescript": "^5.9.3"
   },
