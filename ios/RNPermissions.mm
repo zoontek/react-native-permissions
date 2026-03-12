@@ -1,68 +1,32 @@
 #import "RNPermissions.h"
 #import <React/RCTLog.h>
 
-#if __has_include("RNPermissionHandlerBluetooth.h")
-#import "RNPermissionHandlerBluetooth.h"
-#endif
-#if __has_include("RNPermissionHandlerCalendars.h")
-#import "RNPermissionHandlerCalendars.h"
-#endif
-#if __has_include("RNPermissionHandlerCamera.h")
-#import "RNPermissionHandlerCamera.h"
-#endif
-#if __has_include("RNPermissionHandlerContacts.h")
-#import "RNPermissionHandlerContacts.h"
-#endif
-#if __has_include("RNPermissionHandlerFaceID.h")
-#import "RNPermissionHandlerFaceID.h"
-#endif
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-#import "RNPermissionHandlerLocationAlways.h"
-#endif
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-#import "RNPermissionHandlerLocationWhenInUse.h"
-#endif
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
-#import "RNPermissionHandlerMediaLibrary.h"
-#endif
-#if __has_include("RNPermissionHandlerMicrophone.h")
-#import "RNPermissionHandlerMicrophone.h"
-#endif
-#if __has_include("RNPermissionHandlerMotion.h")
-#import "RNPermissionHandlerMotion.h"
-#endif
-#if __has_include("RNPermissionHandlerNotifications.h")
-#import "RNPermissionHandlerNotifications.h"
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-#import "RNPermissionHandlerPhotoLibrary.h"
-#endif
-#if __has_include("RNPermissionHandlerReminders.h")
-#import "RNPermissionHandlerReminders.h"
-#endif
-#if __has_include("RNPermissionHandlerSiri.h")
-#import "RNPermissionHandlerSiri.h"
-#endif
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
-#import "RNPermissionHandlerSpeechRecognition.h"
-#endif
-#if __has_include("RNPermissionHandlerStoreKit.h")
-#import "RNPermissionHandlerStoreKit.h"
-#endif
-#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-#import "RNPermissionHandlerAppTrackingTransparency.h"
-#endif
-#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-#import "RNPermissionHandlerPhotoLibraryAddOnly.h"
-#endif
-#if __has_include("RNPermissionHandlerLocationAccuracy.h")
-#import "RNPermissionHandlerLocationAccuracy.h"
-#endif
-#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-#import "RNPermissionHandlerCalendarsWriteOnly.h"
-#endif
-
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
+
+@protocol RNPermissionHandlerClass <NSObject>
++ (NSString * _Nonnull)handlerUniqueId;
++ (NSArray<NSString *> * _Nonnull)usageDescriptionKeys;
+@end
+
+@protocol RNPermissionHandlerNotificationsClass <RNPermissionHandlerClass>
+- (void)checkWithResolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve;
+- (void)requestWithOptions:(NSArray<NSString *> * _Nonnull)options
+                  resolver:(void (^ _Nonnull)(RNPermissionStatus status, NSDictionary * _Nonnull settings))resolve
+                  rejecter:(void (^ _Nonnull)(NSError * _Nonnull error))reject;
+@end
+
+@protocol RNPermissionHandlerPhotoLibraryClass <RNPermissionHandlerClass>
+- (void)openPhotoPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                           rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
+@end
+
+@protocol RNPermissionHandlerLocationAccuracyClass <RNPermissionHandlerClass>
+- (void)checkWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                 rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
+- (void)requestWithPurposeKey:(NSString * _Nonnull)purposeKey
+                     resolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                     rejecter:(RCTPromiseRejectBlock _Nonnull)reject;
+@end
 
 @interface RNPermissions()
 
@@ -98,152 +62,57 @@ RCT_EXPORT_MODULE();
   return handler;
 }
 
+- (NSArray<NSString *> *)handlerClassNames {
+  return @[
+    @"RNPermissionHandlerBluetooth",
+    @"RNPermissionHandlerCalendars",
+    @"RNPermissionHandlerCamera",
+    @"RNPermissionHandlerContacts",
+    @"RNPermissionHandlerFaceID",
+    @"RNPermissionHandlerLocationAlways",
+    @"RNPermissionHandlerLocationWhenInUse",
+    @"RNPermissionHandlerMediaLibrary",
+    @"RNPermissionHandlerMicrophone",
+    @"RNPermissionHandlerMotion",
+    @"RNPermissionHandlerPhotoLibrary",
+    @"RNPermissionHandlerReminders",
+    @"RNPermissionHandlerSiri",
+    @"RNPermissionHandlerSpeechRecognition",
+    @"RNPermissionHandlerStoreKit",
+    @"RNPermissionHandlerAppTrackingTransparency",
+    @"RNPermissionHandlerPhotoLibraryAddOnly",
+    @"RNPermissionHandlerCalendarsWriteOnly",
+  ];
+}
+
+- (id<RNPermissionHandler> _Nullable)runtimeHandlerForClassName:(NSString *)className
+                                                     permission:(NSString *)permission {
+  Class handlerClass = NSClassFromString(className);
+
+  if (handlerClass == nil) {
+    return nil;
+  }
+
+  id<RNPermissionHandlerClass> typedHandlerClass = (id<RNPermissionHandlerClass>)handlerClass;
+
+  if ([permission isEqualToString:[typedHandlerClass handlerUniqueId]]) {
+    return [self checkPermissionHandler:(id<RNPermissionHandler>)[handlerClass new]];
+  }
+
+  return nil;
+}
+
 - (id<RNPermissionHandler> _Nullable)handlerForPermission:(NSString *)permission {
   bool hasPermissionHandlers = false;
 
-#if __has_include("RNPermissionHandlerBluetooth.h")
-  hasPermissionHandlers = true;
+  for (NSString *className in [self handlerClassNames]) {
+    hasPermissionHandlers = hasPermissionHandlers || (NSClassFromString(className) != nil);
+    id<RNPermissionHandler> handler = [self runtimeHandlerForClassName:className permission:permission];
 
-  if ([permission isEqualToString:[RNPermissionHandlerBluetooth handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerBluetooth new]];
+    if (handler != nil) {
+      return handler;
+    }
   }
-#endif
-
-#if __has_include("RNPermissionHandlerCalendars.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerCalendars handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerCalendars new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerCamera.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerCamera handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerCamera new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerContacts.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerContacts handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerContacts new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerFaceID.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerFaceID handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerFaceID new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerLocationAlways.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerLocationAlways handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerLocationAlways new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerLocationWhenInUse.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerLocationWhenInUse handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerLocationWhenInUse new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerMediaLibrary.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerMediaLibrary handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerMediaLibrary new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerMicrophone.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerMicrophone handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerMicrophone new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerMotion.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerMotion handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerMotion new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerPhotoLibrary handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerPhotoLibrary new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerReminders.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerReminders handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerReminders new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerSiri.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerSiri handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerSiri new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerSpeechRecognition.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerSpeechRecognition handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerSpeechRecognition new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerStoreKit.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerStoreKit handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerStoreKit new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerAppTrackingTransparency.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerAppTrackingTransparency handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerAppTrackingTransparency new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerPhotoLibraryAddOnly.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerPhotoLibraryAddOnly handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerPhotoLibraryAddOnly new]];
-  }
-#endif
-
-#if __has_include("RNPermissionHandlerCalendarsWriteOnly.h")
-  hasPermissionHandlers = true;
-
-  if ([permission isEqualToString:[RNPermissionHandlerCalendarsWriteOnly handlerUniqueId]]) {
-    return [self checkPermissionHandler:[RNPermissionHandlerCalendarsWriteOnly new]];
-  }
-#endif
 
 #if RCT_DEV
   NSMutableString *message = [NSMutableString new];
@@ -368,24 +237,31 @@ RCT_EXPORT_METHOD(request:(NSString *)permission
 
 RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerNotifications.h")
-  RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
+  Class handlerClass = NSClassFromString(@"RNPermissionHandlerNotifications");
+  if (handlerClass == nil) {
+    reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+    return;
+  }
+
+  id<RNPermissionHandlerNotificationsClass> handler = (id<RNPermissionHandlerNotificationsClass>)[handlerClass new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler checkWithResolver:^(RNPermissionStatus status, NSDictionary * _Nonnull settings) {
     resolve(@{ @"status": [self stringForStatus:status], @"settings": settings });
     [self unlockHandler:lockId];
   }];
-#else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
-#endif
 }
 
 RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerNotifications.h")
-  RNPermissionHandlerNotifications *handler = [RNPermissionHandlerNotifications new];
+  Class handlerClass = NSClassFromString(@"RNPermissionHandlerNotifications");
+  if (handlerClass == nil) {
+    reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+    return;
+  }
+
+  id<RNPermissionHandlerNotificationsClass> handler = (id<RNPermissionHandlerNotificationsClass>)[handlerClass new];
   NSString *lockId = [self lockHandler:(id<RNPermissionHandler>)handler];
 
   [handler requestWithOptions:options
@@ -397,44 +273,45 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
     reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, error);
     [self unlockHandler:lockId];
   }];
-#else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
-#endif
 }
 
 RCT_EXPORT_METHOD(openPhotoPicker:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerPhotoLibrary.h")
-  RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
+  Class handlerClass = NSClassFromString(@"RNPermissionHandlerPhotoLibrary");
+  if (handlerClass == nil) {
+    reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
+    return;
+  }
+
+  id<RNPermissionHandlerPhotoLibraryClass> handler = (id<RNPermissionHandlerPhotoLibraryClass>)[handlerClass new];
   [handler openPhotoPickerWithResolver:resolve rejecter:reject];
-#else
-  reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
-#endif
 }
 
 RCT_EXPORT_METHOD(checkLocationAccuracy:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerLocationAccuracy.h")
-  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+  Class handlerClass = NSClassFromString(@"RNPermissionHandlerLocationAccuracy");
+  if (handlerClass == nil) {
+    reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+    return;
+  }
 
-  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  id<RNPermissionHandlerLocationAccuracyClass> handler = (id<RNPermissionHandlerLocationAccuracyClass>)[handlerClass new];
+  [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
   [handler checkWithResolver:resolve rejecter:reject];
-#else
-  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
-#endif
 }
 
 RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
-#if __has_include("RNPermissionHandlerLocationAccuracy.h")
-  [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
+  Class handlerClass = NSClassFromString(@"RNPermissionHandlerLocationAccuracy");
+  if (handlerClass == nil) {
+    reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+    return;
+  }
 
-  RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
+  id<RNPermissionHandlerLocationAccuracyClass> handler = (id<RNPermissionHandlerLocationAccuracyClass>)[handlerClass new];
+  [self checkUsageDescriptionKeys:[[handler class] usageDescriptionKeys]];
   [handler requestWithPurposeKey:purposeKey resolver:resolve rejecter:reject];
-#else
-  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
-#endif
 }
 
 #if RCT_NEW_ARCH_ENABLED
