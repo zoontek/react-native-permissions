@@ -77,7 +77,7 @@ GEM
       mutex_m
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
-    json (2.18.1)
+    json (2.19.2)
     logger (1.7.0)
     minitest (6.0.2)
       drb (~> 2.0)
@@ -93,8 +93,8 @@ GEM
     rexml (3.4.4)
     ruby-macho (2.5.1)
     securerandom (0.4.1)
-    typhoeus (1.4.1)
-      ethon (>= 0.9.0)
+    typhoeus (1.6.0)
+      ethon (>= 0.18.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     xcodeproj (1.25.1)
@@ -121,7 +121,7 @@ DEPENDENCIES
   xcodeproj (< 1.26.0)
 
 RUBY VERSION
-   ruby 3.3.1p55
+   ruby 3.4.8p72
 
 BUNDLED WITH
-   2.5.9
+   2.6.9

@@ -1,7 +1,7 @@
 import {type ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
-import {readFile, writeFile} from 'fs/promises';
-import {join} from 'path';
+import {readFile, writeFile} from 'node:fs/promises';
+import {join} from 'node:path';
 
 type PermissionsPluginConfig = {
   /**
