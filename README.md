@@ -3,7 +3,7 @@
 An unified permissions API for React Native on iOS, Android and Windows.<br>
 (For Windows only builds 18362 and later are supported)
 
-[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/zoontek/react-native-permissions/blob/main/LICENSE)
+[![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/zoontek/react-native-permissions/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/react-native-permissions?style=for-the-badge)](https://www.npmjs.org/package/react-native-permissions)
 [![npm downloads](https://img.shields.io/npm/dt/react-native-permissions.svg?label=downloads&style=for-the-badge)](https://www.npmjs.org/package/react-native-permissions)
 <br />
