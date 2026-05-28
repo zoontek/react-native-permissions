@@ -279,19 +279,24 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSString *)lockHandler:(id<RNPermissionHandler>)handler {
-  if (_handlers == nil) {
-    _handlers = [NSMutableDictionary new];
-  }
-
   NSString *lockId = [[NSUUID UUID] UUIDString];
-  [_handlers setObject:handler forKey:lockId];
+
+  @synchronized (self) {
+    if (_handlers == nil) {
+      _handlers = [NSMutableDictionary new];
+    }
+
+    [_handlers setObject:handler forKey:lockId];
+  }
 
   return lockId;
 }
 
 - (void)unlockHandler:(NSString * _Nonnull)lockId {
-  if (_handlers != nil) {
-    [_handlers removeObjectForKey:lockId];
+  @synchronized (self) {
+    if (_handlers != nil) {
+      [_handlers removeObjectForKey:lockId];
+    }
   }
 }
 
