@@ -42,8 +42,11 @@
                                  completionHandler:^(BOOL granted, NSError * _Nullable error) {
     if (error != nil && error.code != 100) { // error code 100 is permission denied
       reject(error);
+    } else if (granted) {
+      // "granted" is YES for both full and limited access, so query the status to tell them apart
+      resolve([self currentStatus] == RNPermissionStatusLimited ? RNPermissionStatusLimited : RNPermissionStatusAuthorized);
     } else {
-      resolve(granted ? RNPermissionStatusAuthorized : [self currentStatus]);
+      resolve([self currentStatus]);
     }
   }];
 #endif
