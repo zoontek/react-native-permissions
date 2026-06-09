@@ -35,6 +35,7 @@
     case kCLAuthorizationStatusRestricted:
       return RNPermissionStatusRestricted;
     case kCLAuthorizationStatusAuthorizedWhenInUse:
+      return [RNPermissions isFlaggedAsRequested:[[self class] handlerUniqueId]] ? RNPermissionStatusDenied : RNPermissionStatusNotDetermined;
     case kCLAuthorizationStatusDenied:
       return RNPermissionStatusDenied;
     case kCLAuthorizationStatusAuthorizedAlways:
@@ -137,6 +138,8 @@
 
     [_locationManager setDelegate:nil];
     _locationManager = nil;
+
+    [RNPermissions flagAsRequested:[[self class] handlerUniqueId]];
 
     _resolve([self convertStatus:status]);
     _resolve = nil;
