@@ -1,7 +1,13 @@
 #import "RNPermissionHandlerContacts.h"
+#import <React/RCTUtils.h>
 
 #if !TARGET_OS_TV
 #import <Contacts/Contacts.h>
+
+@protocol RNPermissionsContactsPickerInterface
+- (void)presentFrom:(UIViewController * _Nonnull)viewController
+         completion:(void (^ _Nonnull)(void))completion;
+@end
 #endif
 
 @implementation RNPermissionHandlerContacts
@@ -49,6 +55,32 @@
       resolve([self currentStatus]);
     }
   }];
+#endif
+}
+
+- (void)openContactsPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+                              rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
+#if TARGET_OS_TV
+  reject(@"cannot_open_limited_picker", @"Only available on iOS 18 or higher", nil);
+#else
+  if (@available(iOS 18.0, *)) {
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusLimited) {
+      return reject(@"cannot_open_limited_picker", @"Contacts permission isn't limited", nil);
+    }
+
+    id picker = NSClassFromString(@"RNPermissionsContactsPicker");
+
+    if (picker == nil) {
+      return reject(@"cannot_open_limited_picker", @"Contact access picker is unavailable", nil);
+    }
+
+    [(id<RNPermissionsContactsPickerInterface>)picker presentFrom:RCTPresentedViewController()
+                                                       completion:^{
+      resolve(@(true));
+    }];
+  } else {
+    reject(@"cannot_open_limited_picker", @"Only available on iOS 18 or higher", nil);
+  }
 #endif
 }
 

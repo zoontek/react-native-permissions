@@ -36,6 +36,17 @@ export const App = () => {
 
         {Platform.OS === 'ios' && (
           <Appbar.Action
+            icon="account-multiple"
+            onPress={() => {
+              RNPermissions.openContactsPicker().catch((error) => {
+                console.error(error);
+              });
+            }}
+          />
+        )}
+
+        {Platform.OS === 'ios' && (
+          <Appbar.Action
             icon="image-multiple"
             onPress={() => {
               RNPermissions.openPhotoPicker().catch((error) => {

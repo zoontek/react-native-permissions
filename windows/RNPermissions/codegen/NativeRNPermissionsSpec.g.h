@@ -31,6 +31,7 @@ struct RNPermissionsSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
       Method<void(Promise<std::string>) noexcept>{2, L"checkLocationAccuracy"},
       Method<void(std::vector<std::string>, Promise<::React::JSValue>) noexcept>{3, L"checkMultiple"},
       Method<void(Promise<RNPermissionsSpec_NotificationsResponse>) noexcept>{4, L"checkNotifications"},
+      Method<void(Promise<bool>) noexcept>{5, L"openContactsPicker"},
       Method<void(Promise<bool>) noexcept>{5, L"openPhotoPicker"},
       Method<void(std::string, Promise<void>) noexcept>{6, L"openSettings"},
       Method<void(std::string, Promise<std::string>) noexcept>{7, L"request"},
@@ -74,6 +75,11 @@ struct RNPermissionsSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
           "checkNotifications",
           "    REACT_METHOD(checkNotifications) void checkNotifications(::React::ReactPromise<RNPermissionsSpec_NotificationsResponse> &&result) noexcept { /* implementation */ }\n"
           "    REACT_METHOD(checkNotifications) static void checkNotifications(::React::ReactPromise<RNPermissionsSpec_NotificationsResponse> &&result) noexcept { /* implementation */ }\n");
+    REACT_SHOW_METHOD_SPEC_ERRORS(
+          5,
+          "openContactsPicker",
+          "    REACT_METHOD(openContactsPicker) void openContactsPicker(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n"
+          "    REACT_METHOD(openContactsPicker) static void openContactsPicker(::React::ReactPromise<bool> &&result) noexcept { /* implementation */ }\n");
     REACT_SHOW_METHOD_SPEC_ERRORS(
           5,
           "openPhotoPicker",

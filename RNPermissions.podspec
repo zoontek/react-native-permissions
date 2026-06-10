@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
 
   s.platforms        = { :ios => "12.4", :tvos => "12.4" }
   s.requires_arc     = true
+  s.swift_version    = "5.9"
 
   s.source           = { :git => package["repository"]["url"], :tag => s.version }
   s.resource_bundles = { 'RNPermissionsPrivacyInfo' => 'ios/PrivacyInfo.xcprivacy' }

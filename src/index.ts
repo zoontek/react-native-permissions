@@ -13,6 +13,7 @@ export const check = methods.check;
 export const checkLocationAccuracy = methods.checkLocationAccuracy;
 export const checkMultiple = methods.checkMultiple;
 export const checkNotifications = methods.checkNotifications;
+export const openContactsPicker = methods.openContactsPicker;
 export const openPhotoPicker = methods.openPhotoPicker;
 export const openSettings = methods.openSettings;
 export const request = methods.request;
@@ -30,6 +31,7 @@ export default {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
+  openContactsPicker,
   openPhotoPicker,
   openSettings,
   request,

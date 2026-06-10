@@ -907,6 +907,20 @@ canUseFullScreenIntent()
   .catch(() => console.warn('Cannot check full screen intent using setting'));
 ```
 
+#### openContactsPicker (iOS 18+)
+
+Open a picker to update the contacts selection when `Contacts` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.
+
+```ts
+function openContactsPicker(): Promise<void>;
+```
+
+```ts
+import {openContactsPicker} from 'react-native-permissions';
+
+openContactsPicker().catch(() => console.warn('Cannot open contact access picker'));
+```
+
 #### openPhotoPicker (iOS 14+)
 
 Open a picker to update the photo selection when `PhotoLibrary` permission is `limited`. This will reject if unsupported or if full permission is already `granted`.

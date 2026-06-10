@@ -303,6 +303,10 @@ object RNPermissionsModuleImpl {
     return activity
   }
 
+  fun openContactsPicker(promise: Promise) {
+    promise.reject("Permissions:openContactsPicker", "openContactsPicker is not supported on Android")
+  }
+
   fun openPhotoPicker(promise: Promise) {
     promise.reject("Permissions:openPhotoPicker", "openPhotoPicker is not supported on Android")
   }

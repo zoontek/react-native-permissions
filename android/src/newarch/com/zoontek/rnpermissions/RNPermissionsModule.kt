@@ -67,6 +67,10 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
     RNPermissionsModuleImpl.requestLocationAccuracy(promise)
   }
 
+  override fun openContactsPicker(promise: Promise) {
+    RNPermissionsModuleImpl.openContactsPicker(promise)
+  }
+
   override fun openPhotoPicker(promise: Promise) {
     RNPermissionsModuleImpl.openPhotoPicker(promise)
   }
