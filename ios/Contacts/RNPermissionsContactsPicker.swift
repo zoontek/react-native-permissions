@@ -14,7 +14,11 @@ private struct ContactAccessPickerView: View {
       .onAppear { isPresented = true }
       .onChange(of: isPresented) { _, visible in
         if !visible {
-          onDismiss()
+          // Defer to the next runloop so UIKit finishes dismissing the
+          // (out-of-process) picker before we tear down its host controller.
+          DispatchQueue.main.async {
+            onDismiss()
+          }
         }
       }
   }
@@ -27,7 +31,7 @@ public class RNPermissionsContactsPicker: NSObject {
     from viewController: UIViewController,
     completion: @escaping () -> Void
   ) {
-    var host: UIHostingController<ContactAccessPickerView>?
+    weak var host: UIHostingController<ContactAccessPickerView>?
 
     let controller = UIHostingController(rootView: ContactAccessPickerView {
       host?.dismiss(animated: false, completion: completion)

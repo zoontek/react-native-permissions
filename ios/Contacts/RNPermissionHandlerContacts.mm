@@ -74,7 +74,13 @@
       return reject(@"cannot_open_limited_picker", @"Contact access picker is unavailable", nil);
     }
 
-    [(id<RNPermissionsContactsPickerInterface>)picker presentFrom:RCTPresentedViewController()
+    UIViewController *viewController = RCTPresentedViewController();
+
+    if (viewController == nil) {
+      return reject(@"cannot_open_limited_picker", @"No presented view controller to present from", nil);
+    }
+
+    [(id<RNPermissionsContactsPickerInterface>)picker presentFrom:viewController
                                                        completion:^{
       resolve(@(true));
     }];
