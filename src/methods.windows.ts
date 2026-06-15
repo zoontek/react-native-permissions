@@ -5,7 +5,7 @@ import {
   canScheduleExactAlarms,
   canUseFullScreenIntent,
   checkLocationAccuracy,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedMethods';
@@ -57,7 +57,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   openSettings,
   request,

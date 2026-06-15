@@ -31,7 +31,7 @@ inline void RNPermissions::RNPermissions::OpenSettings(std::wstring type, React:
     });
 }
 
-void RNPermissions::RNPermissions::OpenContactsPicker(React::ReactPromise<bool>&& promise) noexcept {
+void RNPermissions::RNPermissions::OpenContactPicker(React::ReactPromise<bool>&& promise) noexcept {
   // no-op - iOS 18+ only
   promise.Resolve(false);
 }

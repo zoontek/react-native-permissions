@@ -25,8 +25,8 @@ private struct ContactAccessPickerView: View {
 }
 
 @available(iOS 18.0, *)
-@objc(RNPermissionsContactsPicker)
-public class RNPermissionsContactsPicker: NSObject {
+@objc(RNPermissionsContactPicker)
+public class RNPermissionsContactPicker: NSObject {
   @objc public static func present(
     from viewController: UIViewController,
     completion: @escaping () -> Void

@@ -4,8 +4,8 @@ import type {LocationAccuracy, NotificationsResponse, PermissionStatus} from './
 import {canScheduleExactAlarms, canUseFullScreenIntent} from './unsupportedMethods';
 import {uniq} from './utils';
 
-const openContactsPicker: Contract['openContactsPicker'] = async () => {
-  await NativeModule.openContactsPicker();
+const openContactPicker: Contract['openContactPicker'] = async () => {
+  await NativeModule.openContactPicker();
 };
 
 const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
@@ -75,7 +75,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   openSettings,
   request,

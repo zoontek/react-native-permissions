@@ -17,7 +17,7 @@ export type Contract = {
     permissions: P,
   ): Promise<Record<P[number], PermissionStatus>>;
   checkNotifications(): Promise<NotificationsResponse>;
-  openContactsPicker(): Promise<void>;
+  openContactPicker(): Promise<void>;
   openPhotoPicker(): Promise<void>;
   openSettings(type?: 'application' | 'alarms' | 'fullscreen' | 'notifications'): Promise<void>;
   request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus>;

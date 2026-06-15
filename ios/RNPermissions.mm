@@ -407,11 +407,11 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
 #endif
 }
 
-RCT_EXPORT_METHOD(openContactsPicker:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(openContactPicker:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
 #if __has_include("RNPermissionHandlerContacts.h")
   RNPermissionHandlerContacts *handler = [RNPermissionHandlerContacts new];
-  [handler openContactsPickerWithResolver:resolve rejecter:reject];
+  [handler openContactPickerWithResolver:resolve rejecter:reject];
 #else
   reject(@"contacts_pod_missing", @"Contacts permission pod is missing", nil);
 #endif

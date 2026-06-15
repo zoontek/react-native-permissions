@@ -17,7 +17,7 @@ export const canScheduleExactAlarms = jest.fn(async () => true);
 export const canUseFullScreenIntent = jest.fn(async () => true);
 export const check = jest.fn(async () => RESULTS.GRANTED);
 export const checkLocationAccuracy = jest.fn(async () => 'full');
-export const openContactsPicker = jest.fn(async () => {});
+export const openContactPicker = jest.fn(async () => {});
 export const openPhotoPicker = jest.fn(async () => {});
 export const openSettings = jest.fn(async () => {});
 export const request = jest.fn(async () => RESULTS.GRANTED);
@@ -92,7 +92,7 @@ export default {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   openSettings,
   request,

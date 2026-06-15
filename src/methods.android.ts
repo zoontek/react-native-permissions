@@ -4,7 +4,7 @@ import NativeModule from './specs/NativeRNPermissions';
 import type {NotificationsResponse, Permission, PermissionStatus, Rationale} from './types';
 import {
   checkLocationAccuracy,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   requestLocationAccuracy,
 } from './unsupportedMethods';
@@ -99,7 +99,7 @@ export const methods: Contract = {
   checkLocationAccuracy,
   checkMultiple,
   checkNotifications,
-  openContactsPicker,
+  openContactPicker,
   openPhotoPicker,
   openSettings,
   request,

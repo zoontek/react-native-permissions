@@ -82,8 +82,8 @@ class RNPermissionsModule(reactContext: ReactApplicationContext?) :
   }
 
   @ReactMethod
-  fun openContactsPicker(promise: Promise) {
-    RNPermissionsModuleImpl.openContactsPicker(promise)
+  fun openContactPicker(promise: Promise) {
+    RNPermissionsModuleImpl.openContactPicker(promise)
   }
 
   @ReactMethod

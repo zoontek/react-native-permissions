@@ -4,7 +4,7 @@
 #if !TARGET_OS_TV
 #import <Contacts/Contacts.h>
 
-@protocol RNPermissionsContactsPickerInterface
+@protocol RNPermissionsContactPickerInterface
 - (void)presentFrom:(UIViewController * _Nonnull)viewController
          completion:(void (^ _Nonnull)(void))completion;
 @end
@@ -58,7 +58,7 @@
 #endif
 }
 
-- (void)openContactsPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
+- (void)openContactPickerWithResolver:(RCTPromiseResolveBlock _Nonnull)resolve
                               rejecter:(RCTPromiseRejectBlock _Nonnull)reject {
 #if TARGET_OS_TV
   reject(@"cannot_open_limited_picker", @"Only available on iOS 18 or higher", nil);
@@ -68,7 +68,7 @@
       return reject(@"cannot_open_limited_picker", @"Contacts permission isn't limited", nil);
     }
 
-    id picker = NSClassFromString(@"RNPermissionsContactsPicker");
+    id picker = NSClassFromString(@"RNPermissionsContactPicker");
 
     if (picker == nil) {
       return reject(@"cannot_open_limited_picker", @"Contact access picker is unavailable", nil);
@@ -80,8 +80,8 @@
       return reject(@"cannot_open_limited_picker", @"No presented view controller to present from", nil);
     }
 
-    [(id<RNPermissionsContactsPickerInterface>)picker presentFrom:viewController
-                                                       completion:^{
+    [(id<RNPermissionsContactPickerInterface>)picker presentFrom:viewController
+                                                      completion:^{
       resolve(@(true));
     }];
   } else {

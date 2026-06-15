@@ -38,7 +38,7 @@ export const App = () => {
           <Appbar.Action
             icon="account-multiple"
             onPress={() => {
-              RNPermissions.openContactsPicker().catch((error) => {
+              RNPermissions.openContactPicker().catch((error) => {
                 console.error(error);
               });
             }}

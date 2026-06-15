@@ -13,7 +13,7 @@ export interface Spec extends TurboModule {
   checkLocationAccuracy(): Promise<string>;
   checkMultiple(permissions: string[]): Promise<Object>;
   checkNotifications(): Promise<NotificationsResponse>;
-  openContactsPicker(): Promise<boolean>;
+  openContactPicker(): Promise<boolean>;
   openPhotoPicker(): Promise<boolean>;
   openSettings(type: string): Promise<void>;
   request(permission: string): Promise<string>;
