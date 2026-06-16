@@ -11,6 +11,10 @@ export const canUseFullScreenIntent: Contract['canUseFullScreenIntent'] = async 
   throw getUnsupportedError('Android', 14);
 };
 
+export const openContactPicker: Contract['openContactPicker'] = async () => {
+  throw getUnsupportedError('iOS', 18);
+};
+
 export const openPhotoPicker: Contract['openPhotoPicker'] = async () => {
   throw getUnsupportedError('iOS', 14);
 };

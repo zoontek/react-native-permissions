@@ -15,7 +15,7 @@ def setup_permissions(config)
     'Calendars' => ['EventKit'],
     'CalendarsWriteOnly' => ['EventKit'],
     'Camera' => ['AVFoundation'],
-    'Contacts' => ['Contacts'],
+    'Contacts' => ['Contacts', 'ContactsUI'],
     'FaceID' => ['LocalAuthentication'],
     'LocationAccuracy' => ['CoreLocation'],
     'LocationAlways' => ['CoreLocation'],
@@ -49,7 +49,7 @@ def setup_permissions(config)
 
   source_files = [
     '"ios/*.{h,mm}"',
-    *directories.map { |name| "\"ios/#{name}/*.{h,mm}\"" }
+    *directories.map { |name| "\"ios/#{name}/*.{h,mm,swift}\"" }
   ].join(', ')
 
   frameworks = directories

@@ -23,6 +23,9 @@ struct RNPermissions
     REACT_METHOD(OpenSettings, L"openSettings");
     void OpenSettings(std::wstring type, React::ReactPromise<void>&& promise) noexcept;
 
+    REACT_METHOD(OpenContactPicker, L"openContactPicker");
+    void OpenContactPicker(React::ReactPromise<bool>&& promise) noexcept;
+
     REACT_METHOD(OpenPhotoPicker, L"openPhotoPicker");
     void OpenPhotoPicker(React::ReactPromise<bool>&& promise) noexcept;
 
