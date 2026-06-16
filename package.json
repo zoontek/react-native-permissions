@@ -129,7 +129,7 @@
     "react": "19.2.3",
     "react-native": "0.86.0",
     "react-native-builder-bob": "^0.42.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "react-native-windows": {
     "init-windows": {

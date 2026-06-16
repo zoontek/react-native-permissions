@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
+
     "module": "esnext",
     "lib": ["ES2017"],
     "jsx": "react-native",
     "moduleResolution": "bundler",
+    "types": ["jest", "node"],
 
     "allowJs": false,
     "strict": true,
@@ -15,7 +18,6 @@
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": false,
