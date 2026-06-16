@@ -32,8 +32,8 @@ const shouldRequestPermission = async (
       rationale.title,
       rationale.message,
       [
-        ...(buttonNegative ? [{text: buttonNegative, onPress: () => resolve(false)}] : []),
-        {text: rationale.buttonPositive, onPress: () => resolve(true)},
+        ...(buttonNegative ? [{text: buttonNegative, onPress: (): void => resolve(false)}] : []),
+        {text: rationale.buttonPositive, onPress: (): void => resolve(true)},
       ],
       {cancelable: false},
     );

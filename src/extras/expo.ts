@@ -1,4 +1,9 @@
-import {type ConfigPlugin, createRunOncePlugin, withDangerousMod} from '@expo/config-plugins';
+import {
+  createRunOncePlugin,
+  withDangerousMod,
+  type ConfigPlugin,
+  type ExportedConfigWithProps,
+} from '@expo/config-plugins';
 import {mergeContents} from '@expo/config-plugins/build/utils/generateCode';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -37,7 +42,7 @@ const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
 ) =>
   withDangerousMod(expoConfig, [
     'ios',
-    async (config) => {
+    async (config): Promise<ExportedConfigWithProps<unknown>> => {
       if (iosPermissions == null || iosPermissions.length === 0) {
         return config;
       }

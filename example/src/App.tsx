@@ -1,9 +1,9 @@
-import {Fragment, useState} from 'react';
+import {Fragment, useState, type ReactElement} from 'react';
 import {Platform, ScrollView, StatusBar, View} from 'react-native';
 import {Appbar, Button, Divider, Snackbar, Text} from 'react-native-paper';
 import RNPermissions, {
-  type NotificationOption,
   PERMISSIONS,
+  type NotificationOption,
   type Permission,
 } from 'react-native-permissions';
 
@@ -19,13 +19,13 @@ const PLATFORM_PERMISSIONS = Platform.select<
 
 const PERMISSIONS_VALUES: Permission[] = Object.values(PLATFORM_PERMISSIONS);
 
-export const App = () => {
+export const App = (): ReactElement => {
   const [snackbarContent, setSnackbarContent] = useState<string>();
 
-  const showSnackbar = (title: string, response: unknown) =>
+  const showSnackbar = (title: string, response: unknown): void =>
     setSnackbarContent(title + '\n\n' + JSON.stringify(response, null, 2));
 
-  const hideSnackbar = () => setSnackbarContent(undefined);
+  const hideSnackbar = (): void => setSnackbarContent(undefined);
 
   return (
     <View style={{flex: 1}}>

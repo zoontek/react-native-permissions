@@ -1,6 +1,6 @@
 import type {Contract} from './contract';
 
-const getUnsupportedError = (os: 'iOS' | 'Android', version: number) =>
+const getUnsupportedError = (os: 'iOS' | 'Android', version: number): Error =>
   new Error(`Only supported by ${os} ${version} and above`);
 
 export const canScheduleExactAlarms: Contract['canScheduleExactAlarms'] = async () => {
