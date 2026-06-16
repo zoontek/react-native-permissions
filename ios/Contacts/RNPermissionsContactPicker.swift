@@ -39,6 +39,7 @@ public class RNPermissionsContactPicker: NSObject {
 
     controller.modalPresentationStyle = .overFullScreen
     controller.view.backgroundColor = .clear
+
     host = controller
 
     viewController.present(controller, animated: false)

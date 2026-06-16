@@ -382,7 +382,7 @@ RCT_EXPORT_METHOD(checkNotifications:(RCTPromiseResolveBlock)resolve
     [self unlockHandler:lockId];
   }];
 #else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+  reject(@"notifications_handler_not_set_up", @"Notifications permission handler is not set up", nil);
 #endif
 }
 
@@ -403,7 +403,7 @@ RCT_EXPORT_METHOD(requestNotifications:(NSArray<NSString *> * _Nonnull)options
     [self unlockHandler:lockId];
   }];
 #else
-  reject(@"notifications_pod_missing", @"Notifications permission pod is missing", nil);
+  reject(@"notifications_handler_not_set_up", @"Notifications permission handler is not set up", nil);
 #endif
 }
 
@@ -413,7 +413,7 @@ RCT_EXPORT_METHOD(openContactPicker:(RCTPromiseResolveBlock)resolve
   RNPermissionHandlerContacts *handler = [RNPermissionHandlerContacts new];
   [handler openContactPickerWithResolver:resolve rejecter:reject];
 #else
-  reject(@"contacts_pod_missing", @"Contacts permission pod is missing", nil);
+  reject(@"contacts_handler_not_set_up", @"Contacts permission handler is not set up", nil);
 #endif
 }
 
@@ -423,7 +423,7 @@ RCT_EXPORT_METHOD(openPhotoPicker:(RCTPromiseResolveBlock)resolve
   RNPermissionHandlerPhotoLibrary *handler = [RNPermissionHandlerPhotoLibrary new];
   [handler openPhotoPickerWithResolver:resolve rejecter:reject];
 #else
-  reject(@"photo_library_pod_missing", @"PhotoLibrary permission pod is missing", nil);
+  reject(@"photo_library_handler_not_set_up", @"PhotoLibrary permission handler is not set up", nil);
 #endif
 }
 
@@ -435,7 +435,7 @@ RCT_EXPORT_METHOD(checkLocationAccuracy:(RCTPromiseResolveBlock)resolve
   RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
   [handler checkWithResolver:resolve rejecter:reject];
 #else
-  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+  reject(@"location_accuracy_handler_not_set_up", @"LocationAccuracy permission handler is not set up", nil);
 #endif
 }
 
@@ -448,7 +448,7 @@ RCT_EXPORT_METHOD(requestLocationAccuracy:(NSString * _Nonnull)purposeKey
   RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
   [handler requestWithPurposeKey:purposeKey resolver:resolve rejecter:reject];
 #else
-  reject(@"location_accuracy_pod_missing", @"LocationAccuracy permission pod is missing", nil);
+  reject(@"location_accuracy_handler_not_set_up", @"LocationAccuracy permission handler is not set up", nil);
 #endif
 }
 
