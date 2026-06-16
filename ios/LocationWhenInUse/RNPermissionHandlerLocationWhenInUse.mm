@@ -20,11 +20,7 @@
 }
 
 - (CLAuthorizationStatus)statusWithManager:(CLLocationManager *)manager {
-  if (@available(iOS 14.0, tvOS 14.0, *)) {
-    return [manager authorizationStatus];
-  } else {
-    return [CLLocationManager authorizationStatus];
-  }
+  return [manager authorizationStatus];
 }
 
 - (RNPermissionStatus)convertStatus:(CLAuthorizationStatus)status {
@@ -61,16 +57,8 @@
   [_locationManager requestWhenInUseAuthorization];
 }
 
-#pragma mark - iOS 14+
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager {
   if ([manager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
-    [self resolveStatus];
-  }
-}
-
-#pragma mark - iOS < 14
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  if (status != kCLAuthorizationStatusNotDetermined) {
     [self resolveStatus];
   }
 }
