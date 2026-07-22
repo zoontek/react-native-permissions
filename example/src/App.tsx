@@ -69,6 +69,33 @@ export const App = (): ReactElement => {
           />
         )}
 
+        {Platform.OS === 'ios' && (
+          // Minimal repro for the iOS 17+ EventKit stale status bug:
+          // request() resolves "granted" but an immediate check() used to return
+          // "denied" because a fresh EKEventStore per request exhausted the
+          // calaccessd connection and left authorizationStatusForEntityType: stale.
+          // See https://developer.apple.com/forums/thread/737536
+          <Appbar.Action
+            icon="calendar-alert"
+            onPress={() => {
+              const permission = PERMISSIONS.IOS.CALENDARS;
+
+              RNPermissions.request(permission)
+                .then((requested) =>
+                  RNPermissions.check(permission).then((checked) => {
+                    showSnackbar('request(CALENDARS) then check(CALENDARS)', {
+                      requested,
+                      checked,
+                    });
+                  }),
+                )
+                .catch((error) => {
+                  console.error(error);
+                });
+            }}
+          />
+        )}
+
         <Appbar.Action
           icon="cellphone-cog"
           onPress={() => {
