@@ -343,10 +343,29 @@ RCT_EXPORT_METHOD(openSettings:(NSString *)type
   }];
 }
 
+// Reading a location authorization status makes a synchronous XPC call to locationd, which can
+// block for seconds. Run it on a background queue so a slow locationd never freezes the UI.
+static dispatch_queue_t RNPermissionsLocationStatusQueue(void) {
+  static dispatch_queue_t queue;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    queue = dispatch_queue_create("com.zoontek.rnpermissions.location", DISPATCH_QUEUE_SERIAL);
+  });
+  return queue;
+}
+
 RCT_EXPORT_METHOD(check:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
+
+  if (handler != nil && [[[handler class] handlerUniqueId] hasPrefix:@"ios.permission.LOCATION_"]) {
+    dispatch_async(RNPermissionsLocationStatusQueue(), ^{
+      resolve([self stringForStatus:[handler currentStatus]]);
+    });
+    return;
+  }
+
   resolve([self stringForStatus:(handler != nil ? [handler currentStatus] : RNPermissionStatusNotAvailable)]);
 }
 
