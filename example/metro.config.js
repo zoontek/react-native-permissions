@@ -2,7 +2,8 @@ const path = require('path');
 const pkg = require('../package.json');
 
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
-const escape = require('escape-string-regexp');
+
+const escape = (value) => value.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
 
 const peerDependencies = Object.keys(pkg.peerDependencies);
 const root = path.resolve(__dirname, '..');

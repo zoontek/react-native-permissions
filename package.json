@@ -123,12 +123,12 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.0",
-    "oxlint": "^1.70.0",
-    "prettier": "^3.8.4",
+    "oxlint": "^1.88.0",
+    "prettier": "^3.9.10",
     "prettier-plugin-organize-imports": "^4.3.0",
-    "react": "19.2.3",
-    "react-native": "0.86.0",
-    "react-native-builder-bob": "^0.42.1",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-builder-bob": "^0.43.2",
     "typescript": "^6.0.3"
   },
   "react-native-windows": {
