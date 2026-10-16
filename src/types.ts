@@ -24,13 +24,7 @@ export type LocationAccuracy = 'full' | 'reduced';
 export type LocationAccuracyOptions = {purposeKey: string};
 
 export type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'carPlay'
-  | 'criticalAlert'
-  | 'provisional'
-  | 'providesAppSettings';
+  'alert' | 'badge' | 'sound' | 'carPlay' | 'criticalAlert' | 'provisional' | 'providesAppSettings';
 
 export type NotificationSettings = {
   alert?: boolean;

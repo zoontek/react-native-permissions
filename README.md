@@ -690,13 +690,7 @@ type RationaleObject = {
 type Rationale = RationaleObject | (() => Promise<boolean>);
 
 type NotificationOption =
-  | 'alert'
-  | 'badge'
-  | 'sound'
-  | 'carPlay'
-  | 'criticalAlert'
-  | 'provisional'
-  | 'providesAppSettings';
+  'alert' | 'badge' | 'sound' | 'carPlay' | 'criticalAlert' | 'provisional' | 'providesAppSettings';
 
 type NotificationSettings = {
   // unavailable settings will not be included in the response object
