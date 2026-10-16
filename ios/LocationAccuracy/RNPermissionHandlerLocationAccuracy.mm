@@ -27,9 +27,7 @@
       break;
   }
 
-  CLLocationManager *locationManager = [CLLocationManager new];
-
-  switch (locationManager.accuracyAuthorization) {
+  switch (manager.accuracyAuthorization) {
     case CLAccuracyAuthorizationFullAccuracy:
       return resolve(@"full");
     case CLAccuracyAuthorizationReducedAccuracy:

@@ -64,6 +64,18 @@
 
 static NSString* SETTING_KEY = @"@RNPermissions:Requested";
 
+// Some status reads (CoreLocation for example) make a synchronous XPC call that can block for seconds
+static dispatch_queue_t RNPermissionsCheckQueue(void) {
+  static dispatch_queue_t queue;
+  static dispatch_once_t onceToken;
+
+  dispatch_once(&onceToken, ^{
+    queue = dispatch_queue_create("com.zoontek.rnpermissions.check", DISPATCH_QUEUE_SERIAL);
+  });
+
+  return queue;
+}
+
 @interface RNPermissions()
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *, id<RNPermissionHandler>> *_Nonnull handlers;
@@ -347,7 +359,14 @@ RCT_EXPORT_METHOD(check:(NSString *)permission
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
   id<RNPermissionHandler> handler = [self handlerForPermission:permission];
-  resolve([self stringForStatus:(handler != nil ? [handler currentStatus] : RNPermissionStatusNotAvailable)]);
+
+  if (handler == nil) {
+    return resolve([self stringForStatus:RNPermissionStatusNotAvailable]);
+  }
+
+  dispatch_async(RNPermissionsCheckQueue(), ^{
+    resolve([self stringForStatus:[handler currentStatus]]);
+  });
 }
 
 RCT_EXPORT_METHOD(request:(NSString *)permission
@@ -433,7 +452,10 @@ RCT_EXPORT_METHOD(checkLocationAccuracy:(RCTPromiseResolveBlock)resolve
   [self checkUsageDescriptionKeys:[RNPermissionHandlerLocationAccuracy usageDescriptionKeys]];
 
   RNPermissionHandlerLocationAccuracy *handler = [RNPermissionHandlerLocationAccuracy new];
-  [handler checkWithResolver:resolve rejecter:reject];
+
+  dispatch_async(RNPermissionsCheckQueue(), ^{
+    [handler checkWithResolver:resolve rejecter:reject];
+  });
 #else
   reject(@"location_accuracy_handler_not_set_up", @"LocationAccuracy permission handler is not set up", nil);
 #endif
