@@ -145,6 +145,24 @@ setup_permissions([
 </plist>
 ```
 
+### iOS with Swift Package Manager
+
+With React Native 0.88 or newer, you can link this library with Swift Package Manager instead of CocoaPods. Skip steps 1 to 3 above, and list the permissions you need in your app `package.json`:
+
+```json
+{
+  "react-native-permissions": {
+    "ios": ["Camera", "Microphone"]
+  }
+}
+```
+
+Only these permission handlers are compiled. After you change the list, run `npx react-native spm` and rebuild. You still need to add their usage descriptions to your `Info.plist` (step 4).
+
+- With Expo, `npx expo prebuild` writes the `iosPermissions` option of the config plugin to `ios/react-native-permissions.json`, so the `package.json` key is not needed. If both exist, they must list the same permissions, or the build fails with an error naming both files.
+- If no list is found, a warning is printed and no permission handler is compiled.
+- tvOS is not supported with Swift Package Manager.
+
 ### Android
 
 Add all wanted permissions to your app `android/app/src/main/AndroidManifest.xml` file:
@@ -270,6 +288,8 @@ export default ({config}: ConfigContext): ExpoConfig => ({
 ```
 
 </details>
+
+The `iosPermissions` option also works with Swift Package Manager (see [iOS with Swift Package Manager](#ios-with-swift-package-manager)).
 
 ### Windows
 
