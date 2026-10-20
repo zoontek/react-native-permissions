@@ -5,35 +5,27 @@ import {
   type ConfigPlugin,
   type ExportedConfigWithProps,
 } from '@expo/config-plugins';
-import {readFile, writeFile} from 'node:fs/promises';
+import {readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
+import type {IosPermission} from './permissions-config';
 
 type PermissionsPluginConfig = {
   /**
-   * List of iOS permissions to add in the Podfile via `setup_permissions`
+   * List of iOS permissions to add in the Podfile via `setup_permissions`,
+   * and in `ios/react-native-permissions.json` for Swift Package Manager
    */
-  iosPermissions?: (
-    | 'AppTrackingTransparency'
-    | 'Bluetooth'
-    | 'Calendars'
-    | 'CalendarsWriteOnly'
-    | 'Camera'
-    | 'Contacts'
-    | 'FaceID'
-    | 'LocationAccuracy'
-    | 'LocationAlways'
-    | 'LocationWhenInUse'
-    | 'MediaLibrary'
-    | 'Microphone'
-    | 'Motion'
-    | 'Notifications'
-    | 'PhotoLibrary'
-    | 'PhotoLibraryAddOnly'
-    | 'Reminders'
-    | 'Siri'
-    | 'SpeechRecognition'
-    | 'StoreKit'
-  )[];
+  iosPermissions?: IosPermission[];
+};
+
+const readPodfile = async (filePath: string): Promise<string | undefined> => {
+  try {
+    return await readFile(filePath, 'utf8');
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return undefined;
+    }
+    throw error;
+  }
 };
 
 const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
@@ -43,12 +35,26 @@ const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
   withDangerousMod(expoConfig, [
     'ios',
     async (config): Promise<ExportedConfigWithProps<unknown>> => {
+      const {platformProjectRoot} = config.modRequest;
+      const swiftPmFilePath = join(platformProjectRoot, 'react-native-permissions.json');
+
       if (iosPermissions == null || iosPermissions.length === 0) {
+        await rm(swiftPmFilePath, {force: true});
         return config;
       }
 
-      const filePath = join(config.modRequest.platformProjectRoot, 'Podfile');
-      const contents = await readFile(filePath, 'utf8');
+      await writeFile(
+        swiftPmFilePath,
+        JSON.stringify({ios: iosPermissions}, null, 2) + '\n',
+        'utf-8',
+      );
+
+      const filePath = join(platformProjectRoot, 'Podfile');
+      const contents = await readPodfile(filePath);
+
+      if (contents == null) {
+        return config;
+      }
 
       const withRequire = CodeGenerator.mergeContents({
         tag: 'require',
@@ -72,6 +78,7 @@ ${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
       });
 
       await writeFile(filePath, withSetup.contents, 'utf-8');
+
       return config;
     },
   ]);
