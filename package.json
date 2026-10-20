@@ -63,7 +63,9 @@
     "/windows",
     "/src",
     "/*.podspec",
-    "app.plugin.js"
+    "!**/__tests__",
+    "app.plugin.js",
+    "swiftpm.plugin.js"
   ],
   "scripts": {
     "clean": "rm -rf dist",
@@ -72,6 +74,7 @@
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && bob build",
     "podspec-check": "node scripts/podspec-check.mts",
+    "test": "node --test --disable-warning=MODULE_TYPELESS_PACKAGE_JSON 'src/**/*.test.ts'",
     "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn podspec-check && yarn build"
   },
   "react-native-builder-bob": {
@@ -130,6 +133,11 @@
     "react-native": "0.88.0",
     "react-native-builder-bob": "^0.43.2",
     "typescript": "^6.0.3"
+  },
+  "swiftpmConfig": {
+    "autolinkingPlugin": "./swiftpm.plugin.js",
+    "name": "RNPermissions",
+    "scaffold": false
   },
   "react-native-windows": {
     "init-windows": {
