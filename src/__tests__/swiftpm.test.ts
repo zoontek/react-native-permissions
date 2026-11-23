@@ -60,13 +60,13 @@ describe('readIosPermissions', () => {
   beforeEach(() => {
     configPath = path.join(
       fs.mkdtempSync(path.join(os.tmpdir(), 'rnp-config-')),
-      'permissions.json',
+      'react-native-permissions.json',
     );
   });
 
   afterEach(() => fs.rmSync(path.dirname(configPath), {recursive: true, force: true}));
 
-  test('uses the list in permissions.json', () => {
+  test('uses the list in react-native-permissions.json', () => {
     assert.deepEqual(readConfig(['Camera', 'Contacts', 'Camera']), ['Camera', 'Contacts']);
   });
 
@@ -76,7 +76,7 @@ describe('readIosPermissions', () => {
     assert.deepEqual(readIosPermissions(configPath), []);
     assert.equal(warned().length, 1);
     assert.match(warned()[0] ?? '', /no permission handlers will be compiled/i);
-    assert.match(warned()[0] ?? '', /ios\/permissions\.json/);
+    assert.match(warned()[0] ?? '', /ios\/react-native-permissions\.json/);
   });
 
   test('throws, naming the file, when the list is not an array of strings', () => {
@@ -256,7 +256,10 @@ describe('SwiftPM autolinking plugin', () => {
   let packageDir: string;
 
   const writeConfigFile = (permissions: string[]): void =>
-    fs.writeFileSync(path.join(appRoot, 'permissions.json'), JSON.stringify(permissions));
+    fs.writeFileSync(
+      path.join(appRoot, 'react-native-permissions.json'),
+      JSON.stringify(permissions),
+    );
 
   const runPlugin = (): ReturnType<typeof runSwiftPMPlugin> =>
     runSwiftPMPlugin(libraryRoot, {appRoot, outputDir, react: localReact});
@@ -282,7 +285,7 @@ describe('SwiftPM autolinking plugin', () => {
     assert.deepEqual(result, {
       packageDependencies: [{name: 'RNPermissions', path: packageDir}],
       productDependencies: [{name: 'RNPermissions', package: 'RNPermissions'}],
-      watchPaths: [path.join(appRoot, 'permissions.json')],
+      watchPaths: [path.join(appRoot, 'react-native-permissions.json')],
     });
 
     assert.equal(

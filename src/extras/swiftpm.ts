@@ -71,7 +71,7 @@ type SwiftPMPluginResult = {
 };
 
 const CODEGEN_PACKAGE_NAME = 'React-GeneratedCode';
-const CONFIG_FILE_NAME = 'permissions.json';
+const CONFIG_FILE_NAME = 'react-native-permissions.json';
 const NPM_PACKAGE_NAME = 'react-native-permissions';
 const PACKAGE_NAME = 'RNPermissions';
 const SWIFT_TARGET_NAME = 'RNPermissionsSwift';

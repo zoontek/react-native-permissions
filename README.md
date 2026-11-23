@@ -98,7 +98,7 @@ setup_permissions([
 <details open>
 <summary><strong>Swift Package Manager</strong></summary>
 
-1. List the permissions you need in an `ios/permissions.json` file. Only the permissions specified here will be compiled:
+1. List the permissions you need in an `ios/react-native-permissions.json` file. Only the permissions specified here will be compiled:
 
 ```json
 ["Camera", "Microphone"]
@@ -239,7 +239,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   // …
   plugins: [
     permissions({
-      // Add setup_permissions to your Podfile and write ios/permissions.json (see iOS setup)
+      // Add setup_permissions to your Podfile and write ios/react-native-permissions.json (see iOS setup)
       iosPermissions: ['Camera', 'Microphone'],
     }),
   ],
@@ -270,7 +270,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       [
         "react-native-permissions",
         {
-          // Add setup_permissions to your Podfile and write ios/permissions.json (see iOS setup)
+          // Add setup_permissions to your Podfile and write ios/react-native-permissions.json (see iOS setup)
           "iosPermissions": ["Camera", "Microphone"],
         },
       ],
