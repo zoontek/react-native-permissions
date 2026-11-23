@@ -73,9 +73,9 @@
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && bob build",
-    "podspec-check": "node scripts/podspec-check.mts",
     "test": "node --test --disable-warning=MODULE_TYPELESS_PACKAGE_JSON 'src/**/*.test.ts'",
-    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn podspec-check && yarn build"
+    "podspec-check": "node scripts/podspec-check.mts",
+    "prepack": "prettier '**/*' -u -c && yarn lint && yarn typecheck && yarn test && yarn podspec-check && yarn build"
   },
   "react-native-builder-bob": {
     "source": "src",
