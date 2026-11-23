@@ -246,6 +246,8 @@ export const renderPackageManifest = ({
           swiftTarget([
             `name: ${quote(SWIFT_TARGET_NAME)}`,
             'path: "root"',
+            // The main target already ships it, SwiftPM would bundle it again
+            'exclude: ["PrivacyInfo.xcprivacy"]',
             `sources: ${swiftList(swiftFiles.map(quote), 12)}`,
             // Matches the podspec's swift_version (5.9)
             'swiftSettings: [.swiftLanguageMode(.v5)]',

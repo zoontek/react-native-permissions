@@ -183,6 +183,7 @@ let package = Package(
         .target(
             name: "RNPermissionsSwift",
             path: "root",
+            exclude: ["PrivacyInfo.xcprivacy"],
             sources: [
                 "Contacts/RNPermissionsContactPicker.swift",
             ],
