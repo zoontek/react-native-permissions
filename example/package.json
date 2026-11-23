@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "react": "19.3.0",
-    "react-native": "0.88.0",
-    "react-native-paper": "^5.15.3",
+    "react-native": "0.88.1",
+    "react-native-paper": "^5.15.5",
     "react-native-permissions": "link:../",
-    "react-native-safe-area-context": "^5.10.1",
+    "react-native-safe-area-context": "^5.11.1",
     "react-native-vector-icons": "^10.3.0"
   },
   "devDependencies": {
@@ -33,8 +33,8 @@
     "@react-native-community/cli": "20.2.0",
     "@react-native-community/cli-platform-android": "20.2.0",
     "@react-native-community/cli-platform-ios": "20.2.0",
-    "@react-native/babel-preset": "0.88.0",
-    "@react-native/metro-config": "0.88.0",
+    "@react-native/babel-preset": "0.88.1",
+    "@react-native/metro-config": "0.88.1",
     "@types/react": "^19.2.0",
     "babel-plugin-module-resolver": "^5.0.3",
     "typescript": "^6.0.3"
