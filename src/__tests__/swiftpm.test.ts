@@ -144,7 +144,7 @@ describe('permissions config', () => {
   test('lists every handler folder in ios/', () => {
     const folders = fs
       .readdirSync(path.join(libraryRoot, 'ios'), {withFileTypes: true})
-      .filter((entry) => entry.isDirectory() && !entry.name.endsWith('.xcodeproj'))
+      .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name);
 
     assert.deepEqual([...iosPermissions].sort(), folders.sort());
