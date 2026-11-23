@@ -5,27 +5,17 @@ import {
   type ConfigPlugin,
   type ExportedConfigWithProps,
 } from '@expo/config-plugins';
+import {existsSync} from 'node:fs';
 import {readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import type {IosPermission} from './permissions-config';
+import type {IosPermission} from './swiftpm';
 
 type PermissionsPluginConfig = {
   /**
-   * List of iOS permissions to add in the Podfile via `setup_permissions`,
-   * and in `ios/permissions.json` for Swift Package Manager
+   * iOS permissions to add to the Podfile (`setup_permissions`)
+   * and to `ios/permissions.json` (Swift Package Manager)
    */
   iosPermissions?: IosPermission[];
-};
-
-const readPodfile = async (filePath: string): Promise<string | undefined> => {
-  try {
-    return await readFile(filePath, 'utf8');
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return undefined;
-    }
-    throw error;
-  }
 };
 
 const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
@@ -46,11 +36,12 @@ const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
       await writeFile(swiftPmFilePath, JSON.stringify(iosPermissions, null, 2) + '\n', 'utf-8');
 
       const filePath = join(platformProjectRoot, 'Podfile');
-      const contents = await readPodfile(filePath);
 
-      if (contents == null) {
+      if (!existsSync(filePath)) {
         return config;
       }
+
+      const contents = await readFile(filePath, 'utf8');
 
       const withRequire = CodeGenerator.mergeContents({
         tag: 'require',

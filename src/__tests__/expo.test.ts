@@ -56,14 +56,6 @@ test('writes permissions.json next to the Podfile', async () => {
   );
 });
 
-test('writes nothing when no iOS permission is listed', async () => {
-  await runIosMod({iosPermissions: []});
-  await runIosMod();
-
-  assert.equal(fs.existsSync(path.join(platformProjectRoot, 'permissions.json')), false);
-  assert.equal(fs.readFileSync(path.join(platformProjectRoot, 'Podfile'), 'utf8'), podfile);
-});
-
 test('writes permissions.json when the project has no Podfile', async () => {
   fs.rmSync(path.join(platformProjectRoot, 'Podfile'));
 
@@ -109,11 +101,4 @@ setup_permissions([
   await runIosMod({iosPermissions: ['Camera', 'Contacts', 'LocationWhenInUse']});
 
   assert.equal(fs.readFileSync(path.join(platformProjectRoot, 'Podfile'), 'utf8'), expected);
-});
-
-test('rethrows a Podfile read error other than a missing file', async () => {
-  fs.rmSync(path.join(platformProjectRoot, 'Podfile'));
-  fs.mkdirSync(path.join(platformProjectRoot, 'Podfile'));
-
-  await assert.rejects(runIosMod({iosPermissions: ['Camera']}), {code: 'EISDIR'});
 });

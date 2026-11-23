@@ -1,2 +1,2 @@
-const {createSwiftPMPlugin} = require('./dist/commonjs/extras/swiftpm');
-module.exports = createSwiftPMPlugin(__dirname);
+const {runSwiftPMPlugin} = require('./dist/commonjs/extras/swiftpm');
+module.exports = (context) => runSwiftPMPlugin(__dirname, context);
