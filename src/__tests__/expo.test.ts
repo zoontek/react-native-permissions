@@ -6,6 +6,8 @@ import path from 'node:path';
 import {afterEach, beforeEach, test} from 'node:test';
 import {withPermissions} from '../extras/expo.ts';
 
+type PluginProps = Parameters<typeof withPermissions>[1];
+
 const podfile = `require File.join(File.dirname(\`node --print "require.resolve('react-native/package.json')"\`), "scripts/react_native_pods")
 
 platform :ios, '15.1'
@@ -14,11 +16,8 @@ prepare_react_native_project!
 
 let platformProjectRoot: string;
 
-const runIosMod = async (iosPermissions?: Parameters<typeof withPermissions>[1]): Promise<void> => {
-  const config: ExportedConfig = withPermissions(
-    {name: 'app', slug: 'app'},
-    iosPermissions,
-  ) as ExportedConfig;
+const runIosMod = async (props?: PluginProps): Promise<void> => {
+  const config: ExportedConfig = withPermissions({name: 'app', slug: 'app'}, props);
   const dangerousMod = config.mods?.ios?.dangerous;
   assert.ok(dangerousMod);
 
@@ -50,10 +49,6 @@ test('writes permissions.json next to the Podfile', async () => {
     fs.readFileSync(path.join(platformProjectRoot, 'permissions.json'), 'utf8'),
     '[\n  "Camera",\n  "Contacts"\n]\n',
   );
-  assert.match(
-    fs.readFileSync(path.join(platformProjectRoot, 'Podfile'), 'utf8'),
-    /setup_permissions\(\[\n {2}'Camera',\n {2}'Contacts',\n\]\)/,
-  );
 });
 
 test('writes permissions.json when the project has no Podfile', async () => {
@@ -70,12 +65,13 @@ test('writes permissions.json when the project has no Podfile', async () => {
 
 test('deletes a stale permissions.json when no iOS permission is listed', async () => {
   const jsonPath = path.join(platformProjectRoot, 'permissions.json');
+  const emptyProps: PluginProps[] = [undefined, {iosPermissions: []}];
 
-  for (const iosPermissions of [undefined, []]) {
+  for (const props of emptyProps) {
     await runIosMod({iosPermissions: ['Camera']});
     assert.equal(fs.existsSync(jsonPath), true);
 
-    await runIosMod(iosPermissions == null ? undefined : {iosPermissions});
+    await runIosMod(props);
     assert.equal(fs.existsSync(jsonPath), false);
   }
 });

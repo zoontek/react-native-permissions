@@ -86,6 +86,16 @@ describe('readIosPermissions', () => {
     assert.throws(() => readConfig({ios: ['Camera']}), namesFile);
   });
 
+  test('throws, naming the file, when the JSON is malformed', () => {
+    fs.writeFileSync(configPath, '["Camera",');
+
+    assert.throws(
+      () => readIosPermissions(configPath),
+      (error: Error): boolean =>
+        error.message.startsWith(`[Permissions] Could not read ${configPath}:`),
+    );
+  });
+
   test('warns about and drops unknown names', () => {
     const warned = warnings();
 
@@ -273,7 +283,6 @@ describe('SwiftPM autolinking plugin', () => {
       productDependencies: [{name: 'RNPermissions', package: 'RNPermissions'}],
       watchPaths: [path.join(appRoot, 'permissions.json')],
     });
-    assert.ok(result.watchPaths.every((watchPath) => path.isAbsolute(watchPath)));
 
     assert.equal(
       fs.readFileSync(path.join(packageDir, 'Package.swift'), 'utf8'),

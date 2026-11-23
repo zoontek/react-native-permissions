@@ -27,31 +27,34 @@ export const iosPermissionFrameworks = {
 
 export type IosPermission = keyof typeof iosPermissionFrameworks;
 
-export const iosPermissions = Object.keys(iosPermissionFrameworks) as IosPermission[];
+export const iosPermissions = Object.keys(iosPermissionFrameworks) as readonly IosPermission[];
 
 const isIosPermission = (name: string): name is IosPermission =>
-  (iosPermissions as readonly string[]).includes(name);
+  Object.prototype.hasOwnProperty.call(iosPermissionFrameworks, name);
 
-type PackageRef = {name: string} & (
-  {path: string; relPath?: string} | {url: string; version: string}
-);
+// React Native's `ReactPackageRef`
+type PackageRef =
+  {name: string; path: string; relPath?: string} | {name: string; url: string; version: string};
 
 type ProductRef = {
   name: string;
   package: string;
 };
 
-// React Native's `context.react`
+// React Native's `ReactDescriptor` (`context.react`)
 export type ReactDescriptor = {
   packageRef: PackageRef;
-  products: ProductRef[];
+  products: readonly ProductRef[];
 };
 
-// The fields of React Native's plugin context used here
+// `?ReactDescriptor` in React Native's Flow types
+type MaybeReactDescriptor = ReactDescriptor | null | undefined;
+
+// The fields of React Native's `PluginContext` used here
 type SwiftPMPluginContext = {
   appRoot: string;
   outputDir: string;
-  react: ReactDescriptor | null;
+  react: MaybeReactDescriptor;
 };
 
 type SwiftPMPluginResult = {
@@ -71,10 +74,24 @@ const swiftSources: Partial<Record<IosPermission, readonly string[]>> = {
   Contacts: ['RNPermissionsContactPicker.swift'],
 };
 
+const readJsonFile = (filePath: string): unknown => {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (error) {
+    if (error instanceof Error) {
+      error.message = `[Permissions] Could not read ${filePath}: ${error.message}`;
+    }
+
+    throw error;
+  }
+};
+
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string');
+
 const unique = <T>(items: readonly T[]): T[] =>
   items.filter((item, index) => items.indexOf(item) === index);
 
-// Reads `ios/permissions.json`, written by hand or by the Expo config plugin
 export const readIosPermissions = (filePath: string): IosPermission[] => {
   if (!fs.existsSync(filePath)) {
     console.warn(
@@ -84,19 +101,9 @@ export const readIosPermissions = (filePath: string): IosPermission[] => {
     return [];
   }
 
-  let config: unknown;
+  const config = readJsonFile(filePath);
 
-  try {
-    config = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch (error) {
-    if (error instanceof Error) {
-      error.message = `[Permissions] Could not read ${filePath}: ${error.message}`;
-    }
-
-    throw error;
-  }
-
-  if (!Array.isArray(config) || !config.every((name) => typeof name === 'string')) {
+  if (!isStringArray(config)) {
     throw new Error(
       `[Permissions] Invalid iOS permissions in ${filePath}: expected an array of permission names, like ["Camera", "Notifications"].`,
     );
@@ -143,11 +150,11 @@ const swiftList = (items: readonly string[], indent: number): string => {
 const swiftTarget = (targetArguments: readonly string[]): string =>
   `.target(\n${targetArguments.map((argument) => `            ${argument}`).join(',\n')}\n        )`;
 
-const hasCodegenProducts = (react: ReactDescriptor | null): boolean =>
+const hasCodegenProducts = (react: MaybeReactDescriptor): boolean =>
   react?.products.some((product) => product.package === CODEGEN_PACKAGE_NAME) ?? false;
 
 const reactDependencies = (
-  react: ReactDescriptor | null,
+  react: MaybeReactDescriptor,
   codegenPackagePath: string,
 ): {packages: string[]; products: string[]} => {
   if (react == null) {
@@ -177,15 +184,14 @@ const reactDependencies = (
   };
 };
 
-// Renders a Package.swift with only the chosen handlers. It expects a `root`
-// symlink to the library's `ios` folder and an `include` folder next to it.
+// Expects a `root` symlink to the library's `ios` folder and an `include` folder next to it
 export const renderPackageManifest = ({
   permissions,
   react,
   codegenPackagePath,
 }: {
   permissions: readonly IosPermission[];
-  react: ReactDescriptor | null;
+  react: MaybeReactDescriptor;
   codegenPackagePath: string;
 }): string => {
   const folders = unique(permissions).sort();
@@ -292,8 +298,6 @@ const ensureSymlink = (linkPath: string, target: string): void => {
   fs.symlinkSync(target, linkPath);
 };
 
-// Runs the SwiftPM autolinking plugin, which writes an RNPermissions package
-// with the chosen handlers and links it into the app.
 export const runSwiftPMPlugin = (
   libraryRoot: string,
   {appRoot, outputDir, react}: SwiftPMPluginContext,
@@ -301,7 +305,6 @@ export const runSwiftPMPlugin = (
   const configFilePath = path.join(appRoot, CONFIG_FILE_NAME);
   const permissions = readIosPermissions(configFilePath);
 
-  // React Native's per-app codegen package
   const codegenPackagePath = path.resolve(outputDir, '..', 'ios');
   const packageDir = path.join(outputDir, NPM_PACKAGE_NAME, PACKAGE_NAME);
 
