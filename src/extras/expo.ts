@@ -5,35 +5,17 @@ import {
   type ConfigPlugin,
   type ExportedConfigWithProps,
 } from '@expo/config-plugins';
-import {readFile, writeFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+import {readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
+import type {IosPermission} from './swiftpm';
 
 type PermissionsPluginConfig = {
   /**
-   * List of iOS permissions to add in the Podfile via `setup_permissions`
+   * iOS permissions to add to the Podfile (`setup_permissions`)
+   * and to `ios/react-native-permissions.json` (Swift Package Manager)
    */
-  iosPermissions?: (
-    | 'AppTrackingTransparency'
-    | 'Bluetooth'
-    | 'Calendars'
-    | 'CalendarsWriteOnly'
-    | 'Camera'
-    | 'Contacts'
-    | 'FaceID'
-    | 'LocationAccuracy'
-    | 'LocationAlways'
-    | 'LocationWhenInUse'
-    | 'MediaLibrary'
-    | 'Microphone'
-    | 'Motion'
-    | 'Notifications'
-    | 'PhotoLibrary'
-    | 'PhotoLibraryAddOnly'
-    | 'Reminders'
-    | 'Siri'
-    | 'SpeechRecognition'
-    | 'StoreKit'
-  )[];
+  iosPermissions?: IosPermission[];
 };
 
 const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
@@ -43,11 +25,22 @@ const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
   withDangerousMod(expoConfig, [
     'ios',
     async (config): Promise<ExportedConfigWithProps<unknown>> => {
+      const {platformProjectRoot} = config.modRequest;
+      const swiftPmFilePath = join(platformProjectRoot, 'react-native-permissions.json');
+
       if (iosPermissions == null || iosPermissions.length === 0) {
+        await rm(swiftPmFilePath, {force: true});
         return config;
       }
 
-      const filePath = join(config.modRequest.platformProjectRoot, 'Podfile');
+      await writeFile(swiftPmFilePath, JSON.stringify(iosPermissions, null, 2) + '\n', 'utf-8');
+
+      const filePath = join(platformProjectRoot, 'Podfile');
+
+      if (!existsSync(filePath)) {
+        return config;
+      }
+
       const contents = await readFile(filePath, 'utf8');
 
       const withRequire = CodeGenerator.mergeContents({
@@ -72,6 +65,7 @@ ${iosPermissions.map((permission) => `  '${permission}',`).join('\n')}
       });
 
       await writeFile(filePath, withSetup.contents, 'utf-8');
+
       return config;
     },
   ]);

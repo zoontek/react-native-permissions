@@ -37,7 +37,7 @@ def setup_permissions(config)
   ios_dirents = Dir.entries(ios_dir).map { |entry| File.join(ios_dir, entry) }
 
   directories = ios_dirents
-    .select { |entry| File.directory?(entry) || entry.end_with?('.xcodeproj') }
+    .select { |entry| File.directory?(entry) }
     .map { |entry| File.basename(entry) }
     .select { |name| config.include?(name) }
 

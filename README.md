@@ -26,7 +26,12 @@ $ yarn add react-native-permissions
 
 ### iOS
 
-1. By default, no permissions are available. First, require the `setup` script in your `Podfile`:
+By default, no permissions are available. Follow the instructions for your dependency manager, then add the usage descriptions to your `Info.plist`.
+
+<details open>
+<summary><strong>CocoaPods</strong></summary>
+
+1. Require the `setup` script in your `Podfile`:
 
 ```diff
 # Transform this into a `node_require` generic function:
@@ -51,7 +56,7 @@ $ yarn add react-native-permissions
 + node_require('react-native-permissions/scripts/setup.rb')
 ```
 
-2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be added:
+2. In the same `Podfile`, call `setup_permissions` with the permissions you need. Only the permissions specified here will be compiled:
 
 ```ruby
 # …
@@ -86,8 +91,24 @@ setup_permissions([
 # …
 ```
 
-3. Then execute `pod install` in your `ios` directory _(📌  Note that it must be re-executed each time you update this config)_.
-4. Finally, add the corresponding permissions usage descriptions to your `Info.plist`. For example:
+3. Execute `pod install` in your `ios` directory _(📌 Note that it must be re-executed each time you update this config)_.
+
+</details>
+
+<details open>
+<summary><strong>Swift Package Manager</strong></summary>
+
+1. List the permissions you need in an `ios/react-native-permissions.json` file. Only the permissions specified here will be compiled:
+
+```json
+["Camera", "Microphone"]
+```
+
+2. Run `npx react-native spm` and rebuild.
+
+</details>
+
+Then add the corresponding permissions usage descriptions to your `Info.plist`. For example:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -95,7 +116,7 @@ setup_permissions([
 <plist version="1.0">
 <dict>
 
-  <!-- 🚨 Keep only the permissions specified in `setup_permissions` 🚨 -->
+  <!-- 🚨 Keep only the permissions you listed above 🚨 -->
 
   <key>NSAppleMusicUsageDescription</key>
   <string>[REASON]</string>
@@ -218,12 +239,12 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   // …
   plugins: [
     permissions({
-      // Add setup_permissions to your Podfile (see iOS setup - steps 1, 2 and 3)
+      // Add setup_permissions to your Podfile and write ios/react-native-permissions.json (see iOS setup)
       iosPermissions: ['Camera', 'Microphone'],
     }),
   ],
   ios: {
-    // Add descriptions to your Info.plist (see iOS setup - step 4)
+    // Add descriptions to your Info.plist (see iOS setup)
     infoPlist: {
       NSCameraUsageDescription: '[REASON]',
       NSMicrophoneUsageDescription: '[REASON]',
@@ -249,13 +270,13 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       [
         "react-native-permissions",
         {
-          // Add setup_permissions to your Podfile (see iOS setup - steps 1, 2 and 3)
+          // Add setup_permissions to your Podfile and write ios/react-native-permissions.json (see iOS setup)
           "iosPermissions": ["Camera", "Microphone"],
         },
       ],
     ],
     "ios": {
-      // Add descriptions to your Info.plist (see iOS setup - step 4)
+      // Add descriptions to your Info.plist (see iOS setup)
       "infoPlist": {
         "NSCameraUsageDescription": "[REASON]",
         "NSMicrophoneUsageDescription": "[REASON]",

@@ -265,8 +265,9 @@ RCT_EXPORT_MODULE();
     : @"No permission handler detected";
 
   [message appendString:[NSString stringWithFormat:@"⚠  %@.\n\n", title]];
-  [message appendString:@"• Check that you have correctly set up setup_permissions in your Podfile.\n"];
-  [message appendString:@"• Uninstall this app, reinstall your Pods, delete your Xcode DerivedData folder and rebuild it.\n"];
+  [message appendString:@"• CocoaPods: add it to setup_permissions in your Podfile, reinstall your Pods, then rebuild.\n"];
+  [message appendString:@"• Swift Package Manager: add it to ios/react-native-permissions.json, run npx react-native spm, then rebuild.\n"];
+  [message appendString:@"• Expo: add it to the iosPermissions plugin option, run npx expo prebuild, then rebuild.\n"];
 
   RCTLogError(@"%@", message);
 #endif
