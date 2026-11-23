@@ -239,7 +239,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   // …
   plugins: [
     permissions({
-      // Writes setup_permissions to your Podfile and ios/permissions.json (see iOS setup)
+      // Add setup_permissions to your Podfile and write ios/permissions.json (see iOS setup)
       iosPermissions: ['Camera', 'Microphone'],
     }),
   ],
@@ -270,7 +270,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       [
         "react-native-permissions",
         {
-          // Writes setup_permissions to your Podfile and ios/permissions.json (see iOS setup)
+          // Add setup_permissions to your Podfile and write ios/permissions.json (see iOS setup)
           "iosPermissions": ["Camera", "Microphone"],
         },
       ],
