@@ -123,7 +123,26 @@ export const readIosPermissions = (filePath: string): IosPermission[] => {
   return names.filter(isIosPermission);
 };
 
-const quote = (value: string): string => `"${value.replace(/[\\"]/g, '\\$&')}"`;
+const quote = (value: string): string => {
+  const escapes: Record<string, string> = {
+    '\\': '\\\\',
+    '"': '\\"',
+    '\n': '\\n',
+    '\r': '\\r',
+    '\t': '\\t',
+  };
+
+  const escaped = Array.from(value, (char) => {
+    const code = char.charCodeAt(0);
+
+    return (
+      escapes[char] ??
+      (code < 0x20 || code === 0x7f ? `\\u{${code.toString(16).toUpperCase()}}` : char)
+    );
+  });
+
+  return `"${escaped.join('')}"`;
+};
 
 const swiftList = (items: readonly string[], indent: number): string => {
   if (items.length === 0) {
