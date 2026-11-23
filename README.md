@@ -239,7 +239,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   // …
   plugins: [
     permissions({
-      // Add setup_permissions to your Podfile (see iOS setup - CocoaPods)
+      // Writes setup_permissions to your Podfile and ios/permissions.json (see iOS setup)
       iosPermissions: ['Camera', 'Microphone'],
     }),
   ],
@@ -270,7 +270,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       [
         "react-native-permissions",
         {
-          // Add setup_permissions to your Podfile (see iOS setup - CocoaPods)
+          // Writes setup_permissions to your Podfile and ios/permissions.json (see iOS setup)
           "iosPermissions": ["Camera", "Microphone"],
         },
       ],
@@ -291,8 +291,6 @@ export default ({config}: ConfigContext): ExpoConfig => ({
 ```
 
 </details>
-
-The `iosPermissions` option also works with Swift Package Manager (see [iOS setup](#ios) - Swift Package Manager).
 
 ### Windows
 
