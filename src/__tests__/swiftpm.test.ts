@@ -226,6 +226,7 @@ describe('renderPackageManifest', () => {
       manifest,
       /dependencies: \[\n {8}\.package\(url: "https:\/\/example\.com\/react-native-spm\.git", exact: "0\.88\.0"\),\n {4}\],/,
     );
+
     assert.match(manifest, /\.product\(name: "ReactHeaders", package: "react-native-spm"\)/);
     assert.doesNotMatch(manifest, /React-GeneratedCode|ReactAppHeaders/);
   });
@@ -292,6 +293,7 @@ describe('SwiftPM autolinking plugin', () => {
         codegenPackagePath: path.join(appRoot, 'build', 'generated', 'ios'),
       }),
     );
+
     assert.equal(fs.readlinkSync(path.join(packageDir, 'root')), path.join(libraryRoot, 'ios'));
     assert.ok(fs.statSync(path.join(packageDir, 'include')).isDirectory());
   });

@@ -19,6 +19,7 @@ let platformProjectRoot: string;
 const runIosMod = async (props?: PluginProps): Promise<void> => {
   const config: ExportedConfig = withPermissions({name: 'app', slug: 'app'}, props);
   const dangerousMod = config.mods?.ios?.dangerous;
+
   assert.ok(dangerousMod);
 
   await dangerousMod({
@@ -60,6 +61,7 @@ test('writes permissions.json when the project has no Podfile', async () => {
     fs.readFileSync(path.join(platformProjectRoot, 'permissions.json'), 'utf8'),
     '[\n  "Camera"\n]\n',
   );
+
   assert.equal(fs.existsSync(path.join(platformProjectRoot, 'Podfile')), false);
 });
 
