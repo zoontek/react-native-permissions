@@ -17,7 +17,6 @@ export type ReactDescriptor = {packageRef: PackageRef; products: ProductRef[]};
 /** The subset of React Native's SwiftPM autolinking plugin context this plugin reads. */
 export type SwiftPMPluginContext = {
   appRoot: string;
-  projectRoot: string;
   outputDir: string;
   react: ReactDescriptor | null;
 };
@@ -28,14 +27,14 @@ export type SwiftPMPluginResult = {
   watchPaths: string[];
 };
 
-/** A permissions config (`{"ios": [...]}`) and the file it was read from. */
+/** A permissions list (`["Camera", ...]`) and the file it was read from. */
 export type PermissionsSource = {path: string; config: unknown};
 
 const PACKAGE_NAME = 'RNPermissions';
 const SWIFT_TARGET_NAME = 'RNPermissionsSwift';
 const CODEGEN_PACKAGE_NAME = 'React-GeneratedCode';
 const NPM_PACKAGE_NAME = 'react-native-permissions';
-const CONFIG_FILE_NAME = 'react-native-permissions.json';
+const CONFIG_FILE_NAME = 'permissions.json';
 
 // SwiftPM rejects targets that mix Swift and Objective-C sources, so these
 // files build in their own target. The handlers find them with NSClassFromString.
@@ -46,77 +45,39 @@ const swiftSources: Partial<Record<IosPermission, readonly string[]>> = {
 const unique = <T>(items: readonly T[]): T[] =>
   items.filter((item, index) => items.indexOf(item) === index);
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
-
 const parseNames = (source: PermissionsSource): string[] => {
-  const names = isRecord(source.config) ? source.config.ios : undefined;
+  const names = source.config;
 
   if (!Array.isArray(names) || !names.every((name) => typeof name === 'string')) {
     throw new Error(
-      `[Permissions] Invalid iOS permissions in ${source.path}: "ios" must be an array of permission names, like ["Camera", "Notifications"].`,
+      `[Permissions] Invalid iOS permissions in ${source.path}: expected an array of permission names, like ["Camera", "Notifications"].`,
     );
   }
 
   return unique(names);
 };
 
-const assertSameNames = (
-  first: {path: string; names: string[]},
-  second: {path: string; names: string[]},
-): void => {
-  const onlyInFirst = first.names.filter((name) => !second.names.includes(name));
-  const onlyInSecond = second.names.filter((name) => !first.names.includes(name));
-
-  if (onlyInFirst.length === 0 && onlyInSecond.length === 0) {
-    return;
-  }
-
-  throw new Error(
-    [
-      `[Permissions] The iOS permissions in ${first.path} and ${second.path} differ.`,
-      ...(onlyInFirst.length > 0 ? [`Only in ${first.path}: ${onlyInFirst.join(', ')}`] : []),
-      ...(onlyInSecond.length > 0 ? [`Only in ${second.path}: ${onlyInSecond.join(', ')}`] : []),
-      'Keep a single list, or make both lists the same.',
-    ].join('\n'),
-  );
-};
-
 /**
- * Picks the iOS permissions to compile from the app's package.json
- * (`"react-native-permissions": {"ios": [...]}`) and `ios/react-native-permissions.json`.
+ * Picks the iOS permissions to compile from `ios/permissions.json`,
+ * written by hand or by the Expo config plugin.
  */
-export const resolveIosPermissions = ({
-  packageJson,
-  configFile,
-}: {
-  packageJson?: PermissionsSource;
-  configFile?: PermissionsSource;
-}): IosPermission[] => {
-  const fromPackageJson = packageJson && {path: packageJson.path, names: parseNames(packageJson)};
-  const fromConfigFile = configFile && {path: configFile.path, names: parseNames(configFile)};
-
-  if (fromPackageJson && fromConfigFile) {
-    assertSameNames(fromPackageJson, fromConfigFile);
-  }
-
-  const source = fromPackageJson ?? fromConfigFile;
-
+export const resolveIosPermissions = (source: PermissionsSource | undefined): IosPermission[] => {
   if (source == null) {
     console.warn(
-      `[Permissions] No iOS permissions configured, so no permission handlers will be compiled. List them in package.json, like "${NPM_PACKAGE_NAME}": {"ios": ["Camera"]}, or with the "iosPermissions" option of the Expo config plugin.`,
+      `[Permissions] No iOS permissions configured, so no permission handlers will be compiled. List them in ios/${CONFIG_FILE_NAME}, like ["Camera"], or with the "iosPermissions" option of the Expo config plugin.`,
     );
 
     return [];
   }
 
-  const unknownNames = source.names.filter((name) => !isIosPermission(name));
+  const names = parseNames(source);
+  const unknownNames = names.filter((name) => !isIosPermission(name));
 
   if (unknownNames.length > 0) {
     console.warn(`[Permissions] Unknown permissions: ${unknownNames.join(', ')}`);
   }
 
-  return source.names.filter(isIosPermission);
+  return names.filter(isIosPermission);
 };
 
 const swiftEscapes: Record<string, string> = {
@@ -334,19 +295,13 @@ const ensureSymlink = (linkPath: string, target: string): void => {
  */
 export const createSwiftPMPlugin =
   (libraryRoot: string) =>
-  ({appRoot, projectRoot, outputDir, react}: SwiftPMPluginContext): SwiftPMPluginResult => {
-    const packageJsonPath = path.join(projectRoot, 'package.json');
+  ({appRoot, outputDir, react}: SwiftPMPluginContext): SwiftPMPluginResult => {
     const configFilePath = path.join(appRoot, CONFIG_FILE_NAME);
-    const packageJson = readJsonFile(packageJsonPath);
     const configFile = readJsonFile(configFilePath);
 
-    const permissions = resolveIosPermissions({
-      packageJson:
-        isRecord(packageJson) && packageJson[NPM_PACKAGE_NAME] !== undefined
-          ? {path: packageJsonPath, config: packageJson[NPM_PACKAGE_NAME]}
-          : undefined,
-      configFile: configFile !== undefined ? {path: configFilePath, config: configFile} : undefined,
-    });
+    const permissions = resolveIosPermissions(
+      configFile !== undefined ? {path: configFilePath, config: configFile} : undefined,
+    );
 
     // React Native's per-app codegen package, which is absent when codegen has not run
     const codegenPackagePath = path.resolve(outputDir, '..', 'ios');
@@ -373,6 +328,6 @@ export const createSwiftPMPlugin =
     return {
       packageDependencies: [{name: PACKAGE_NAME, path: packageDir}],
       productDependencies: [{name: PACKAGE_NAME, package: PACKAGE_NAME}],
-      watchPaths: [packageJsonPath, configFilePath],
+      watchPaths: [configFilePath],
     };
   };

@@ -42,13 +42,9 @@ const remoteReact: ReactDescriptor = {
   ],
 };
 
-const packageJson = (ios: unknown): PermissionsSource => ({
-  path: '/app/package.json',
-  config: {ios},
-});
-const configFile = (ios: unknown): PermissionsSource => ({
-  path: '/app/ios/react-native-permissions.json',
-  config: {ios},
+const configFile = (permissions: unknown): PermissionsSource => ({
+  path: '/app/ios/permissions.json',
+  config: permissions,
 });
 
 const warnings = (): (() => string[]) => {
@@ -59,72 +55,40 @@ const warnings = (): (() => string[]) => {
 afterEach(() => mock.restoreAll());
 
 describe('resolveIosPermissions', () => {
-  test('uses the package.json list when it is the only source', () => {
-    assert.deepEqual(resolveIosPermissions({packageJson: packageJson(['Camera', 'Contacts'])}), [
+  test('uses the list in permissions.json', () => {
+    assert.deepEqual(resolveIosPermissions(configFile(['Camera', 'Contacts', 'Camera'])), [
       'Camera',
       'Contacts',
     ]);
   });
 
-  test('uses react-native-permissions.json when it is the only source', () => {
-    assert.deepEqual(resolveIosPermissions({configFile: configFile(['Notifications'])}), [
-      'Notifications',
-    ]);
-  });
-
-  test('accepts both sources when they hold the same names in any order', () => {
-    const permissions = resolveIosPermissions({
-      packageJson: packageJson(['Camera', 'Contacts', 'Camera']),
-      configFile: configFile(['Contacts', 'Camera']),
-    });
-
-    assert.deepEqual([...permissions].sort(), ['Camera', 'Contacts']);
-  });
-
-  test('throws when both sources hold different names', () => {
-    assert.throws(
-      () =>
-        resolveIosPermissions({
-          packageJson: packageJson(['Camera', 'Contacts']),
-          configFile: configFile(['Camera', 'Siri']),
-        }),
-      (error: Error) => {
-        assert.match(error.message, /\/app\/package\.json/);
-        assert.match(error.message, /\/app\/ios\/react-native-permissions\.json/);
-        assert.match(error.message, /Only in \/app\/package\.json: Contacts/);
-        assert.match(error.message, /Only in \/app\/ios\/react-native-permissions\.json: Siri/);
-        return true;
-      },
-    );
-  });
-
-  test('returns an empty list and warns when no source exists', () => {
+  test('returns an empty list and warns when the file is missing', () => {
     const warned = warnings();
 
-    assert.deepEqual(resolveIosPermissions({}), []);
+    assert.deepEqual(resolveIosPermissions(undefined), []);
     assert.equal(warned().length, 1);
     assert.match(warned()[0] ?? '', /no permission handlers will be compiled/i);
-    assert.match(warned()[0] ?? '', /"react-native-permissions"/);
+    assert.match(warned()[0] ?? '', /ios\/permissions\.json/);
   });
 
   test('does not warn about an explicitly empty list', () => {
     const warned = warnings();
 
-    assert.deepEqual(resolveIosPermissions({packageJson: packageJson([])}), []);
+    assert.deepEqual(resolveIosPermissions(configFile([])), []);
     assert.deepEqual(warned(), []);
   });
 
   test('throws, naming the file, when the list is not an array of strings', () => {
     assert.throws(
-      () => resolveIosPermissions({packageJson: packageJson('Camera')}),
-      /\/app\/package\.json/,
+      () => resolveIosPermissions(configFile('Camera')),
+      /\/app\/ios\/permissions\.json/,
     );
     assert.throws(
-      () => resolveIosPermissions({configFile: configFile(['Camera', 42])}),
-      /\/app\/ios\/react-native-permissions\.json/,
+      () => resolveIosPermissions(configFile(['Camera', 42])),
+      /\/app\/ios\/permissions\.json/,
     );
     assert.throws(
-      () => resolveIosPermissions({configFile: {path: '/app/ios/x.json', config: ['Camera']}}),
+      () => resolveIosPermissions({path: '/app/ios/x.json', config: {ios: ['Camera']}}),
       /\/app\/ios\/x\.json/,
     );
   });
@@ -132,10 +96,10 @@ describe('resolveIosPermissions', () => {
   test('warns about and drops unknown names', () => {
     const warned = warnings();
 
-    assert.deepEqual(
-      resolveIosPermissions({packageJson: packageJson(['Camera', 'Foo', 'Contacts', 'Bar'])}),
-      ['Camera', 'Contacts'],
-    );
+    assert.deepEqual(resolveIosPermissions(configFile(['Camera', 'Foo', 'Contacts', 'Bar'])), [
+      'Camera',
+      'Contacts',
+    ]);
     assert.deepEqual(warned(), ['[Permissions] Unknown permissions: Foo, Bar']);
   });
 });
@@ -350,14 +314,11 @@ describe('SwiftPM autolinking plugin', () => {
   let outputDir: string;
   let packageDir: string;
 
-  const writePackageJson = (ios: string[]): void =>
-    fs.writeFileSync(
-      path.join(projectRoot, 'package.json'),
-      JSON.stringify({name: 'app', 'react-native-permissions': {ios}}),
-    );
+  const writeConfigFile = (permissions: string[]): void =>
+    fs.writeFileSync(path.join(appRoot, 'permissions.json'), JSON.stringify(permissions));
 
   const runPlugin = (): SwiftPMPluginResult =>
-    createSwiftPMPlugin(libraryRoot)({appRoot, projectRoot, outputDir, react: localReact});
+    createSwiftPMPlugin(libraryRoot)({appRoot, outputDir, react: localReact});
 
   beforeEach(() => {
     projectRoot = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'rnp-swiftpm-')));
@@ -368,7 +329,7 @@ describe('SwiftPM autolinking plugin', () => {
     fs.mkdirSync(outputDir, {recursive: true});
     fs.mkdirSync(path.join(appRoot, 'build', 'generated', 'ios'));
     fs.writeFileSync(path.join(appRoot, 'build', 'generated', 'ios', 'Package.swift'), '');
-    writePackageJson(['Camera']);
+    writeConfigFile(['Camera']);
   });
 
   afterEach(() => fs.rmSync(projectRoot, {recursive: true, force: true}));
@@ -379,10 +340,7 @@ describe('SwiftPM autolinking plugin', () => {
     assert.deepEqual(result, {
       packageDependencies: [{name: 'RNPermissions', path: packageDir}],
       productDependencies: [{name: 'RNPermissions', package: 'RNPermissions'}],
-      watchPaths: [
-        path.join(projectRoot, 'package.json'),
-        path.join(appRoot, 'react-native-permissions.json'),
-      ],
+      watchPaths: [path.join(appRoot, 'permissions.json')],
     });
     assert.ok(result.watchPaths.every((watchPath) => path.isAbsolute(watchPath)));
 
@@ -398,21 +356,9 @@ describe('SwiftPM autolinking plugin', () => {
     assert.ok(fs.statSync(path.join(packageDir, 'include')).isDirectory());
   });
 
-  test('reads the list from react-native-permissions.json in the app root', () => {
-    fs.writeFileSync(path.join(projectRoot, 'package.json'), JSON.stringify({name: 'app'}));
-    fs.writeFileSync(
-      path.join(appRoot, 'react-native-permissions.json'),
-      JSON.stringify({ios: ['Siri']}),
-    );
-
-    runPlugin();
-
-    assert.match(fs.readFileSync(path.join(packageDir, 'Package.swift'), 'utf8'), /"root\/Siri"/);
-  });
-
-  test('throws, naming the file, when react-native-permissions.json is not valid JSON', () => {
-    const configPath = path.join(appRoot, 'react-native-permissions.json');
-    fs.writeFileSync(configPath, '{"ios": [');
+  test('throws, naming the file, when permissions.json is not valid JSON', () => {
+    const configPath = path.join(appRoot, 'permissions.json');
+    fs.writeFileSync(configPath, '["Camera",');
 
     assert.throws(runPlugin, (error: Error) => error.message.includes(configPath));
   });
@@ -434,7 +380,7 @@ describe('SwiftPM autolinking plugin', () => {
 
   test('rewrites the package when the list changes', () => {
     runPlugin();
-    writePackageJson(['Camera', 'Motion']);
+    writeConfigFile(['Camera', 'Motion']);
     runPlugin();
 
     assert.match(

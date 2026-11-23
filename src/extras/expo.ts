@@ -12,7 +12,7 @@ import type {IosPermission} from './permissions-config';
 type PermissionsPluginConfig = {
   /**
    * List of iOS permissions to add in the Podfile via `setup_permissions`,
-   * and in `ios/react-native-permissions.json` for Swift Package Manager
+   * and in `ios/permissions.json` for Swift Package Manager
    */
   iosPermissions?: IosPermission[];
 };
@@ -36,18 +36,14 @@ const plugin: ConfigPlugin<Partial<PermissionsPluginConfig> | undefined> = (
     'ios',
     async (config): Promise<ExportedConfigWithProps<unknown>> => {
       const {platformProjectRoot} = config.modRequest;
-      const swiftPmFilePath = join(platformProjectRoot, 'react-native-permissions.json');
+      const swiftPmFilePath = join(platformProjectRoot, 'permissions.json');
 
       if (iosPermissions == null || iosPermissions.length === 0) {
         await rm(swiftPmFilePath, {force: true});
         return config;
       }
 
-      await writeFile(
-        swiftPmFilePath,
-        JSON.stringify({ios: iosPermissions}, null, 2) + '\n',
-        'utf-8',
-      );
+      await writeFile(swiftPmFilePath, JSON.stringify(iosPermissions, null, 2) + '\n', 'utf-8');
 
       const filePath = join(platformProjectRoot, 'Podfile');
       const contents = await readPodfile(filePath);

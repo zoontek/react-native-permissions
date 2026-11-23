@@ -43,12 +43,12 @@ beforeEach(() => {
 
 afterEach(() => fs.rmSync(platformProjectRoot, {recursive: true, force: true}));
 
-test('writes react-native-permissions.json next to the Podfile', async () => {
+test('writes permissions.json next to the Podfile', async () => {
   await runIosMod({iosPermissions: ['Camera', 'Contacts']});
 
   assert.equal(
-    fs.readFileSync(path.join(platformProjectRoot, 'react-native-permissions.json'), 'utf8'),
-    '{\n  "ios": [\n    "Camera",\n    "Contacts"\n  ]\n}\n',
+    fs.readFileSync(path.join(platformProjectRoot, 'permissions.json'), 'utf8'),
+    '[\n  "Camera",\n  "Contacts"\n]\n',
   );
   assert.match(
     fs.readFileSync(path.join(platformProjectRoot, 'Podfile'), 'utf8'),
@@ -60,27 +60,24 @@ test('writes nothing when no iOS permission is listed', async () => {
   await runIosMod({iosPermissions: []});
   await runIosMod();
 
-  assert.equal(
-    fs.existsSync(path.join(platformProjectRoot, 'react-native-permissions.json')),
-    false,
-  );
+  assert.equal(fs.existsSync(path.join(platformProjectRoot, 'permissions.json')), false);
   assert.equal(fs.readFileSync(path.join(platformProjectRoot, 'Podfile'), 'utf8'), podfile);
 });
 
-test('writes react-native-permissions.json when the project has no Podfile', async () => {
+test('writes permissions.json when the project has no Podfile', async () => {
   fs.rmSync(path.join(platformProjectRoot, 'Podfile'));
 
   await runIosMod({iosPermissions: ['Camera']});
 
   assert.equal(
-    fs.readFileSync(path.join(platformProjectRoot, 'react-native-permissions.json'), 'utf8'),
-    '{\n  "ios": [\n    "Camera"\n  ]\n}\n',
+    fs.readFileSync(path.join(platformProjectRoot, 'permissions.json'), 'utf8'),
+    '[\n  "Camera"\n]\n',
   );
   assert.equal(fs.existsSync(path.join(platformProjectRoot, 'Podfile')), false);
 });
 
-test('deletes a stale react-native-permissions.json when no iOS permission is listed', async () => {
-  const jsonPath = path.join(platformProjectRoot, 'react-native-permissions.json');
+test('deletes a stale permissions.json when no iOS permission is listed', async () => {
+  const jsonPath = path.join(platformProjectRoot, 'permissions.json');
 
   for (const iosPermissions of [undefined, []]) {
     await runIosMod({iosPermissions: ['Camera']});
