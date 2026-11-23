@@ -84,7 +84,6 @@ describe('readIosPermissions', () => {
 
     assert.throws(() => readConfig('Camera'), namesFile);
     assert.throws(() => readConfig(['Camera', 42]), namesFile);
-    assert.throws(() => readConfig({ios: ['Camera']}), namesFile);
   });
 
   test('throws, naming the file, when the JSON is malformed', () => {

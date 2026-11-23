@@ -31,8 +31,17 @@ const isIosPermission = (name: string): name is IosPermission =>
   Object.prototype.hasOwnProperty.call(iosPermissionFrameworks, name);
 
 // React Native's `ReactPackageRef`
-type PackageRef =
-  {name: string; path: string; relPath?: string} | {name: string; url: string; version: string};
+type ReactPackageRef =
+  | {
+      name: string;
+      path: string;
+      relPath?: string;
+    }
+  | {
+      name: string;
+      url: string;
+      version: string;
+    };
 
 type ProductRef = {
   name: string;
@@ -41,7 +50,7 @@ type ProductRef = {
 
 // React Native's `ReactDescriptor` (`context.react`)
 export type ReactDescriptor = {
-  packageRef: PackageRef;
+  packageRef: ReactPackageRef;
   products: readonly ProductRef[];
 };
 
@@ -114,26 +123,7 @@ export const readIosPermissions = (filePath: string): IosPermission[] => {
   return names.filter(isIosPermission);
 };
 
-const quote = (value: string): string => {
-  const escapes: Record<string, string> = {
-    '\\': '\\\\',
-    '"': '\\"',
-    '\n': '\\n',
-    '\r': '\\r',
-    '\t': '\\t',
-  };
-
-  const escaped = Array.from(value, (char) => {
-    const code = char.charCodeAt(0);
-
-    return (
-      escapes[char] ??
-      (code < 0x20 || code === 0x7f ? `\\u{${code.toString(16).toUpperCase()}}` : char)
-    );
-  });
-
-  return `"${escaped.join('')}"`;
-};
+const quote = (value: string): string => `"${value.replace(/[\\"]/g, '\\$&')}"`;
 
 const swiftList = (items: readonly string[], indent: number): string => {
   if (items.length === 0) {
@@ -191,7 +181,7 @@ export const renderPackageManifest = ({
   react: MaybeReactDescriptor;
   codegenPackagePath: string;
 }): string => {
-  const folders = unique(permissions).sort();
+  const folders = [...permissions].sort();
   const dependencies = reactDependencies(react, codegenPackagePath);
 
   const swiftFiles = folders.reduce<string[]>(
