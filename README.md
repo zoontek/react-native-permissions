@@ -244,7 +244,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
     }),
   ],
   ios: {
-    // Add descriptions to your Info.plist (see iOS setup - Info.plist)
+    // Add descriptions to your Info.plist (see iOS setup)
     infoPlist: {
       NSCameraUsageDescription: '[REASON]',
       NSMicrophoneUsageDescription: '[REASON]',
@@ -276,7 +276,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       ],
     ],
     "ios": {
-      // Add descriptions to your Info.plist (see iOS setup - Info.plist)
+      // Add descriptions to your Info.plist (see iOS setup)
       "infoPlist": {
         "NSCameraUsageDescription": "[REASON]",
         "NSMicrophoneUsageDescription": "[REASON]",
