@@ -5,14 +5,15 @@ import path from 'node:path';
 import {afterEach, beforeEach, describe, mock, test} from 'node:test';
 import {
   iosPermissionFrameworks,
-  iosPermissions,
   readIosPermissions,
   renderPackageManifest,
   runSwiftPMPlugin,
+  type IosPermission,
   type ReactDescriptor,
 } from '../extras/swiftpm.ts';
 
 const libraryRoot = path.resolve(import.meta.dirname, '..', '..');
+const iosPermissions = Object.keys(iosPermissionFrameworks) as IosPermission[];
 
 const localReact: ReactDescriptor = {
   packageRef: {
